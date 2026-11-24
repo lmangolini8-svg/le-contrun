@@ -40,14 +40,14 @@ Le principe de la question 5 est essentiel : chaque personnage incarne une raiso
 - **Ce qu’il veut** : sortir sa famille de la file. Entré aux gardes pour que sa mère n’ait plus à porter de sac, il paie pourtant comme les autres.
 - **Ce dont il a besoin** : comprendre qu’il est l’une des mains de l’Un, et qu’une main peut se retirer.
 - **Ce qu’il craint** : la honte devant son frère, et le sergent.
-- **Son secret** : il sait lire un peu, appris en cachette sur les placards des édits. **[Proposition]** Une autre option : c’est lui qui a laissé la poterne ouverte le matin de l’acte I.
+- **Son secret** : il sait lire un peu, appris en cachette sur les placards des édits. **[Établi]** C’est aussi lui qui laisse la poterne ouverte le matin (voir 7.2).
 - **Ce qui le tient** : l’intérêt (la solde, l’uniforme, le respect qu’on lui doit) et la peur.
 - **Sa blessure** : le jour où il a dû repousser son propre père hors de la place.
 - **Ce qui le rend visible** : très beau, comme le demande Lucas, mais d’une beauté qui ne doit rien au métal. Visage ouvert, yeux clairs, cheveux sombres qui dépassent du casque, une cicatrice fine au sourcil. Le casque à plume rouge et la hallebarde de la garde. Geste signature : il retire son casque quand il cesse d’être garde. Motif musical : le tambour de la garde, qui ralentit jusqu’à devenir un battement de cœur.
 
 ### 2.2 Pourquoi cette histoire sert l’œuvre
 
-**[Proposition]** Les gardes sont « les mains » du tyran. Le *Discours* le dit : « D’où a-t-il pris tant d’yeux dont il vous épie si vous ne les lui donnez ? Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (Belin, p. 26). Aimer un garde, c’est aimer l’une de ces mains. La question de l’histoire d’amour devient celle de l’œuvre : une main peut-elle cesser de servir ?
+**[Établi]** Les gardes sont « les mains » du tyran. Le *Discours* le dit : « D’où a-t-il pris tant d’yeux dont il vous épie si vous ne les lui donnez ? Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (Belin, p. 26). Aimer un garde, c’est aimer l’une de ces mains. La question de l’histoire d’amour devient celle de l’œuvre : une main peut-elle cesser de servir ?
 
 Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais qu’entre gens de bien » et « ce qui rend un ami assuré de l’autre c’est la connaissance qu’il a de son intégrité » (Belin, p. 71). La confiance entre Aliénor et Bastien ne s’achète pas, elle se connaît : c’est exactement ce que mesure la variable de confiance. Le passage sur les hallebardes, qui ne « préservent » pas les tyrans (p. 63), devient la leçon de son arc.
 
@@ -63,7 +63,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 ### 2.4 Les conséquences
 
-**[Proposition]** Deux variables suivent la relation dans la sauvegarde : la **confiance** (ce qu’ils se sont dit) et l’**exposition** (le danger qu’elle lui fait courir). Elles changent le cours de l’histoire :
+**[Établi]** Deux variables suivent la relation dans la sauvegarde : la **confiance** (ce qu’ils se sont dit) et l’**exposition** (le danger qu’elle lui fait courir). Elles changent le cours de l’histoire :
 
 - **Confiance haute, exposition maîtrisée** : à l’acte V, Bastien pose sa hallebarde le premier. Les autres gardes hésitent, puis l’imitent ; la file n’a plus d’escorte. C’est la condition de la meilleure fin.
 - **Confiance haute, exposition trop forte** : il est arrêté à l’acte IV à cause d’elle. Elle peut le retrouver aux oubliettes.
@@ -189,7 +189,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 8. **Son arc** : du maître qui protège en se taisant à l’homme qui parle, quoi qu’il en coûte (tableau ci-dessous).
 9. **Ce qui le rend visible** : le béret rouge, couleur terre de Sienne ; le tablier ; des mains noires d’encre jusqu’aux poignets. **Geste signature** : il chausse des besicles pour lire, et les retire quand il ment. **Musique** : la cadence de la presse sert de pulsation ; le luth grave joue seul quand il se tait.
 
-**[Proposition] Le livre brûlé, c’est le *Discours* lui-même.** Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
+**[Établi] Le livre brûlé, c’est le *Discours* lui-même.** Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
 
 **Son arc**
 
@@ -378,7 +378,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 8. **Son arc** : voir la partie 3. La scène centrale, à l’acte IV, est **la cabane de la forêt**, près d’une source : des cahiers cousus au fil de lin, une table, une seule bougie. « Ça passe toujours », dit-elle d’abord, puis elle ouvre ses cahiers.
 9. **Ce qui la rend visible** : les cheveux d’Aliénor, devenus gris cuivre ; une cape brune de bûcheronne ; des mains tachées non plus d’encre d’imprimerie, mais d’encre de noix. **Musique** : la phrase de flûte d’Aliénor, jouée plus lentement et laissée inachevée.
 
-**[Proposition] Les deux visages graves de la fête** [Établi : « une femme et un vieil homme », près de la fontaine, qui reconnaissent Aliénor sur les tréteaux]. La femme est Mahaut, entrée masquée en ville pour la fête, le seul soir où tout le monde porte un masque. Le vieil homme est **Gervais**, l’ancien maître d’Anselme. C’est lui qui avait imprimé le livre il y a quarante ans, et il vit depuis dans la forêt avec Mahaut. L’élève peut le comprendre rétrospectivement à l’acte IV.
+**[Établi] Les deux visages graves de la fête** [Établi : « une femme et un vieil homme », près de la fontaine, qui reconnaissent Aliénor sur les tréteaux]. La femme est Mahaut, entrée masquée en ville pour la fête, le seul soir où tout le monde porte un masque. Le vieil homme est **Gervais**, l’ancien maître d’Anselme. C’est lui qui avait imprimé le livre il y a quarante ans, et il vit depuis dans la forêt avec Mahaut. L’élève peut le comprendre rétrospectivement à l’acte IV.
 
 **Citation Belin** : « Ceux-là, quand la liberté serait entièrement perdue et toute hors du monde, l’imaginent et la sentent en leur esprit, et même la savourent » (p. 46).
 
