@@ -1,6 +1,6 @@
 # Les personnages de Sarlande · fiches approfondies
 
-*Le Contr’un* · document de travail · version 0.3 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.4 du 24 novembre 2026
 
 Ce document complète la partie 6 de la bible. Mêmes statuts : **[Établi]** (dans le jeu ou décidé par Lucas), **[Proposition]** (à trancher). Les citations suivent `Citations_Belin.md`.
 
@@ -27,6 +27,8 @@ Le principe de la question 5 est essentiel : chaque personnage incarne une raiso
 ## 2. La relation amoureuse : Aliénor et le garde
 
 **[Établi, décisions de Lucas]** Une relation amoureuse entre Aliénor et **Bastien**, le garde de la porte, très beau. Elle est **facultative**, au choix du joueur, et elle influence le cours de l’histoire comme tous les choix du personnage. Ton : tendre et retenu, pas plus loin qu’un baiser.
+
+*La fiche complète de Bastien et le déroulé détaillé de la relation se trouvent en partie 7.2.*
 
 ### 2.1 Qui est-il
 
@@ -152,7 +154,8 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 - [x] Mahaut, la mère, et son arc (partie 3).
 - [x] Ce qui tient chaque personnage (partie 4).
 - [x] L’ordre d’approfondissement (partie 5).
-- [ ] Fiche complète d’Anselme (partie 7) : à valider.
+- [ ] Fiche complète d’Anselme (partie 7.1) : à valider.
+- [ ] Fiche complète de Bastien et déroulé de la relation (partie 7.2) : à valider.
 
 ---
 
@@ -209,3 +212,120 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 **Pour l’image**
 - Portraits existants : quatre expressions (neutre, sourire, inquiétude, colère).
 - À commander : une planche de tour (face, profil, dos), une planche de mains (l’encre, les besicles), et la scène de la nuit d’il y a douze ans, avec un Anselme plus jeune, aux cheveux encore bruns sous le béret.
+
+### 7.2 Bastien, garde de la porte, et sa relation avec Aliénor
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Ce qui est établi**
+- Dans le jeu : « Circule. On ne regarde pas la porte. On regarde ses pieds. » ; « Moi aussi, je paie le tribut. On me le retient sur la solde. » ; « Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »
+- Décisions de Lucas : il s’appelle Bastien, il est très beau, la relation est facultative, le ton reste tendre et retenu.
+
+#### Bastien
+
+1. **Ce qu’il veut** : que sa mère n’ait plus jamais à porter de sac. C’est pour cela qu’il est entré aux gardes à seize ans.
+2. **Ce dont il a besoin** : comprendre qu’il est l’une des mains de l’Un, et qu’une main peut se retirer.
+3. **Ce qu’il craint** : le sergent ; la honte devant son frère ; redevenir rien.
+4. **Ses secrets** :
+   - Il sait lire, un peu. Il a appris seul, sur les édits placardés à la porte du palais, les édits qu’imprime Anselme. Il ne le dit à personne : un garde qui lit, cela se remarque.
+   - C’est lui qui laisse la poterne ouverte le matin, pour que sa mère puisse lui apporter son pain. Maëlle le sait sans savoir pourquoi (réplique établie : « La poterne est ouverte le matin »).
+5. **Ce qui le tient** : l’intérêt (la solde, l’uniforme, le respect qu’on lui doit) et la peur.
+6. **Sa blessure** : un des deux mendiants que les gardes tiennent hors de la place, le soir de la fête, est son père. Bastien l’a déjà repoussé lui-même : « La place est pour ceux qui paient. » Le joueur ne l’apprend qu’à l’acte III.
+7. **Sa famille** : sa mère, lavandière au quai ; son frère aîné, Joris, porteur, qui fait la queue au tribut ; son père, mendiant.
+8. **Ce qui le rend visible** :
+   - Très beau, d’une beauté qui ne doit rien au métal : visage ouvert, yeux clairs, cheveux sombres qui dépassent du casque, une fine cicatrice au sourcil. Casque à plume rouge, hallebarde.
+   - **Geste signature** : il retire son casque quand il cesse d’être garde. Il le fait trois fois dans le jeu, et la dernière fois devant toute la place.
+   - **Musique** : le tambour de la garde, qui ralentit jusqu’à devenir un battement de cœur.
+
+#### Pourquoi cette relation sert l’œuvre
+
+Bastien est l’une des « mains » dont parle La Boétie : « Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (Belin, p. 26). Et le passage sur les hallebardes dit que la garde ne protège pas vraiment le tyran : « Qui pense que les hallebardes, les gardes et la présence du guet préservent les tyrans, selon mon jugement, se trompe fort. » (p. 63).
+
+L’explication linéaire 3 donne la règle de la relation : l’amitié « ne se met jamais qu’entre gens de bien », et « ce qui rend un ami assuré de l’autre c’est la connaissance qu’il a de son intégrité » (p. 71). Aliénor et Bastien ne peuvent s’aimer qu’en se connaissant vraiment, au-delà de l’uniforme et du soupçon. C’est ce que mesure la confiance.
+
+#### Les deux variables
+
+- **Confiance** (0 à 5) : ce qu’ils savent vraiment l’un de l’autre. Elle monte avec la vérité, et baisse avec le mensonge et l’évitement.
+- **Exposition** (0 à 5) : le danger qu’Aliénor fait courir à Bastien. Elle monte avec les confidences dangereuses et les rendez-vous risqués.
+
+Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joueur est de faire monter la confiance sans trop exposer Bastien.
+
+#### Le déroulé, acte par acte
+
+**Acte I · La poterne**
+- *Scène 1, à la porte du palais.* Si Aliénor demande au percepteur à quoi sert le tribut, Bastien est l’un des gardes qui l’entendent. Il la regarde, pour la première fois, au lieu de regarder ses pieds.
+- *Scène 2, dans la cour des gardes.* Si Aliénor est repérée, ce n’est pas le sergent mais Bastien qui la raccompagne à la poterne. En chemin, il pourrait la dénoncer, et il ne le fait pas.
+
+| Choix d’Aliénor | Effet |
+|---|---|
+| « Je cherchais un chat. » (le mensonge que Maëlle a conseillé) | Il sourit : « Ça marche une fois. » Confiance +0 |
+| Dire une part de vérité : « Je cherchais quelque chose qu’on m’a pris. » | Confiance +1, exposition +1 |
+| Se taire et partir | Rien. La relation peut encore commencer à l’acte II. |
+
+**Acte II · La fête**
+- *Scène 3, le branle.* Bastien n’est pas de garde pour l’heure du branle. Il l’invite à danser.
+  - Danser : confiance +1, mais la fête prend Aliénor plus vite, comme les lumières dorées.
+  - Refuser avec douceur : rien, et il comprend.
+- *Scène 4, le grand toast.* Pendant que toute la place regarde le balcon, Bastien voit la troupe traverser jusqu’à l’imprimerie. Il ne dit rien. Le joueur le découvre par un regard, en tableau.
+- *Scène 5, l’aube.* Devant l’affiche collée sur la fontaine, Bastien est seul et lit lentement.
+
+| Choix d’Aliénor | Effet |
+|---|---|
+| « Tu sais lire ? » | Il avoue son secret. Confiance +1 |
+| Le remercier pour le toast | Confiance +1, exposition +1 : il comprend qu’elle était dans la troupe |
+| Passer sans rien dire | Rien |
+
+**Acte III · L’hiver**
+- *Scène 6, la perquisition.* Bastien accompagne le sergent pendant les perquisitions du quartier. Chez Anselme, il voit une pièce de la presse cachée sous un sac de farine, et il la recouvre.
+- *Scène 7, les lettres du lavoir.* Les rendez-vous se font au quai, sous le pont, près du lavoir où travaille sa mère. Ils se laissent des billets entre deux pierres, comme les pages du livre étaient cachées dans la ville. Le joueur compose ses billets en choisissant des phrases.
+- *Scène 8, le père.* Bastien emmène Aliénor voir les mendiants du quai et lui apprend que l’un d’eux est son père.
+- *Scène 9, le rendez-vous sous la neige.* C’est le premier baiser possible, facultatif. Bastien retire son casque pour la deuxième fois.
+
+| Choix d’Aliénor | Effet |
+|---|---|
+| Lui confier qu’elle imprime | Confiance +2, exposition +2 |
+| Lui donner une page à lire, celle des hallebardes (Belin, p. 63) | Confiance +1, exposition +1 ; il en parlera à l’acte V |
+| Garder le secret de l’imprimerie | Confiance −1, exposition 0 |
+| Lui demander de prévenir avant les perquisitions | Exposition +1 ; si la confiance est d’au moins 3, il le fait, et la presse est sauvée à l’acte IV |
+
+**Acte IV · Le nom**
+- *Scène 10, la demande du sergent.* Le sergent soupçonne Bastien et retient Joris, son frère, au poste. Il lui demande un nom : celui de l’imprimeur.
+- *Scène 11, le dilemme.* Bastien vient trouver Aliénor de nuit.
+
+| Choix d’Aliénor | Effet |
+|---|---|
+| « Choisis. » Elle lui laisse la décision | Tout dépend de la confiance (voir les issues) |
+| Le protéger en s’éloignant : « Oublie-moi. Dis que tu ne sais rien. » | Exposition −2, confiance −1 : il survit, mais la relation se brise |
+| Se livrer à sa place pour libérer Joris | Aliénor est arrêtée et l’acte IV change de cours. C’est la voie la plus risquée. |
+| Si Anselme se livre (pardon de l’acte III) | Le dilemme de Bastien est levé : le sergent a son nom. Confiance +1 |
+
+**Acte V · La hallebarde**
+- *Scène 12, le tribut.* Les gardes encadrent la file. Aliénor peut aller parler à Bastien devant tout le monde, ou le laisser décider seul.
+- Selon les issues, Bastien retire son casque pour la troisième fois et pose sa hallebarde. La citation du moment : « Mais si on ne leur donne rien, si on ne leur obéit pas, sans combattre, sans frapper, ils demeurent nus et défaits, et ne sont plus rien » (Belin, p. 24).
+- Réplique proposée, en écho à sa première : « On regarde ses pieds, disait le sergent. Je ne regarde plus mes pieds. »
+
+#### Les issues
+
+| Issue | Condition | Ce qui arrive |
+|---|---|---|
+| **La hallebarde posée** | Confiance d’au moins 4, exposition d’au plus 3 | À l’acte V, Bastien pose le premier sa hallebarde. Les autres gardes hésitent, puis l’imitent ; la file n’a plus d’escorte. C’est l’une des conditions de la meilleure fin. |
+| **Les oubliettes** | Confiance d’au moins 3, exposition d’au moins 4 | Il est arrêté à l’acte IV, à cause d’elle. Aliénor peut le retrouver aux oubliettes (planche VII). Si la ville cesse de servir à l’acte V, les portes s’ouvrent. |
+| **Le traître qui l’aimait** | Relation engagée, confiance d’au plus 2 | Pour sauver Joris, il donne le nom d’Anselme, ou celui d’Aliénor. Il ne cesse pas de l’aimer, et il le lui dit. |
+| **La séparation** | Aliénor l’a éloigné à l’acte IV | Il reste garde. À l’acte V, il baisse les yeux et s’écarte de la file sans poser sa hallebarde : un demi-geste. |
+| **La relation refusée** | Le joueur n’a jamais engagé la relation | Bastien reste une silhouette parmi les gardes. Le joueur ne voit jamais ce qu’il aurait pu faire. |
+
+**Avec la trahison de l’acte IV**, l’ordre de priorité proposé est le suivant :
+1. Garin, si Aliénor l’a dénoncé et ne l’a pas avoué ;
+2. Bastien, si la relation est engagée avec une confiance d’au plus 2 ;
+3. Maëlle, si la loterie l’a marquée ;
+4. Hugues, dans tous les autres cas.
+
+#### Le ton, en pratique
+- Des regards, des mains qui se frôlent, des billets, des rendez-vous ; pas plus loin qu’un baiser, que le joueur peut ne jamais vivre.
+- Bastien ne déclare jamais son amour en grands mots : il le montre par ce qu’il risque.
+- Aliénor garde toujours le choix de dire non, et ce refus est respecté dans le jeu.
+
+#### Pour l’image et le son
+- **À commander** : quatre portraits de Bastien (neutre, sourire, inquiétude, colère), une planche de tour, et sa planche sans casque. Il ne doit plus partager le portrait commun des gardes.
+- **Séquences illustrées possibles** : les billets du lavoir ; le rendez-vous sous la neige ; la hallebarde posée.
+- **Musique** : son tambour, qui ralentit jusqu’au battement de cœur ; au rendez-vous sous la neige, la flûte d’Aliénor et le tambour jouent ensemble pour la première fois.
