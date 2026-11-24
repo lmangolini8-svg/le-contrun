@@ -10,7 +10,7 @@
 
 ---
 
-## Suivi (24 novembre 2026, deuxième analyse)
+## Suivi du 25 novembre 2026
 
 **Toutes les consignes ont été réalisées.** Fichiers dans `references/planches-3d/`. Chaque planche de tour a ses trois vues découpées (`nom_vue_face/profil/dos.png`). La planche de matières est découpée en neuf textures (`matiere_*.png`).
 
@@ -22,18 +22,13 @@
 
 **Séquences** : le bûcher (3), la nuit d’il y a douze ans (4), l’hiver (3), les billets du lavoir (2), le rendez-vous sous la neige (2).
 
-**À reprendre**
-- [ ] `seq_bucher_2.png` : c’est une main d’adulte qui arrache la page d’un livre, alors que la scène montre une petite fille de huit ans qui tire une page du feu. À refaire : « Les petites mains d’une fillette de huit ans tirent du feu une page qui brûle par un coin. Gros plan, flammes tout autour. »
+**Décisions et illustrations validées par Lucas**
 
-**Tranché par Lucas (24 novembre 2026) : pas de fleur de lys.** Sarlande est imaginaire ; l’Un ne doit pas être rattaché à la monarchie française. Ne plus jamais en demander, et ajouter « sans fleur de lys » quand l’image jointe en contient.
-
-Fleurs de lys encore présentes, à remplacer par l’emblème de l’Un (à dessiner, voir plus bas) :
-- Références : `lieu_archives.png` (bannière), `garcon_tour.png` (cape), `statue_reference.png` (pommeau de l’épée).
-- Textures du jeu : `img/ornements.webp` (bannières rouges du palais), `img/etoffes.webp` (étoffe bleue semée de lys), à vérifier dans `img/espalier.webp` (petit blason).
-- Code du jeu : emblème `LYS` de l’écran-titre et des planches de citation ; tablier du colosse procédural (remplacé à l’étape statue).
-
-**À trancher par Lucas**
-- Pierrot porte une vraie couronne dorée et une cape de velours, au lieu d’une couronne de papier : il paraît un vrai petit roi plutôt qu’un enfant qui joue.
+- Mahaut enfant sauve une page du bûcher dans `seq_bucher_2.png`.
+- Pierrot porte une couronne de papier plié. Sa cape porte l’emblème de l’Un.
+- L’emblème C est un disque d’or au-dessus de trois degrés, de largeur croissante vers le bas. La référence est `objet_emblème_un.png`. Les fleurs de lys sont exclues de Sarlande.
+- Les archives, le pommeau de la statue, les trois textures du jeu, l’écran-titre et les pages de citation ont été harmonisés. Le remplacement du colosse procédural relève de l’étape 3D.
+- [Référence carrée pour Meshy](../modeles/statue/meshy/entree_essai1_statue_reference_carre.png) · [Suivi des essais 3D](../modeles/statue/README.md).
 
 **Petits écarts acceptés** : gilet bleu d’Anselme, robe bleue de Mahaut, robe rouille d’Ysabeau, cheveux châtains de Bastien, Hugues sans chaîne ni gants, béret du percepteur. Les fiches seront ajustées.
 
@@ -79,7 +74,7 @@ Pour chacun : coller STYLE avec l’image indiquée, puis la première consigne,
 | **Colin** | `perrine_neutre.png` | « Son fils de 6 ans, mêmes cheveux bruns. » puis TOUR | — |
 | **Mathurin** | `references/portraits-originaux/mathurin.webp` | TOUR | — |
 | **Hubert** | `img/portraits/mendiant_neutre.webp` | TOUR | — |
-| **Pierrot** | `img/portraits/garcon_neutre.webp` | TOUR | — |
+| **Pierrot** | `references/planches-3d/garcon_tour.png` | TOUR avec couronne de papier plié et emblème C sur la cape | — |
 | **Toinon** | `img/portraits/fille_neutre.webp` | TOUR | — |
 | **L’Un** (en dernier, secret) | `percepteur.webp` (style seulement) | « Un autre homme : souverain de 55 ans, petit, maigre, malade, teint gris, enroulé dans des fourrures, il a froid. Lueur d’un feu. Buste. » (carré) | TOUR |
 
@@ -99,7 +94,7 @@ Coller STYLE avec l’image indiquée, puis la consigne.
 | `objet_sac.png` | — | « Planche 3D : un sac de toile plein et lourd, noué au col, avec une sangle de cuir, de face, de profil et de dos, fond ivoire. » |
 | `objet_balance.png` | — | « Planche 3D : une balance de marchand en laiton à deux plateaux, de face, de profil et de dos, fond ivoire. » |
 | `objet_hallebarde.png` | — | « Planche 3D : une hallebarde de garde, de face et de profil, fond ivoire. » |
-| `objet_emblème_un.png` | `references/planches-3d/statue_reference.png` (style seulement) | « L’emblème de l’Un, souverain imaginaire : un motif héraldique simple, lisible en petit, sans fleur de lys ni aigle ni symbole d’un pays réel. Trois propositions côte à côte, or sur fond rouge sombre. » |
+| `objet_emblème_un.png` | `references/planches-3d/statue_reference.png` (style seulement) | « L’emblème de l’Un, souverain imaginaire : un motif héraldique simple, lisible en petit, sans fleur de lys ni aigle ni symbole d’un pays réel. Version validée C : disque d’or au-dessus de trois degrés sur fond rouge sombre. » |
 | `statue_tour.png` | `references/planches-3d/statue_reference.png` | « Planche 3D : cette statue en pied, sans socle, de face, de profil droit et de dos. Même pose : le globe ajouré dans sa main droite, à gauche de l’image vue de face ; l’épée dans sa main gauche, pointe vers le bas, pommeau sans fleur de lys. Même couronne, patine bleu sombre, liserés dorés. Même taille, sans perspective. Fond ivoire uni. » |
 | `lieu_place_neige.png` | `place-du-marche-et-tribut.webp` | « La même place en hiver : neige, fontaine gelée, traces de pas, affiche à demi arrachée, statue de l’Un avec une pierre manquante. » |
 | `lieu_foret_cabane.png` | `references/lieux-originaux/foret-et-sarlande-au-loin.webp` | « Une cabane de bûcheron près d’une source, dans la forêt, une fenêtre éclairée, des cahiers sur la table. Printemps. » |
