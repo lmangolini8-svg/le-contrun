@@ -1595,128 +1595,410 @@ function animate(g,moving,dt,rate){ const U=g.userData; U.amp+=((moving?1:0)-U.a
   }
   U.body.rotation.y=s*.073;
   U.body.position.x=s*.014;
-  U.body.position.y=(.5+.5*Math.cos(U.ph*2))*.026*U.amp; U.body.rotation.z=s*0.03; U.body.rotation.x=0.05*U.amp; if(U.sit){ if(U.legs.length){ U.legs[0].rotation.x=-1.5; U.legs[1].rotation.x=-1.5; } U.body.position.y=-0.44; U.body.rotation.x=0; } }
+  U.body.position.y=(.5+.5*Math.cos(U.ph*2))*.026*U.amp; U.body.rotation.z=s*0.03; U.body.rotation.x=0.05*U.amp; if(U.gait) U.gait(dt,moving); if(U.sit){ if(U.legs.length){ U.legs[0].rotation.x=-1.5; U.legs[1].rotation.x=-1.5; } U.body.position.y=-0.44; U.body.rotation.x=0; } }
 function npc(o){ const g=human(o); const c=[o.x,o.z,0.55]; circles.push(c); g.userData.circle=c; return g; }
 
-// Les coordonnées sont relevées sur les deux vues peintes (1024 × 1536).
-// Les sections elliptiques donnent une vraie épaisseur au visage, au buste et aux manches.
-const figureMap=new THREE.TextureLoader().load("img/alienor-atelier.webp");
-const figureInk=new THREE.MeshLambertMaterial({map:figureMap});
-figureInk.onBeforeCompile=sh=>{
-  sh.fragmentShader=sh.fragmentShader.replace("#include <envmap_fragment>",
-    "outgoingLight=diffuseColor.rgb*clamp(vec3(.59,.57,.58)+.53*reflectedLight.directDiffuse/max(diffuseColor.rgb,vec3(.02)),vec3(.54),vec3(1.08));\n#include <envmap_fragment>");
-};
-function couture(rows, pivot, side=0, nose=false){
-  const pos=[],uv=[],indices=[],unit=.00121,segments=24;
-  for(let back=0;back<2;back++){
-    const base=pos.length/3;
-    rows.forEach(([py,cx,wide,deep,z=0],j)=>{
-      for(let i=0;i<=segments;i++){
-        const a=(i/segments-.5)*Math.PI, sn=Math.sin(a)*(back?-1:1),cs=Math.cos(a)*(back?-1:1);
-        const x=side*(cx-256)+sn*wide;
-        const y=(1502-py)*unit;
-        const relief=nose&&!back?(.024*Math.exp(-((sn-.10)**2/.043+(py-158)**2/220))+.010*Math.exp(-((sn-.10)**2/.025+(py-136)**2/600)))*Math.cos(a):0;
-        const pleat=!side&&!nose&&py>535 ? .039*Math.min(1,(py-535)/270)*Math.cos(11*a+.0011*py) : 0;
-        const cheek=nose&&!back?.011*Math.exp(-((Math.abs(sn)-.44)**2/.055+(py-151)**2/270))*Math.cos(a):0;
-        pos.push(x*unit*(1+pleat)-pivot[0],y-pivot[1],cs*deep*unit*(1+pleat)+z+1.52*relief+cheek);
-        const centre=side?256+side*(cx-256):cx;
-        const u=back?1016-centre-sn*wide*.91:centre+sn*wide*.91;
-        if(nose){const theta=back?Math.PI+a:a;uv.push(.5+theta/(Math.PI*2),1-(py-25)/194);}else uv.push(u/1024,1-py/1536);
-        if(i&&j){const n=base+j*(segments+1)+i;indices.push(n-1,n,n-segments-2,n,n-segments-1,n-segments-2);}
-      }
-    });
-  }
-  const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));g.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));g.setIndex(indices);g.computeVertexNormals();
-  const mesh=new THREE.Mesh(g,figureInk);mesh.castShadow=true;return mesh;
+/* ================= Aliénor, modelée en volume ================= */
+// Toutes les pièces sont peintes depuis une seule planche : img/alienor-atlas.webp
+// (visage redressé des deux portraits, étoffes prélevées sur la planche de costume).
+// Repère du corps : y vers le haut, z vers l’avant, x vers la gauche d’Aliénor.
+const ALI_TEX=new THREE.TextureLoader().load("img/alienor-atlas.webp");
+const ALI_FACE_TEX=new THREE.TextureLoader().load("img/alienor-atlas.webp");
+const AR={faceN:[0,0,384,384],hair:[768,0,1024,384],skirt:[0,384,384,1024],apron:[384,384,704,1024],bib:[704,384,832,576],
+  bodice:[832,384,960,576],sleeve:[704,576,832,768],cuff:[832,576,960,672],skin:[832,720,960,848],boot:[704,768,832,896],
+  linen:[704,896,832,1024],leather:[896,848,960,1024],cloth:[470,560,630,800]};
+function auv(r,u,v){const i=3;u=Math.min(1,Math.max(0,u));v=Math.min(1,Math.max(0,v));
+  return [(r[0]+i+(r[2]-r[0]-2*i)*u)/1024,1-(r[3]-i-(r[3]-r[1]-2*i)*v)/1024];}
+// Lavis : la lumière reste chaude, l’ombre tourne à l’indigo au lieu de griser.
+function aliMaterial(map){
+  const m=new THREE.MeshLambertMaterial({map,vertexColors:true,side:THREE.DoubleSide});
+  m.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace("#include <envmap_fragment>",
+    "{vec3 lit=reflectedLight.directDiffuse/max(diffuseColor.rgb*RECIPROCAL_PI,vec3(.001));float l=clamp(dot(lit,vec3(.30,.45,.25))/PI,0.,1.4);\n"+
+    "vec3 sky=reflectedLight.indirectDiffuse/max(diffuseColor.rgb*RECIPROCAL_PI,vec3(.001));float a=clamp(dot(sky,vec3(.333))/PI/.23,.45,1.15);\n"+
+    "outgoingLight=diffuseColor.rgb*mix(vec3(.47,.50,.72)*a,vec3(1.05,1.0,.93),smoothstep(.06,.82,l));}\n#include <envmap_fragment>");};
+  return m;
 }
-// Cinq doigts séparés prolongent la paume ; leur texture provient de la main du modèle.
-function paintedHand(forearm,side,shoulder,elbowY){
-  const g=forearm.geometry, coords=Array.from(g.attributes.position.array),tex=Array.from(g.attributes.uv.array),idx=Array.from(g.index.array),unit=.00121;
-  const digits=[
-    [432,735,-.013,-.009,.054,.0090,.009, -.014],
-    [444,748,-.005,-.004,.078,.0092,.010, .006],
-    [457,749,.006,-.004,.083,.010,.010, .006],
-    [469,747,.013,-.004,.076,.0091,.010, .004],
-    [476,742,.016,-.004,.065,.0077,.008, .001]
-  ];
-  digits.forEach(([px,py,spread,lean,length,r,d,z0],digit)=>{
-    const start=coords.length/3,radial=8;
-    for(const [row,t,swell] of [[0,0,.78],[1,.24,1],[2,.53,.87],[3,.77,.84],[4,.94,.73],[5,1,.19]]){
-      for(let k=0;k<=radial;k++){
-        const a=k*2*Math.PI/radial;
-        coords.push(side*((px-256)*unit+spread*t*.4)+r*swell*Math.sin(a)-shoulder,(1502-py)*unit-elbowY-length*t,z0+d*swell*Math.cos(a)+lean*t+.008*t*t);
-        const sourceX=side===1?px:512-px;
-        tex.push((sourceX+6*Math.sin(a))/1024,1-(py+t*length/unit)/1536);
-        if(row&&k){const n=start+row*(radial+1)+k;idx.push(n-radial-2,n,n-radial-1,n-radial-2,n-1,n);}
-      }
+const aliCloth=aliMaterial(ALI_TEX), aliFace=aliMaterial(ALI_FACE_TEX);
+// Accumulateur de géométrie : grilles indexées, couleurs et coordonnées de texture propres à chaque pièce.
+function aliAcc(){return {p:[],uv:[],c:[],ix:[],seams:[]};}
+function aliGrid(acc,rows,cols,fn,closed){
+  const base=acc.p.length/3;
+  for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){const v=fn(j,i);acc.p.push(...v.p);acc.uv.push(...v.uv);acc.c.push(...(v.c||[1,1,1]));}
+  for(let j=1;j<=rows;j++)for(let i=1;i<=cols;i++){const k=base+j*(cols+1)+i;acc.ix.push(k-cols-2,k-1,k,k-cols-2,k,k-cols-1);}
+  if(closed)for(let j=0;j<=rows;j++)acc.seams.push([base+j*(cols+1),base+j*(cols+1)+cols]);
+}
+function aliGeometry(acc){
+  const g=new THREE.BufferGeometry();
+  g.setAttribute("position",new THREE.Float32BufferAttribute(acc.p,3));g.setAttribute("uv",new THREE.Float32BufferAttribute(acc.uv,2));
+  g.setAttribute("color",new THREE.Float32BufferAttribute(acc.c,3));g.setIndex(acc.ix);g.computeVertexNormals();
+  const n=g.attributes.normal;
+  for(const [a,b] of acc.seams){const x=n.getX(a)+n.getX(b),y=n.getY(a)+n.getY(b),z=n.getZ(a)+n.getZ(b),l=Math.hypot(x,y,z)||1;n.setXYZ(a,x/l,y/l,z/l);n.setXYZ(b,x/l,y/l,z/l);}
+  g.computeBoundingSphere();return g;
+}
+function aliMesh(acc,mat,outline=true){
+  const m=new THREE.Mesh(aliGeometry(acc),mat);m.castShadow=true;m.receiveShadow=true;
+  if(outline){const o=new THREE.Mesh(m.geometry,OUTLINE);m.add(o);}
+  return m;
+}
+// Interpolation de Catmull-Rom le long d’une table de profils.
+function aliRow(tab,t){
+  const n=tab.length-1;t=Math.max(0,Math.min(n,t));const i=Math.min(n-1,Math.floor(t)),f=t-i;
+  const P=k=>tab[Math.max(0,Math.min(n,k))];const p0=P(i-1),p1=P(i),p2=P(i+1),p3=P(i+2);
+  return p1.map((_,k)=>.5*(2*p1[k]+(-p0[k]+p2[k])*f+(2*p0[k]-5*p1[k]+4*p2[k]-p3[k])*f*f+(-p0[k]+3*p1[k]-3*p2[k]+p3[k])*f*f*f));
+}
+function aliLookup(tab){
+  const dense=[];for(let s=0;s<=400;s++)dense.push(aliRow(tab,s*(tab.length-1)/400));
+  return y=>{let best=dense[0],d=1e9;for(const r of dense){const e=Math.abs(r[0]-y);if(e<d){d=e;best=r;}}return best;};
+}
+function aliTube(acc,pts,radius,segs,radial,rect,color,uvScale=1){
+  const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)));
+  const fr=curve.computeFrenetFrames(segs,false),P=new THREE.Vector3();
+  aliGrid(acc,segs,radial,(j,i)=>{
+    const t=j/segs,a=i/radial*Math.PI*2;curve.getPointAt(t,P);const r=radius(t,a);
+    const N=fr.normals[j],B=fr.binormals[j],ca=Math.cos(a),sa=Math.sin(a);
+    return {p:[P.x+r*(ca*N.x+sa*B.x),P.y+r*(ca*N.y+sa*B.y),P.z+r*(ca*N.z+sa*B.z)],uv:auv(rect,Math.abs(i/radial*2-1),(t*uvScale)%1),c:color(t,a)};
+  },true);
+}
+function aliShape(geo,acc,m,rect,color){
+  // Ajoute une géométrie de base (sphère, tore…) transformée par la matrice m.
+  const g=geo.index?geo:geo,pos=g.attributes.position,uv=g.attributes.uv,base=acc.p.length/3,v=new THREE.Vector3();
+  for(let i=0;i<pos.count;i++){v.fromBufferAttribute(pos,i).applyMatrix4(m);acc.p.push(v.x,v.y,v.z);acc.uv.push(...auv(rect,uv.getX(i),uv.getY(i)));acc.c.push(...(color?color(v):[1,1,1]));}
+  const ix=g.index?g.index.array:[...Array(pos.count).keys()];for(const k of ix)acc.ix.push(base+k);
+}
+const aliM4=(x,y,z,sx,sy,sz,rx=0,ry=0,rz=0)=>new THREE.Matrix4().compose(new THREE.Vector3(x,y,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(rx,ry,rz)),new THREE.Vector3(sx,sy,sz));
+const ALI_INK=[.40,.45,.70];
+function aliInk(x,y,z,amount){ // taches d’encre : lavis bleu-noir irrégulier
+  const f=Math.sin(x*157+1.3)*Math.cos(y*131+z*97)+.6*Math.sin(z*211+y*73+.4)+.4*Math.sin(x*93-y*177);
+  const k=Math.max(0,Math.min(1,(f+amount-1.05)*2.2));
+  return [1-k*(1-ALI_INK[0]),1-k*(1-ALI_INK[1]),1-k*(1-ALI_INK[2])];
+}
+
+/* ---------- le buste, la jupe et le tablier ---------- */
+// [y, demi-largeur, profondeur avant, profondeur arrière, décalage z]
+const ALI_TORSO=[[.99,.122,.096,.090,0],[1.04,.120,.094,.090,0],[1.10,.128,.100,.093,0],[1.17,.140,.110,.096,.002],[1.24,.150,.121,.098,.004],
+  [1.29,.156,.123,.099,.004],[1.34,.162,.112,.098,.002],[1.385,.170,.092,.093,0],[1.42,.158,.074,.082,-.004],[1.448,.118,.060,.068,-.008],
+  [1.47,.060,.050,.054,-.012],[1.49,.046,.040,.046,-.018],[1.535,.040,.036,.042,-.026]];
+const aliTorsoAt=aliLookup(ALI_TORSO);
+function aliTorso(a,y,off=0){
+  const [,W,Df,Db,cz]=aliTorsoAt(y),s=Math.sin(a),c=Math.cos(a),e=.86;
+  let x=W*Math.sign(s)*Math.abs(s)**e,z=(c>0?Df:Db)*Math.sign(c)*Math.abs(c)**e+cz;
+  if(c>0)z+=.010*Math.exp(-(((Math.abs(x)-.058)/.04)**2)-((y-1.27)/.045)**2)*c;
+  else z-=.005*Math.exp(-(((Math.abs(x)-.07)/.045)**2)-((y-1.33)/.06)**2)*-c;
+  const nx=x/(W*W),nz=(z-cz)/((c>0?Df:Db)**2),l=Math.hypot(nx,nz)||1;
+  return [x+off*nx/l,y,z+off*nz/l];
+}
+// [y, demi-largeur, avant, arrière, profondeur des plis]
+const ALI_SKIRT=[[1.075,.127,.100,.094,.003],[1.02,.152,.120,.113,.010],[.95,.188,.150,.150,.018],[.82,.218,.180,.184,.026],
+  [.62,.250,.205,.218,.034],[.40,.272,.226,.242,.041],[.24,.284,.238,.256,.046],[.12,.290,.244,.264,.049]];
+const aliSkirtAt=aliLookup(ALI_SKIRT);
+function aliSkirt(a,y,off=0,pleat=true){
+  const [,W,Df,Db,pa]=aliSkirtAt(y),s=Math.sin(a),c=Math.cos(a);
+  const fold=pleat?pa*Math.sin(13*a+.5*Math.sin(3*a)+y*2.2):pa;
+  const r=1+(fold+off)/Math.max(.1,Math.hypot(W*s,(c>0?Df:Db)*c));
+  return [W*s*r,y,(c>0?Df:Db)*c*r];
+}
+function aliDress(){
+  const acc=aliAcc();
+  // corsage orange, froncé, jusqu’au cou (la peau le recouvre dans l’encolure)
+  aliGrid(acc,44,48,(j,i)=>{const y=.99+(1.535-.99)*j/44,a=-Math.PI+2*Math.PI*i/48;
+    return {p:aliTorso(a,y),uv:auv(AR.bodice,Math.abs(a)/Math.PI,.25+.75*(y-.99)/.45),c:[1,.97,.95]};},true);
+  // jupe ample, ourlet à hauteur de cheville, plis creusés vers le bas
+  aliGrid(acc,40,72,(j,i)=>{const t=j/40,y=1.075-(1.075-.12)*t**.92,a=-Math.PI+2*Math.PI*i/72;
+    const p=aliSkirt(a,y);p[1]+=t>.98?.010*Math.sin(5*a+1):0;
+    return {p,uv:auv(AR.skirt,Math.abs(a)/Math.PI,1-t),c:[1,1,1]};},true);
+  // peau de l’encolure carrée : devant à 1,352, dos à 1,43
+  aliGrid(acc,10,48,(j,i)=>{const a=-Math.PI+2*Math.PI*i/48,s=j/10;
+    const [x0]=aliTorso(a,1.40),front=Math.cos(a)>0;
+    const win=Math.max(0,Math.min(1,((front?.082:.115)-Math.abs(x0))/.016));
+    const yl=front?1.352+(1-win)*(1.468-1.352):1.452+(1-win)*(1.468-1.452);
+    const y=yl+s*(1.535-yl);const p=aliTorso(a,y,.0018*(1-s*.6));
+    return {p,uv:auv(AR.skin,.5+.4*Math.sin(a),.5+(y-1.42)*3),c:[1,1,1]};},true);
+  // fronce de la chemise le long de l’encolure
+  aliGrid(acc,2,96,(j,i)=>{const a=-Math.PI+2*Math.PI*i/96,[x0]=aliTorso(a,1.40),front=Math.cos(a)>0;
+    const win=Math.max(0,Math.min(1,((front?.082:.115)-Math.abs(x0))/.016));
+    const yl=(front?1.352+(1-win)*(1.468-1.352):1.452+(1-win)*(1.468-1.452))-.004;
+    const ruffle=.0035*Math.sin(i*2.1)**2;const p=aliTorso(a,yl+j*.0085,.004+ruffle+j*.002);
+    return {p,uv:auv(AR.cloth,.3+.2*(i%2),.5+j*.1),c:[1.08,1.06,1.02]};},true);
+  // tablier : jupe de toile écrue qui enveloppe les côtés, bavette, ceinture et nœud dans le dos
+  aliGrid(acc,30,44,(j,i)=>{const t=j/30,y=1.06-(1.06-.43)*t,v=1-t,half=1.78+.30*t,a=-half+2*half*i/44;
+    const p=aliSkirt(a,y,.007+.005*Math.sin(7*a+t*2),false);p[1]+=t>.97?.006*Math.sin(3*a):0;
+    const uL=.06-.05*t,uR=.79+.20*t;return {p,uv:auv(AR.apron,uL+(uR-uL)*i/44,v),c:[1,1,1]};});
+  aliGrid(acc,16,14,(j,i)=>{const y=1.05+(1.338-1.05)*j/16,xh=.103-.017*j/16,[,W]=aliTorsoAt(y),half=Math.asin(Math.min(.95,xh/W)),a=-half+2*half*i/14;
+    return {p:aliTorso(a,y,.0062),uv:auv(AR.bib,i/14,.72*j/16),c:[1,1,1]};});
+  aliGrid(acc,4,64,(j,i)=>{const y=1.027+.048*j/4,a=-Math.PI+2*Math.PI*i/64,p=aliTorso(a,y,.022+.004*Math.sin(Math.PI*j/4));
+    return {p,uv:auv(AR.cloth,i/64,j/4),c:[1.02,1,.97]};},true);
+  for(const side of [-1,1]){ // bretelles du tablier : de la bavette, par-dessus l’épaule, jusqu’à la ceinture
+    const path=[[.62,1.335],[.86,1.40],[1.12,1.440],[1.45,1.452],[1.80,1.440],[2.15,1.40],[2.45,1.30],[2.55,1.17],[2.58,1.05]].map(([a,y])=>[side*a,y]);
+    aliStrip(acc,path,.019,.0075,AR.cloth,[1,1,1]);
+  }
+  // nœud et pans dans le dos
+  for(const side of [-1,1]){
+    aliShape(new THREE.TorusGeometry(.032,.010,8,18),acc,aliM4(side*.045,1.062,-.108,1,.62,.45,0,side*.5,side*.3),AR.cloth,()=>[.98,.96,.92]);
+    const tail=[];for(let k=0;k<=8;k++){const y=1.045-k*(side>0?.050:.044);tail.push([Math.PI+side*(.07+k*.012),y]);}
+    aliStrip(acc,tail,.034,.012,AR.cloth,[.97,.95,.91],true);
+  }
+  aliShape(new THREE.SphereGeometry(1,10,8),acc,aliM4(0,1.052,-.112,.020,.022,.012),AR.cloth,()=>[.95,.93,.88]);
+  return aliMesh(acc,aliCloth);
+}
+// Bande souple posée sur le corps (sur le buste au-dessus de la taille, sur la jupe au-dessous).
+function aliStrip(acc,path,width,off,rect,col,onSkirt=false){
+  const steps=(path.length-1)*6;
+  const at=t=>aliRow(path,t*(path.length-1));
+  const P=(a,y)=>onSkirt||y<1.04?aliSkirt(a,y,off,false):aliTorso(a,y,off);
+  aliGrid(acc,steps,1,(j,i)=>{const t=j/steps,[a,y]=at(t),[a2,y2]=at(Math.min(1,t+.01)),[a0,y0]=at(Math.max(0,t-.01));
+    const c=P(a,y),fw=P(a2,y2),bk=P(a0,y0),T=new THREE.Vector3(fw[0]-bk[0],fw[1]-bk[1],fw[2]-bk[2]).normalize();
+    const N=new THREE.Vector3(c[0],0,c[2]-(y>1.3?-.005:0)).normalize(),B=new THREE.Vector3().crossVectors(T,N).normalize();
+    const s=(i-.5)*width*(onSkirt?1+t*.25:1);
+    return {p:[c[0]+B.x*s,c[1]+B.y*s,c[2]+B.z*s],uv:auv(rect,i,(t*3)%1),c:col};});
+}
+
+/* ---------- la tête ---------- */
+// [y, demi-largeur, avant, arrière, resserrement du bas du visage, décalage z]
+const ALI_HEAD=[[-.075,.035,.033,.035,0,-.026],[-.02,.036,.034,.036,0,-.026],[.010,.040,.040,.041,.20,-.023],[.023,.043,.066,.050,.74,-.010],
+  [.038,.049,.076,.060,.66,-.008],[.056,.056,.080,.070,.50,-.008],[.076,.064,.083,.079,.32,-.008],[.096,.070,.085,.088,.21,-.009],
+  [.120,.072,.085,.095,.14,-.010],[.140,.073,.083,.099,.11,-.010],[.160,.073,.082,.101,.09,-.010],[.185,.071,.077,.101,.07,-.010],
+  [.210,.066,.068,.097,.05,-.011],[.230,.055,.053,.084,0,-.012],[.246,.036,.033,.058,0,-.013],[.256,.010,.008,.016,0,-.013]];
+const aliHeadAt=aliLookup(ALI_HEAD);
+// Relief sculpté sur la projection frontale : arcades, orbites, nez, lèvres, menton, pommettes.
+function aliRelief(x,y){
+  const G=(cx,cy,sx,sy)=>Math.exp(-(((x-cx)/sx)**2)-((y-cy)/sy)**2),ax=Math.abs(x);
+  let d=0;
+  d+=.0055*Math.exp(-(((ax-.032)/.024)**2)-((y-.156)/.008)**2);            // arcades sourcilières
+  d-=.0075*Math.exp(-(((ax-.031)/.016)**2)-((y-.137)/.009)**2);             // orbites
+  d+=.0032*Math.exp(-(((ax-.031)/.011)**2)-((y-.135)/.006)**2);              // globe de l’œil
+  d+=.0055*G(0,.150,.010,.010);                                            // racine du nez
+  d+=Math.exp(-((x/.0085)**2))*.022*Math.max(0,Math.min(1,(.152-y)/.052))*Math.exp(-(((y-.100)/.034)**4)); // arête
+  d+=.007*G(0,.097,.012,.008);                                             // pointe du nez
+  d+=.006*Math.exp(-(((ax-.012)/.007)**2)-((y-.091)/.006)**2);               // ailes du nez
+  d+=.0045*G(0,.078,.009,.008);                                            // philtrum
+  d+=.0065*G(0,.067,.022,.0055)-.0018*G(0,.0605,.022,.0016);              // lèvre supérieure, commissure
+  d+=.0070*G(0,.054,.019,.006);                                            // lèvre inférieure
+  d-=.0022*G(0,.044,.016,.004);                                            // pli sous la lèvre
+  d+=.0085*G(0,.026,.021,.011);                                            // menton
+  d+=.0055*Math.exp(-(((ax-.050)/.018)**2)-((y-.113)/.016)**2);              // pommettes
+  d-=.003*Math.exp(-(((ax-.045)/.012)**2)-((y-.072)/.02)**2);                // creux des joues
+  return d;
+}
+function aliHeadPoint(a,y,off=0){
+  const [,W,Df,Db,k,cz]=aliHeadAt(y),s=Math.sin(a),c=Math.cos(a);
+  let x=W*s*(1-k*Math.max(0,c)**2),z=cz+(c>0?Df:Db)*c;
+  if(c>0)z+=aliRelief(x,y)*Math.min(1,c*c*c*1.6);
+  const nx=x/(W*W),nz=(z-cz)/((c>0?Df:Db)**2),ny=y>.2?(y-.2)*1.8:0,l=Math.hypot(nx,nz,ny)||1;
+  return [x+off*nx/l,y+off*ny/l,z+off*nz/l];
+}
+function aliHead(){
+  const acc=aliAcc(),R=AR.faceN;
+  aliGrid(acc,60,64,(j,i)=>{const t=j/60,y=-.075+(.258+.075)*t,a=-Math.PI+2*Math.PI*i/64,p=aliHeadPoint(a,y);
+    const f=Math.max(0,Math.min(1,(Math.cos(a)+.05)/.35));const pu=.5+p[0]/.20,edge=p[0]>0?.985:.015;
+    return {p,uv:auv(R,edge+(pu-edge)*f,(Math.max(-.026,p[1])+.03)/.30),c:[1,1,1]};},true);
+  for(const side of [-1,1]){ // oreilles, à demi cachées par les mèches
+    const m=aliM4(side*.068,.121,-.016,.010,.024,.016,0,side*.22,side*-.08);
+    aliShape(new THREE.SphereGeometry(1,10,8),acc,m,R,()=>[.93,.84,.80]);
+    aliShape(new THREE.TorusGeometry(.019,.004,5,12,Math.PI*1.3),acc,aliM4(side*.0715,.122,-.014,.55,1.1,.7,0,side*1.2,-Math.PI*.15),R,()=>[.86,.74,.70]);
+  }
+  // les oreilles prennent la peau du pourtour du visage, qui suit aussi le sourire
+  const n0=acc.uv.length;for(let k=(61*65)*2;k<n0;k+=2){acc.uv[k]=(R[0]+12)/1024;acc.uv[k+1]=1-(R[1]+200)/1024;}
+  return aliMesh(acc,aliFace);
+}
+function aliHair(){
+  const acc=aliAcc(),curls=aliAcc(),H=AR.hair,tone=(t,a)=>{const k=.96+.12*Math.sin(a*5+t*9);return [k*1.02,k*.96,k*.9];};
+  // naissance des cheveux : bas du front, tempes, devant l’oreille, nuque
+  const line=[[0,.184],[.45,.180],[.85,.160],[1.10,.135],[1.25,.112],[1.45,.112],[1.75,.112],[2.2,.070],[2.7,.046],[Math.PI,.040]];
+  const hl=a=>{const b=Math.abs(a);let k=0;while(k<line.length-2&&line[k+1][0]<b)k++;const [a0,y0]=line[k],[a1,y1]=line[k+1],f=Math.min(1,(b-a0)/(a1-a0));
+    return y0+(y1-y0)*(f*f*(3-2*f))+.0035*Math.sin(9*a)+.0025*Math.sin(23*a);};
+  const thick=(a,s)=>{const front=Math.max(0,Math.cos(a));return .0015+.011*Math.min(1,s/.22)+.006*front*Math.sin(Math.PI*Math.min(1,s*1.4))+.003*Math.sin(a*11+s*7)*Math.min(1,s*4);};
+  aliGrid(acc,18,72,(j,i)=>{const s=j/18,a=-Math.PI+2*Math.PI*i/72,y0=hl(a),y=y0+(.257-y0)*(1-(1-s)**1.6),th=thick(a,s);
+    return {p:aliHeadPoint(a,y,th),uv:auv(H,Math.abs(a)/Math.PI,s),c:tone(s,a)};},true);
+  // chignon tressé, enroulé haut sur l’arrière du crâne
+  const coil=[],turns=2.35,steps=60;
+  for(let k=0;k<=steps;k++){const t=k/steps,th=t*turns*2*Math.PI,R=.050*(1-.62*t),h=.004+.030*t;
+    coil.push([R*Math.cos(th),h,R*Math.sin(th)]);}
+  const tilt=new THREE.Matrix4().compose(new THREE.Vector3(0,.230,-.074),new THREE.Quaternion().setFromEuler(new THREE.Euler(-.62,.3,0)),new THREE.Vector3(1,1,1));
+  const v=new THREE.Vector3();
+  aliTube(acc,coil.map(p=>v.set(...p).applyMatrix4(tilt).toArray()),(t,a)=>.025*(1-.42*t)*(1+.20*Math.sin(a*2+t*38)**2),120,10,H,tone,5);
+  // boucles libres : tempes, nuque, échappées du chignon
+  const curl=(x,y,z,dx,dy,dz,len,turns,r,w)=>{const pts=[],d=new THREE.Vector3(dx,dy,dz).normalize(),u=new THREE.Vector3(0,1,0).cross(d).normalize();if(u.lengthSq()<.1)u.set(1,0,0);const q=new THREE.Vector3().crossVectors(d,u);
+    for(let k=0;k<=14;k++){const t=k/14,th=t*turns*2*Math.PI,rr=r*(.5+t);pts.push([x+d.x*len*t+(u.x*Math.cos(th)+q.x*Math.sin(th))*rr,y+d.y*len*t+(u.y*Math.cos(th)+q.y*Math.sin(th))*rr,z+d.z*len*t+(u.z*Math.cos(th)+q.z*Math.sin(th))*rr]);}
+    aliTube(curls,pts,(t)=>w*(1-.6*t),40,5,H,(t,a)=>{const k=1.2+.15*t;return [k*1.05,k*.96,k*.86];},2);};
+  for(const s of [-1,1]){
+    curl(s*.069,.160,.040,s*.15,-1,.25,.105,2.2,.007,.0048);
+    curl(s*.073,.150,.018,s*.25,-1,-.1,.075,1.7,.006,.0042);
+    curl(s*.040,.090,-.088,s*.3,-1,-.25,.075,2,.006,.004);
+    curl(s*.040,.205,-.112,s*.6,-.8,-.4,.06,1.5,.007,.0045);
+  }
+  curl(-.020,.198,.072,-.3,-1,.5,.045,1.4,.005,.0035);
+  // ruban écru : du haut du front jusque sous le chignon, nœud et pans dans la nuque
+  aliGrid(curls,1,64,(j,i)=>{const a=-Math.PI+2*Math.PI*i/64,c=Math.cos(a),y=.168+.058*(.5+.5*c)+(j-.5)*.015*(.6+.4*c),y0=hl(a),sv=1-(1-Math.max(0,Math.min(1,(y-y0)/(.257-y0))))**(1/1.6);
+    return {p:aliHeadPoint(a,y,thick(a,sv)+.0035),uv:auv(AR.cloth,i/64,j),c:[1.04,1.02,.98]};},true);
+  for(const s of [-1,1]){
+    aliShape(new THREE.TorusGeometry(.017,.0055,6,14),curls,aliM4(s*.019,.150,-.118,1,.65,.45,0,s*.4,s*.3),AR.cloth,()=>[1,.98,.94]);
+    aliStrip2(curls,[[s*.006,.143,-.119],[s*.014,.115,-.118],[s*.022,.088,-.113]],.013,AR.cloth);
+  }
+  aliShape(new THREE.SphereGeometry(1,8,6),curls,aliM4(0,.147,-.120,.010,.010,.007),AR.cloth,()=>[.95,.93,.88]);
+  const m=aliMesh(acc,aliCloth);m.add(aliMesh(curls,aliCloth,false));return m;
+}
+function aliStrip2(acc,pts,w,rect){ // bande libre (pans de ruban)
+  aliGrid(acc,pts.length-1,1,(j,i)=>{const p=pts[j];return {p:[p[0]+(i-.5)*w,p[1],p[2]-.002*i],uv:auv(rect,i,j/(pts.length-1)),c:[1,.98,.94]};});
+}
+
+/* ---------- bras, mains tachées d’encre, bottines ---------- */
+function aliArm(side){
+  const up=aliAcc(),low=aliAcc();
+  // manche bouffante froncée, resserrée au-dessus du coude
+  const puff=[[.050,.018],[.044,.044],[.026,.064],[0,.073],[-.05,.080],[-.10,.080],[-.145,.071],[-.175,.059],[-.195,.048]];
+  aliGrid(up,26,32,(j,i)=>{const [y,r]=aliRow(puff,j/26*(puff.length-1)),a=-Math.PI+2*Math.PI*i/32,g=1+.045*Math.sin(10*a+y*12)*(.4+.6*Math.min(1,-y*6+.6));
+    return {p:[side*.010+Math.sin(a)*r*g,y-.010,Math.cos(a)*r*.92*g],uv:auv(AR.sleeve,.75*Math.abs(a)/Math.PI,1-(.058-y)/.26),c:[1,1,1]};},true);
+  // revers écru roulé sur le haut du bras
+  aliGrid(up,8,28,(j,i)=>{const t=j/8,y=-.176-.084*t,a=-Math.PI+2*Math.PI*i/28,r=.054+.010*Math.sin(Math.PI*t)+.004*Math.sin(5*a+t*9);
+    return {p:[Math.sin(a)*r,y,Math.cos(a)*r*.95],uv:auv(AR.cuff,Math.abs(a)/Math.PI,.38+.62*(1-t)),c:[1.03,1.01,.97]};},true);
+  aliGrid(up,4,14,(j,i)=>{const y=-.19-.08*j/4,a=-Math.PI+2*Math.PI*i/14,r=.034;return {p:[Math.sin(a)*r,y,Math.cos(a)*r],uv:auv(AR.skin,.5,.5),c:[1,1,1]};},true);
+  aliShape(new THREE.SphereGeometry(1,10,8),up,aliM4(0,-.266,-.004,.033,.033,.033),AR.skin);
+  // avant-bras et main : encre jusqu’aux coudes, plus dense sur les doigts
+  const fore=[[.02,.034],[-.02,.0355],[-.08,.033],[-.15,.028],[-.21,.0235],[-.238,.022]];
+  aliGrid(low,18,18,(j,i)=>{const [y,r]=aliRow(fore,j/18*(fore.length-1)),a=-Math.PI+2*Math.PI*i/18,x=Math.sin(a)*r*.86,z=Math.cos(a)*r;
+    return {p:[x,y,z],uv:auv(AR.skin,Math.abs(a)/Math.PI,(y+.24)/.27),c:aliInk(x+side,y,z,-.05-.9*Math.max(0,-y-.12))};},true);
+  const inward=-side; // la paume regarde la cuisse
+  aliShape(new THREE.SphereGeometry(1,12,10),low,aliM4(inward*.002,-.278,.004,.0135,.046,.036),AR.skin,v=>aliInk(v.x+side,v.y,v.z,.35));
+  const fingers=[[.024,.060],[.008,.072],[-.008,.070],[-.023,.056]];
+  for(const [z0,len] of fingers){
+    const pts=[];let x=inward*.002,y=-.312,ang=0;for(let k=0;k<=5;k++){pts.push([x,y,z0]);ang+=.22;x+=inward*Math.sin(ang)*len/5;y-=Math.cos(ang)*len/5;}
+    aliTube(low,pts,t=>.0080*(1-.25*t),10,6,AR.skin,(t)=>t>.72?ALI_INK:aliInk(z0*3+side,y,t,.45));
+  }
+  {const pts=[];let p=new THREE.Vector3(inward*.004,-.262,.032);const d=new THREE.Vector3(inward*.35,-.62,.55).normalize();
+    for(let k=0;k<=4;k++){pts.push(p.toArray());p.addScaledVector(d,.013);d.x+=inward*.06;d.normalize();}
+    aliTube(low,pts,t=>.0092*(1-.25*t),8,6,AR.skin,t=>t>.7?ALI_INK:[1,1,1]);}
+  const arm=new THREE.Group(),splay=new THREE.Group(),elbow=new THREE.Group();
+  arm.position.set(side*.172,1.395,-.008);splay.rotation.z=side*(side<0?.20:.15);
+  splay.add(aliMesh(up,aliCloth));elbow.position.y=-.266;elbow.add(aliMesh(low,aliCloth));splay.add(elbow);arm.add(splay);
+  arm.userData={splay,elbow,side};
+  return arm;
+}
+function aliBoot(side){
+  const acc=aliAcc();
+  aliGrid(acc,6,16,(j,i)=>{const y=-.01+.15*j/6,a=-Math.PI+2*Math.PI*i/16,r=.036+.004*j/6;return {p:[Math.sin(a)*r,y,Math.cos(a)*r*.95-.005],uv:auv(AR.boot,Math.abs(a)/Math.PI,.5+j/12),c:[.92,.9,.9]};},true);
+  aliGrid(acc,14,18,(j,i)=>{const u=j/14,b=-Math.PI/2+Math.PI*u,a=-Math.PI+2*Math.PI*i/18;
+    const x=Math.sin(a)*Math.cos(b)*.041*(1-.18*Math.max(0,Math.sin(b))),y=Math.cos(a)*Math.cos(b)*.036-.040,z=.045+Math.sin(b)*.095;
+    const yy=Math.max(-.075,y)+(Math.sin(b)>.7?.006*(Math.sin(b)-.7)/.3:0);
+    return {p:[x,yy,z],uv:auv(AR.boot,Math.abs(a)/Math.PI,u),c:yy<-.069?[.42,.36,.34]:[1,1,1]};},true);
+  const foot=new THREE.Group(),m=aliMesh(acc,aliCloth);foot.add(m);foot.userData={side};return foot;
+}
+
+/* ---------- le sac du tribut ---------- */
+// Sac de toile plein, noué au col ; la sangle de cuir passe sur l’épaule gauche et revient de part et d’autre du col.
+const ALI_SACK={a:-2.18,r:.192,y:1.060,tilt:-.16};
+function aliSatchel(){
+  const acc=aliAcc();
+  const prof=[[.040,.034],[.028,.030],[.014,.021],[0,.0185],[-.012,.023],[-.040,.050],[-.080,.074],[-.130,.090],[-.180,.098],[-.225,.098],[-.260,.088],[-.290,.064],[-.305,.030],[-.309,.003]];
+  aliGrid(acc,40,36,(j,i)=>{const [y,r0]=aliRow(prof,j/40*(prof.length-1)),a=-Math.PI+2*Math.PI*i/36,s=Math.sin(a),c=Math.cos(a);
+    const ruff=y>.012?1+.28*Math.sin(9*a)**2:1, lump=1+.045*Math.sin(5*a+y*40)*Math.sin(3*a-y*25)*(y<-.03?1:0);
+    const r=r0*ruff*lump;let z=c*r*(c>0?1.08:1),x=s*r*.96;if(z<0)z*=.52+.1*Math.max(0,y+.02)/.06;  // côté hanche aplati par le poids
+    const dirt=y<-.24?.86:1;return {p:[x,y,z],uv:auv(AR.linen,Math.abs(a)/Math.PI,(y+.309)/.35),c:[dirt,dirt*.97,dirt*.93]};},true);
+  aliTube(acc,Array.from({length:13},(_,k)=>{const a=k/12*2*Math.PI;return [Math.sin(a)*.0215*1.1,.001+.002*Math.sin(a*2),Math.cos(a)*.0215];}),()=>.0042,24,5,AR.leather,()=>[.62,.48,.40]);
+  aliTube(acc,[[.020,0,.012],[.03,-.02,.02],[.028,-.045,.026],[.034,-.062,.03]],t=>.0035*(1-.4*t),10,5,AR.leather,()=>[.62,.48,.40]);
+  return aliMesh(acc,aliCloth);
+}
+function aliSackStrap(){
+  const acc=aliAcc(),S=ALI_SACK,neck=new THREE.Vector3(Math.sin(S.a)*S.r,S.y,Math.cos(S.a)*S.r),tan=new THREE.Vector3(Math.cos(S.a),0,-Math.sin(S.a));
+  // Sur le corps : du flanc droit, en travers de la bavette, par-dessus l’épaule gauche, puis en travers du dos.
+  const body=[[-1.62,1.060],[-1.30,1.080],[-.85,1.115],[-.42,1.170],[0,1.232],[.40,1.298],[.80,1.368],[1.13,1.425],[1.42,1.452],[1.72,1.452],[2.02,1.425],
+    [2.38,1.362],[2.76,1.285],[3.14,1.205],[3.50,1.135],[3.86,1.080],[4.13,1.060]];
+  const off=y=>y>1.05?.0165:.012, P=(a,y)=>{const p=aliTorso(a,y,off(y));if(Math.abs(a)<.9&&y<1.34)p[2]+=.0035;return p;};
+  const pts=[neck.clone().addScaledVector(tan,.022).toArray()];
+  for(let k=0;k<=160;k++){const [a,y]=aliRow(body,k/160*(body.length-1));pts.push(P(a,y));}
+  pts.push(neck.clone().addScaledVector(tan,-.022).toArray());
+  const N=pts.length-1;
+  aliGrid(acc,N,3,(j,i)=>{const c=new THREE.Vector3(...pts[j]),f=new THREE.Vector3(...pts[Math.min(N,j+1)]),b=new THREE.Vector3(...pts[Math.max(0,j-1)]);
+    const T=f.sub(b).normalize(),R=new THREE.Vector3(c.x,c.y>1.43?(c.y-1.43)*3:0,c.z).normalize(),B=new THREE.Vector3().crossVectors(T,R).normalize(),Rn=new THREE.Vector3().crossVectors(B,T);
+    const w=.012,th=.0028,corner=[[-w,-th],[w,-th],[w,th],[-w,th]][i];
+    return {p:[c.x+B.x*corner[0]+Rn.x*corner[1],c.y+B.y*corner[0]+Rn.y*corner[1],c.z+B.z*corner[0]+Rn.z*corner[1]],uv:auv(AR.leather,i/3,(j/N*6)%1),c:[.78,.64,.56]};});
+  // le cuir appuie sur l’épaule : petite fronce du corsage de part et d’autre
+  for(const da of [-.13,.13])aliShape(new THREE.SphereGeometry(1,8,6),acc,aliM4(...aliTorso(1.57+da,1.444,.006),.011,.006,.016,0,1.57+da,0),AR.bodice,()=>[.82,.78,.8]);
+  const m=aliMesh(acc,aliCloth,false);return m;
+}
+
+/* ---------- assemblage et démarche ---------- */
+function sculptedAlienor(){
+  const g=new THREE.Group(),body=new THREE.Group(),head=new THREE.Group();g.add(body);
+  const dress=aliDress();body.add(dress);
+  head.position.set(0,1.50,0);body.add(head);head.add(aliHead());head.add(aliHair());
+  const arms=[aliArm(-1),aliArm(1)];arms.forEach(a=>body.add(a));
+  const legs=[aliBoot(-1),aliBoot(1)];legs.forEach(f=>g.add(f));
+  // repère de la tache d’encre sur le revers droit, côté extérieur et avant
+  const cuffInk=new THREE.Group();cuffInk.position.set(-.041,-.215,.040);cuffInk.rotation.y=-.80;arms[0].userData.splay.add(cuffInk);
+  // jupe : les jambes la poussent, l’ourlet suit avec un léger retard
+  const pos=dress.geometry.attributes.position,rest=Float32Array.from(pos.array),hemIdx=[];
+  for(let i=0;i<pos.count;i++)if(rest[i*3+1]<.98)hemIdx.push(i);
+  pos.setUsage(THREE.DynamicDrawUsage);
+  const U={body,head,arms,elbows:arms.map(a=>a.userData.elbow),legs,knees:[],ph:rnd()*6,amp:0,hold:false,cuffInk,speed:0,
+    feet:[[0,0,0],[0,0,0]],skirtLag:[0,0],swing:{x:0,z:0,vx:0,vz:0},last:null,lastYaw:0,velL:[0,0]};
+  // Cinématique à deux os, dans le repère du corps : l’épaule s’oriente, le coude plie vers l’avant.
+  const L1=.266,L2=.285;
+  // Le coude est guidé par un pôle (vers le bas, l’extérieur et un peu l’arrière), pour un geste naturel.
+  const _S=new THREE.Vector3(),_T=new THREE.Vector3(),_E=new THREE.Vector3(),_d=new THREE.Vector3(),_p=new THREE.Vector3(),_x=new THREE.Vector3(),_y=new THREE.Vector3(),_z=new THREE.Vector3(),_m=new THREE.Matrix4(),_q=new THREE.Quaternion(),_qs=new THREE.Quaternion(),_eu=new THREE.Euler();
+  U.reach=(i,tx,ty,tz,k=1,pole)=>{
+    const arm=arms[i],side=arm.userData.side;_S.copy(arm.position);_T.set(tx,ty,tz);
+    _d.subVectors(_T,_S);const dist=Math.min(L1+L2-.003,Math.max(.10,_d.length()));_d.normalize();
+    const a=(L1*L1-L2*L2+dist*dist)/(2*dist),h=Math.sqrt(Math.max(0,L1*L1-a*a));
+    _p.set(...(pole||[side*.55,-1,-.35]));_p.addScaledVector(_d,-_p.dot(_d)).normalize();
+    _E.copy(_S).addScaledVector(_d,a).addScaledVector(_p,h);
+    _y.subVectors(_S,_E).normalize();                       // l’axe +y du bras remonte vers l’épaule
+    _T.copy(_S).addScaledVector(_d,dist);_z.subVectors(_T,_E);_z.addScaledVector(_y,-_z.dot(_y)).normalize(); // l’avant-bras plie vers +z
+    _x.crossVectors(_y,_z).normalize();_m.makeBasis(_x,_y,_z);_q.setFromRotationMatrix(_m);
+    _qs.setFromEuler(_eu.set(0,0,arm.userData.splay.rotation.z)).invert();_q.multiply(_qs);
+    const f=Math.PI-Math.acos(Math.max(-1,Math.min(1,(L1*L1+L2*L2-dist*dist)/(2*L1*L2))));
+    arm.quaternion.slerp(_q,k);U.elbows[i].rotation.x+=(-f-U.elbows[i].rotation.x)*k;
+  };
+  U.smile=on=>{const x=on?384/1024:0;if(ALI_FACE_TEX.offset.x!==x){ALI_FACE_TEX.offset.x=x;}};
+  U.gait=(dt,moving)=>{
+    const amp=U.amp,v=U.speed||0,L=Math.min(.27,.17+.035*v)*amp,lift=.055*Math.min(1,.4+v/3)*amp,stance=.56;
+    for(let i=0;i<2;i++){
+      const side=i?1:-1,ph=((U.ph+(i?Math.PI:0))%(2*Math.PI)+2*Math.PI)%(2*Math.PI),p=ph/(2*Math.PI);let z,y,pitch;
+      if(p<stance){const t=p/stance;z=L*(1-2*t);y=0;pitch=t<.15?-.25*(1-t/.15):t>.75?.45*(t-.75)/.25:0;}
+      else{const t=(p-stance)/(1-stance),e=t*t*(3-2*t);z=-L+2*L*e;y=lift*Math.sin(Math.PI*t);pitch=.45*(1-t)-.2*t;}
+      const f=U.legs[i];f.position.set(side*.075+side*.012*amp,.075+y,z-.01);f.rotation.set(pitch*amp,side*.08,0);U.feet[i]=[f.position.x,y,z];
     }
-  });
-  g.setAttribute("position",new THREE.Float32BufferAttribute(coords,3));g.setAttribute("uv",new THREE.Float32BufferAttribute(tex,2));g.setIndex(idx);
-  g.deleteAttribute("normal");g.computeVertexNormals();
+    // balancement des bras opposé aux pas ; le bras droit, côté sac, reste plus près du corps
+    const c=Math.cos(U.ph)*amp;
+    if(!U.posed){arms[0].rotation.set(.24*c,0,0);arms[1].rotation.set(-.40*c,0,0);
+      U.elbows[0].rotation.x=-.20-.25*Math.max(0,-c);U.elbows[1].rotation.x=-.20-.35*Math.max(0,c);}
+    body.rotation.y=-.06*c;body.position.y=-.016*amp+.016*amp*Math.abs(Math.sin(U.ph));body.position.x=.008*Math.sin(U.ph)*amp;
+    body.rotation.z=-.018*Math.sin(U.ph)*amp;body.rotation.x=.06*amp;
+    // la jupe suit les jambes
+    const lag=U.skirtLag;for(let i=0;i<2;i++)lag[i]+=(U.feet[i][2]-lag[i])*Math.min(1,dt*14);
+    const flare=.025*amp;
+    if(amp>.003||U.skirtDirty){U.skirtDirty=amp>.003;
+      for(const k of hemIdx){const x=rest[k*3],y=rest[k*3+1],z=rest[k*3+2],h=Math.max(0,Math.min(1,(.92-y)/.62)),hh=h*h*(3-2*h);
+        const wl=Math.max(0,Math.min(1,.5+x/.18)),dz=(lag[1]*wl+lag[0]*(1-wl))*.52*hh,r=1+flare*hh*(.6+.4*Math.sin(U.ph*2+Math.atan2(x,z)*3));
+        pos.array[k*3]=x*r;pos.array[k*3+2]=z*r+dz;pos.array[k*3+1]=y+Math.max(0,dz*.18)*(z>0?1:0);}
+      pos.needsUpdate=true;}
+    // le sac : pendule amorti, entraîné par l’accélération et la rotation du corps
+    const sw=U.swing,P=g.position;if(!U.last)U.last=[P.x,P.z];
+    const vx=(P.x-U.last[0])/Math.max(dt,1e-3),vz=(P.z-U.last[1])/Math.max(dt,1e-3);U.last=[P.x,P.z];
+    const ax=(vx-U.velL[0])/Math.max(dt,1e-3),az=(vz-U.velL[1])/Math.max(dt,1e-3);U.velL=[vx,vz];
+    let dyaw=g.rotation.y-U.lastYaw;while(dyaw>Math.PI)dyaw-=2*Math.PI;while(dyaw<-Math.PI)dyaw+=2*Math.PI;U.lastYaw=g.rotation.y;
+    const cy=Math.cos(g.rotation.y),sy=Math.sin(g.rotation.y),fwd=Math.max(-40,Math.min(40,ax*sy+az*cy)),lat=Math.max(-40,Math.min(40,ax*cy-az*sy));
+    const yawRate=Math.max(-12,Math.min(12,dyaw/Math.max(dt,1e-3))),bob=Math.sin(U.ph*2)*amp*3.2;
+    if(dt>0){sw.vx+=(-90*sw.x-6*sw.vx+fwd*.12+bob*3.5)*dt;sw.vz+=(-90*sw.z-6*sw.vz-lat*.12+yawRate*1.8)*dt;sw.x+=sw.vx*dt;sw.z+=sw.vz*dt;}
+    sw.x=Math.max(-.30,Math.min(.30,sw.x));sw.z=Math.max(-.14,Math.min(.30,sw.z));
+    sackPivot.rotation.set(ALI_SACK.tilt+sw.x*.9,0,sw.z*.8);
+  };
+  const sackPivot=new THREE.Group();U.sackPivot=sackPivot;
+  g.userData=U;scene.add(g);HUMANS.push(g);return g;
 }
-function paintedAlienor(){
-  const g=new THREE.Group(),body=new THREE.Group(),head=new THREE.Group();
-  const axis=[0,0],hingeY=1.50;
-  const torso=couture([[205,266,25,29],[238,266,34,37],[261,266,53,50],[285,263,83,61],[311,264,101,80],[367,266,109,96],[428,264,94,90],[510,264,79,70],[538,263,82,71],[582,261,117,91],[710,257,143,108],[840,256,157,125],[1030,254,185,146],[1210,252,212,157],[1357,252,217,163],[1382,250,192,156]],axis);
-  body.add(torso);g.add(body);head.position.y=hingeY;body.add(head);
-  const face=couture([[25,254,10,18,-.042],[43,254,55,67,-.034],[68,258,83,84,-.021],[97,259,91,91,-.01],[126,261,92,96],[147,263,91,91],[171,266,79,84],[195,270,65,66],[212,275,42,51],[219,276,20,30]], [0,hingeY],0,true);
-  const scalpTexture=new THREE.TextureLoader().load("img/alienor-profil.webp");
-  scalpTexture.wrapS=THREE.RepeatWrapping;
-  face.material=figureInk.clone();face.material.map=scalpTexture;face.material.onBeforeCompile=figureInk.onBeforeCompile;
-  head.add(face);
-  const hair=new Builder();hair.jit=0;
-  hair.put(G.s,0x744325,0,.195,-.092,.065,.066,.060);
-  for(let k=0;k<11;k++){
-    const a=k*2*Math.PI/11;
-    hair.put(G.s,[0x8b4d29,0x734021,0x925932][k%3],.038*Math.sin(a),.193+.041*Math.cos(a),-.118,.021,.029,.032,.32,a*.15,-a);
-  }
-  hair.put(G.s,0xbd9a73,0,.161,-.122,.044,.008,.019);
-  for(const side of [-1,1]){
-    hair.put(G.s,0xd4ba8c,side*.024,.172,-.147,.033,.010,.012,0,0,side*.37);
-    hair.put(G.s,0xbaa07a,side*.023,.145,-.148,.011,.030,.009,0,0,-side*.26);
-    const base=[new THREE.Vector3(side*.083,.177,.037),new THREE.Vector3(side*.101,.158,.047),new THREE.Vector3(side*.102,.137,.031),new THREE.Vector3(side*.093,.117,.041),new THREE.Vector3(side*.093,.094,.025)];
-    const lock=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(base),12,.0037,5,false);
-    hair.put(lock,side>0?0x8d4c2e:0x995a39,0,0,0,1);
-  }
-  for(const sign of [-1,1]){
-    hair.put(G.s,0xbf8967,sign*.094,.127,-.012,.010,.019,.014);
-    hair.put(G.s,0x80452b,sign*.098,.151,-.034,.019,.046,.028,0,0,-sign*.20);
-  }
-  head.add(hair.mesh(VC2));
-  const arms=[],elbows=[],legs=[],hem=[],attr=torso.geometry.attributes.position;
-  for(let i=0;i<attr.count;i++)if(attr.getY(i)<1)hem.push([i,attr.getX(i),attr.getZ(i),(1-attr.getY(i))**1.4]);
-  for(const side of [-1,1]){
-    const arm=new THREE.Group(),joint=new THREE.Group(),shoulder=side*.151,level=1.452;
-    arm.position.set(shoulder,level,0);
-    arm.add(couture([[281,363,12,18],[295,371,29,38],[321,382,49,53],[370,404,46,60],[426,405,48,54],[451,400,40,43],[470,402,43,44],[501,404,39,42],[524,405,30,35]], [shoulder,level],side));
-    const elbowY=(1502-504)*.00121;
-    joint.position.y=elbowY-level;
-    const forearm=couture([[504,405,29,32],[537,405,30,31],[589,415,26,29],[685,441,20,23],[711,450,20,20],[737,454,23,17],[752,455,22,13],[757,455,17,10]],[shoulder,elbowY],side);
-    paintedHand(forearm,side,shoulder,elbowY);joint.add(forearm);
-    arm.add(joint);body.add(arm);arms.push(arm);elbows.push(joint);
-    const foot=new THREE.Group();foot.position.set(side*.09,.85,0);
-    foot.add(couture([[1355,313,27,37],[1407,313,29,42],[1465,317,37,65,.029],[1493,318,43,74,.034],[1503,318,35,68,.034]],[side*.09,.85],side));body.add(foot);legs.push(foot);
-  }
-  g.userData={body,head,arms,elbows,legs,knees:[],ph:rnd()*6,amp:0,hold:false,cloth:{attr,hem,previous:-1}};
-  scene.add(g);HUMANS.push(g);return g;
+const _aliV=new THREE.Vector3();
+function aliRate(v){return Math.max(7,Math.min(13,v*.56*Math.PI/Math.min(.27,.17+.035*v)));}
+const player=sculptedAlienor();player.position.set(S.pos[0],0,S.pos[1]);
+const playerSack=new THREE.Group(),satchel=aliSatchel();
+{const s=ALI_SACK,p=player.userData.sackPivot;p.position.set(Math.sin(s.a)*s.r,s.y,Math.cos(s.a)*s.r);p.rotation.y=0;
+  const yaw=new THREE.Group();yaw.rotation.y=s.a;yaw.position.copy(p.position);p.position.set(0,0,0);yaw.add(p);p.add(satchel);satchel.scale.setScalar(1.08);
+  playerSack.add(yaw,aliSackStrap());player.userData.body.add(playerSack);}
+// Expression d’Aliénor pendant les dialogues : sourire quand la réplique l’appelle.
+function aliExpression(line){
+  if(!player.userData.smile)return;
+  let on=false;if(Array.isArray(line)&&line[1]){const w=line[1].normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+    on=/comme d.habitude|merci|bien joue|tu as reussi|bonne idee/.test(w);}
+  player.userData.smile(on);
 }
-const player=paintedAlienor();player.position.set(S.pos[0],0,S.pos[1]);
-const bagMaker=tailoring();
-// Le sac de tribut repose contre la hanche et se resserre sous un lacet.
-bagMaker.panel([[-.164,.065,.048],[-.147,.119,.075],[-.105,.151,.084],[.012,.154,.088],[.083,.123,.073],[.113,.086,.050],[.149,.095,.061]],7,0xc4a786,.047,-Math.PI,Math.PI,32);
-bagMaker.panel([[.090,.107,.068],[.109,.092,.061]],7,0x775239,0);
-bagMaker.detail(G.s,0xb18a59,.057,.096,.066,.030,.017,.018);
-for(const k of [-1,1])bagMaker.detail(G.s,0xaa8252,.059+k*.010,.060,.071,.008,.039,.008,0,0,k*.20);
-const playerSack=new THREE.Group(),satchel=bagMaker.mesh(wardrobe);
-satchel.position.set(-.112,1.02,-.137);satchel.rotation.z=-.11;playerSack.add(satchel);
-const strapPath=[[-.13,1.10,-.17],[-.050,1.27,-.13],[.114,1.45,-.085],[.135,1.464,-.01],[.132,1.438,.076],[.10,1.365,.109],[-.02,1.232,.134],[-.133,1.084,.103],[-.172,1.040,.017],[-.145,1.065,-.145]];
-const strapPos=[],strapIdx=[];
-for(let i=0;i<strapPath.length;i++){
-  const [x,y,z]=strapPath[i];strapPos.push(x-.013,y,z,x+.013,y,z);
-  if(i){const n=i*2;strapIdx.push(n-2,n,n-1,n-1,n,n+1);}
-}
-const strapGeo=new THREE.BufferGeometry();strapGeo.setAttribute("position",new THREE.Float32BufferAttribute(strapPos,3));strapGeo.setIndex(strapIdx);strapGeo.computeVertexNormals();
-playerSack.add(new THREE.Mesh(strapGeo,new THREE.MeshLambertMaterial({color:0x795133,side:THREE.DoubleSide})));player.userData.body.add(playerSack);
 { const gm=new THREE.MeshBasicMaterial({color:0xf2b27a,depthFunc:THREE.GreaterDepth,depthWrite:false,fog:false}); const add=(src,par)=>{ src.renderOrder=2; const c=new THREE.Mesh(src.geometry,gm); c.renderOrder=1; par.add(c); return c; }; player.userData.ghost=add(player.userData.body.children[0],player.userData.body); player.userData.ghost2=add(player.userData.head.children[0],player.userData.head); }
 const N={
   anselme:npc({likeness:"anselme",noOutline:true,top:0x4a3a30,apron:0xcdb98c,legs:NUIT,hat:"beret",hatc:SIENNE,flare:true,x:-21.6,z:6.6,ry:Math.PI/2}),
@@ -1738,11 +2020,10 @@ const atelierHand=N.anselme.userData.elbows[1], atelierTool=(()=>{
 const atelierSmudge=(()=>{
   const b=new Builder();b.jit=0;
   for(const [x,y,r] of [[0,0,.019],[-.017,.011,.011],[.011,.013,.008],[-.006,-.015,.010],[.014,-.010,.004]]){
-    b.put(G.s,0x545265,x,y,0,r*.94,r,.004,0,0,.24);
+    b.put(G.s,0x34364f,x,y,0,r*1.15,r*1.2,.004,0,0,.24);
   }
   const stain=b.mesh(VC2);stain.castShadow=false;stain.receiveShadow=false;
-  stain.rotation.y=-.35;stain.position.set(-.032,-.225,.044);
-  player.userData.arms[0].add(stain);return stain;
+  player.userData.cuffInk.add(stain);return stain;
 })();
 const atelierGrip=new THREE.Vector3(0,-.306,.034),atelierTable=new THREE.Vector3(-21.95,1.088,6.08);
 const atelierQ=new THREE.Quaternion(),atelierLevel=new THREE.Quaternion();
@@ -1849,11 +2130,11 @@ function portraitForLine(line){
   else if(/comme d.habitude|merci|trois pieces !|a l.un !|tu fais le sac|tu iras loin|bonne idee|bien joue|tu as reussi/.test(words)) expression="sourire";
   return '<img class="effigie" alt="" src="img/portraits/'+id+'_'+expression+'.webp">';
 }
-function nextLine(){ if(!queue.length){ dlg.style.display="none"; mode="play"; speakerG=null; partner=null; const f=after; after=null; if(f)f(); refreshHud(); save(); return; }
+function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="none"; mode="play"; speakerG=null; partner=null; const f=after; after=null; if(f)f(); refreshHud(); save(); return; }
   if(firstExchange&&Array.isArray(queue[0])&&queue[0][1].startsWith("« C’est le matin du tribut.")){
     firstExchange=false;startMovie("outil",()=>{mode="dialog";nextLine();refreshHud();});return;
   }
-  const l=queue.shift(); waitingChoice=false; dlg.style.display="block"; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
+  const l=queue.shift(); waitingChoice=false; aliExpression(l); dlg.style.display="block"; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
   if(l.feu){ sfx("feuillet"); if(!S.f.includes(l.feu))S.f.push(l.feu); const f=FEU[l.feu]; dlg.innerHTML=`<div class="feu"><div class="who">Feuillet retrouvé · ${S.f.length} sur ${NF}</div><div class="cit">${esc(f.cit)}</div><div class="idee">${esc(f.idee)}</div></div><div class="more">Touchez pour continuer</div>`; return; }
   if(l.choices){ waitingChoice=true; dlg.innerHTML=(l.head||"")+`<div class="ch">${l.choices.map((c,i)=>`<button data-c="${i}">${esc(c[0])}</button>`).join("")}</div>`; dlg._choices=l.choices; return; }
   dlg.innerHTML=portraitForLine(l)+(l[0]?`<div class="who">${esc(l[0])}</div>`:"")+`<p class="txt${l[0]?"":" narr"}">${esc(l[1])}</p><div class="more">Touchez pour continuer</div>`; }
@@ -2290,13 +2571,21 @@ function directScene(delta){
     // Regarder depuis le côté sud, hors du mur ouest. Les mains se détachent entre les deux corps.
     const cx=(P.x+A.x)*.5,cz=(P.z+A.z)*.5,dist=portrait?Math.max(2.75,L*1.72):Math.max(2.32,L*.99);
     if(m.name==="manche"){
-      const touch=phase(.58,1.68)*(1-phase(2.84,3.88)),rub=Math.sin(t*10)*.08*touch;
-      H.head.rotation.x=.32*phase(.30,1.15)*(1-phase(2.74,3.92));M.head.rotation.x=.30*(1-phase(2.53,3.90));
-      H.arms[0].rotation.z=.30*touch;H.arms[0].rotation.x=-.93*touch;H.elbows[0].rotation.x=-.18-.72*touch;
-      H.arms[1].rotation.z=(-.67+rub)*touch;H.arms[1].rotation.x=-.72*touch;H.elbows[1].rotation.x=-.15-1.15*touch;
-      inkSpread=phase(1.81,2.84);
+      // Muet, le geste se lit seul : elle baisse les yeux, lève le bras droit, frotte le revers, la tache s’étale, elle relève la tête.
+      const look=phase(.12,.62)*(1-phase(3.25,3.9)),lift=phase(.30,.95)*(1-phase(3.0,3.85)),rub=phase(.95,1.30)*(1-phase(2.70,3.05));
+      const stroke=Math.sin((t-.95)*10.5)*rub;
+      H.head.rotation.x=.40*look;H.head.rotation.y=-.38*look;H.head.rotation.z=.06*look;H.body.rotation.x=.045*look;
+      M.head.rotation.x=.30*(1-phase(2.53,3.90));
+      H.reach(0,-.10,1.40,.27,lift,[-.35,-1,.7]);
+      player.updateMatrixWorld(true);
+      const ink=H.cuffInk.localToWorld(_aliV.set(.012*stroke,.006*stroke,.034));H.body.worldToLocal(ink);
+      H.reach(1,ink.x,ink.y+.006,ink.z,rub,[.9,-1,-.1]);
+      inkSpread=phase(1.45,2.85);H.smile(t>3.5);
       cue("manche",1.93,()=>{if(Snd.ctx)acoustic("feuille",Snd.ctx.currentTime+.01,.095,.79,0);});
-      frame(cx+Math.abs(nx)*dist+.26,1.51,cz+Math.abs(nz)*dist+.12,cx,1.25,cz,portrait?49:38);
+      if(portrait){ // sur téléphone : plan rapproché sur Aliénor, depuis le côté d’Anselme
+        const bx=-ux,bz=-uz,sx=Math.abs(nx),sz=Math.abs(nz);
+        frame(P.x-bx*1.30+sx*.62,1.52,P.z-bz*1.30+sz*.62,P.x-bx*.10,1.33,P.z-bz*.10,48);
+      }else frame(cx+Math.abs(nx)*dist+.26,1.51,cz+Math.abs(nz)*dist+.12,cx,1.25,cz,38);
     }else{
       toolDown=phase(.22,1.32);M.head.rotation.x=.30*phase(.05,.82);M.arms[1].rotation.x=-.70+.52*toolDown;M.elbows[1].rotation.x=-.79+.58*toolDown;
       cue("outil",1.3,()=>{if(Snd.ctx)thump(Snd.ctx.currentTime+.01,.12,250,.13);});
@@ -2344,7 +2633,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt
   if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
     let a=Math.atan2(mx,mz), d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*Math.min(1,dt*12); moving=true; }
-  animate(player,moving,dt,11); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
+  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
   if(S.act===1&&S.stage===0&&!sceneRun&&mode==="play"&&!firstExchange&&toolDown===0){
     const u=N.anselme.userData,bend=.5+.5*Math.sin(time*2.8);
     u.elbows[1].rotation.x=-.72-.48*bend;u.arms[1].rotation.x=-.50+.17*bend;
