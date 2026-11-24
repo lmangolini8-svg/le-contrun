@@ -1,6 +1,6 @@
 # Consignes d’images pour ChatGPT
 
-*Le Contr’un* · document de travail · version 0.2 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.3 du 24 novembre 2026
 
 Ces consignes sont à coller dans **ChatGPT**, avec la génération d’images. **Codex ne convient pas** : c’est un agent qui écrit du code, il ne dessine pas.
 
@@ -31,8 +31,10 @@ Il est déjà inclus dans chaque consigne. Le voici seul, si vous devez le rappe
 
 **Suivi (24 novembre 2026)**, fichiers dans `references/planches-3d/` :
 - [x] **A1, planche de tour** : trois versions reçues. **La v3 est retenue** (`alienor_tour_v3.png`) : la plus neutre et la plus proche du portrait. Ses trois vues sont découpées en carrés pour la génération 3D : `alienor_vue_face.png`, `alienor_vue_profil.png`, `alienor_vue_dos.png`. Seul défaut : la bottine est basse de face et montante de profil ; on garde celle de face.
-- [ ] **A2, planche de tête** : à refaire en grand. L’étude de mouvement contient une petite rangée de têtes, trop petite pour la 3D.
-- [ ] **A3, feuille d’expressions de face** : pas encore reçue.
+- [x] **A2, planche de tête** : reçue (`alienor_tete.png`), découpée en quatre vues (`alienor_tete_vue_*.png`).
+- [x] **A3, feuille d’expressions de face** : reçue (`alienor_expressions.png`).
+
+**Lot 1 complet.**
 - [x] **A4, planche de mains** : reçue (`alienor_mains.png`). Elle montre le geste du revers et la sangle, utiles pour la scène de la manche.
 - [x] **Bonus, étude de mouvement** (`alienor_etude_mouvement.png`) : marche, gestes, profils de tête, balancement des bras, bas de jupe. Référence pour l’animation.
 
@@ -83,6 +85,14 @@ Il est déjà inclus dans chaque consigne. Le voici seul, si vous devez le rappe
 ---
 
 ## 4. Lot 2 · Bastien, garde de la porte
+
+**Suivi (24 novembre 2026)**, fichiers dans `references/planches-3d/` : **lot 2 complet.**
+- [x] B1 à B4, les quatre expressions : `bastien_neutre.png`, `bastien_sourire.png`, `bastien_inquietude.png`, `bastien_colere.png`, et une feuille des quatre de face (`bastien_expressions_casque.png`).
+- [x] B5, sans casque : `bastien_sans_casque.png`.
+- [x] B6, planche de tour : `bastien_tour.png`, découpée en `bastien_vue_face.png`, `bastien_vue_profil.png`, `bastien_vue_dos.png`.
+- [x] B7, planche de tête : `bastien_tete.png` (cou nu, retenue pour la 3D) et `bastien_tete_fraise.png`.
+- [x] Bonus, étude de mouvement : `bastien_etude_mouvement.png`.
+- Écart avec la consigne : cheveux **châtains** bouclés au lieu de « brun très foncé », et des taches de rousseur. Le rendu est cohérent d’une image à l’autre ; à valider par Lucas.
 
 **À faire dans une nouvelle conversation.** Faire valider B1 par Lucas avant de lancer les suivantes, toujours dans la même conversation et en joignant B1.
 
