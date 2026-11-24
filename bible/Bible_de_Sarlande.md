@@ -1,6 +1,6 @@
 # La bible de Sarlande
 
-*Le Contr’un* · document de référence du projet · version 0.1 du 24 novembre 2026
+*Le Contr’un* · document de référence du projet · version 0.2 du 24 novembre 2026
 Document de travail entre Lucas et Claude. Il n’est pas destiné aux élèves.
 
 ---
@@ -319,7 +319,34 @@ Toutes les fins restent dans la ligne du *Discours* : la liberté ne s’arrache
 2. **Le décor de jeu est modelé et peint** avec les matières des planches : pierre, tuiles, bois, enduit, étoffes.
 3. **Les personnages et les objets de jeu sont modelés avec soin**, et ce sont eux qui portent l’expression.
 
-Aux scènes clés, la caméra s’arrête en **tableau** : le cadre reprend celui d’une illustration et le rendu s’en approche au plus près.
+**[Établi, décision de Lucas]** Le jeu est aussi **narratif et visuel**. Aux moments clés, on sort du jeu libre de deux façons :
+
+- **Le tableau** : la caméra s’arrête, le cadre reprend celui d’une illustration et le rendu s’en approche au plus près. Les personnages en 3D jouent dans ce cadre.
+- **La séquence illustrée** : plusieurs images peintes se succèdent pour raconter un moment, accompagnées de dialogues ou d’une narration. C’est le langage des planches de livre, étendu au récit.
+
+**[Proposition] Règles des séquences illustrées**
+1. **Courtes** : de trois à huit images, chacune lue au rythme de l’élève (toucher pour continuer), avec un bouton « Passer ».
+2. **Réservées aux moments que la 3D raconterait mal** : un souvenir, une ellipse, une révélation, un changement de saison, une scène de foule, une fin.
+3. **Même style que les illustrations de référence**, au même format, cadrées comme des planches de livre ancien.
+4. **Le texte distingue toujours** la narration, les répliques et les citations authentiques, en italique et entre guillemets.
+5. **Fabrication** : Claude rédige le découpage et les consignes d’image, Lucas génère les images avec ChatGPT, Claude les intègre.
+
+**[Proposition] Moments candidats**
+
+| Moment | Forme | Acte |
+|---|---|---|
+| Ouverture du jeu : Sarlande, le tribut, l’Un que personne n’a vu | Séquence illustrée | I |
+| Garin pose son sac, la pierre tombe | Tableau | I |
+| La farce aux tréteaux | Tableau | II |
+| Minuit, la litière | Tableau | II |
+| L’affiche collée, Jeanne lit | Tableau | II |
+| L’automne, puis l’hiver qui tombe sur la ville (ellipse) | Séquence illustrée | II-III |
+| Le souvenir de la mère d’Aliénor | Séquence illustrée | III |
+| La révélation de l’Un | Tableau | III |
+| La trahison | Séquence illustrée ou tableau | IV |
+| Les fins | Séquence illustrée | V |
+
+La fiche du projet évoquait déjà « un récit en 14 images, avec des légendes à écrire par les élèves » : les séquences illustrées peuvent aussi servir de support à cet exercice.
 
 ### 7.2 La palette
 
@@ -338,7 +365,7 @@ Aux scènes clés, la caméra s’arrête en **tableau** : le cadre reprend celu
 | Orange lumineux | `#f08a2c` | La robe d’Aliénor, les lanternes |
 | Blanc cassé | `#f3ecdd` | Le papier, le tablier, les feuillets |
 
-**[Proposition] Règle de couleur.** L’orange lumineux appartient à Aliénor et au feu : lanternes, chandelle de la presse. Le rouge vif appartient aux gardes et au pouvoir. Le bleu de l’encre relie tous ceux qui ont touché au livre : leurs mains se tachent au fil des actes. À l’acte V, on peut compter les mains tachées dans la foule.
+**[Établi, décision de Lucas] Règle de couleur.** L’orange lumineux appartient à Aliénor et au feu : lanternes, chandelle de la presse. Le rouge vif appartient aux gardes et au pouvoir. Le bleu de l’encre relie tous ceux qui ont touché au livre : leurs mains se tachent au fil des actes. À l’acte V, on peut compter les mains tachées dans la foule.
 
 ### 7.3 La lumière par moment
 
@@ -397,7 +424,7 @@ Aux scènes clés, la caméra s’arrête en **tableau** : le cadre reprend celu
 
 **[Proposition] Le silence comme outil.** Les moments décisifs se jouent sans musique : la pierre, Garin qui pose son sac, la révélation de l’Un, le choix de rester debout. Le silence signale à l’élève que c’est à lui de juger.
 
-**[Proposition] Les voix.** On garde le texte écrit, sans voix enregistrée pour les répliques : c’est plus simple, plus accessible, et cela évite l’écueil d’un mauvais doublage. Les voix humaines restent des rumeurs, des cris et des rires de foule, des chants, et quelques mots criés (« Vive l’Un ! », « Halte ! »).
+**[Établi, décision de Lucas, pour le moment] Les voix.** On garde le texte écrit, sans voix enregistrée pour les répliques : c’est plus simple, plus accessible, et cela évite l’écueil d’un mauvais doublage. La question pourra être rouverte plus tard. Les voix humaines restent des rumeurs, des cris et des rires de foule, des chants, et quelques mots criés (« Vive l’Un ! », « Halte ! »).
 
 **[Proposition] Le paysage sonore** suit la saison (cloches et neige feutrée l’hiver, pluie et rivière gonflée au printemps) et l’état de la ville. Plus la résistance grandit, plus on entend, dans les ruelles, la presse, des chuchotements, une chanson interdite fredonnée.
 
@@ -429,9 +456,9 @@ Aux scènes clés, la caméra s’arrête en **tableau** : le cadre reprend celu
 Les questions sont classées par ordre d’urgence. Rien de ce qui en dépend ne sera produit avant votre réponse.
 
 **Pour lancer la tranche verticale (rue de l’imprimerie, Aliénor, Anselme)**
-1. Acceptez-vous la règle de couleur proposée en 7.2 (orange pour Aliénor et le feu, rouge pour le pouvoir, bleu de l’encre pour ceux qui ont touché au livre) ?
-2. Acceptez-vous le principe des « tableaux » à caméra fixe pour les scènes clés ?
-3. Gardons-nous le texte écrit sans voix enregistrée pour les répliques ?
+1. ~~La règle de couleur~~ : **acceptée**.
+2. ~~Les tableaux~~ : **acceptés**, ainsi que les séquences illustrées qui racontent un moment en plusieurs images (7.1).
+3. ~~Le texte écrit sans voix enregistrée~~ : **accepté pour le moment**.
 
 **Pour l’histoire**
 4. La structure en saisons de la partie 3.4, avec le retour du tribut à l’acte V, vous convient-elle ?
