@@ -1,6 +1,6 @@
 # Bastien et Mahaut dans les actes I et II · découpage
 
-*Le Contr’un* · document de travail · version 0.1 du 24 novembre 2026 · **à valider avant tout changement du code**
+*Le Contr’un* · document de travail · version 1.0 du 24 novembre 2026 · **validé par Lucas et intégré au jeu**
 
 **Objet.** Les actes I et II sont jouables. Ce découpage y greffe les premières scènes de la relation entre Aliénor et Bastien, et les premiers indices sur Mahaut, sans rien casser :
 - aucune scène existante n’est supprimée ;
@@ -178,7 +178,11 @@ Ce qui ne change pas : les quêtes, les feuillets, les joutes, les cônes des ga
 
 ---
 
-## 7. À valider
+## 7. Décisions
+
+Toutes validées par Lucas le 24 novembre 2026, sans modification. Intégration dans `index.html` le même jour, vérifiée par un parcours scripté de chaque scène et de chaque embranchement (question, dénonciation, paiement, capture dans la cour, refus, ancienne sauvegarde).
+
+### Les questions posées
 
 1. Les répliques de Bastien (B-1 à B-6) vous conviennent-elles ?
 2. La conséquence de la dénonciation sur la relation (confiance de départ à −1) vous paraît-elle juste ?

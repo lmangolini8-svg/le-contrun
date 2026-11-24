@@ -216,7 +216,7 @@ function objText(){ if(S.act===2) return act2Obj(); if(S.stage<6) return OBJ[S.s
 
 /* ================= État ================= */
 const KEY="sarlande-acte1-v1";
-const fresh=()=>({stage:0,flags:{},f:[],notes:{},pos:[-19,7],lite:false,started:false,mute:false,talk:{},act:1,allies:{},oubli:0,toasts:0,pieces:0,coinsT:[],temo:[],cls:{},clsMiss:{},mask:false,noted:0,discrets:0});
+const fresh=()=>({stage:0,flags:{},f:[],notes:{},pos:[-19,7],lite:false,started:false,mute:false,talk:{},act:1,allies:{},oubli:0,toasts:0,pieces:0,coinsT:[],temo:[],cls:{},clsMiss:{},mask:false,noted:0,discrets:0,bastien:{vu:false,nom:false,conf:0,expo:0,refus:false,danse:false,lit:false,b2:false,b3:false,b4:false,b6:false},mahaut:{billet:false,question:false}});
 let S=fresh();
 function save(){ if(player){S.pos=[+player.position.x.toFixed(2),+player.position.z.toFixed(2)];} try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
 function load(){ try{const d=JSON.parse(localStorage.getItem(KEY)||"null"); if(d&&typeof d==="object")S=Object.assign(fresh(),d);}catch(e){} }
@@ -2120,7 +2120,7 @@ function portraitForLine(line){
   if(!Array.isArray(line)||!line[0]) return "";
   const fold=t=>t.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const speaker=fold(line[0]), words=fold(line[1]||"");
-  const aliases=[["sergent","garde"],["petite fille","fille"],["petit garcon","garcon"],["enfants","garcon"]];
+  const aliases=[["bastien","garde"],["sergent","garde"],["petite fille","fille"],["petit garcon","garcon"],["enfants","garcon"]];
   const alias=aliases.find(([key])=>speaker.includes(key));
   const id=alias?alias[1]:faceNames.find(n=>speaker.includes(n));
   if(!id)return "";
@@ -2329,7 +2329,7 @@ function startPlay(newGame=false){
 }
 function showCarnet(){ mode="panel"; plBack="carnet"; refreshHud();
   panel(`<span class="kick">Carnet d’Aliénor</span><h2>${S.f.length} feuillets sur ${NF}</h2><p class="small">Pour chaque feuillet, retrouvez le passage dans votre édition et notez la page. Ce carnet vous servira pour réviser.</p>`+
-  Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+temoHTML()+
+  Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
   mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">Treize vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p><div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n}</i> ${esc(PLATES[k].dest)}</button>`).join("")}</div></div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
 function mapSVG(){ const X=x=>((x+34)*3.4+4).toFixed(1), Y=z=>((z+48)*2.9+4).toFixed(1); const t=targetNow(); const P=player.position;
   const L=(x,z,txt,rot)=>`<text x="${X(x)}" y="${Y(z)}"${rot?` transform="rotate(${rot} ${X(x)} ${Y(z)})"`:""}>${txt}</text>`;
@@ -2412,13 +2412,14 @@ const INTER=[
        [[MA,"« Il y en a une autre dans la chapelle du vieux cloître, à l’est, derrière la cour des gardes. La poterne est ouverte le matin. »"],[MA,"« Reste hors du rouge et passe derrière les caisses. S’ils te voient, ils te jettent dehors. »"]],()=>setStage(3))]); }},
  {p:()=>N.percepteur.position,r:3.4,label:"Parler au percepteur",act(){ if(S.act===2) return A2.percepteur();
    if(S.stage!==1) return talk([[PE,vary("pe",["« Suivant. »","« L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. »","« Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. »"])]]);
-   const done=(flag,lines)=>()=>{ S.flags.tribut=flag; talk(lines.concat([["","Près de son étal, Maëlle vous fait signe."]]),()=>setStage(2)); };
+   const B1={paye:"Le garde de gauche regarde ses pieds, comme on le lui a appris.",denonce:"Le garde de gauche lève les yeux sur vous. Puis il les détourne, comme on détourne les yeux d’une flaque.",refus:"Le garde de gauche ne regarde plus ses pieds. Il vous regarde."};
+   const done=(flag,lines)=>()=>{ S.flags.tribut=flag; const b=bstate(); if(flag!=="paye") b.vu=true; if(flag==="denonce") b.conf=-1; talk(lines.concat([["",B1[flag]],["","Près de son étal, Maëlle vous fait signe."]]),()=>setStage(2)); };
    talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],{choices:[
      ["Payer la mesure de votre poche",done("paye",[[PE,"« Bien. Tu vois, quand on veut. Suivant. »"],["","Vous videz votre bourse. Il ne vous regarde déjà plus."]])],
      ["Dire que le sac de Garin, le tanneur, était bien plus léger",done("denonce",[[PE,"« Garin ? Tiens donc. Gardes, qu’on me ramène le tanneur. »"],[PE,"« Tu iras loin, petite. Le palais a toujours besoin de gens qui regardent le sac des autres. »"],["","Il raye votre dette. Vous venez de payer avec le nom d’un autre."]])],
      ["Demander à quoi sert le tribut",done("refus",[[PE,"« À nourrir les gardes. »"],[AL,"« Et les gardes ? »"],[PE,"« À veiller à ce que tu paies. Ton nom ? … Aliénor. Je l’écris en grand. »"],["","Les gardes vous suivent des yeux. Vous n’êtes plus un sac parmi les autres."]])]
    ]}]); }},
- {p:()=>({x:-3.2,z:-15.4}),r:2.1,label:"Parler au garde",act(){ if(S.act===2) return A2.garde(); talk([[GD,vary("gd",["« Circule. On ne regarde pas la porte. On regarde ses pieds. »","« Moi aussi, je paie le tribut. On me le retient sur la solde. »","« Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »"])]]); }},
+ {p:()=>({x:-3.2,z:-15.4}),r:2.1,label:"Parler au garde",act(){ if(S.act===2) return A2.garde(); bastienPorte(); }},
  {p:()=>N.garin.position,label:"Parler à Garin",act(){ if(S.act===2) return A2.garin();
    if(S.stage>4) return talk([[GA,vary("ga5",["« Mon sac est toujours par terre. J’attends de voir qui posera le sien. »","« Ma femme dit que je suis fou. Elle a peut-être raison. Mais je dors mieux. »"])]]);
    if(S.stage<4){ if(S.flags.tribut==="denonce") return talk([[GA,vary("gad",["« On m’a fait repasser devant la balance. Quelqu’un a parlé. Si je savais qui… »","« Double mesure. Trente ans de tribut, et on me soupçonne. »"])]]);
@@ -2653,7 +2654,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt
       if(d<CONE_R&&d>0.01){ const fx=Math.sin(g.rotation.y),fz=Math.cos(g.rotation.y); if((dx*fx+dz*fz)/d>Math.cos(CONE_A)&&rayHit(g.position.x,g.position.z,dx/d,dz/d,d)>=d-0.02) danger=true; }
       if(d<1.1) danger=true; if(d<2.5&&pSpeed>3.3) danger=true; } }
   if(mode==="play"){ seen=Math.max(0,Math.min(1,seen+(danger?dt*2.3:-dt*1.6))); $("seen").style.opacity=seen>0.02?1:0; $("pupil").setAttribute("r",(3+seen*13).toFixed(1));
-    if(seen>=1){ seen=0; sfx("halte"); if(S.act===2) act2Caught("rue"); else { talk([["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."],["","On vous reconduit à la poterne. Ils n’ont pas regardé votre visage."]]); wash(()=>{ player.position.set(26,0,-2); camPos.set(26,7.6,9.5); }); } } }
+    if(seen>=1){ seen=0; sfx("halte"); if(S.act===2) act2Caught("rue"); else { const bb=bstate(); if(!bb.b3&&!bb.refus) talk([["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."]],()=>bastienPoterne(true)); else talk([["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."],["","On vous reconduit à la poterne. Ils n’ont pas regardé votre visage."]]); wash(()=>{ player.position.set(26,0,-2); camPos.set(26,7.6,9.5); }); } } }
   else { $("seen").style.opacity=0; }
   /* interaction la plus proche */
   if(mode==="play"){ let best=act2Special(),bd=best?-1:1e9; if(!best) for(const it of INTER){ if(it.can&&!it.can())continue; const p=it.p(); const d=Math.hypot(p.x-player.position.x,p.z-player.position.z); if(d<(it.r||2.3)&&d<bd){bd=d;best=it;} } if(best!==current){ current=best; act.style.display=best?"block":"none"; if(best)act.textContent=best.label; }
@@ -2996,7 +2997,7 @@ function placeCast(){ for(const k in ORIG) mvN(k,ORIG[k][0],ORIG[k][1],ORIG[k][2
     if(st<=11) mvN("maelle",12.6,0.9,2.83); else if(st===12) mvN("maelle",2.9,6.6,-2.4); else if(st===13){ if(mJoin) mvN("maelle",p.x-1,p.z+1.4,0); else mvN("maelle",2.9,6.6,-2.4); } else mvN("maelle",-20.2,9.0,Math.PI/2);
     if(st===13){ N.garin.userData.circle[3]=false; if(mJoin) N.maelle.userData.circle[3]=false; } }
   else { mvN("garin",-20.4,4.4,Math.PI/2); mvN("maelle",-20.2,9.0,Math.PI/2); mvN("percepteur",-4.4,-12.3,0.6); } }
-function placeAllies(){ placeCast(); if(fete){ for(const o of fete.ng){ o.g.visible=S.act===2&&night&&S.stage===13; o.blind=false; } fete.poster.visible=S.act===2&&dawn&&S.stage>=16; } }
+function placeAllies(){ placeCast(); placeExtras(); if(fete){ for(const o of fete.ng){ o.g.visible=S.act===2&&night&&S.stage===13; o.blind=false; } fete.poster.visible=S.act===2&&dawn&&S.stage>=16; } }
 
 /* ---------- objectifs ---------- */
 function act2Obj(){ const s=S.stage;
@@ -3021,7 +3022,7 @@ function endBig(){ T2.on=false; for(const o of fete.ng) o.blind=false; refreshHu
 function act2Caught(kind){ if(mode==="turn") return; seen=0; endBig(); T2.bwait=4; if(kind==="toast") S.noted=(S.noted||0)+1;
   const lines=kind==="toast"?[["Un sergent","« On ne trinque pas à l’Un, petite ? »"],["","Il vous prend le bras et vous reconduit jusqu’aux marches de l’imprimerie."],["Un sergent","« Va dormir. Et demain, souviens-toi de lever ton verre. »"]]:[["Un garde","« Halte. Où allez-vous, à cette heure ? La fête est par là. »"],["","On vous raccompagne jusqu’à la fontaine. Les gardes reprennent leur place au coin de la rue."]];
   talk(lines,()=>{ mode="turn"; wash(()=>{ if(kind==="toast") player.position.set(-19.4,0,9.8); else player.position.set(2.4,0,7.8); if(S.stage===13){ mvN("garin",player.position.x+1,player.position.z+1.3,0); N.garin.userData.circle[3]=false; if(mJoin){ mvN("maelle",player.position.x-1,player.position.z+1.3,0); N.maelle.userData.circle[3]=false; } } snapCam(); mode="play"; refreshHud(); }); }); }
-function act2Arrive(){ endBig(); setStage(14); talk([["","Vous refermez la porte de l’atelier derrière vous. Dehors, la place crie encore « Vive l’Un ! »."],[GA,"« Personne ne nous a vus. Ils regardaient tous le balcon. »"],[MA,"« Ils obéissaient. Et c’est leur obéissance qui nous a cachés. »"]],()=>A2.anselme()); }
+function act2Arrive(){ endBig(); setStage(14); const bb=bstate(), seenBy=bb.vu&&!bb.refus?[["",bb.nom?"Bastien vous a vus passer. Il a détourné la tête vers le balcon.":"Au coin de la rue, sous une lanterne, un garde vous a vus passer. Il a détourné la tête vers le balcon."]]:[]; talk(seenBy.concat([["","Vous refermez la porte de l’atelier derrière vous. Dehors, la place crie encore « Vive l’Un ! »."],[GA,"« Personne ne nous a vus. Ils regardaient tous le balcon. »"],[MA,"« Ils obéissaient. Et c’est leur obéissance qui nous a cachés. »"]]),()=>A2.anselme()); }
 
 /* ---------- la farce ---------- */
 function startFarce(){ mode="farce"; farT=0; fete.cues={}; refreshHud(); $("obj").style.display="none"; fete.com1.position.set(-3.6,1.0,-8.0); fete.com2.position.set(3.4,1.0,-8.6); fete.sack.position.set(0,1.18,-0.22); camPos.set(5.5,3.0,2.0); camLook.set(0,2.2,-8.4); }
@@ -3148,14 +3149,14 @@ const A2={
       branch([["« Cent feuilles de quoi ? »",[[AN,"« De ceci. Lis. »"]]],["« À deux, on n’y arrivera pas. »",[[AN,"« Non. C’est pour ça que tu vas sortir. Mais d’abord, lis. »"]]]],
         [{feu:"F6"},[AN,"« Un roi d’autrefois, Cyrus, avait une ville révoltée. Il n’y envoya pas d’armée : il y ouvrit des tavernes et des jeux. Elle ne se révolta plus. »"],[AN,"« Il me faut des bras pour la barre : Maëlle et Garin. La fête les a pris. Va les chercher, en commençant par Maëlle, à la loterie. »"],[AN,"« Et ne t’attarde pas dans les lumières dorées. On n’y perd pas son argent. On y perd sa soirée, puis sa mémoire. »"]],()=>setStage(11))]);
     if(s>=11&&s<=13) return talk([[AN,vary("an11",["« Passe au large des lumières. Et regarde les gens : chacun a sa raison de crier. »","« J’ai caché une page derrière les tréteaux, du temps où il n’y avait là qu’un lavoir. »","« Ysabeau garde quelque chose depuis quarante ans. Demande-lui, si une page te manque. »","« Quand le crieur lance son « Vive l’Un », tout le monde lève son verre. Ne sois pas la seule à ne pas le faire, ou alors pas trop près d’eux. »"])]]);
-    if(s===14) return talk([[AN,"« Les voilà. Garin tient la barre, Maëlle encre. Toi, tu composes. »"],[AN,"« J’ai choisi la page d’Ysabeau. Elle a attendu quarante ans, elle passera la première. »"]],()=>compose(0));
+    if(s===14) return talk([[AN,"« Les voilà. Garin tient la barre, Maëlle encre. Toi, tu composes. »"],[AN,"« J’ai choisi la page d’Ysabeau. Elle a attendu quarante ans, elle passera la première. »"],{choices:[["« Vous l’avez connue, ma mère ? »",()=>{ mstate().question=true; save(); talk([["","Il retire ses besicles."],[AN,"« Un peu. C’était il y a longtemps. Compose. »"]],()=>compose(0)); }],["Composer la page",()=>compose(0)]]}]);
     if(s===15) return talk([[AN,"« La première, sur la fontaine. Les autres, on les collera la nuit prochaine. »"]]);
     talk([[AN,vary("an16",["« Va dormir. Cet hiver, il faudra tenir. »","« Une litière et un rideau. Voilà ce qui tient Sarlande. Et une feuille, maintenant, sur la fontaine. »"])]]); },
   ysabeau(){ if(dawn) return talk([[YS,"« Tu sens l’encre. Comme ta mère, autrefois. »"]]);
     if(S.f.includes("F8")) return talk([[YS,vary("ys2",["« Rentre avant l’aube. Les lendemains de fête, ils comptent ceux qui manquent. »","« Je ne sais pas ce qu’elle dit, cette page. Je sais qu’on voulait la brûler. Ça m’a suffi. »"])]]);
     talk([[YS,"« Je ne vais plus à la fête. À mon âge, on a déjà tout oublié une fois. »"],
       branch([["« Anselme dit que vous gardez quelque chose. »",[[YS,"« Anselme parle trop. »"]]],["« Vous ne dansez pas ? »",[[YS,"« J’ai dansé à quarante fêtes. Le lendemain, le sac pesait pareil. »"]]]],
-        [[YS,"« Attends. Ta mère m’a confié ceci, il y a longtemps. Je ne sais pas lire. Je sais seulement qu’il ne fallait pas la brûler. »"],{feu:"F8"}])]); },
+        [[YS,"« Attends. Ta mère m’a confié ceci, il y a longtemps. Je ne sais pas lire. Je sais seulement qu’il ne fallait pas la brûler. »"],{feu:"F8"},["","Le bord de la page est roussi, comme si on l’avait tirée d’un feu."]])]); },
   bertin(){ if(dawn) return talk([[BE,"« Plus un masque à vendre. Et pas un qui me soit revenu. »"]]);
     if(S.stage<11||S.stage>13) return talk([[BE,vary("be3",["« Les soirs de fête, je vends dix fois plus. Vive l’Un, moi je dis. »","« Demain, je vendrai des remèdes contre le mal de tête. Je vends tout ce qu’on veut, moi. »"])]]);
     if(!S.mask) return talk([[BE,"« Des masques ! Ce soir, chacun a le droit d’être un autre. Demain, chacun redevient ce qu’il doit. »"],{choices:[["Prendre un masque",()=>{ S.mask=true; maskM.visible=true; refreshHud(); talk([[BE,"« Il te va bien. Personne ne saura que c’est toi. Pas même toi, au bout d’une heure. »"],["","Masquée, la foule ne vous remarque plus aux toasts. Mais la fête vous prend plus vite."]]); }],["Non merci",()=>talk([[BE,"« Comme tu veux. Tu verras : à minuit, tout le monde en porte un. »"]])]]}]);
@@ -3170,6 +3171,7 @@ const A2={
   maelle(){ const s=S.stage; if(dawn) return talk([[MA,"« Mes mains sont noires jusqu’aux poignets. Je n’ai jamais été aussi fière d’être sale. »"]]);
     if(s===10) return talk([[MA,"« Chut. Ils vont tirer le gros lot. »"]]);
     if(s===11) return talk([[MA,"« Chut. Ils vont tirer le gros lot : une boutique rendue à son maître. Si c’était la nôtre… »"],[AL,"« Maëlle, Anselme a besoin de toi. Ce soir. »"]],()=>joute2("maelle",0));
+    if((s===12||s===13)&&bstate().danse&&!S.talk.madanse){ S.talk.madanse=1; return talk([[MA,"« Tu as dansé avec un garde ? Tu es folle. Il était beau, au moins ? »"]]); }
     if(s===12) return talk([[MA,"« Garin est devant les tréteaux. Je t’attends ici. »"]]);
     if(s===13) return talk([[MA,vary("ma13",["« Près de la fontaine, on attend le grand toast. »","« Regarde-les. Ils lèvent tous la tête au même moment. Ça me fait peur, et ça va nous sauver. »"])]]);
     talk([[MA,vary("ma14",["« L’encre est prête. »","« J’ai failli jouer notre four à la roue. Notre propre four. »"])]]); },
@@ -3197,6 +3199,71 @@ INTER.push({p:()=>({x:-3.3,z:-4.8}),r:1.8,label:"Monter sur les tréteaux",can:(
       talk([["","Un silence. Puis la place éclate en applaudissements. Ils croient que c’est la suite de la farce."],["Le comédien","« Et voici la prophétesse du tanneur ! Applaudissez-la bien fort, braves gens ! »"],["","On rit. On passe à autre chose."],["","Au fond, près de la fontaine, deux visages ne rient pas : une femme et un vieil homme. Ils vous regardent comme on regarde quelqu’un qu’on reconnaîtra."],["","À la table d’honneur, le percepteur a posé son gobelet. Il écrit quelque chose."]],()=>{ S.flags.scene=true; S.discrets=2; player.position.set(-3.3,0,-4.3); snapCam(); refreshHud(); save(); }); }); }],
     ["Redescendre sans rien dire",()=>talk([["","Vous redescendez. Personne n’a rien remarqué. C’est peut-être pire."]])]]}]); }});
 INTER.push({p:()=>({x:0,z:6.1}),r:2.4,label:"Coller l’affiche",can:()=>S.act===2&&S.stage===15,act(){ sfx("glue"); talk([["","Vous lissez la feuille contre la pierre de la fontaine. La colle est froide. Vos mains tremblent un peu."],["","Une femme s’arrête. C’est Jeanne, celle des trois pièces. Elle lit lentement, en suivant les lignes du doigt."],["Jeanne","« Pauvres et misérables peuples insensés… C’est de nous qu’il parle ? »"],["","Puis une deuxième personne s’arrête. Puis une troisième. Personne ne dit rien. Personne n’arrache la feuille."]],()=>{ setStage(16); fete.poster.visible=true; showEnd2(); }); }});
+
+/* ================= Bastien et Mahaut dans les actes I et II ================= */
+// Découpage : bible/Decoupage_Bastien_Mahaut_actes_I_II.md (validé par Lucas).
+const BAS="Bastien, garde de la porte";
+function bstate(){ if(!S.bastien) S.bastien={vu:false,nom:false,conf:0,expo:0,refus:false,danse:false,lit:false,b2:false,b3:false,b4:false,b6:false}; return S.bastien; }
+function mstate(){ if(!S.mahaut) S.mahaut={billet:false,question:false}; return S.mahaut; }
+function bsp(){ return bstate().nom?BAS:GD; }
+function bz(dc,de){ const b=bstate(); b.conf=Math.max(-1,Math.min(5,b.conf+dc)); b.expo=Math.max(0,Math.min(5,b.expo+de)); save(); }
+const BAS_ARM=redcoat(npc(Object.assign({x:24.5,z:1.2,ry:-Math.PI/2},guardLook)));
+const BAS_OFF=redcoat(npc({likeness:"garde",top:0xcc3322,sleeve:0xcc3322,legs:0x9c2a1c,hat:"cap",hatc:0x5b2b20,x:-7.4,z:-1.6,ry:Math.PI/2}));
+const MAHAUT=npc({top:0x6b4a32,bottom:0x5a3f2b,skirt:true,hat:"hood",hatc:0x4e3a2a,cape:0x4e3a2a,x:-6.6,z:10.4,ry:2.6});
+const GERVAIS=npc({top:0x7a7466,legs:SEPIA,hat:"cap",hatc:0x4b3829,beard:0xd8d2c4,x:-7.4,z:10.9,ry:2.5});
+{ const m=new THREE.Mesh(G.box,LM(BLANC)); m.scale.set(0.2,0.085,0.04); m.position.set(0,0.135,0.112); MAHAUT.userData.head.add(m);
+  for(const sx of [-1,1]){ const e=new THREE.Mesh(G.box,LM(NUIT)); e.scale.set(0.042,0.022,0.01); e.position.set(sx*0.04,0.14,0.134); MAHAUT.userData.head.add(e); } }
+for(const g of [BAS_ARM,BAS_OFF,MAHAUT,GERVAIS]){ g.visible=false; g.userData.circle[3]=false; }
+function placeExtras(){ const b=bstate(), m=mstate(), show=(g,v)=>{ g.visible=v; g.userData.circle[3]=v; };
+  const sit=S.act===1&&S.stage===4&&!b.b3&&!b.refus, morn=S.act===2&&dawn&&S.stage>=16&&b.vu&&!b.refus;
+  if(sit){ BAS_ARM.position.set(24.5,0,1.2); BAS_ARM.rotation.y=-Math.PI/2; } else if(morn){ BAS_ARM.position.set(-2.6,0,7.9); BAS_ARM.rotation.y=2.17; }
+  const U=BAS_ARM.userData; U.sit=sit; U.body.position.y=sit?-0.44:0; U.legs.forEach(l=>{ l.rotation.x=sit?-1.5:0; });
+  U.circle[0]=BAS_ARM.position.x; U.circle[1]=BAS_ARM.position.z; show(BAS_ARM,sit||morn);
+  show(BAS_OFF,S.act===2&&night&&S.stage>=11&&S.stage<=12&&b.vu&&!b.refus);
+  const mv=S.act===2&&night&&S.stage>=11&&S.stage<=13&&!m.billet; show(MAHAUT,mv); show(GERVAIS,mv); }
+// B-2 · à la porte du palais
+function bastienPorte(){ const b=bstate(), t=S.flags.tribut, atPoterne=S.act===1&&S.stage===4&&!b.b3&&!b.refus;
+  const base=()=>talk([[atPoterne?GD:bsp(),vary("gd",["« Circule. On ne regarde pas la porte. On regarde ses pieds. »","« Moi aussi, je paie le tribut. On me le retient sur la solde. »","« Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »"])]]);
+  if(S.stage<2||b.refus||b.b2||atPoterne||(t!=="refus"&&t!=="denonce")) return base();
+  b.b2=true; save();
+  if(t==="refus") return talk([[bsp(),"« Toi, la question. Tu sais ce qu’il a écrit, sous ton nom ? Moi non plus. Je ne sais pas ce qu’on écrit sur les gens. »"],{choices:[
+    ["« Comment tu t’appelles ? »",()=>{ b.nom=true; bz(1,0); talk([[BAS,"« Ici, on m’appelle « le garde ». Chez moi, Bastien. »"]]); }],
+    ["« Et toi, tu ne demandes jamais ? »",()=>{ bz(1,0); talk([[bsp(),"« Moi aussi, je paie le tribut. On me le retient sur la solde. »"],[bsp(),"« Demander, c’est un luxe. »"]]); }],
+    ["« Laisse-moi passer. »",()=>talk([[bsp(),"« Circule. On ne regarde pas la porte. On regarde ses pieds. »"]])]]}]);
+  talk([[bsp(),"« Tu regardes le sac des autres. Moi, je regarde mes pieds. Chacun son métier. »"],{choices:[
+    ["« J’ai eu peur. »",()=>{ bz(1,0); talk([[bsp(),"« Tout le monde a peur. Tout le monde ne donne pas un nom. »"]]); }],
+    ["Passer votre chemin",()=>talk([["","Vous passez. Il regarde de nouveau ses pieds."]])]]}]); }
+// B-3 · la poterne
+function bastienPoterne(caught){ const b=bstate(); b.b3=true; save();
+  const open=caught?[["","Le garde qui vous raccompagne, c’est celui de la porte du palais."],[bsp(),"« Ne cours pas. Ceux qui courent, on les rattrape. »"]]
+    :[["","Contre le battant ouvert de la poterne, un garde est assis, un morceau de pain à la main. Son casque est posé à côté de lui."],[bsp(),"« Je n’ai rien vu. Comme toujours. »"]];
+  talk(open.concat([{choices:[
+    ["« Je cherchais un chat. »",()=>talk([[bsp(),"« Ça marche une fois. »"],["","Il sourit."]],placeExtras)],
+    ["« Je cherchais quelque chose qu’on m’a pris. »",()=>{ bz(1,1); talk([[bsp(),"« Ici, on a tous quelque chose qu’on nous a pris. »"]],placeExtras); }],
+    ["« Pourquoi tu me laisses partir ? »",()=>{ bz(1,0); const had=b.nom; b.nom=true; save(); talk([[BAS,"« Parce que ma mère passe par là, le matin. Si je ferme, elle ne passe plus. »"]].concat(had?[]:[[BAS,"« Bastien. Pour toi. »"]]),placeExtras); }],
+    ["« Laisse-moi tranquille. »",()=>{ b.refus=true; save(); talk([[bsp(),"« D’accord. »"],["","Il remet son casque."]],placeExtras); }],
+    ["Partir sans répondre",()=>talk([["","Vous repartez sans un mot."]],placeExtras)]]}])); }
+// B-4 · le branle
+function bastienBranle(){ const b=bstate(); b.b4=true; save();
+  talk([[bsp(),"« Ce soir, je n’ai pas de hallebarde. Tu danses ? »"],{choices:[
+    ["Danser",()=>{ b.danse=true; bz(1,0); daze=Math.min(0.92,daze+0.25); talk([["","Le branle vous prend. Les mains se prennent et se lâchent, la ronde tourne, les lanternes aussi."],["","Au dernier tour, il ne lâche pas votre main tout de suite."],["","La tête vous tourne un peu. La fête vous prend plus vite."]],placeExtras); }],
+    ["« Pas ce soir. J’ai quelque chose à faire. »",()=>talk([[bsp(),"« Alors fais-le bien. »"]],placeExtras)],
+    ["« Je ne danse pas avec la garde. »",()=>{ bz(-1,0); talk([[bsp(),"« Je comprends. »"]],placeExtras); }]]}]); }
+// B-6 · l'affiche
+function bastienAube(){ const b=bstate(); b.b6=true; save();
+  talk([["",b.nom?"Près de la fontaine, Bastien lit l’affiche, lentement, en suivant les lignes du doigt.":"Près de la fontaine, un garde lit l’affiche, lentement, en suivant les lignes du doigt."],{choices:[
+    ["« Tu sais lire ? »",()=>{ b.lit=true; bz(1,0); talk([[bsp(),"« Un peu. J’ai appris sur les édits de la porte. Ne le dis à personne : un garde qui lit, ça se remarque. »"]]); }],
+    ["« Merci, pour cette nuit. »",()=>{ bz(1,1); talk([[bsp(),"« Je n’ai rien vu. »"],["","Un temps."],[bsp(),"« Fais attention. Les lendemains de fête, ils comptent ceux qui manquent. »"]]); }],
+    ["« Tu vas l’arracher ? »",()=>talk([[bsp(),"« On ne m’a rien ordonné. »"],["","Il ne l’arrache pas."]])],
+    ["Passer sans rien dire",()=>talk([["","Vous passez. Derrière vous, il reprend sa lecture au début."]])]]}]); }
+// M-2 · la femme masquée
+function mahautBillet(){ const m=mstate(); m.billet=true; save();
+  talk([["","La femme masquée vous regarde approcher. Puis elle se détourne et se perd dans la foule, avec le vieil homme."],["","Sur la margelle, elle a laissé un billet plié."],["","Ce n’est pas imprimé. C’est écrit à la main, d’une écriture penchée, à l’encre brune :"],["","« Soyez résolus de ne plus servir et vous voilà libres. »"],["","Vous rangez le billet dans votre carnet."]],placeExtras); }
+function billetHTML(){ return S.mahaut&&S.mahaut.billet?`<div class="feuil"><span class="kick">Un billet écrit à la main</span><div class="cit">« Soyez résolus de ne plus servir et vous voilà libres. »</div><p class="small">Laissé sur la margelle de la fontaine par une femme masquée, le soir de la fête. Encre brune, écriture penchée. Ce n’est pas un feuillet imprimé. Édition Belin, p. 27.</p></div>`:""; }
+const basLabel=()=>bstate().nom?"Parler à Bastien":"Parler au garde";
+INTER.push({p:()=>BAS_ARM.position,r:2.3,get label(){ return basLabel(); },can:()=>BAS_ARM.visible&&(S.act===1?!bstate().b3:!bstate().b6),act(){ if(S.act===1) bastienPoterne(false); else bastienAube(); }});
+INTER.push({p:()=>BAS_OFF.position,r:2.3,get label(){ return basLabel(); },can:()=>BAS_OFF.visible&&!bstate().b4,act(){ bastienBranle(); }});
+INTER.push({p:()=>MAHAUT.position,r:2.6,label:"S’approcher de la femme masquée",can:()=>MAHAUT.visible,act(){ mahautBillet(); }});
 
 /* ================= Son : musique, ambiances et bruits, tous synthétisés dans la page ================= */
 const Snd={ctx:null,step:0,next:0,mi:4,fluteUntil:0,out:null,buf:{},laughT:8,clinkT:4,birdT:3,owlT:14,crackT:0,lastPh:0};
