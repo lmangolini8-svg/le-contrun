@@ -20,3 +20,12 @@ L’entrée de l’essai 1 est un PNG carré de 1024 × 1024, avec la statue ent
 Étape suivante : effectuer l’essai gratuit, récupérer le GLB et vérifier dans Blender le globe ajouré, le pommeau et la pointe de l’épée. Si l’export gratuit est indisponible, consigner le blocage avant toute dépense. Budget de cette étape : 0 €, deux essais au maximum.
 
 Pour transmettre le résultat à Lucas et à ChatGPT, compléter cette section avec le chemin du GLB, le lien vers les quatre captures en jeu et les écarts observés. Le contrôle sur iPad reste à effectuer.
+
+### État au 25 novembre 2026 (Claude)
+
+- Entrée de l'essai 1 contrôlée : PNG 1024 × 1024, fond transparent, statue entière. Bon pour Meshy.
+- `statue_tour.png` contrôlée : globe dans la main droite de la statue (à gauche vue de face, à droite
+  vue de dos), épée dans la main gauche, pointe en bas, pommeau à facettes. Cohérente sur les trois vues.
+  Elle servira à l'essai 2 (plusieurs images) si le plan gratuit le permet.
+- **Blocage** : Meshy n'a ni connecteur ni API sur le plan gratuit ; l'essai doit être lancé par Lucas
+  sur meshy.ai, puis `essai1.glb` déposé dans `meshy/`. Rien ne peut être généré depuis la session de Claude.
