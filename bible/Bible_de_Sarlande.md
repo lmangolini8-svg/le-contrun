@@ -1,6 +1,6 @@
 # La bible de Sarlande
 
-*Le Contr’un* · document de référence du projet · version 0.2 du 24 novembre 2026
+*Le Contr’un* · document de référence du projet · version 0.3 du 24 novembre 2026
 Document de travail entre Lucas et Claude. Il n’est pas destiné aux élèves.
 
 ---
@@ -41,7 +41,7 @@ Chaque grande idée du *Discours* est d’abord **vécue** par l’élève, sous
 
 1. **Ne jamais inventer de citation de La Boétie.** Toute phrase présentée comme citation doit exister dans le texte.
 2. **Toujours distinguer** les citations du *Discours*, en italique et entre guillemets « », des textes écrits pour le jeu.
-3. Les citations viennent pour l’instant de l’Atelier La Boétie ; elles seront remplacées par celles de l’**édition Belin**. Toute citation nouvelle est signalée « à vérifier dans Belin ».
+3. **L’édition Belin est la référence unique** (décision de Lucas). Toute citation suit sa formulation exacte, avec page et lignes. Le corpus vérifié se trouve dans `bible/Citations_Belin.md`. Les citations héritées de l’Atelier La Boétie sont corrigées selon Belin.
 4. **Aucune fausse progression** : ni barre de chargement artificielle, ni attente simulée.
 5. **Pas d’émojis**, ni dans le jeu ni dans les textes.
 6. Dans les textes distribués aux élèves, **lignes numérotées de 5 en 5**.
@@ -136,11 +136,11 @@ Faire revenir le jour du tribut à l’acte V boucle l’année. L’élève rev
 
 ### 4.2 Les feuillets
 
-**[Établi]** Huit citations sont utilisées, toutes à vérifier dans Belin : F1 « tant d’hommes, tant de bourgs, tant de villes, tant de nations » ; F2 « Appellerons-nous cela lâcheté ? » ; F3 « la première raison pourquoi les hommes servent volontiers… » ; F4 « non pas obéir, mais servir… » ; F5 « ce sont toujours quatre ou cinq qui maintiennent le tyran » ; F6 « Les théâtres, les jeux, les farces… » ; F7 « les appâts de la servitude… » ; F8 « Pauvres gens et misérables… ».
+**[Établi]** Huit citations sont utilisées. Leur confrontation à l’édition Belin, avec les corrections à apporter (F3, F4, F5 et F8 diffèrent, ainsi que plusieurs planches), se trouve dans `bible/Citations_Belin.md`, partie 1. Texte actuel du jeu : F1 « tant d’hommes, tant de bourgs, tant de villes, tant de nations » ; F2 « Appellerons-nous cela lâcheté ? » ; F3 « la première raison pourquoi les hommes servent volontiers… » ; F4 « non pas obéir, mais servir… » ; F5 « ce sont toujours quatre ou cinq qui maintiennent le tyran » ; F6 « Les théâtres, les jeux, les farces… » ; F7 « les appâts de la servitude… » ; F8 « Pauvres gens et misérables… ».
 
 Les planches citent aussi, entre autres : « Soyez résolus de ne servir plus, et vous voilà libres. », « l’amitié, c’est un nom sacré, c’est une chose sainte… », « un million de millions d’hommes servir misérablement », « Mais, ô bon Dieu ! que peut être cela ? ».
 
-**[Proposition] Les idées qui restent à faire vivre**, pour les actes III à V. Les citations exactes seront choisies par Lucas dans l’édition Belin ; je n’en propose aucune ici.
+**[Proposition] Les idées qui restent à faire vivre**, pour les actes III à V. Les citations vérifiées qui les portent sont proposées dans `bible/Citations_Belin.md`, parties 2 et 3 ; Lucas les retient ou les écarte.
 
 | Idée du *Discours* | Acte pressenti | Situation de jeu possible |
 |---|---|---|
@@ -207,7 +207,7 @@ En chemin, huit témoignages facultatifs, classés par cause. Les fins varient s
    - le registre du tribut montre que la richesse ne va pas à l’Un mais aux échelons intermédiaires ;
    - une fiche porte le nom de sa mère.
 4. **Les oubliettes** (planche VII). Aliénor y trouve les traces de ceux qui ont refusé, peut-être le mari de Margot. Il faut décider avec Lucas du ton de cette découverte : mort ou survivant.
-5. **La révélation.** Par une galerie, Aliénor aperçoit l’Un sans son rideau : un homme petit, malade, ordinaire, entouré de ceux qui le servent et le craignent. La scène est muette, à caméra fixe, en « tableau ». Elle illustre l’idée du *Discours* selon laquelle le tyran n’a pas plus de corps que n’importe lequel de ses sujets (paraphrase : la citation exacte est à choisir dans l’édition Belin).
+5. **La révélation.** Par une galerie, Aliénor aperçoit l’Un sans son rideau : un homme petit, malade, ordinaire, entouré de ceux qui le servent et le craignent. La scène est muette, à caméra fixe, en « tableau ». Elle illustre la citation : « mais d’un seul ; non pas d’un Hercule ni d’un Samson, mais d’un seul petit homme, et le plus souvent le plus lâche et efféminé de la nation » (Belin, p. 19, l. 69-71).
 6. **Le retour.** Aliénor sait, mais ne peut pas le prouver. À qui le dire ?
 
 **Mécanique proposée** : la neige laisse des traces ; le froid oblige à passer par des points de chaleur.
@@ -469,7 +469,8 @@ Les questions sont classées par ordre d’urgence. Rien de ce qui en dépend ne
 9. La ligne de 4.3, sans violence et par le refus de servir, est-elle la vôtre ?
 
 **Pour l’œuvre**
-10. Quelles idées du *Discours* doivent absolument figurer dans les actes III à V pour l’EAF ? Pouvez-vous indiquer les passages de l’édition Belin à citer ?
+10. Les citations proposées dans `bible/Citations_Belin.md` vous conviennent-elles ? Faut-il en ajouter, en particulier parmi les passages étudiés en explication linéaire ?
+11. Faut-il appliquer tout de suite au jeu les corrections de citations listées dans `bible/Citations_Belin.md`, partie 1 ?
 
 ---
 
