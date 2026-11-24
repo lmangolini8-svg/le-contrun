@@ -1,6 +1,6 @@
 # Les personnages de Sarlande · fiches approfondies
 
-*Le Contr’un* · document de travail · version 0.4 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.5 du 24 novembre 2026
 
 Ce document complète la partie 6 de la bible. Mêmes statuts : **[Établi]** (dans le jeu ou décidé par Lucas), **[Proposition]** (à trancher). Les citations suivent `Citations_Belin.md`.
 
@@ -156,6 +156,9 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 - [x] L’ordre d’approfondissement (partie 5).
 - [ ] Fiche complète d’Anselme (partie 7.1) : à valider.
 - [ ] Fiche complète de Bastien et déroulé de la relation (partie 7.2) : à valider.
+- [ ] Fiches complètes de tous les autres personnages (parties 7.3 à 7.12) : à valider.
+- [ ] Chronologie de Sarlande (partie 8) : à valider.
+- [ ] Noms proposés : Mahaut, Brisset, Philibert Mauclerc, Guillaume, Agnès, Gervais, Joris, Martin, Hubert, Béatrix, Colin, Jacquemin, Pierrot, Toinon, Gilles, Jehan.
 
 ---
 
@@ -329,3 +332,284 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 - **À commander** : quatre portraits de Bastien (neutre, sourire, inquiétude, colère), une planche de tour, et sa planche sans casque. Il ne doit plus partager le portrait commun des gardes.
 - **Séquences illustrées possibles** : les billets du lavoir ; le rendez-vous sous la neige ; la hallebarde posée.
 - **Musique** : son tambour, qui ralentit jusqu’au battement de cœur ; au rendez-vous sous la neige, la flûte d’Aliénor et le tambour jouent ensemble pour la première fois.
+
+### 7.3 Aliénor, apprentie imprimeuse
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : dix-sept ans environ ; rousse, taches de rousseur, chignon tressé retenu par un ruban écru ; robe orange à manches bouffantes, tablier écru, mains tachées d’encre « jusqu’aux coudes ». Elle sait lire. Apprentie d’Anselme. Toutes les décisions de l’élève passent par elle.
+
+1. **Ce qu’elle veut** : comprendre. Pourquoi un tiers ? Pourquoi tout le monde ?
+2. **Ce dont elle a besoin** : parler, devant les autres, en son nom.
+3. **Ce qu’elle craint** : être remarquée ; « payer avec le nom d’un autre ».
+4. **Son secret** : elle n’en a pas au début. Ce sont les autres qui lui en cachent un : sa mère est vivante.
+5. **Ce qui la tient** : la coutume, celle d’une fille élevée à baisser les yeux devant le percepteur, et la peur d’être seule à ne pas le faire.
+6. **Sa blessure** : la « mort » de sa mère, quand elle avait cinq ans. Son père, batelier, s’est noyé quand elle en avait deux. Ysabeau l’a élevée ; Anselme l’a prise en apprentissage à douze ans.
+7. **Ses liens** : Anselme, le père de substitution ; Ysabeau, la grand-mère de cœur ; Maëlle, l’amie ; Bastien, l’amour possible ; Mahaut, la mère retrouvée.
+8. **Son arc** : de la jeune fille qui « apprend vite à se taire » à celle qui parle devant toute la place.
+
+| Acte | Ce qu’elle découvre | Les choix qui la définissent |
+|---|---|---|
+| I | Le tribut, la peur, le geste de Garin | Payer, dénoncer ou questionner ; mentir ou non à Bastien |
+| II | Les appâts, la fête qui fait oublier | Lever ou non son gobelet ; ramasser des pièces ; le masque ; s’incliner ou rester debout ; avouer ou non à Garin |
+| III | Sa mère est vivante ; le silence d’Anselme ; l’homme derrière le rideau | Pardonner, accuser ou se taire ; confier ou non à Bastien qu’elle imprime ; apprendre à lire à Maëlle |
+| IV | La trahison et la chaîne des complices | Que faire de Bastien ; convaincre ou non Mahaut |
+| V | Ce que valent tous ses choix | Parler à la foule, ou laisser la foule décider |
+
+9. **Ce qui la rend visible** : l’orange de la robe, le roux des cheveux, les mains bleues d’encre. **Gestes signature** : elle essuie ses mains sur son tablier, retient sa sangle, et relève le menton. **Musique** : une phrase de flûte qui monte.
+
+**Citation Belin** : « Toujours s’en trouve-t-il quelques-uns mieux nés que les autres, qui sentent le poids du joug et ne peuvent pas s’empêcher de le secouer » (p. 46).
+
+---
+
+### 7.4 Mahaut, la mère d’Aliénor
+
+*Statut : arc [Établi] (partie 3, validé par Lucas) ; détails [Proposition].*
+
+1. **Ce qu’elle veut** : que sa fille vive. C’est pour cela qu’elle a accepté de passer pour morte.
+2. **Ce dont elle a besoin** : se pardonner d’avoir cédé.
+3. **Ce qu’elle craint** : que sa fille paie à son tour ; revoir les murs de la prison.
+4. **Ses secrets** :
+   - Enfant, il y a quarante ans, elle a sauvé une page du premier bûcher où l’on brûlait le livre, et l’a confiée à sa voisine Ysabeau. C’est la page qu’Ysabeau garde « depuis quarante ans » [Établi], et qu’Anselme imprime en premier à l’acte II [Établi].
+   - Depuis douze ans, elle recopie de mémoire, à la main, des pages entières dans des cahiers.
+5. **Ce qui la tient** : la peur, puis la mémoire.
+6. **Sa blessure** : la nuit d’il y a douze ans, et le silence d’Anselme.
+7. **Son lien avec Aliénor** : une mère absente qui sait tout de sa fille. Ysabeau lui apporte du pain chaque mois et lui raconte Aliénor.
+8. **Son arc** : voir la partie 3. La scène centrale, à l’acte IV, est **la cabane de la forêt**, près d’une source : des cahiers cousus au fil de lin, une table, une seule bougie. « Ça passe toujours », dit-elle d’abord, puis elle ouvre ses cahiers.
+9. **Ce qui la rend visible** : les cheveux d’Aliénor, devenus gris cuivre ; une cape brune de bûcheronne ; des mains tachées non plus d’encre d’imprimerie, mais d’encre de noix. **Musique** : la phrase de flûte d’Aliénor, jouée plus lentement et laissée inachevée.
+
+**[Proposition] Les deux visages graves de la fête** [Établi : « une femme et un vieil homme », près de la fontaine, qui reconnaissent Aliénor sur les tréteaux]. La femme est Mahaut, entrée masquée en ville pour la fête, le seul soir où tout le monde porte un masque. Le vieil homme est **Gervais**, l’ancien maître d’Anselme. C’est lui qui avait imprimé le livre il y a quarante ans, et il vit depuis dans la forêt avec Mahaut. L’élève peut le comprendre rétrospectivement à l’acte IV.
+
+**Citation Belin** : « Ceux-là, quand la liberté serait entièrement perdue et toute hors du monde, l’imaginent et la sentent en leur esprit, et même la savourent » (p. 46).
+
+---
+
+### 7.5 Le sergent Brisset
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : « Le percepteur me sert à boire, je sers le percepteur. Mes gardes me servent. Et toi, petite, tu sers qui ? » ; « Tout le monde sert quelqu’un. C’est ce qui tient la table debout. » ; à la question « Et l’Un, il sert qui ? », il répond : « … Bois, et va danser. »
+
+1. **Ce qu’il veut** : garder sa place à table, et un jour s’asseoir plus près du dais.
+2. **Ce dont il a besoin** : rien qu’il puisse admettre.
+3. **Ce qu’il craint** : le palais, plus que quiconque ; il y a vu des choses.
+4. **Son secret** : il ne sait pas lire, et il se fait lire les ordres par Bastien, ce qui explique qu’il le garde près de lui.
+5. **Ce qui le tient** : l’intérêt et la hiérarchie. C’est le relais exact de la chaîne des complices.
+6. **Sa blessure** : aucune qu’il montre. C’est un homme que la tyrannie a rendu à son image.
+7. **Son lien avec Aliénor** : l’adversaire de terrain. Il la soupçonne dès l’acte III.
+8. **Son arc** : à l’acte IV, il retient Joris pour faire parler Bastien. À l’acte V, si les gardes posent leurs hallebardes, il crie des ordres que personne n’exécute. C’est l’illustration vivante du passage sur les hallebardes.
+9. **Ce qui le rend visible** : massif, la moustache, le casque plus orné que celui des gardes, une coupe toujours en main à la fête. **Musique** : le tambour de la garde, joué fort et sans nuance.
+
+**Citation Belin** : « Qui pense que les hallebardes, les gardes et la présence du guet préservent les tyrans, selon mon jugement, se trompe fort. » (p. 63).
+
+---
+
+### 7.6 Maëlle, boulangère
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : jeune femme blonde à la tresse. On a pris la boulangerie de son père le mois dernier, pour un tribut en retard. Elle donne à Aliénor la page que son père relisait chaque soir, « parce que tu sais lire ». Tentée par la loterie, qui promet de rendre une boutique à son maître, elle déchire son billet. Elle encre les feuilles à la presse : « Je n’ai jamais été aussi fière d’être sale. »
+
+1. **Ce qu’elle veut** : rendre son four à son père, Guillaume.
+2. **Ce dont elle a besoin** : comprendre qu’on ne rend pas ce qu’on a volé.
+3. **Ce qu’elle craint** : que son père meure sans avoir retrouvé son four.
+4. **Son secret** : elle ne sait pas lire, et elle en a honte.
+5. **Ce qui la tient** : les largesses, c’est-à-dire l’espoir qu’on lui rende ce qu’on lui a pris.
+6. **Sa blessure** : le jour où les gardes ont scellé le four, et le silence de son père depuis.
+7. **Son lien avec Aliénor** : l’amitié. Elle tient à la conduite d’Aliénor au tribut [Établi : « Tu as donné Garin. Je ne sais pas si je dois te parler. »].
+8. **Son arc** :
+   - Acte III : l’hiver est dur, son père tombe malade. Aliénor peut lui apprendre à lire, en secret, sur les feuilles du tirage. C’est le passage « les livres et la doctrine » vécu de l’intérieur.
+   - Acte IV : le percepteur lui offre de rendre le four en échange d’un nom. Si elle a appris à lire, elle refuse et prévient la troupe. Si elle n’a pas appris et qu’Aliénor a dénoncé Garin, elle peut céder : « la loterie l’a marquée ».
+   - Acte V : elle rallume le four, sans permission, et distribue le pain sur la place.
+9. **Ce qui la rend visible** : la tresse blonde, le bleu pétrole, la farine sur les avant-bras, puis l’encre par-dessus la farine. **Musique** : une chanson de travail au rythme du pétrin.
+
+**Citation Belin** : « Ne pensez pas qu’il y ait aucun oiseau qui ne se prenne mieux au piège […] que tous les peuples qui s’allèchent si vite à la servitude par la moindre plume qu’on leur passe, comme on dit, sous la bouche » (p. 53).
+
+---
+
+### 7.7 Garin, tanneur
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : homme massif au bonnet de cuir ; trente ans de tribut, « Mon père était tanneur. Il payait. » ; « On s’y fait, petite. C’est bien ça le pire : on s’y fait. » ; il pose son sac (« Qu’ils viennent le chercher. ») ; il rit à la farce qui le moque, puis s’arrête net ; il tire la barre de la presse (« Cette barre est plus lourde qu’un sac. Mais celle-là, je la tire pour moi. »). S’il a été dénoncé : double mesure, et un soupçon.
+
+1. **Ce qu’il veut** : nourrir les siens et dormir tranquille [Établi : « Mais je dors mieux. »].
+2. **Ce dont il a besoin** : ne plus avoir honte de son geste.
+3. **Ce qu’il craint** : le ridicule ; le regard de sa femme, Agnès.
+4. **Son secret** : il a pleuré au premier tribut, à l’âge d’Aliénor [Établi : « Le premier, j’avais ton âge, et j’ai pleuré. »].
+5. **Ce qui le tient** : la coutume, héritée de son père, puis la honte du rire public.
+6. **Sa blessure** : la farce. Toute la place a ri de lui, et lui avec.
+7. **Son lien avec Aliénor** : selon l’acte I, un allié bourru, ou un homme qu’elle a trahi.
+8. **Son arc** :
+   - Acte III : il cache les pièces de la presse dans sa tannerie, où l’odeur des cuves couvre celle de l’encre.
+   - Acte IV : s’il a été dénoncé et que la dénonciation n’a pas été avouée, il est le traître, par rancune et pour la mesure qu’on lui rendrait. Sinon, il est le bras de la troupe.
+   - Acte V : il pose son sac le premier dans la file des tanneurs, sous les yeux d’Hugues, son chef de rue.
+9. **Ce qui le rend visible** : bonnet de cuir, avant-bras énormes, la paume qui reste ouverte après avoir posé le sac. **Musique** : un tambour sourd, le poids du sac.
+
+**Citation Belin** : « Il est vrai qu’au commencement on sert contraint et vaincu par la force : mais ceux qui viennent après servent sans regret, et font volontiers ce que leurs devanciers avaient fait par contrainte. » (p. 38).
+
+---
+
+### 7.8 Philibert Mauclerc, le percepteur
+
+*Statut : [Proposition] (le nom est à valider), sauf ce qui est marqué [Établi].*
+
+**Établi** : fraise, plume, balance, registre. « L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. » ; « Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. » ; « Une fête coûte moins cher qu’une garnison. Et on m’en remercie. » ; il écrit le nom d’Aliénor si elle pose sa question, et note encore quand elle lit sur les tréteaux. Près du dais : « Elle n’est pas vide. Elle est réservée. C’est différent. »
+
+1. **Ce qu’il veut** : que les comptes tombent juste, et monter.
+2. **Ce dont il a besoin** : ne jamais regarder « au-dessus du dais » [Établi].
+3. **Ce qu’il craint** : un registre qui ne tombe pas juste ; un nom qu’on ne peut pas peser.
+4. **Son secret** : il prélève sa part. Les registres des archives, à l’acte III, montrent un écart entre ce qui est pesé sur la place et ce qui entre au palais. Aliénor peut s’en servir.
+5. **Ce qui le tient** : l’intérêt, et la place qu’il occupe dans la chaîne.
+6. **Sa blessure** : fils de pauvre, il a fait la file avec son père. Il ne l’a jamais dit.
+7. **Son lien avec Aliénor** : il la note dès l’acte I ; à l’acte III, il cherche l’imprimeur ; à l’acte IV, il fait les offres au traître.
+8. **Son arc** : à l’acte V, si la ville cesse de servir, il reste seul à sa balance, qui pèse un sac vide.
+9. **Ce qui le rend visible** : bleu nuit, la fraise blanche, la plume, la main qui retient le plateau de la balance. **Musique** : aucune ; le grattement de sa plume.
+
+**Citation Belin** : « Ces six ont six cents qui profitent sous eux, et font de leurs six cents ce que les six font au tyran » (p. 64).
+
+---
+
+### 7.9 Hugues, chef de la rue des Tanneurs
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : « Premier rang, grand gobelet. Ça se mérite. Vingt ans à compter les sacs de ma rue pour le percepteur. » ; « Le jour où le percepteur tombera, il faudra quelqu’un à sa place. Pourquoi pas moi ? » ; « Si ce n’était pas moi, ce serait un autre. » ; à l’aube, il doit signaler trois noms de sa rue.
+
+1. **Ce qu’il veut** : la place du percepteur.
+2. **Ce dont il a besoin** : voir qu’il est aussi tenu qu’il tient.
+3. **Ce qu’il craint** : redescendre dans la rue.
+4. **Son secret** : il a été tanneur, comme Garin, et il a les mêmes cicatrices aux mains, qu’il cache sous des gants.
+5. **Ce qui le tient** : l’intérêt du « tyranneau ».
+6. **Sa blessure** : on l’a nommé chef de rue le jour où il a désigné un voisin.
+7. **Son lien avec Aliénor** : l’échelon du milieu, celui qu’elle doit comprendre pour comprendre la chaîne.
+8. **Son arc** : il est le traître de l’acte IV si personne d’autre ne l’est, pour monter. À l’acte V, il compte les sacs de sa rue, et il n’y en a pas.
+9. **Ce qui le rend visible** : le béret bleu, une chaîne de chef de rue, des gants. **Musique** : un compte à voix basse, sur la basse obstinée.
+
+**Citation Belin** : « […] être sous le grand tyran des tyranneaux eux-mêmes » (p. 65).
+
+---
+
+### 7.10 Ysabeau, la vieille voisine
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Établi** : châle vert. « On a toujours fait ainsi, ma fille. » ; « Ta mère aussi posait des questions. Ça lui a passé. » ; elle garde depuis quarante ans une page que la mère d’Aliénor lui a confiée, sans savoir la lire : « Je sais qu’on voulait la brûler. Ça m’a suffi. »
+
+1. **Ce qu’elle veut** : qu’Aliénor vive longtemps, et tranquille.
+2. **Ce dont elle a besoin** : reconnaître que sa fidélité à la coutume cachait une autre fidélité.
+3. **Ce qu’elle craint** : qu’on emmène Aliénor comme on a emmené sa mère.
+4. **Son secret** : elle sait que Mahaut est vivante, et lui porte du pain chaque mois dans la forêt. Son « Ça lui a passé » est un mensonge de protection.
+5. **Ce qui la tient** : la coutume.
+6. **Sa blessure** : avoir vu brûler le livre, il y a quarante ans, et la petite Mahaut courir vers le feu.
+7. **Son lien avec Aliénor** : elle l’a élevée.
+8. **Son arc** : à l’acte III, sa maison est fouillée et elle se tait devant le sergent. À l’acte IV, elle conduit Aliénor à la forêt. À l’acte V, elle ne porte pas son sac : « À mon âge, on peut bien commencer quelque chose. »
+9. **Ce qui le rend visible** : le châle vert sauge, la coiffe, les mains croisées. **Musique** : une berceuse.
+
+**Citation Belin** : « Ils disent qu’ils ont toujours été sujets ; que leurs pères ont ainsi vécu » (p. 45).
+
+---
+
+### 7.11 Les témoins de la fête
+
+*Statut : [Proposition], sauf les répliques citées, qui sont [Établi]. Chacun revient au moins une fois après l’acte II.*
+
+**Jeanne, aux trois pièces** · *les largesses*
+- Établi : paysanne, elle remercie pour trois pièces et un pain blanc le soir où elle a porté le tiers de sa récolte ; c’est la première lectrice de l’affiche : « Pauvres et misérables peuples insensés… C’est de nous qu’il parle ? »
+- Ce qu’elle veut : nourrir ses enfants. Sa blessure : elle a recompté dix fois ses trois pièces.
+- Arc : à l’acte III, elle emporte des feuilles cachées dans ses paniers de légumes, jusqu’aux villages. À l’acte V, elle revient avec les gens de la campagne, qui ne portent pas de sacs.
+- Citation : « Les tyrans faisaient largesse d’un quart de blé, d’un demi-litre de vin, et d’un sesterce ; c’était alors pitié d’entendre crier « Vive le roi ! » » (p. 55).
+
+**Thibaut, charretier** · *le mystère*
+- Établi : il jure avoir vu l’Un guérir la fille du meunier d’un mouvement de rideau ; sa femme, Béatrix, boite encore : « Elle n’a pas assez prié. »
+- Ce qu’il veut : croire, pour que la jambe de sa femme guérisse un jour.
+- Arc : à l’acte III, il livre le bois au palais. Convaincu, il peut y faire entrer Aliénor cachée dans sa charrette : c’est l’accès aux archives. S’il apprend que l’Un est « un seul petit homme », sa croyance se brise, et il pleure de colère.
+- Citation : « elles craignaient toutes avec crédulité un homme que personne n’avait jamais vu » (p. 57).
+
+**Mathurin, vieux vigneron** · *la coutume*
+- Établi : « Soixante fêtes. Je les ai toutes faites. Je ne me souviens d’aucune. »
+- Arc : il meurt pendant l’hiver de l’acte III. On retrouve son gobelet sur la margelle de la fontaine, et personne n’ose le prendre. C’est le pire de la coutume : une vie entière sans souvenir.
+- Citation : « elle nous apprend à avaler et à ne point trouver amer le venin de la servitude » (p. 38).
+
+**Perrine et son fils Colin** · *la peur*
+- Établi : « Crie, toi aussi. Ils regardent qui crie et qui ne crie pas. » ; « Je crois que mon fils grandira. C’est tout ce que je crois. Alors je crie. »
+- Arc : à l’acte IV, Colin refuse de crier, et Perrine a peur pour lui. À l’acte V, Colin se tait le premier, et sa mère se tait avec lui.
+- **À refaire** : son portrait reprend le visage d’Aliénor ; il lui faut un visage propre, brune, pour éviter toute confusion.
+- Citation : « Deux peuvent craindre un, et possiblement dix, mais mille, mais un million, mais mille villes, si elles ne se défendent pas d’un, cela n’est pas de la couardise » (p. 20).
+
+**Margot, la veuve** · *la mémoire*
+- Établi : son mari a refusé de payer il y a dix ans et n’est jamais revenu du palais ; « Lui, il disait : un jour, ils comprendront tous en même temps. »
+- Décision proposée : son mari, **Jacquemin**, est mort. Aux oubliettes, à l’acte III, Aliénor trouve gravée dans la pierre la phrase qu’il répétait. Elle la rapporte à Margot.
+- Arc : alliée sûre ; elle cache des feuilles sous son lit de veuve, là où aucun garde ne cherche.
+- Citation : « Toujours s’en trouve-t-il quelques-uns mieux nés que les autres, qui sentent le poids du joug et ne peuvent pas s’empêcher de le secouer » (p. 46).
+
+**Bertin, colporteur** · *l’intérêt*
+- Établi : il vend des serins « nés en cage », puis des masques ; « Je vends les cages, petite. C’est le meilleur côté des barreaux. »
+- Arc : à l’acte III, il vend des copies de l’affiche, très cher : il vend à tous les camps. À l’acte IV, il peut vendre une information au sergent. À l’acte V, si l’alouette a été libérée à l’acte I, il ouvre toutes ses cages sans savoir pourquoi.
+- Citation : « les appâts de la servitude, le prix de leur liberté, les outils de la tyrannie » (p. 54).
+
+**Pierrot et Toinon, les enfants de la fontaine** · *la coutume par le jeu*
+- Établi : ils jouent au tyran et aux sujets ; « Et si personne ne portait le sac ? » « … Ben, alors il n’y a plus de jeu. » ; à l’aube, le plus petit laisse le sac par terre.
+- Arc : à l’acte V, ils inventent un nouveau jeu, sans tyran, et ne savent pas encore le nommer.
+- Citation : « On ne se plaint jamais de ce que l’on n’a jamais eu » (p. 44).
+
+**Martin et Hubert, les mendiants du quai** · *les exclus*
+- Établi : tenus hors de la place, ils ne paient pas de tribut et n’ont donc pas droit aux largesses ; « Une fête, ça a des murs. Même quand on ne les voit pas. »
+- Martin est le père de Bastien (partie 7.2).
+- Arc : à l’acte V, ils entrent sur la place pendant le jour, et non plus seulement quand la fête est finie.
+- Citation : « Les tyrans faisaient largesse d’un quart de blé, d’un demi-litre de vin, et d’un sesterce » (p. 55).
+
+**Gilles, le comédien** · *le spectacle*
+- Établi : sur les tréteaux, il reproduit le geste de Garin posant son sac, et toute la place rit.
+- Ce qu’il veut : jouer, et manger. C’est le palais qui le paie.
+- Arc : à l’acte IV, Aliénor peut le convaincre de jouer une autre farce, celle du percepteur qui pèse un sac vide. Le théâtre passe alors de l’appât à l’éveil.
+- Citation : « Les théâtres, les jeux, les farces, les spectacles, les gladiateurs… » (p. 54).
+
+**Joris, le frère de Bastien** · porteur, dans la file du tribut. À l’acte IV, il est retenu au poste par le sergent pour faire parler son frère.
+
+---
+
+### 7.12 L’Un
+
+*Statut : [Prévu] il se révèle être un homme chétif à l’acte III ; le reste est [Proposition].*
+
+1. **Ce qu’il veut** : qu’on ne le voie pas.
+2. **Ce dont il a besoin** : rien que le jeu lui accorde.
+3. **Ce qu’il craint** : le bruit de la place, le froid, ses propres gardes, ses favoris.
+4. **Son secret** : il porte un nom, Jehan, que personne n’emploie et que les archives révèlent.
+5. **Ce qui le tient** : il est tenu par ceux qui le tiennent. Il dépend de leur service, et il les craint tous.
+6. **Son origine**, révélée aux archives à l’acte III : il y a plusieurs générations, le premier « Un » a été **élu** capitaine par les habitants pendant une guerre, puis s’est fait roi et a rendu la charge héréditaire. Jehan est l’un de ses successeurs, « nés et nourris dans le sein de la tyrannie » (Belin, p. 34, l. 330). C’est l’explication linéaire 2 rendue visible : la ville apprend que c’est elle qui s’est donnée.
+7. **Son lien avec Aliénor** : aucun, sinon le regard qu’elle pose sur lui à l’acte III.
+8. **Son arc** :
+   - Acte III, la révélation, en tableau : un homme petit, malade, enroulé dans des fourrures, qui tousse devant un feu qu’on entretient pour lui, entouré de serviteurs qui le craignent et qu’il craint.
+   - Acte V : selon les fins, il reste seul sur le balcon d’une place qui ne le regarde plus.
+   - Il n’a jamais de grand discours.
+9. **Ce qui le rend visible** : l’absence de couleur ; aucun portrait avant l’acte III. **Musique** : aucun motif. On n’entend que l’hymne joué par les autres, qui s’arrête quand il paraît.
+
+**Citations Belin** : « mais d’un seul ; non pas d’un Hercule ni d’un Samson, mais d’un seul petit homme, et le plus souvent le plus lâche et efféminé de la nation » (p. 19) ; « C’est certainement que le tyran n’est jamais aimé, ni n’aime » (p. 71).
+
+---
+
+## 8. La chronologie de Sarlande
+
+**[Proposition]** Cette chronologie rend compatibles toutes les répliques établies, notamment les « soixante fêtes » de Mathurin, les quarante ans d’Ysabeau et les vingt ans d’édits d’Anselme.
+
+| Quand | Ce qui s’est passé |
+|---|---|
+| Plusieurs générations avant le jeu | Pendant une guerre, les habitants élisent un capitaine. Il se fait roi et rend sa charge héréditaire : c’est le premier « Un ». Le tribut et la fête existent depuis. |
+| Il y a environ 60 ans | Mathurin fait sa première fête. |
+| Il y a 40 ans | Gervais, imprimeur, imprime le livre (le *Discours*). L’Un le fait brûler sur la place. Mahaut, enfant, sauve une page du feu et la confie à Ysabeau. |
+| Il y a environ 25 ans | Jehan succède à son père et devient l’Un. |
+| Il y a 20 ans | Anselme commence à imprimer les édits de l’Un. Bastien naît vers cette époque. |
+| Il y a 17 ans | Naissance d’Aliénor. |
+| Il y a 15 ans | Le père d’Aliénor, batelier, se noie. |
+| Il y a 12 ans | Anselme et Mahaut impriment une édition clandestine du livre. Les gardes viennent ; Anselme se tait ; Mahaut est emmenée. Le tirage est brûlé ; Anselme sauve un exemplaire et le défait feuille à feuille. |
+| Il y a 11 ans | Mahaut, relâchée sur promesse de silence, est bannie. On dit à Aliénor que sa mère est morte. Elle vit chez Ysabeau. |
+| Il y a 10 ans | Jacquemin, le mari de Margot, refuse de payer et disparaît au palais. |
+| Il y a 5 ans | Aliénor entre en apprentissage chez Anselme. |
+| Il y a 4 ans | Bastien entre aux gardes. |
+| Le mois dernier | La boulangerie du père de Maëlle est saisie. |
+| Actes I et II | Le jour du tribut et la nuit de la fête. |
+| Acte III | L’hiver. |
+| Acte IV | Le printemps. |
+| Acte V | Le tribut suivant, un an après l’acte I. |
