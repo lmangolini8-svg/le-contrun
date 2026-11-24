@@ -358,11 +358,15 @@ function aimSun(x,z){ sun.target.position.set(x,0,z); sun.position.set(x+SUN.x*9
 // Test de chaîne : index.html?glb=colosse remplace le colosse procédural par le
 // GLB exporté de Blender. Sans ce paramètre, le jeu reste strictement inchangé.
 const GLB_TEST=new URLSearchParams(location.search).get("glb");
+// statue : modèle Meshy retouché dans Blender, en cours de validation.
+const GLB_SWAP={colosse:"modeles/test/colosse_blender_test.glb",statue:"modeles/statue/statue_sarlande.glb"};
 let gltfReady=null;
 function gltfLoader(){ if(!gltfReady) gltfReady=new Promise((ok,ko)=>{ const t=document.createElement("script"); t.src="vendor/GLTFLoader.r128.js"; t.onload=()=>ok(new THREE.GLTFLoader()); t.onerror=ko; document.head.appendChild(t); }); return gltfReady; }
 // Les matériaux PBR du GLB deviennent des Lambert, comme le reste de Sarlande :
 // le passage encre et aquarelle reçoit ainsi la même lumière que les décors.
-function inkMaterials(root){ root.traverse(o=>{ if(!o.isMesh)return; const m=o.material; const lam=new THREE.MeshLambertMaterial({color:m.color?m.color.clone():0xffffff,map:m.map||null,vertexColors:!!o.geometry.attributes.color,side:THREE.DoubleSide}); m.dispose(); o.material=lam; o.castShadow=true; o.receiveShadow=true; }); return root; }
+function inkMaterials(root){ root.traverse(o=>{ if(!o.isMesh)return; const m=o.material; // Le jeu travaille sans conversion sRGB : la texture garde les valeurs peintes.
+  if(m.map){ m.map.encoding=THREE.LinearEncoding; m.map.anisotropy=4; m.map.needsUpdate=true; }
+  const lam=new THREE.MeshLambertMaterial({color:m.color?m.color.clone():0xffffff,map:m.map||null,vertexColors:!!o.geometry.attributes.color,side:THREE.DoubleSide}); m.dispose(); o.material=lam; o.castShadow=true; o.receiveShadow=true; }); return root; }
 // Le GLB a son origine au pied, centrée : on le pose exactement là où était l'objet remplacé.
 function swapForGLB(old,url){ gltfLoader().then(L=>L.load(url,g=>{ const box=new THREE.Box3().setFromObject(old), m=inkMaterials(g.scene); m.name=old.name+" (GLB)"; m.position.set((box.min.x+box.max.x)/2,box.min.y,(box.min.z+box.max.z)/2); scene.add(m); old.visible=false; say("Test GLB : "+old.name+" chargé depuis Blender.",5); },undefined,e=>{ console.error(e); say("Test GLB : échec du chargement.",6); })); }
 
@@ -1123,7 +1127,7 @@ placeStone(0);
   const material=new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide});
   const sculpture=b.mesh(material);sculpture.name="Colosse de l’Un";sculpture.position.set(CX,7.97,CZ);
   sculpture.scale.setScalar(3.86);scene.add(sculpture);
-  if(GLB_TEST==="colosse")swapForGLB(sculpture,"modeles/test/colosse_blender_test.glb");
+  if(GLB_SWAP[GLB_TEST])swapForGLB(sculpture,GLB_SWAP[GLB_TEST]);
 }
 
 /* fontaine */
