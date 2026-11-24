@@ -30,7 +30,9 @@ Fichiers dans `references/planches-3d/`. Pour chaque planche de tour, les trois 
 | Jeanne | tour, expressions | — | Complet |
 | Thibaut | tour, expressions | — | Complet |
 | Margot | tour, expressions | — | Complet |
-| Bertin, Gilles, Joris, Martin, Perrine, Colin | — | tout | |
+| Bertin | tour, expressions | — | Fidèle au portrait : capuchon vert, plumes au dos, bandoulière ; sans cage, ce qui est voulu pour la 3D |
+| Gilles | tour, expressions | — | Fidèle au portrait : béret rouge à plume, pourpoint rayé rouge et or, fraise |
+| Joris, Martin, Perrine, Colin | — | tout | |
 | Mathurin, Hubert, Pierrot, Toinon | — | tour | |
 | L’Un | — | portrait, tour | En dernier |
 | Lieux, objets, séquences | — | tout | Priorité : rue de l’imprimerie, façade, matières, atelier |
