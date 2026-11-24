@@ -156,6 +156,9 @@ Ce sont vraisemblablement les passages étudiés en classe. Les trois reçoivent
 ★★ « les élus les traitent comme s’ils avaient pris des taureaux à dompter, les conquérants les traitent comme leur proie, les successeurs songent à en faire leurs naturels esclaves » — p. 35, l. 348-351
 *Ajout. Proposition : aux archives de l’acte III, Aliénor découvre comment l’Un a pris le pouvoir. Cette révélation fait vivre l’explication linéaire 2.*
 
+★★ « Ceux qui naissent rois ne sont communément guère meilleurs, mais étant nés et nourris dans le sein de la tyrannie, tirent avec le lait la nature du tyran » — p. 34, l. 329-331
+*Ajout. L’origine de l’Un, successeur d’un capitaine élu (fiche 7.12).*
+
 ### 3.7 Le mystère du pouvoir · acte III · Thibaut, l’Un
 
 ★★★ « mais d’un seul ; non pas d’un Hercule ni d’un Samson, mais d’un seul petit homme, et le plus souvent le plus lâche et efféminé de la nation » — p. 19, l. 69-71
