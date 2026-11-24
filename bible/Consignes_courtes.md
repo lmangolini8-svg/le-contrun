@@ -10,32 +10,26 @@
 
 ---
 
-## Suivi (24 novembre 2026)
+## Suivi (24 novembre 2026, deuxième analyse)
 
-Fichiers dans `references/planches-3d/`. Pour chaque planche de tour, les trois vues sont découpées : `nom_vue_face.png`, `nom_vue_profil.png`, `nom_vue_dos.png`.
+**Toutes les consignes ont été réalisées.** Fichiers dans `references/planches-3d/`. Chaque planche de tour a ses trois vues découpées (`nom_vue_face/profil/dos.png`). La planche de matières est découpée en neuf textures (`matiere_*.png`).
 
-| Personnage | Reçu | Reste à faire | Remarque |
-|---|---|---|---|
-| Aliénor | tour, tête, expressions, mains, mouvement | — | Complet |
-| Bastien | portraits ×4, sans casque, tour, tête, mouvement | — | Complet ; cheveux châtains |
-| Anselme | tour, tête, expressions, jeune | mains | Gilet bleu au lieu du pourpoint brun du portrait : léger écart, acceptable |
-| Mahaut | portrait, tour, tête, expressions, jeune, enfant | mains | Robe bleue au lieu de brune ; ressemblance avec Aliénor nette, surtout à 36 ans |
-| Gervais | portrait, tour | — | Complet |
-| Maëlle | tour, tête, expressions | mains | Coiffe et tresse fidèles au portrait |
-| Garin | tour, tête, expressions | mains | Très fidèle au portrait |
-| Percepteur | tour, tête, expressions | mains | Béret noir, comme le portrait d’origine (le jeu actuel lui donne une toque) |
-| Brisset | portrait, tour, tête, expressions | — | Casque entièrement doré et jambes sombres : il se distingue nettement des gardes |
-| Hugues | tour, expressions | — | Fidèle au portrait ; ni chaîne ni gants, la fiche est à ajuster |
-| Ysabeau | tour, expressions | — | Châle vert fidèle ; robe rouille au lieu de vert sauge |
-| Jeanne | tour, expressions | — | Complet |
-| Thibaut | tour, expressions | — | Complet |
-| Margot | tour, expressions | — | Complet |
-| Bertin | tour, expressions | — | Fidèle au portrait : capuchon vert, plumes au dos, bandoulière ; sans cage, ce qui est voulu pour la 3D |
-| Gilles | tour, expressions | — | Fidèle au portrait : béret rouge à plume, pourpoint rayé rouge et or, fraise |
-| Joris, Martin, Perrine, Colin | — | tout | |
-| Mathurin, Hubert, Pierrot, Toinon | — | tour | |
-| L’Un | — | portrait, tour | En dernier |
-| Lieux, objets, séquences | — | tout | Priorité : rue de l’imprimerie, façade, matières, atelier |
+**Personnages** : complets pour Aliénor, Bastien, Anselme (avec mains et version jeune), Mahaut (avec mains, jeune et enfant), Gervais, Maëlle, Garin, le percepteur (ces trois avec mains), Brisset, Hugues, Ysabeau, Jeanne, Thibaut, Margot, Bertin, Gilles, Joris, Martin, Perrine (quatre expressions et tour), Colin, Mathurin, Hubert, Pierrot, Toinon et l’Un.
+
+**Lieux** : rue de l’imprimerie, façade de l’imprimerie, deux façades de maisons, matières, atelier, place sous la neige, cabane de la forêt, archives, oubliettes, galerie de l’Un.
+
+**Objets** : presse, sac du tribut, balance, hallebarde.
+
+**Séquences** : le bûcher (3), la nuit d’il y a douze ans (4), l’hiver (3), les billets du lavoir (2), le rendez-vous sous la neige (2).
+
+**À reprendre**
+- [ ] `seq_bucher_2.png` : c’est une main d’adulte qui arrache la page d’un livre, alors que la scène montre une petite fille de huit ans qui tire une page du feu. À refaire : « Les petites mains d’une fillette de huit ans tirent du feu une page qui brûle par un coin. Gros plan, flammes tout autour. »
+
+**À trancher par Lucas**
+- Les **fleurs de lys** apparaissent sur la bannière des archives (`lieu_archives.png`) et sur la cape du garçon qui joue au tyran (`garcon_tour.png`). C’est l’emblème des rois de France : il rattache l’Un à la monarchie française, alors que Sarlande est imaginaire. À garder, ou à remplacer par un emblème propre à l’Un ?
+- Pierrot porte une vraie couronne dorée et une cape de velours, au lieu d’une couronne de papier : il paraît un vrai petit roi plutôt qu’un enfant qui joue.
+
+**Petits écarts acceptés** : gilet bleu d’Anselme, robe bleue de Mahaut, robe rouille d’Ysabeau, cheveux châtains de Bastien, Hugues sans chaîne ni gants, béret du percepteur. Les fiches seront ajustées.
 
 ## STYLE · à coller en premier dans chaque conversation
 
