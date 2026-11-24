@@ -29,6 +29,12 @@
 - **La cour des gardes** : sol de dalles grises, caisses cerclées, râtelier de hallebardes, table de jeu, abreuvoir, bottes de foin, braséro, bannières rouges sous l’arcade. Les cônes de vision sont un lavis rouge dont le pigment s’accumule au bord : la limite reste nette.
 - **Caméra** : toute l’acte I passe à la caméra derrière Aliénor, plus haute et plus reculée dans la cour pour lire les cônes. L’acte II garde sa caméra. La caméra ne se coince plus contre Aliénor dans la cour.
 
+## Monde ouvert
+
+- La planche qui s’ouvrait à la première entrée dans la cour des gardes est supprimée : on passe de l’atelier à la rue, à la place, au quai et à la cour sans tourner la page.
+- À chaque changement de lieu, son nom s’inscrit un instant en bas de l’écran (« La rue de l’Imprimerie », « La cour des gardes »…).
+- Deux planches restent, parce qu’elles marquent un saut dans le temps et portent des citations : avant la chute de la pierre (« Le château ») et au passage à l’acte II (« La fête de l’Un »). Le livre des planches reste consultable depuis la page de titre.
+
 ## Tests faits (étape 1)
 
 Essais sur ordinateur, Chromium sans carte graphique (rendu logiciel), écran d’iPad émulé (1080 × 810) et toucher émulé par le protocole du navigateur :
