@@ -255,6 +255,8 @@ Toutes les fins restent dans la ligne du *Discours* : la liberté ne s’arrache
 
 **[Établi]** Les répliques citées ci-dessous sont celles du jeu. **[Proposition]** Désir, peur, secret, arc et marques visuelles complètent ce qui existe, à valider.
 
+**[Établi, souhait de Lucas]** Tous les personnages méritent d’être creusés ; la mère d’Aliénor est un fil à approfondir ; une relation amoureuse lie Aliénor et un garde très beau, avec des conséquences sur l’histoire. Les fiches approfondies, la méthode et l’arc de cette relation sont dans `bible/Personnages.md`.
+
 ### Aliénor, apprentie imprimeuse (héroïne)
 - **Établi** : rousse, taches de rousseur, chignon tressé retenu par un ruban écru, robe orange à manches bouffantes, tablier écru taché d’encre, mains noires d’encre « jusqu’aux coudes ». Elle sait lire. Sa mère posait des questions et sentait l’encre.
 - **Désir** : comprendre, puis faire comprendre. **Peur** : être celle qui se fait remarquer, celle qui « paie avec le nom d’un autre ». **Secret** : ce qu’elle ignore encore de sa mère.
