@@ -1,6 +1,6 @@
 # Les personnages de Sarlande · fiches approfondies
 
-*Le Contr’un* · document de travail · version 0.1 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.2 du 24 novembre 2026
 
 Ce document complète la partie 6 de la bible. Mêmes statuts : **[Établi]** (dans le jeu ou décidé par Lucas), **[Proposition]** (à trancher). Les citations suivent `Citations_Belin.md`.
 
@@ -26,14 +26,14 @@ Le principe de la question 5 est essentiel : chaque personnage incarne une raiso
 
 ## 2. La relation amoureuse : Aliénor et le garde
 
-**[Établi, souhait de Lucas]** Une relation amoureuse entre Aliénor et un garde, très beau. Elle influence le cours de l’histoire et a des conséquences, comme tous les choix du personnage.
+**[Établi, décisions de Lucas]** Une relation amoureuse entre Aliénor et **Bastien**, le garde de la porte, très beau. Elle est **facultative**, au choix du joueur, et elle influence le cours de l’histoire comme tous les choix du personnage. Ton : tendre et retenu, pas plus loin qu’un baiser.
 
 ### 2.1 Qui est-il
 
-**[Proposition]** C’est le **garde de la porte**, déjà présent dans le jeu. Il s’agit de lui donner un visage, un nom et une histoire.
+**[Établi]** C’est le **garde de la porte**, déjà présent dans le jeu. Il s’agit de lui donner un visage et une histoire.
 
 - **Établi** : « Moi aussi, je paie le tribut. On me le retient sur la solde. » ; « Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. » ; « Circule. On ne regarde pas la porte. On regarde ses pieds. »
-- **Nom** : à choisir. Trois propositions de prénoms d’époque : **Bastien**, **Gauthier**, **Rémi**. « Bastien » est utilisé ci-dessous à titre provisoire.
+- **Nom** : **Bastien** (décision de Lucas).
 - **Âge** : dix-neuf ou vingt ans, deux ou trois ans de plus qu’Aliénor.
 - **Ce qu’il veut** : sortir sa famille de la file. Entré aux gardes pour que sa mère n’ait plus à porter de sac, il paie pourtant comme les autres.
 - **Ce dont il a besoin** : comprendre qu’il est l’une des mains de l’Un, et qu’une main peut se retirer.
@@ -47,7 +47,7 @@ Le principe de la question 5 est essentiel : chaque personnage incarne une raiso
 
 **[Proposition]** Les gardes sont « les mains » du tyran. Le *Discours* le dit : « D’où a-t-il pris tant d’yeux dont il vous épie si vous ne les lui donnez ? Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (Belin, p. 26). Aimer un garde, c’est aimer l’une de ces mains. La question de l’histoire d’amour devient celle de l’œuvre : une main peut-elle cesser de servir ?
 
-Elle rejoint aussi le passage sur l’amitié, qui « ne se met jamais qu’entre gens de bien » (p. 71) : l’amour d’Aliénor et de Bastien est possible tant qu’ils restent l’un pour l’autre des personnes, et non un garde et une suspecte.
+Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais qu’entre gens de bien » et « ce qui rend un ami assuré de l’autre c’est la connaissance qu’il a de son intégrité » (Belin, p. 71). La confiance entre Aliénor et Bastien ne s’achète pas, elle se connaît : c’est exactement ce que mesure la variable de confiance. Le passage sur les hallebardes, qui ne « préservent » pas les tyrans (p. 63), devient la leçon de son arc.
 
 ### 2.3 L’arc proposé, sur cinq actes
 
@@ -68,7 +68,7 @@ Elle rejoint aussi le passage sur l’amitié, qui « ne se met jamais qu’entr
 - **Confiance faible** : il reste garde. Il peut devenir le traître de l’acte IV, par peur et pour sauver son frère, sans jamais cesser de l’aimer.
 - **Relation refusée** : il reste une silhouette parmi les gardes. L’histoire continue autrement, et le joueur ne voit jamais ce qu’il aurait pu faire.
 
-**[Proposition] Pour un public de seize ans** : une histoire tendre et retenue, faite de regards, de mains qui se frôlent, de rendez-vous et de lettres. Pas plus loin qu’un baiser, que le joueur peut d’ailleurs ne jamais vivre. La relation reste facultative.
+**[Établi] Pour un public de seize ans** : une histoire tendre et retenue, faite de regards, de mains qui se frôlent, de rendez-vous et de lettres. Pas plus loin qu’un baiser, que le joueur peut d’ailleurs ne jamais vivre. La relation reste facultative.
 
 **[À prévoir pour l’image]** Aujourd’hui, tous les gardes partagent un même portrait. Bastien aura son propre visage : portraits, planche de tour et feuille d’expressions, comme Aliénor.
 
@@ -76,39 +76,79 @@ Elle rejoint aussi le passage sur l’amitié, qui « ne se met jamais qu’entr
 
 ## 3. La mère d’Aliénor
 
-**[Établi]** Elle posait des questions. Elle sentait l’encre. Elle a confié à Ysabeau une page qu’il ne fallait pas brûler. « Ta mère aussi posait des questions. Ça lui a passé. Ça passe toujours. » (Ysabeau)
+**[Établi]** Elle posait des questions. Elle sentait l’encre. Elle a confié à Ysabeau une page qu’il ne fallait pas brûler. « Ta mère aussi posait des questions. Ça lui a passé. Ça passe toujours. » (Ysabeau). Lucas laisse à Claude le choix de son arc ; aucun lien avec la famille de Bastien.
 
-**[Proposition] Trois versions, à trancher** :
+**[Proposition, choix de Claude] Mahaut, celle qui s’est tue et qui se souvient.**
 
-**A. La disparue.** Imprimeuse avant Anselme, ou avec lui, elle a été emmenée au palais il y a douze ans, comme le mari de Margot. Aliénor trouve sa fiche aux archives à l’acte III. Anselme le savait et s’est tu : il s’est juré de protéger la fille faute d’avoir sauvé la mère.
+- **Prénom proposé** : Mahaut.
+- **Ce qu’Aliénor croit** : sa mère est morte d’une fièvre quand elle avait cinq ans. C’est ce qu’Anselme et Ysabeau lui ont dit.
+- **Ce qui s’est passé** : il y a douze ans, Mahaut imprimait en secret avec Anselme. Les gardes sont venus. Anselme s’est tu ; il a gardé sa presse et continué d’imprimer les édits de l’Un. Mahaut a été emmenée, puis relâchée un an plus tard, sur promesse de silence, et bannie de la cité. Pour protéger sa fille, elle a accepté de passer pour morte.
+- **Ce qui la tient** : **la peur**, puis **la mémoire**. Elle a cédé, et elle n’a jamais oublié. Dans la forêt, hors des murs (planche IX), elle recopie à la main les pages qu’elle connaît par cœur.
+- **Son lien avec l’œuvre** : elle incarne les deux visages du passage sur les « quelques-uns mieux nés que les autres, qui sentent le poids du joug et ne peuvent pas s’empêcher de le secouer » et qui, « quand la liberté serait entièrement perdue et toute hors du monde, l’imaginent et la sentent en leur esprit » (Belin, p. 46). Elle a été vaincue, et elle se souvient.
+- **Ce qu’elle donne à l’histoire** : une raison intime, pour Aliénor, de poursuivre ; une trahison ancienne, celle du silence d’Anselme ; et une réplique d’Ysabeau, « Ça lui a passé », qui devient fausse et poignante.
 
-**B. Celle qui s’est tue.** Elle est vivante, et c’est ce qui fait mal. Après une nuit de prison, elle a cessé d’imprimer et de poser des questions. Elle vit hors de Sarlande, ou dans un autre quartier, ou elle est morte de chagrin. « Ça lui a passé » : la coutume l’a rattrapée. Aliénor doit comprendre qu’on peut perdre sa liberté par lassitude, et non seulement par la force.
+**Son arc**
 
-**C. Celle qui imprime encore.** Elle est la main cachée derrière une partie des pages dispersées dans la ville. On la croit perdue ; elle a continué. À l’acte V, elle sort de l’ombre. C’est l’un des « quelques-uns mieux nés […] qui sentent le poids du joug et ne peuvent pas s’empêcher de le secouer » (Belin, p. 46).
+| Acte | Ce qui se passe | Choix du joueur |
+|---|---|---|
+| I-II | Elle n’existe que dans les répliques déjà écrites : les questions, l’encre, la page confiée à Ysabeau. | Aucun |
+| III | Aux archives, Aliénor trouve sa fiche : « relâchée sur promesse de silence, bannie de la cité ». Sa mère est vivante. Elle comprend aussi qu’Anselme savait. | Accuser Anselme, lui demander pourquoi, ou garder le secret pour plus tard |
+| IV | Aliénor sort de la ville et retrouve Mahaut dans la forêt. Elle refuse de revenir : « Ça passe toujours. » Mais elle lui montre ses cahiers recopiés à la main. | La convaincre, la laisser, ou lui laisser une feuille imprimée |
+| V | Le jour du tribut. Selon les choix, Mahaut revient et se tient dans la file sans sac ; ou elle reste dans la forêt, et une page recopiée de sa main est retrouvée sur la fontaine. | Aucun : c’est la conséquence des actes précédents |
 
-**[Proposition] Un lien avec Bastien, au choix** : celui qui a arrêté la mère, il y a douze ans, était le père de Bastien, ou le sergent qui commande aujourd’hui Bastien. L’amour se double alors d’une dette entre les deux familles, révélée à l’acte III. C’est une source de conflit forte, mais facultative.
-
----
-
-## 4. Les autres personnages à creuser
-
-Chacun recevra une fiche complète selon la méthode de la partie 1, dans cet ordre :
-
-1. **Aliénor** : la fiche complète, à reprendre à la lumière de la relation et de la mère.
-2. **Anselme** : ce qu’il sait de la mère ; vingt ans d’édits imprimés ; ce qu’il est prêt à sacrifier.
-3. **Maëlle** : le père boulanger, le four, la tentation de la loterie ; une possible traîtresse.
-4. **Garin** : sa femme, ses enfants, la honte, le rire public ; un possible traître.
-5. **Le percepteur** : ce qu’il a appris à peser ; ce qu’il pense vraiment de l’Un.
-6. **Hugues, Perrine, Jeanne, Thibaut, Mathurin, Margot, Ysabeau, Bertin, les mendiants, les enfants** : chacun incarne une cause de la servitude ; chacun reviendra au moins une fois après l’acte II.
-7. **Le sergent** : le chef de Bastien, et peut-être un lien avec la mère.
-8. **L’Un** : l’homme derrière le rideau.
+**Le pardon d’Anselme** est une décision du joueur. Il peut changer la fin d’Anselme : celui-ci se livre-t-il, à l’acte IV ou V, pour racheter son silence d’il y a douze ans ?
 
 ---
 
-## 5. Décisions à prendre
+## 4. Ce qui tient chaque personnage
 
-1. Le garde aimé est-il bien le **garde de la porte** ? Quel prénom : Bastien, Gauthier, Rémi, ou un autre ?
-2. La relation reste-t-elle **facultative**, au choix du joueur ?
-3. Le **ton** proposé (tendre, retenu, pas plus loin qu’un baiser) vous convient-il ?
-4. Pour la mère : **version A, B ou C** ? Faut-il le lien avec la famille de Bastien ?
-5. Dans quel **ordre** voulez-vous que j’approfondisse les autres personnages ?
+**[Proposition, choix de Claude, à la demande de Lucas]** Chaque personnage incarne une ou deux raisons de servir, prises dans le *Discours* et dans le carnet de l’acte II. Les deux colonnes de droite indiquent s’il peut s’en défaire et la citation Belin qui l’éclaire.
+
+| Personnage | Ce qui le tient | Peut-il s’en défaire ? | Citation d’appui (Belin) |
+|---|---|---|---|
+| Aliénor | La coutume (elle « apprend vite à se taire »), la peur d’être remarquée | Oui : c’est l’arc du jeu | « quelques-uns mieux nés que les autres » (p. 46) |
+| Bastien, le garde | L’intérêt (la solde, l’uniforme), la peur | Selon la confiance et l’exposition | « Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (p. 26) |
+| Mahaut, la mère | La peur, puis la mémoire | Selon les choix des actes IV et V | « l’imaginent et la sentent en leur esprit » (p. 46) |
+| Anselme | La peur et la complicité passée : vingt ans d’édits imprimés, un silence | Oui, par le rachat | « les livres et la doctrine… » (p. 46) |
+| Maëlle | Les largesses : l’espoir de la loterie, le four rendu | Oui à l’acte II ; peut retomber à l’acte IV | l’oiseau et la plume (p. 53) |
+| Garin | La coutume (« Mon père était tanneur. Il payait. »), puis la honte du rire public | Oui, mais la honte peut le retourner | « au commencement on sert contraint… » (p. 38) |
+| Ysabeau | La coutume | Elle garde la mémoire sans le savoir | « Ils disent qu’ils ont toujours été sujets… » (p. 45) |
+| Le percepteur | L’intérêt : sa place dans la chaîne | Non, sauf retournement à l’acte V | F5 et la chaîne des six (p. 63-64) |
+| Le sergent | L’intérêt et la hiérarchie (« Tout le monde sert quelqu’un ») | Non | « les hallebardes, les gardes et la présence du guet » (p. 63) |
+| Hugues | L’intérêt : être tyranneau sous le grand tyran | Non ; il peut trahir pour monter | « le grand tyran des tyranneaux » (p. 65) |
+| Perrine | La peur, pour son fils | Oui, si l’enfant cesse de crier le premier | « Deux peuvent craindre un… » (p. 20) |
+| Jeanne | Les largesses : trois pièces et un pain blanc | Oui : première lectrice de l’affiche | « Vive le roi ! » (p. 55) |
+| Thibaut | Le mystère : la litière, le rideau, le miracle | Oui, s’il voit l’homme derrière le rideau | « un homme que personne n’avait jamais vu » (p. 57) |
+| Mathurin | La coutume : le toast de son père | Peu probable : il dort | « le venin de la servitude » (p. 38) |
+| Margot | Aucune : elle se souvient | C’est une alliée | « quelques-uns mieux nés » (p. 46) |
+| Bertin | L’intérêt : il vend les cages, puis les masques | Non : il vend à tous les camps | « les appâts de la servitude » (p. 54) |
+| Les enfants de la fontaine | La coutume, apprise en jouant | Le plus petit laisse le sac | « On ne se plaint jamais de ce que l’on n’a jamais eu » (p. 44) |
+| Les mendiants | Exclus des largesses : on ne les tient pas, on les chasse | Ils voient la fête de loin | « Les tyrans faisaient largesse… » (p. 55) |
+| L’Un | Il sert ceux qui le servent : il les craint tous | Non : il n’est « jamais aimé, ni n’aime » | « d’un seul petit homme » (p. 19) ; l’amitié (p. 71) |
+
+---
+
+## 5. L’ordre d’approfondissement
+
+**[Proposition, choix de Claude]** Chaque fiche complète suivra la méthode de la partie 1.
+
+1. **Anselme** : il porte le secret de Mahaut, et donc l’acte III.
+2. **Mahaut** : sa fiche complète, et les scènes de la forêt.
+3. **Bastien et le sergent** : la relation, et la chaîne qui le tient.
+4. **Maëlle** puis **Garin** : les deux candidats à la trahison de l’acte IV.
+5. **Aliénor** : sa fiche complète, une fois tous ses liens connus.
+6. **Le percepteur** et **Hugues** : la chaîne des complices.
+7. **Ysabeau**, puis les **témoins de la fête** : chacun reviendra au moins une fois après l’acte II.
+8. **L’Un** : en dernier, comme dans l’histoire.
+
+---
+
+## 6. Décisions
+
+- [x] Le garde aimé : le garde de la porte, **Bastien**.
+- [x] Relation **facultative**.
+- [x] **Ton** tendre et retenu.
+- [x] Pas de lien entre la mère et la famille de Bastien.
+- [ ] Mahaut, la mère, et son arc (partie 3) : à valider.
+- [ ] Ce qui tient chaque personnage (partie 4) : à valider.
+- [ ] L’ordre d’approfondissement (partie 5) : à valider.
