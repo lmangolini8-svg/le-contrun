@@ -2337,7 +2337,9 @@ function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="
   if(firstExchange&&Array.isArray(queue[0])&&queue[0][1].startsWith("« C’est le matin du tribut.")){
     firstExchange=false;startMovie("outil",()=>{mode="dialog";nextLine();refreshHud();});return;
   }
-  const l=queue.shift(); waitingChoice=false; aliExpression(l); dlg.style.display="block"; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
+  const l=queue.shift(); waitingChoice=false;
+  if(l&&l.movie){ dlg.style.display="none"; startMovie(l.movie,()=>{ mode="dialog"; refreshHud(); nextLine(); }); return; }
+  aliExpression(l); dlg.style.display="block"; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
   if(l.feu){ sfx("feuillet"); if(!S.f.includes(l.feu))S.f.push(l.feu); if(!(S.shots&&S.shots[l.feu])) capReq=l.feu; const f=FEU[l.feu]; dlg.innerHTML=`<div class="feu"><div class="who">Feuillet retrouvé · ${S.f.length} sur ${NF}</div><div class="cit">${esc(f.cit)}</div><div class="idee">${esc(f.idee)}</div></div><div class="more">Touchez pour continuer</div>`; return; }
   if(l.choices){ waitingChoice=true; dlg.innerHTML=(l.head||"")+`<div class="ch">${l.choices.map((c,i)=>`<button data-c="${i}">${esc(c[0])}</button>`).join("")}</div>`; dlg._choices=l.choices; return; }
   dlg.innerHTML=portraitForLine(l)+(l[0]?`<div class="who">${esc(l[0])}</div>`:"")+`<p class="txt${l[0]?"":" narr"}">${esc(l[1])}</p><div class="more">Touchez pour continuer</div>`; }
@@ -2539,7 +2541,7 @@ function platesList(){ return `<div class="pl">${Object.keys(PLATES).map(k=>`<bu
 function showPlates(){ mode="title"; plBack="title"; refreshHud(); panel(`<span class="kick">Le livre des planches</span><h2>Treize vues de Sarlande</h2><p class="small">Touchez une planche pour l’ouvrir.</p>${platesList()}<div class="row"><button class="pri" data-a="home">Retour à la page de titre</button></div>`,true); }
 function startPlay(newGame=false){
   closePanel();S.started=true;applyStage();save();fpsT=0;fpsN=0;setScene(true);setCones(true);
-  if(newGame){firstExchange=false;player.position.set(-45.6,0,-2.0);player.rotation.y=2.42;TP.yaw=2.42;TP.pitch=.2;TP.snap=true;enterPlay();}
+  if(newGame){firstExchange=false;TP.yaw=2.42;TP.pitch=.2;TP.snap=true;startMovie("ouverture",meetAnselme);}
   else{inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);TP.yaw=player.rotation.y;TP.snap=true;enterPlay();}
 }
 function showCarnet(){ mode="panel"; plBack="carnet"; refreshHud();
@@ -2583,7 +2585,7 @@ $("carnetBtn").addEventListener("click",showCarnet);
 /* ================= Quêtes ================= */
 function applyStage(){ setScene(); placeAllies(); sheet7.visible=S.act===2&&night&&!S.f.includes("F7"); gateBox.on=S.stage<3||S.act===2; gate.visible=gateBox.on; g3.g.visible=S.flags.tribut==="refus"; for(const o of guards) o.k=S.flags.tribut==="refus"?1.12:1; playerSack.visible=S.stage<2;
   sheet3.visible=!S.f.includes("F3"); sheet4.visible=!S.f.includes("F4"); sheet5.visible=!S.f.includes("F5"); garinSack();
-  placeStone(S.stage>=5?1:0); }
+  placeStone(S.stage>=5?1:0); if(typeof pilotState==="function") pilotState(); }
 const TARGET=[()=>N.anselme.position,()=>({x:0,z:-11.6}),()=>N.maelle.position,()=>sheet3.position,()=>N.garin.position,()=>N.anselme.position,()=>!S.f.includes("F4")?sheet4.position:(!S.f.includes("F5")?sheet5.position:N.anselme.position)];
 function targetNow(){ return S.act===2?act2Target()[0]:TARGET[S.stage](); }
 function targetName(){ if(S.act===2) return act2Target()[1]; if(S.stage===6) return (S.f.includes("F4")&&S.f.includes("F5"))?"maître Anselme":"un feuillet"; return TNAME[S.stage]; }
@@ -2596,9 +2598,7 @@ function vary(id,arr){ S.talk=S.talk||{}; const i=S.talk[id]||0; S.talk[id]=i+1;
 function branch(opts,rest,done){ return {choices:opts.map(o=>[o[0],()=>{ if(o[2]) o[2](); talk(o[1].concat(rest||[]),done); }])}; }
 const INTER=[
  {p:()=>N.anselme.position,label:"Parler à Anselme",act(){ if(S.act===2) return A2.anselme();
-   if(S.stage===0) return beginMeeting([[AN,"« Te voilà, Aliénor. De l’encre jusqu’aux coudes, comme d’habitude. »"],[AN,"« C’est le matin du tribut. Le tiers de ce que l’atelier a gagné part au palais. Porte ce sac au percepteur, au nord de la place. »"],
-     branch([["« Un tiers ? Pour en faire quoi ? »",[[AN,"« Rien que tu verras jamais. Mais ne le demande pas trop fort. »"]]],["« J’y vais, maître. »",[[AN,"« Tu apprends vite à te taire. Ce n’est pas un compliment. »"]]]],
-       [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un livre que l’Un a fait brûler. »"],{feu:"F1"},[AN,"« J’ai défait ce livre feuille à feuille et je les ai cachées dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],()=>setStage(1))]);
+   if(S.stage===0) return meetAnselme();
    if(S.stage===5) return talk([[AN,"« Garin a posé son sac ? Devant tout le monde ? »"],
      branch([["« Il a dit : qu’ils viennent le chercher. »",[[AN,"« Trente ans qu’il se tait, et voilà sa première phrase. Elle est bonne. »"]]],["« J’ai eu peur pour lui. »",[[AN,"« Tu as raison d’avoir peur. Mais regarde : la peur n’a pas suffi à le retenir. »"]]]],
        [[AN,"« Une pierre, ce n’est rien. Mais il n’en fallait pas plus pour savoir de quoi le socle est fait : de nous. »"],[AN,"« Méfie-toi. Ce soir, c’est la Fête de l’Un : du vin, des jongleurs, des pièces jetées du balcon. Ils feront tout pour qu’on oublie ce matin. »"]],()=>{ setStage(6); showEnd(); })]);
@@ -2630,13 +2630,7 @@ const INTER=[
        [[MA,"« Il y en a une autre dans la chapelle du vieux cloître, à l’est, derrière la cour des gardes. La poterne est ouverte le matin. »"],[MA,"« Reste hors du rouge et passe derrière les caisses. S’ils te voient, ils te jettent dehors. »"]],()=>setStage(3))]); }},
  {p:()=>N.percepteur.position,r:3.4,label:"Parler au percepteur",act(){ if(S.act===2) return A2.percepteur();
    if(S.stage!==1) return talk([[PE,vary("pe",["« Suivant. »","« L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. »","« Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. »"])]]);
-   const B1={paye:"Le garde de gauche regarde ses pieds, comme on le lui a appris.",denonce:"Le garde de gauche lève les yeux sur vous. Puis il les détourne, comme on détourne les yeux d’une flaque.",refus:"Le garde de gauche ne regarde plus ses pieds. Il vous regarde."};
-   const done=(flag,lines)=>()=>{ S.flags.tribut=flag; const b=bstate(); if(flag!=="paye") b.vu=true; if(flag==="denonce") b.conf=-1; talk(lines.concat([["",B1[flag]],["","Près de son étal, Maëlle vous fait signe."]]),()=>setStage(2)); };
-   talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],{choices:[
-     ["Payer la mesure de votre poche",done("paye",[[PE,"« Bien. Tu vois, quand on veut. Suivant. »"],["","Vous videz votre bourse. Il ne vous regarde déjà plus."]])],
-     ["Dire que le sac de Garin, le tanneur, était bien plus léger",done("denonce",[[PE,"« Garin ? Tiens donc. Gardes, qu’on me ramène le tanneur. »"],[PE,"« Tu iras loin, petite. Le palais a toujours besoin de gens qui regardent le sac des autres. »"],["","Il raye votre dette. Vous venez de payer avec le nom d’un autre."]])],
-     ["Demander à quoi sert le tribut",done("refus",[[PE,"« À nourrir les gardes. »"],[AL,"« Et les gardes ? »"],[PE,"« À veiller à ce que tu paies. Ton nom ? … Aliénor. Je l’écris en grand. »"],["","Les gardes vous suivent des yeux. Vous n’êtes plus un sac parmi les autres."]])]
-   ]}]); }},
+   peseeTribut(); }},
  {p:()=>({x:-3.2,z:-15.4}),r:2.1,label:"Parler au garde",act(){ if(S.act===2) return A2.garde(); bastienPorte(); }},
  {p:()=>N.garin.position,label:"Parler à Garin",act(){ if(S.act===2) return A2.garin();
    if(S.stage>4) return talk([[GA,vary("ga5",["« Mon sac est toujours par terre. J’attends de voir qui posera le sien. »","« Ma femme dit que je suis fou. Elle a peut-être raison. Mais je dors mieux. »"])]]);
@@ -2781,6 +2775,7 @@ function releaseMovie(){
   if(m.name==="manche")inkSpread=1;
   if(m.name==="outil")toolDown=1;
   if(m.name==="pierre")placeStone(1);
+  if(typeof PILOTE_END!=="undefined"&&PILOTE_END[m.name]) PILOTE_END[m.name]();
   atelierActorProps(toolDown,inkSpread);current=null;m.done();
 }
 function enterPlay(){mode="play";zone=zoneOf();snapCam();refreshHud();}
@@ -2794,7 +2789,8 @@ function directScene(delta){
   m.t+=delta;const t=m.t,P=player.position,A=N.anselme.position,H=player.userData,M=N.anselme.userData;
   const cue=(id,when,f)=>{if(t>=when&&!m.fired.has(id)){m.fired.add(id);f();}};
   const phase=(a,b)=>ease01((t-a)/(b-a));
-  $("cutPlace").hidden=m.name!=="matin"||t<.35||t>3.05;
+  $("cutPlace").hidden=(m.name!=="matin"&&m.name!=="ouverture")||t<.35||t>3.05;
+  if(PILOTE[m.name]){ PILOTE[m.name](t,m,cue,phase); if(t>=sceneDurations[m.name]) releaseMovie(); return; }
   if(m.name==="matin"){
     cue("bois",2.8,()=>{if(Snd.ctx){thump(Snd.ctx.currentTime+.01,.22,119,.19);}});
     cue("presse",5.2,()=>sfx("press"));
@@ -2862,6 +2858,165 @@ function skipCurrent(){
 $("cutSkip").addEventListener("click",skipCurrent);
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&(sceneRun||mode==="cine2"||mode==="farce")){e.preventDefault();skipCurrent();}});
 
+/* ================= Le matin du tribut : ouverture, remise du sac, pesée et conséquences =================
+   Les répliques sont celles du jeu (acte I, étapes 0 et 1) ; les plans muets montrent ce qu’elles disent. */
+const handSack=aliSatchel(); handSack.scale.setScalar(1.08); handSack.visible=false; scene.add(handSack);
+const panSack=aliSatchel(); panSack.scale.setScalar(.95); panSack.visible=false; tribScale.userData.pans[0].add(panSack); panSack.position.set(0,-.02,0);
+{ const b=new Builder(); b.jit=0; b.put(G.c16,0xc59a48,0,-.25,0,.05,.06,.05); b.put(G.c16,0x9e783e,0,-.21,0,.035,.03,.035); tribScale.userData.pans[1].add(b.mesh(VC2)); }
+const coinPile=(()=>{ const b=new Builder(); b.jit=0; for(let k=0;k<7;k++) b.put(G.c16,k%2?0xc59a48:0xd8b25c,(k%3)*.02-.02,k*.016,(k%2)*.02,.05,.014,.05); const m=b.mesh(VC2); m.position.set(.25,.97,-12.95); m.visible=false; scene.add(m); return m; })();
+const plume=(()=>{ const b=new Builder(); b.jit=0; b.put(G.c8,0xe9e2d2,0,.16,0,.006,.32,.006); b.put(G.s,0xf3ecdd,0,.25,0,.035,.13,.012); const m=b.mesh(VC2); m.visible=false; scene.add(m); return m; })();
+/* La bourse d’Aliénor, à la ceinture : elle s’allège si elle paie la mesure manquante. */
+const purse=(()=>{ const b=new Builder(); b.jit=0; b.put(G.s,0x7a5236,0,-.045,0,.05,.062,.038); b.put(G.c8,0x5a3a26,0,.012,0,.03,.016,.026); b.put(G.c8,0x3f2a1c,0,.04,0,.005,.05,.005,0,0,.3);
+  const g=new THREE.Group(); g.add(b.mesh(VC2)); const a=.95, r=.205; g.position.set(Math.sin(a)*r,1.0,Math.cos(a)*r); player.userData.body.add(g); return g; })();
+function setPurse(full){ purse.scale.set(full?1:.82,full?1:.55,full?1:.7); }
+/* Les deux gardes de la porte. Celui de gauche est Bastien (découpage B-1) ; celui de droite va chercher Garin. */
+const gateG=HUMANS.filter(g=>g.parent===scene&&Math.abs(g.position.z+15.4)<.01&&Math.abs(Math.abs(g.position.x)-3.2)<.01).sort((a,b)=>a.position.x-b.position.x);
+const GATE_POS=gateG.map(g=>[g.position.x,g.position.z,g.rotation.y]);
+/* Le suivant de la file, que le percepteur appelle quand Aliénor a payé. */
+const suivant=npc({top:0x9aa6b8,bottom:0x8c7a66,skirt:true,hat:"coif",x:5.2,z:-9.4,ry:Math.PI,sack:true}); suivant.visible=false; suivant.userData.circle[3]=false;
+
+/* Marches de fond : un personnage suit un chemin pendant que le joueur reprend la main. Un nombre dans le chemin est une pause. */
+const WALK=[];
+function walkTo(g,pts,speed,then){ for(let i=WALK.length-1;i>=0;i--) if(WALK[i].g===g) WALK.splice(i,1); WALK.push({g,pts:pts.slice(),speed:speed||1.6,then,wait:0,ownAnim:!Object.values(N).includes(g)}); g.userData.walking=true; }
+function walkTick(dt){ if(S.act!==1&&WALK.length) WALK.length=0;
+  for(let i=WALK.length-1;i>=0;i--){ const w=WALK[i], g=w.g;
+    if(w.wait>0){ w.wait-=dt; g.userData.walking=false; if(w.ownAnim) animate(g,false,dt); continue; }
+    const t=w.pts[0];
+    if(t===undefined){ WALK.splice(i,1); g.userData.walking=false; if(w.then) w.then(); continue; }
+    if(typeof t==="number"){ w.wait=t; w.pts.shift(); continue; }
+    if(t.length===3&&t[2]==="face"){ g.rotation.y=t[0]; w.pts.shift(); continue; }
+    const dx=t[0]-g.position.x, dz=t[1]-g.position.z, d=Math.hypot(dx,dz);
+    if(d<.06){ w.pts.shift(); continue; }
+    g.userData.walking=true; const st=Math.min(d,w.speed*dt); g.position.x+=dx/d*st; g.position.z+=dz/d*st; faceTo(g,t[0],t[1],dt,7);
+    if(w.ownAnim) animate(g,true,dt,7.2); const c=g.userData.circle; if(c){ c[0]=g.position.x; c[1]=g.position.z; } } }
+
+/* État visible du matin selon le choix déjà fait (aussi à la reprise d’une sauvegarde). */
+function pilotState(){ const t=S.act===1?S.flags.tribut:null;
+  setPurse(t!=="paye");
+  coinPile.visible=t==="paye"&&S.act===1;
+  panSack.visible=false; handSack.visible=false; plume.visible=false;
+  const lvl=t?0:-.24; tribScale.userData.beam.rotation.z=lvl; for(const p of tribScale.userData.pans) p.rotation.z=-lvl;
+  const sv=S.act===1&&t==="paye"&&S.stage<6; suivant.visible=sv; suivant.userData.circle[3]=sv; if(sv&&!WALK.some(w=>w.g===suivant)){ suivant.position.set(1.5,0,-12.0); suivant.rotation.y=Math.PI; suivant.userData.circle[0]=1.5; suivant.userData.circle[1]=-12; }
+  gateG.forEach((g,i)=>{ if(!WALK.some(w=>w.g===g)){ g.position.set(GATE_POS[i][0],0,GATE_POS[i][1]); g.rotation.y=GATE_POS[i][2]; const c=g.userData.circle; if(c){ c[0]=g.position.x; c[1]=g.position.z; } } });
+}
+/* Ce qui bouge en continu : le signe de Maëlle, les gardes qui suivent Aliénor des yeux après sa question. */
+function pilotTick(dt){ walkTick(dt);
+  if(S.act!==1) return; const P=player.position;
+  if(S.stage===2&&!sceneRun){ const U=N.maelle.userData, w=Math.sin(time*7); U.arms[0].rotation.x=-2.55+.12*w; U.arms[0].rotation.z=-.25+.22*w; if(U.elbows[0]) U.elbows[0].rotation.x=-.5; }
+  if(S.flags.tribut==="refus"&&S.stage>=2&&S.stage<6&&P.z<9&&P.x>-22&&P.x<22) for(const g of gateG) if(!WALK.some(w=>w.g===g)) faceTo(g,P.x,P.z,dt,2.2);
+}
+
+/* ---------- les plans du chapitre ---------- */
+const MEET={x:-44.58,z:-3.13,ry:2.55};
+function setMeet(){ player.position.set(MEET.x,0,MEET.z); player.rotation.y=MEET.ry; const A=N.anselme.position; N.anselme.rotation.y=Math.atan2(MEET.x-A.x,MEET.z-A.z); }
+function anselmeFront(d,y){ const A=N.anselme.position, a=N.anselme.rotation.y; return new THREE.Vector3(A.x+Math.sin(a)*d,y,A.z+Math.cos(a)*d); }
+const drum=(t0,beats)=>{ if(!Snd.ctx) return; const c=Snd.ctx.currentTime; beats.forEach((b,i)=>acoustic("peau",c+t0+b,i%4===0?.34:.2,i%4===0?.82:.9,.55)); };
+const PILOTE={
+  // Ouverture : la rue au petit matin, le tambour sur la place, puis la presse, le papier, et Anselme qui tient le sac.
+  ouverture(t,m,cue,phase){ const A=N.anselme.position;
+    cue("init",0,()=>{ setMeet(); playerSack.visible=false; handSack.visible=true; drum(.3,[0,.42,.84,1.05,1.26,1.68,2.1,2.31,2.52,2.94]); });
+    cue("feuille",2.4,()=>{ if(Snd.ctx) acoustic("feuille",Snd.ctx.currentTime+.01,.16,.9,-.2); });
+    cue("presse",3.7,()=>sfx("press")); cue("presse2",5.3,()=>sfx("press")); cue("tambour2",6.2,()=>drum(0,[0,.42,.84]));
+    const s=anselmeFront(.34,1.0); handSack.position.copy(s); handSack.rotation.set(0,N.anselme.rotation.y,0);
+    const M=N.anselme.userData; M.arms[0].rotation.x=M.arms[1].rotation.x=-.62; if(M.elbows[0]) M.elbows[0].rotation.x=M.elbows[1].rotation.x=-.9;
+    if(t<3.4){ const k=phase(0,3.4); frame(-38.2-k*1.6,1.55+k*.25,4.7,-46.3,2.7-k*.5,.2,portrait?62:48); aimSun(-44,2); }
+    else if(t<6.2){ const k=phase(3.4,6.2); frame(-40.6-k*.5,1.75,-2.7-k*.2,-42.6,1.15,-4.7,portrait?60:46); aimSun(-43,-4); }
+    else { const k=phase(6.2,9.4), mx=(MEET.x+A.x)/2, mz=(MEET.z+A.z)/2; frame(mx+2.3-k*.5,1.45,mz+1.5-k*.3,mx,1.15,mz,portrait?58:44); aimSun(mx,mz); } },
+  // La remise du sac : il le tend, elle le prend à deux mains et le passe à l’épaule.
+  remise(t,m,cue,phase){ const H=player.userData, M=N.anselme.userData, A=N.anselme.position;
+    const give=phase(.2,1.6), take=phase(1.4,2.4)*(1-phase(3.0,3.9));
+    M.arms[0].rotation.x=M.arms[1].rotation.x=-.62-.55*give*(1-phase(2.6,3.4)); if(M.elbows[0]) M.elbows[0].rotation.x=M.elbows[1].rotation.x=-.9+.6*give;
+    M.head.rotation.x=.2*give;
+    if(t<2.6){ const s=anselmeFront(.34+.42*give,1.0+.05*give); handSack.position.copy(s); handSack.rotation.y=N.anselme.rotation.y; handSack.visible=true; playerSack.visible=false; }
+    cue("prise",2.6,()=>{ handSack.visible=false; playerSack.visible=true; if(Snd.ctx){ thump(Snd.ctx.currentTime+.01,.18,95,.22); acoustic("feuille",Snd.ctx.currentTime+.05,.08,.7,0); } });
+    H.reach(0,-.11,1.02,.4,take,[-.4,-1,.5]); H.reach(1,.11,1.02,.4,take,[.4,-1,.5]); H.head.rotation.x=.3*take;
+    const mx=(player.position.x+A.x)/2, mz=(player.position.z+A.z)/2, dx=A.x-player.position.x, dz=A.z-player.position.z, L=Math.hypot(dx,dz);
+    frame(mx-dz/L*1.75+dx/L*.2,1.32,mz+dx/L*1.75+dz/L*.2,mx,1.05,mz,portrait?56:40); aimSun(mx,mz); },
+  // Le secret : Anselme montre la doublure, Aliénor baisse les yeux sur le sac.
+  doublure(t,m,cue,phase){ const H=player.userData, M=N.anselme.userData, k=phase(.2,.9)*(1-phase(2.1,2.7));
+    M.arms[1].rotation.x=-1.05*k; if(M.elbows[1]) M.elbows[1].rotation.x=-.3*k; M.head.rotation.x=.35*k; H.head.rotation.x=.42*k; H.head.rotation.y=-.35*k;
+    cue("papier",.9,()=>{ if(Snd.ctx) acoustic("feuille",Snd.ctx.currentTime+.01,.12,1.15,0); });
+    const s=new THREE.Vector3(); satchel.getWorldPosition(s); const A=N.anselme.position, ax=A.x-s.x, az=A.z-s.z, al=Math.hypot(ax,az)||1; frame(s.x+ax/al*1.15-az/al*.35,s.y+.42,s.z+az/al*1.15+ax/al*.35,s.x,s.y,s.z,portrait?52:40); aimSun(s.x,s.z); },
+  // Le seuil : elle sort de l’atelier, la caméra passe derrière elle, le joueur reprend la main face à la rue.
+  seuil(t,m,cue,phase){ const P=player.position;
+    const path=[[MEET.x,MEET.z],[-46.3,-1.6],[-46.45,-.2],[-46.2,1.0]], k=phase(0,2.6), seg=k*(path.length-1), i=Math.min(path.length-2,Math.floor(seg)), f=seg-i;
+    const x=path[i][0]+(path[i+1][0]-path[i][0])*f, z=path[i][1]+(path[i+1][1]-path[i][1])*f;
+    if(k<1){ const a=Math.atan2(path[i+1][0]-path[i][0],path[i+1][1]-path[i][1]); let d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*.18; m.walk=2.1; }
+    else { let d=1.2-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*.12; m.walk=0; }
+    P.set(x,0,z); TP.yaw=player.rotation.y; TP.pitch=.2; const v=tpView(), r=phase(.4,2.4);
+    camPos.lerp(tmp.set(v[0],v[1],v[2]),.06+.2*r); camLook.lerp(tmp.set(v[3],v[4],v[5]),.1+.2*r); setLens(v[6]); aimSun(P.x,P.z); },
+  // La pesée : le sac sur le plateau, le fléau remonte… et s’arrête trop tôt.
+  pesee(t,m,cue,phase){ const H=player.userData, U=N.percepteur.userData;
+    cue("init",0,()=>{ player.position.set(-.2,0,-11.85); player.rotation.y=Math.PI; panSack.visible=false; });
+    const put=phase(.2,1.0)*(1-phase(1.25,1.8)); H.reach(0,-.1,1.0,.5,put,[-.4,-1,.5]); H.reach(1,.12,1.0,.5,put,[.4,-1,.5]);
+    cue("pose",1.1,()=>{ playerSack.visible=false; panSack.visible=true; sfx("clink1"); });
+    const beam=tribScale.userData.beam; let z=-.24; if(t>1.1){ const u=t-1.1; z=-.08-.16*Math.exp(-u*1.6)*Math.cos(u*5.2); }
+    beam.rotation.z=z; for(const p of tribScale.userData.pans) p.rotation.z=-z;
+    U.head.rotation.x=.42*phase(.6,1.4)*(1-phase(3.4,4.2)); U.head.rotation.y=.35*phase(.6,1.4)*(1-phase(3.4,4.2));
+    cue("cliquetis",2.2,()=>sfx("clinks"));
+    frame(.95,1.5,-11.25,.6,1.18,-13.3,portrait?54:42); aimSun(0,-13); },
+  // Payer : la main va à la bourse, les pièces tombent sur la table, le fléau s’équilibre.
+  payer(t,m,cue,phase){ const H=player.userData, a=phase(.1,.7)*(1-phase(1.0,1.4)), b=phase(1.1,1.7)*(1-phase(2.4,2.9));
+    H.reach(1,.2,1.0,.18,a,[.5,-1,.3]); H.reach(1,.1,1.05,.5,b,[.5,-1,.4]); H.head.rotation.x=.35*a;
+    cue("bourse",1.0,()=>{ setPurse(false); if(Snd.ctx) acoustic("feuille",Snd.ctx.currentTime,.05,.6,0); });
+    cue("pieces",1.7,()=>{ sfx("coins"); coinPile.visible=true; });
+    const beam=tribScale.userData.beam; if(t>1.7){ const z=-.08*Math.exp(-(t-1.7)*2)*Math.cos((t-1.7)*6); beam.rotation.z=z; for(const p of tribScale.userData.pans) p.rotation.z=-z; }
+    frame(1.6,1.45,-10.9,-.1,1.05,-12.6,portrait?56:42); aimSun(0,-12); },
+  // « Suivant. » Le percepteur détourne la tête et fait signe ; le suivant de la file s’avance.
+  suivant(t,m,cue,phase){ const U=N.percepteur.userData, k=phase(.1,.6);
+    cue("appel",.1,()=>{ suivant.visible=true; suivant.userData.circle[3]=true; suivant.position.set(5.2,0,-9.4); walkTo(suivant,[[2.2,-11.0],[1.5,-12.0],[Math.PI,0,"face"]],1.25); });
+    U.head.rotation.y=.75*k; U.arms[0].rotation.x=-1.2*k*(1-phase(1.6,2.4))+Math.sin(t*9)*.15*k*(1-phase(1.6,2.4));
+    frame(-2.6,2.0,-9.2,2.2,1.2,-12.0,portrait?60:46); aimSun(1,-11); },
+  // Dénoncer : le garde de droite quitte son poste et part chercher Garin.
+  garde(t,m,cue,phase){ const g=gateG[1], G=N.garin;
+    cue("part",.2,()=>{ if(Snd.ctx) acoustic("pas-armure",Snd.ctx.currentTime,.25,1,0);
+      walkTo(g,[[2.8,-11.2],[-9.6,-3.6],.6],2.1,()=>{ G.userData.circle[3]=false;
+        walkTo(G,[[-8.5,-6.5],[-1.6,-11.6],[Math.PI,0,"face"],7,[-11,-2.4],[0,0,"face"]],1.5,()=>{ G.userData.circle[3]=true; });
+        walkTo(g,[[-8.8,-5.5],[-2.7,-11.0],7.6,[3.2,-15.4],[0,0,"face"]],1.5); }); });
+    const p=g.position; frame(5.6,2.2,-9.6,p.x*.5,1.3,(p.z-12)*.5,portrait?60:48); aimSun(0,-10); },
+  // La plume : le percepteur écrit le nom d’Aliénor, en grand.
+  ecrire(t,m,cue,phase){ const U=N.percepteur.userData, k=phase(.1,.5)*(1-phase(3.0,3.4));
+    plume.visible=t<3.3; const w=Math.max(0,t-.5); plume.position.set(-.75+((w*.32)%.42),1.02+.02*Math.abs(Math.sin(w*11)),-13.28+.05*Math.sin(w*7)); plume.rotation.set(-.5,0,.35+.15*Math.sin(w*11));
+    U.arms[1].rotation.x=-.85*k+.08*Math.sin(w*11)*k; U.head.rotation.x=.45*k;
+    for(const at of [.6,.9,1.25,1.5,1.85,2.2,2.5]) cue("gratte"+at,at,()=>{ if(Snd.ctx) acoustic("feuille",Snd.ctx.currentTime,.05,1.7+Math.random()*.3,0); });
+    frame(-.25,1.62,-12.35,-.6,1.0,-13.25,portrait?50:36); aimSun(0,-13); },
+  // Les gardes se tournent vers elle.
+  regard(t,m,cue,phase){ for(const g of gateG) faceTo(g,player.position.x,player.position.z,1/30,3.2*phase(.3,1.2));
+    cue("armure",.3,()=>{ if(Snd.ctx) acoustic("pas-armure",Snd.ctx.currentTime,.2,1.1,0); });
+    frame(4.4,1.65,-10.4,-.6,1.45,-14.6,portrait?58:44); aimSun(0,-13); },
+  // Le signe de Maëlle, près de son étal.
+  signe(t,m,cue,phase){ const U=N.maelle.userData, w=Math.sin(t*7); U.arms[0].rotation.x=-2.55+.12*w; U.arms[0].rotation.z=-.25+.22*w;
+    const M=N.maelle.position; frame(M.x-3.2,1.75,M.z+3.4,M.x,1.35,M.z,portrait?56:42); aimSun(M.x,M.z); }
+};
+Object.assign(sceneDurations,{ouverture:9.4,remise:4.0,doublure:2.8,seuil:2.9,pesee:4.2,payer:3.0,suivant:2.6,garde:4.2,ecrire:3.4,regard:2.4,signe:2.4});
+/* Ce que « Passer la scène » doit laisser en place. */
+const PILOTE_END={
+  ouverture(){ setMeet(); handSack.visible=true; playerSack.visible=false; },
+  remise(){ handSack.visible=false; playerSack.visible=true; },
+  seuil(){ player.position.set(-46.2,0,1.0); player.rotation.y=1.2; TP.yaw=1.2; TP.pitch=.2; TP.snap=true; },
+  pesee(){ playerSack.visible=false; panSack.visible=true; const z=-.08; tribScale.userData.beam.rotation.z=z; for(const p of tribScale.userData.pans) p.rotation.z=-z; },
+  payer(){ setPurse(false); coinPile.visible=true; tribScale.userData.beam.rotation.z=0; for(const p of tribScale.userData.pans) p.rotation.z=0; },
+  ecrire(){ plume.visible=false; },
+  regard(){ for(const g of gateG) g.rotation.y=Math.atan2(player.position.x-g.position.x,player.position.z-g.position.z); }
+};
+
+/* ---------- les dialogues du chapitre, avec leurs plans ---------- */
+function meetAnselme(){ setMeet(); handSack.visible=true; playerSack.visible=false;
+  talk([[AN,"« Te voilà, Aliénor. De l’encre jusqu’aux coudes, comme d’habitude. »"],[AN,"« C’est le matin du tribut. Le tiers de ce que l’atelier a gagné part au palais. Porte ce sac au percepteur, au nord de la place. »"],
+    {movie:"remise"},
+    branch([["« Un tiers ? Pour en faire quoi ? »",[[AN,"« Rien que tu verras jamais. Mais ne le demande pas trop fort. »"]]],["« J’y vais, maître. »",[[AN,"« Tu apprends vite à te taire. Ce n’est pas un compliment. »"]]]],
+      [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un livre que l’Un a fait brûler. »"],{movie:"doublure"},{feu:"F1"},[AN,"« J’ai défait ce livre feuille à feuille et je les ai cachées dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],
+      ()=>{ setStage(1); startMovie("seuil",enterPlay); })]); }
+function peseeTribut(){
+  const B1={paye:"Le garde de gauche regarde ses pieds, comme on le lui a appris.",denonce:"Le garde de gauche lève les yeux sur vous. Puis il les détourne, comme on détourne les yeux d’une flaque.",refus:"Le garde de gauche ne regarde plus ses pieds. Il vous regarde."};
+  const done=(flag,lines)=>()=>{ S.flags.tribut=flag; const b=bstate(); if(flag!=="paye") b.vu=true; if(flag==="denonce") b.conf=-1; save();
+    talk(lines.concat([["",B1[flag]],["","Près de son étal, Maëlle vous fait signe."],{movie:"signe"}]),()=>setStage(2)); };
+  talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],{movie:"pesee"},[PE,"« Il manque une mesure. »"],{choices:[
+    ["Payer la mesure de votre poche",done("paye",[{movie:"payer"},[PE,"« Bien. Tu vois, quand on veut. Suivant. »"],{movie:"suivant"},["","Vous videz votre bourse. Il ne vous regarde déjà plus."]])],
+    ["Dire que le sac de Garin, le tanneur, était bien plus léger",done("denonce",[[PE,"« Garin ? Tiens donc. Gardes, qu’on me ramène le tanneur. »"],{movie:"garde"},[PE,"« Tu iras loin, petite. Le palais a toujours besoin de gens qui regardent le sac des autres. »"],{movie:"ecrire"},["","Il raye votre dette. Vous venez de payer avec le nom d’un autre."]])],
+    ["Demander à quoi sert le tribut",done("refus",[[PE,"« À nourrir les gardes. »"],[AL,"« Et les gardes ? »"],[PE,"« À veiller à ce que tu paies. Ton nom ? … Aliénor. Je l’écris en grand. »"],{movie:"ecrire"},{movie:"regard"},["","Les gardes vous suivent des yeux. Vous n’êtes plus un sac parmi les autres."]])]
+  ]}]); }
+
 /* ================= Boucle ================= */
 const clock=new THREE.Clock(); let time=0, seen=0, fpsT=0, fpsN=0, saveT=0;
 const camPos=new THREE.Vector3(0,20,40), camLook=new THREE.Vector3(0,8,-20), tmp=new THREE.Vector3();
@@ -2909,7 +3064,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt
     player.rotation.y+=tp?Math.sign(d)*Math.min(Math.abs(d),dt*(4.5+5*Math.min(1,Math.abs(d)))):d*Math.min(1,dt*12); moving=true; }
   else TP.v*=Math.max(0,1-dt*9);
   if(moving&&walkT<18){ walkT+=dt; if(walkT>=18) refreshHud(); }
-  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
+  player.userData.speed=pSpeed; const cw=sceneRun&&sceneRun.walk>0; animate(player,moving||cw,dt,aliRate(cw?sceneRun.walk:pSpeed)); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt); pilotTick(dt);
   if(S.act===1&&S.stage===0&&!sceneRun&&mode==="play"&&!firstExchange&&toolDown===0){
     const u=N.anselme.userData,bend=.5+.5*Math.sin(time*2.8);
     u.elbows[1].rotation.x=-.72-.48*bend;u.arms[1].rotation.x=-.50+.17*bend;
