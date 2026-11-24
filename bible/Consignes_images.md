@@ -1,6 +1,6 @@
 # Consignes d’images pour ChatGPT
 
-*Le Contr’un* · document de travail · version 0.1 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.2 du 24 novembre 2026
 
 Ces consignes sont à coller dans **ChatGPT**, avec la génération d’images. **Codex ne convient pas** : c’est un agent qui écrit du code, il ne dessine pas.
 
@@ -28,6 +28,13 @@ Il est déjà inclus dans chaque consigne. Le voici seul, si vous devez le rappe
 ---
 
 ## 3. Lot 1 · Aliénor
+
+**Suivi (24 novembre 2026)**, fichiers dans `references/planches-3d/` :
+- [x] **A1, planche de tour** : trois versions reçues. **La v3 est retenue** (`alienor_tour_v3.png`) : la plus neutre et la plus proche du portrait. Ses trois vues sont découpées en carrés pour la génération 3D : `alienor_vue_face.png`, `alienor_vue_profil.png`, `alienor_vue_dos.png`. Seul défaut : la bottine est basse de face et montante de profil ; on garde celle de face.
+- [ ] **A2, planche de tête** : à refaire en grand. L’étude de mouvement contient une petite rangée de têtes, trop petite pour la 3D.
+- [ ] **A3, feuille d’expressions de face** : pas encore reçue.
+- [x] **A4, planche de mains** : reçue (`alienor_mains.png`). Elle montre le geste du revers et la sangle, utiles pour la scène de la manche.
+- [x] **Bonus, étude de mouvement** (`alienor_etude_mouvement.png`) : marche, gestes, profils de tête, balancement des bras, bas de jupe. Référence pour l’animation.
 
 ### A1 · Planche de tour, en pied
 
