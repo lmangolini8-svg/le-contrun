@@ -3,6 +3,8 @@
 Référence validée : `references/planches-3d/statue_reference.png`.
 Globe métallique ajouré dans SA main droite (à gauche de l'image vue de face), épée dans SA main
 gauche, pointe vers le bas. Couronne, patine bleu sombre, liserés dorés.
+**Pas de fleur de lys** (décision du 24 novembre 2026) : le pommeau de l'épée de la planche en porte
+une ; il sera remplacé dans Blender si Meshy le reproduit.
 
 - `meshy/entree_essai1_statue_reference_carre.png` : image à donner à Meshy pour l'essai 1.
 - `meshy/` : y déposer les GLB téléchargés de Meshy (`essai1.glb`, `essai2.glb`).

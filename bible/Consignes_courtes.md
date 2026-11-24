@@ -25,8 +25,14 @@
 **À reprendre**
 - [ ] `seq_bucher_2.png` : c’est une main d’adulte qui arrache la page d’un livre, alors que la scène montre une petite fille de huit ans qui tire une page du feu. À refaire : « Les petites mains d’une fillette de huit ans tirent du feu une page qui brûle par un coin. Gros plan, flammes tout autour. »
 
+**Tranché par Lucas (24 novembre 2026) : pas de fleur de lys.** Sarlande est imaginaire ; l’Un ne doit pas être rattaché à la monarchie française. Ne plus jamais en demander, et ajouter « sans fleur de lys » quand l’image jointe en contient.
+
+Fleurs de lys encore présentes, à remplacer par l’emblème de l’Un (à dessiner, voir plus bas) :
+- Références : `lieu_archives.png` (bannière), `garcon_tour.png` (cape), `statue_reference.png` (pommeau de l’épée).
+- Textures du jeu : `img/ornements.webp` (bannières rouges du palais), `img/etoffes.webp` (étoffe bleue semée de lys), à vérifier dans `img/espalier.webp` (petit blason).
+- Code du jeu : emblème `LYS` de l’écran-titre et des planches de citation ; tablier du colosse procédural (remplacé à l’étape statue).
+
 **À trancher par Lucas**
-- Les **fleurs de lys** apparaissent sur la bannière des archives (`lieu_archives.png`) et sur la cape du garçon qui joue au tyran (`garcon_tour.png`). C’est l’emblème des rois de France : il rattache l’Un à la monarchie française, alors que Sarlande est imaginaire. À garder, ou à remplacer par un emblème propre à l’Un ?
 - Pierrot porte une vraie couronne dorée et une cape de velours, au lieu d’une couronne de papier : il paraît un vrai petit roi plutôt qu’un enfant qui joue.
 
 **Petits écarts acceptés** : gilet bleu d’Anselme, robe bleue de Mahaut, robe rouille d’Ysabeau, cheveux châtains de Bastien, Hugues sans chaîne ni gants, béret du percepteur. Les fiches seront ajustées.
@@ -93,6 +99,8 @@ Coller STYLE avec l’image indiquée, puis la consigne.
 | `objet_sac.png` | — | « Planche 3D : un sac de toile plein et lourd, noué au col, avec une sangle de cuir, de face, de profil et de dos, fond ivoire. » |
 | `objet_balance.png` | — | « Planche 3D : une balance de marchand en laiton à deux plateaux, de face, de profil et de dos, fond ivoire. » |
 | `objet_hallebarde.png` | — | « Planche 3D : une hallebarde de garde, de face et de profil, fond ivoire. » |
+| `objet_emblème_un.png` | `references/planches-3d/statue_reference.png` (style seulement) | « L’emblème de l’Un, souverain imaginaire : un motif héraldique simple, lisible en petit, sans fleur de lys ni aigle ni symbole d’un pays réel. Trois propositions côte à côte, or sur fond rouge sombre. » |
+| `statue_tour.png` | `references/planches-3d/statue_reference.png` | « Planche 3D : cette statue en pied, sans socle, de face, de profil droit et de dos. Même pose : le globe ajouré dans sa main droite, à gauche de l’image vue de face ; l’épée dans sa main gauche, pointe vers le bas, pommeau sans fleur de lys. Même couronne, patine bleu sombre, liserés dorés. Même taille, sans perspective. Fond ivoire uni. » |
 | `lieu_place_neige.png` | `place-du-marche-et-tribut.webp` | « La même place en hiver : neige, fontaine gelée, traces de pas, affiche à demi arrachée, statue de l’Un avec une pierre manquante. » |
 | `lieu_foret_cabane.png` | `references/lieux-originaux/foret-et-sarlande-au-loin.webp` | « Une cabane de bûcheron près d’une source, dans la forêt, une fenêtre éclairée, des cahiers sur la table. Printemps. » |
 | `lieu_archives.png` | `references/lieux-originaux/bibliotheque-archives.webp` | « Les archives du palais la nuit : registres jusqu’aux voûtes, une lanterne, un registre ouvert. » |
