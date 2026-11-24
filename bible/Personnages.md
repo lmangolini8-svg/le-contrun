@@ -1,6 +1,6 @@
 # Les personnages de Sarlande · fiches approfondies
 
-*Le Contr’un* · document de travail · version 0.5 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 1.0 du 24 novembre 2026
 
 Ce document complète la partie 6 de la bible. Mêmes statuts : **[Établi]** (dans le jeu ou décidé par Lucas), **[Proposition]** (à trancher). Les citations suivent `Citations_Belin.md`.
 
@@ -154,11 +154,11 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 - [x] Mahaut, la mère, et son arc (partie 3).
 - [x] Ce qui tient chaque personnage (partie 4).
 - [x] L’ordre d’approfondissement (partie 5).
-- [ ] Fiche complète d’Anselme (partie 7.1) : à valider.
-- [ ] Fiche complète de Bastien et déroulé de la relation (partie 7.2) : à valider.
-- [ ] Fiches complètes de tous les autres personnages (parties 7.3 à 7.12) : à valider.
-- [ ] Chronologie de Sarlande (partie 8) : à valider.
-- [ ] Noms proposés : Mahaut, Brisset, Philibert Mauclerc, Guillaume, Agnès, Gervais, Joris, Martin, Hubert, Béatrix, Colin, Jacquemin, Pierrot, Toinon, Gilles, Jehan.
+- [x] Fiche complète d’Anselme (partie 7.1).
+- [x] Fiche complète de Bastien et déroulé de la relation (partie 7.2).
+- [x] Fiches complètes de tous les autres personnages (parties 7.3 à 7.12).
+- [x] Chronologie de Sarlande (partie 8).
+- [x] Noms retenus : Mahaut, Brisset, Philibert Mauclerc, Guillaume, Agnès, Gervais, Joris, Martin, Hubert, Béatrix, Colin, Jacquemin, Pierrot, Toinon, Gilles, Jehan.
 
 ---
 
@@ -166,7 +166,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 ### 7.1 Maître Anselme, imprimeur
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Ce qui est établi dans le jeu**
 - Vieil homme, béret rouge, tablier taché, outil à la main devant son atelier, à l’ouest de la place.
@@ -218,7 +218,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 ### 7.2 Bastien, garde de la porte, et sa relation avec Aliénor
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Ce qui est établi**
 - Dans le jeu : « Circule. On ne regarde pas la porte. On regarde ses pieds. » ; « Moi aussi, je paie le tribut. On me le retient sur la solde. » ; « Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »
@@ -335,7 +335,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.3 Aliénor, apprentie imprimeuse
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : dix-sept ans environ ; rousse, taches de rousseur, chignon tressé retenu par un ruban écru ; robe orange à manches bouffantes, tablier écru, mains tachées d’encre « jusqu’aux coudes ». Elle sait lire. Apprentie d’Anselme. Toutes les décisions de l’élève passent par elle.
 
@@ -364,7 +364,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.4 Mahaut, la mère d’Aliénor
 
-*Statut : arc [Établi] (partie 3, validé par Lucas) ; détails [Proposition].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 1. **Ce qu’elle veut** : que sa fille vive. C’est pour cela qu’elle a accepté de passer pour morte.
 2. **Ce dont elle a besoin** : se pardonner d’avoir cédé.
@@ -386,7 +386,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.5 Le sergent Brisset
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : « Le percepteur me sert à boire, je sers le percepteur. Mes gardes me servent. Et toi, petite, tu sers qui ? » ; « Tout le monde sert quelqu’un. C’est ce qui tient la table debout. » ; à la question « Et l’Un, il sert qui ? », il répond : « … Bois, et va danser. »
 
@@ -406,7 +406,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.6 Maëlle, boulangère
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : jeune femme blonde à la tresse. On a pris la boulangerie de son père le mois dernier, pour un tribut en retard. Elle donne à Aliénor la page que son père relisait chaque soir, « parce que tu sais lire ». Tentée par la loterie, qui promet de rendre une boutique à son maître, elle déchire son billet. Elle encre les feuilles à la presse : « Je n’ai jamais été aussi fière d’être sale. »
 
@@ -429,7 +429,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.7 Garin, tanneur
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : homme massif au bonnet de cuir ; trente ans de tribut, « Mon père était tanneur. Il payait. » ; « On s’y fait, petite. C’est bien ça le pire : on s’y fait. » ; il pose son sac (« Qu’ils viennent le chercher. ») ; il rit à la farce qui le moque, puis s’arrête net ; il tire la barre de la presse (« Cette barre est plus lourde qu’un sac. Mais celle-là, je la tire pour moi. »). S’il a été dénoncé : double mesure, et un soupçon.
 
@@ -452,7 +452,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.8 Philibert Mauclerc, le percepteur
 
-*Statut : [Proposition] (le nom est à valider), sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : fraise, plume, balance, registre. « L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. » ; « Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. » ; « Une fête coûte moins cher qu’une garnison. Et on m’en remercie. » ; il écrit le nom d’Aliénor si elle pose sa question, et note encore quand elle lit sur les tréteaux. Près du dais : « Elle n’est pas vide. Elle est réservée. C’est différent. »
 
@@ -472,7 +472,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.9 Hugues, chef de la rue des Tanneurs
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : « Premier rang, grand gobelet. Ça se mérite. Vingt ans à compter les sacs de ma rue pour le percepteur. » ; « Le jour où le percepteur tombera, il faudra quelqu’un à sa place. Pourquoi pas moi ? » ; « Si ce n’était pas moi, ce serait un autre. » ; à l’aube, il doit signaler trois noms de sa rue.
 
@@ -492,7 +492,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.10 Ysabeau, la vieille voisine
 
-*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 **Établi** : châle vert. « On a toujours fait ainsi, ma fille. » ; « Ta mère aussi posait des questions. Ça lui a passé. » ; elle garde depuis quarante ans une page que la mère d’Aliénor lui a confiée, sans savoir la lire : « Je sais qu’on voulait la brûler. Ça m’a suffi. »
 
@@ -512,7 +512,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.11 Les témoins de la fête
 
-*Statut : [Proposition], sauf les répliques citées, qui sont [Établi]. Chacun revient au moins une fois après l’acte II.*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026. Chacun revient au moins une fois après l’acte II.*
 
 **Jeanne, aux trois pièces** · *les largesses*
 - Établi : paysanne, elle remercie pour trois pièces et un pain blanc le soir où elle a porté le tiers de sa récolte ; c’est la première lectrice de l’affiche : « Pauvres et misérables peuples insensés… C’est de nous qu’il parle ? »
@@ -571,7 +571,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ### 7.12 L’Un
 
-*Statut : [Prévu] il se révèle être un homme chétif à l’acte III ; le reste est [Proposition].*
+*Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 1. **Ce qu’il veut** : qu’on ne le voie pas.
 2. **Ce dont il a besoin** : rien que le jeu lui accorde.
@@ -592,7 +592,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 
 ## 8. La chronologie de Sarlande
 
-**[Proposition]** Cette chronologie rend compatibles toutes les répliques établies, notamment les « soixante fêtes » de Mathurin, les quarante ans d’Ysabeau et les vingt ans d’édits d’Anselme.
+**[Établi, validé par Lucas]** Cette chronologie rend compatibles toutes les répliques établies, notamment les « soixante fêtes » de Mathurin, les quarante ans d’Ysabeau et les vingt ans d’édits d’Anselme.
 
 | Quand | Ce qui s’est passé |
 |---|---|
