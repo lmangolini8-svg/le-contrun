@@ -19,6 +19,16 @@
 - **Raccords** : Anselme, l’arrivée de l’acte II pendant le grand toast (`ATELIER`) et la place de Garin et Maëlle à l’imprimerie suivent le nouvel emplacement. Les anciennes sauvegardes se reprennent.
 - **Mesure** : ajouter `?mesure` à l’adresse affiche les images par seconde, la pire image des cinq dernières secondes et le nombre d’images trop lentes.
 
+## Place et cour des gardes (demande du 24 novembre)
+
+- **La place** : anneau de dalles autour de la fontaine, chaussées vers la porte du palais, la rue de l’Imprimerie et le quai ; trois marches devant la porte ; oriflammes rouges de part et d’autre de l’approche.
+- **Le poste du percepteur** : dais rouge à lambrequins, table de chêne sur tréteaux drapée d’indigo à franges, registre ouvert, encrier et plume, piles de pièces, coffre ferré, sacs. **Balance de laiton** d’après `objet_balance.png`, construite à part (`tribScale`) pour pencher à l’étape 2.
+- **La file du tribut** passe entre deux rangées de poteaux et de cordes ; les porteurs tiennent la sangle de leur sac au lieu de lever le bras.
+- **Le marché de l’ouest** : deux étals rayés, paniers de fruits, sacs, charrette à foin.
+- **Les gardes**, d’après `bastien_tour.png` : morion à bord et crête, grande plume rouge, cuirasse et baudriers, manches et chausses bouffantes, épée, hallebarde d’après `objet_hallebarde.png`.
+- **La cour des gardes** : sol de dalles grises, caisses cerclées, râtelier de hallebardes, table de jeu, abreuvoir, bottes de foin, braséro, bannières rouges sous l’arcade. Les cônes de vision sont un lavis rouge dont le pigment s’accumule au bord : la limite reste nette.
+- **Caméra** : toute l’acte I passe à la caméra derrière Aliénor, plus haute et plus reculée dans la cour pour lire les cônes. L’acte II garde sa caméra. La caméra ne se coince plus contre Aliénor dans la cour.
+
 ## Tests faits (étape 1)
 
 Essais sur ordinateur, Chromium sans carte graphique (rendu logiciel), écran d’iPad émulé (1080 × 810) et toucher émulé par le protocole du navigateur :

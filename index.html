@@ -590,7 +590,7 @@ function tree(x,z,s){
   const treeMesh=new THREE.Mesh(g,treeMaterial);treeMesh.position.set(x,0,z);treeMesh.scale.setScalar(s);treeMesh.castShadow=treeMesh.receiveShadow=true;treeMesh.userData.ph=random()*6;scene.add(treeMesh);trees.push(treeMesh);
 }
 function barrel(x,z){ put(G.c16,0x8a6a48,x,0.5,z,0.38,1.0,0.38); put(G.c16,0x4b3829,x,0.25,z,0.4,0.06,0.4); put(G.c16,0x4b3829,x,0.75,z,0.4,0.06,0.4); }
-function crate(x,z,w,h){ put(G.box,0x9a7c55,x,h/2,z,w,h,w); for(const sx of [-1,1]) for(const sz of [-1,1]) put(G.box,0x6e5338,x+sx*(w/2-0.06),h/2,z+sz*(w/2-0.06),0.16,h+0.04,0.16); put(G.box,0x6e5338,x,h+0.02,z,w+0.04,0.06,w+0.04); solid(x-w/2,x+w/2,z-w/2,z+w/2); }
+function crate(x,z,w,h){ put(G.box,0x9a7c55,x,h/2,z,w,h,w,0,0,0,6); for(let k=1;k<4;k++){ const y=h*k/4; for(const [dx,dz,sx,sz] of [[0,w/2+.005,w,.02],[0,-w/2-.005,w,.02],[w/2+.005,0,.02,w],[-w/2-.005,0,.02,w]]) put(G.box,0x6e5338,x+dx,y,z+dz,sx,.025,sz); } for(const s of [-1,1]) put(G.box,0x3f3a3a,x,h*(.5+s*.38),z+w/2+.012,w*.98,.06,.02); put(G.box,0x5a4130,x,h/2,z+w/2+.01,.04,h*.9,.02,0,0,Math.atan2(h,w)*0+.85); for(const sx of [-1,1]) for(const sz of [-1,1]) put(G.box,0x6e5338,x+sx*(w/2-0.06),h/2,z+sz*(w/2-0.06),0.16,h+0.04,0.16); put(G.box,0x6e5338,x,h+0.02,z,w+0.04,0.06,w+0.04); solid(x-w/2,x+w/2,z-w/2,z+w/2); }
 function stall(x,z,c1,c2){ put(G.box,WOOD,x,0.9,z,3.2,0.12,1.5); for(const [dx,dz] of [[-1.5,-.65],[1.5,-.65],[-1.5,.65],[1.5,.65]]) put(G.box,0x5b4331,x+dx,1.45,z+dz,0.1,2.9,0.1); put(G.box,0x6e5338,x,0.45,z-0.6,3.1,0.9,0.08);
   const savedJitter=B.jit; B.jit=0;
   for(let i=0;i<16;i++) {
@@ -1196,8 +1196,7 @@ for(let i=0;i<6;i++) put(G.s,[0xa8545a,0x6f8a78,0xc9a24e][i%3],-10+i*0.4-0.2,1.0
 barrel(-21.5,-9); barrel(-20.6,-8.6); barrel(21.6,13.5); crate(21.4,-13.4,1.2,1.1); barrel(-21.6,16.4); crate(18.5,16.2,1.3,1.0);
 circles.push([-21.1,-8.8,0.8],[21.6,13.5,0.5],[-21.6,16.4,0.5]);
 for(let i=0;i<4;i++) put(G.s,0xb9a27c,6.5+i*0.5,0.28,-12.6+(i%2)*0.4,0.36,0.28,0.3);
-/* table du percepteur */
-put(G.box,0x5b4331,0,0.92,-13.2,2.6,0.1,1.1); for(const [dx,dz] of [[-1.2,-.45],[1.2,-.45],[-1.2,.45],[1.2,.45]]) put(G.box,0x5b4331,dx,0.46,-13.2+dz,0.1,0.92,0.1); put(G.box,POURPRE,0,0.9,-12.64,2.6,0.6,0.04); put(G.box,0xe9e2d2,-0.5,1.0,-13.2,0.7,0.06,0.5,0.2); put(G.c8,ORANGE,0.7,1.2,-13.2,0.03,0.5,0.03); put(G.box,ORANGE,0.7,1.42,-13.2,0.6,0.03,0.03);
+/* table du percepteur : voir « La place et la cour des gardes, enrichies pour le pilote » */
 solid(-1.3,1.3,-13.75,-12.65).low=true;
 
 /* cour des gardes, arcades, chapelle */
@@ -1263,6 +1262,125 @@ for(let j=0;j<=16;j++){
 for(const side of [-1,1]){
   put(G.box,ST2,side*2.63,2.20,-16.31,.53,4.40,.55);
   put(G.box,ST,side*2.63,4.39,-16.24,.82,.26,.69);
+}
+/* ================= La place et la cour des gardes, enrichies pour le pilote =================
+   Références : place-du-marche-et-tribut.webp (étals rayés, paniers, file qui monte vers la porte),
+   objet_balance.png, objet_hallebarde.png, bastien_tour.png. */
+{
+  const prev=B.jit; B.jit=.05;
+  const OAK=0xa87545, WAL=0x785139, BRASS=0xc59a48, BRASS2=0x9e783e, IRON=0x3f3a3a, RED=0xc8321f, RED2=0x9c2a1c, CLOTH=0x2e3a66;
+  const rod=(a,b,r,color,round=true)=>{ const v=new THREE.Vector3().fromArray(b).sub(new THREE.Vector3().fromArray(a));
+    const e=new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),v.clone().normalize()),"YXZ");
+    put(round?G.c8:G.box,color,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2,r,v.length(),r,e.y,e.x,e.z,0); };
+  const sag=(a,b,drop,r,c,n=6)=>{ let p=a; for(let i=1;i<=n;i++){ const t=i/n, q=[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t-drop*Math.sin(Math.PI*t),a[2]+(b[2]-a[2])*t]; rod(p,q,r,c); p=q; } };
+  const basket=(x,z,fruit,s=1)=>{ put(G.c16,0xb08a52,x,.2*s,z,.32*s,.4*s,.32*s,0,0,0,0); put(G.c16,0x8a6a3e,x,.4*s,z,.34*s,.05,.34*s,0,0,0,0);
+    for(let k=0;k<7;k++){ const a=k*2.4,r=.17*Math.sqrt(k)*s; put(G.s,fruit,x+Math.cos(a)*r,.45*s+.04*(k%2),z+Math.sin(a)*r,.09*s); } };
+  const sack=(x,z,ry,s=1)=>{ put(G.s,0xc2a273,x,.3*s,z,.3*s,.32*s,.27*s,ry,0,0,0); put(G.s,0xb39465,x,.58*s,z,.15*s,.12*s,.14*s,ry,0,0,0); put(G.c8,0x6e5338,x,.66*s,z,.07*s,.04,.07*s); put(G.k16,0xc2a273,x,.76*s,z,.09*s,.16*s,.09*s,ry,0,0,0); };
+
+  /* ---- le sol : anneau de dalles autour de la fontaine, chaussée vers la porte, vers la rue et vers le quai ---- */
+  for(let ring=0;ring<3;ring++){ const r0=3.0+ring*.85, n=22+ring*8;
+    for(let i=0;i<n;i++){ const a=(i+ring*.5)/n*Math.PI*2, r=r0+.42;
+      put(G.box,(i+ring)%2?0x8f8068:0x84745c,Math.sin(a)*r,.012,3+Math.cos(a)*r,2*Math.PI*r/n-.07,.024,.78,a,0,0,0); } }
+  const path=(x0,z0,x1,z1,w,c1,c2)=>{ const L=Math.hypot(x1-x0,z1-z0), n=Math.round(L/1.1), a=Math.atan2(x1-x0,z1-z0);
+    for(let i=0;i<n;i++){ const t=(i+.5)/n, x=x0+(x1-x0)*t, z=z0+(z1-z0)*t;
+      for(let j=-1;j<=1;j++) put(G.box,(i+j)%2?c1:c2,x+Math.cos(a)*j*w/3,.01,z-Math.sin(a)*j*w/3,w/3-.06,.02,L/n-.08,a,0,0,0); }
+    for(const s of [-1,1]) for(let i=0;i<n;i++){ const t=(i+.5)/n; put(G.box,0x6a5c48,x0+(x1-x0)*t+Math.cos(a)*s*w/2,.014,z0+(z1-z0)*t-Math.sin(a)*s*w/2,.16,.028,L/n-.04,a,0,0,0); } };
+  path(0,-.6,0,-14.8,3.4,0x938269,0x87775f);
+  path(-3.4,3,-22.8,2.7,2.6,0x8f7f66,0x84745c);
+  path(0,6.6,0,17.6,2.6,0x8f7f66,0x84745c);
+
+  /* ---- les marches et le seuil de la porte du palais ---- */
+  for(let k=0;k<3;k++){ const z0=-15.7-k*.3; put(G.box,k%2?0xbfae8a:0xb09f7c,0,.1+k*.2,(z0-16.65)/2,7.6-k*.8,.2+k*.2,16.65+z0,0,0,0,4); }
+
+  /* ---- le poste du percepteur : dais, table drapée, registre, balance de laiton, coffre ---- */
+  for(const [dx,dz] of [[-1.9,-15.2],[1.9,-15.2],[-1.9,-11.95],[1.9,-11.95]]){ circles.push([dx,dz,.08]); put(G.c8,WAL,dx,1.55,dz,.07,3.1,.07,0,0,0,6); put(G.s,BRASS,dx,3.14,dz,.09); }
+  put(G.box,RED2,0,3.08,-13.57,4.0,.08,3.5,0,0,0,0);
+  for(const z of [-11.83,-15.32]) for(let i=0;i<11;i++) put(G.box,i%2?RED:0xb02a1a,-1.8+i*.36,2.86,z,.34,.44,.03,0,0,0,0);
+  for(const x of [-1.98,1.98]) for(let i=0;i<9;i++) put(G.box,i%2?RED:0xb02a1a,x,2.86,-15.2+i*.405,.03,.44,.38,0,0,0,0);
+  for(let i=0;i<11;i++) put(G.k4,BRASS,-1.8+i*.36,2.6,-11.81,.06,.08,.06,Math.PI/4,Math.PI,0);
+  put(G.c16,ORANGE,0,2.86,-11.79,.13,.03,.13,0,Math.PI/2,0); put(G.c16,BRASS,0,2.86,-11.78,.16,.02,.16,0,Math.PI/2,0);
+  put(G.box,OAK,0,.92,-13.2,2.7,.08,1.15,0,0,0,6);
+  for(const s of [-1,1]){ rod([s*1.05,0,-13.55],[s*1.05,.88,-13.2],.05,WAL,false); rod([s*1.05,0,-12.85],[s*1.05,.88,-13.2],.05,WAL,false); }
+  put(G.box,CLOTH,0,.62,-12.6,2.78,.62,.03,0,0,0,0); put(G.box,CLOTH,0,.93,-13.2,2.78,.03,1.2,0,0,0,0);
+  for(const s of [-1,1]) put(G.box,CLOTH,s*1.39,.62,-13.2,.03,.62,1.2,0,0,0,0);
+  for(let i=0;i<28;i++) put(G.box,i%2?BRASS:BRASS2,-1.35+i*.1,.29,-12.59,.04,.09,.03,0,0,0,0);
+  put(G.c16,ORANGE,0,.67,-12.57,.17,.02,.17,0,Math.PI/2,0); for(let k=0;k<8;k++){ const a=k/8*Math.PI*2; put(G.box,BRASS,Math.cos(a)*.24,.67+Math.sin(a)*.24,-12.57,.035,.09,.02,0,0,a+Math.PI/2,0); }
+  // registre ouvert, encrier, plume, piles de pièces
+  put(G.box,0x6b3a28,-.55,.98,-13.2,.86,.04,.6,.15,0,0,0); for(const s of [-1,1]) put(G.box,0xf1e3c2,-.55+s*.2*Math.cos(.15),1.01,-13.2-s*.2*Math.sin(.15),.4,.03,.54,.15,0,s*.06,0);
+  for(let l=0;l<6;l++) put(G.box,0x5a4c48,-.75,1.03,-13.38+l*.07,.3,.005,.012,.15,0,0,0);
+  put(G.c16,0x2a2633,-1.05,1.02,-13.45,.06,.08,.06,0,0,0,0); rod([-1.05,1.04,-13.45],[-.95,1.36,-13.55],.008,0xf3ecdd);
+  for(const [x,z,n] of [[.15,-13.45,6],[.3,-13.3,4],[.05,-13.15,8]]) for(let k=0;k<n;k++) put(G.c16,k%2?BRASS:0xd8b25c,x,.98+k*.018,z,.055,.015,.055,0,0,0,0);
+  put(G.box,0x5a3a26,1.85,.33,-14.1,.9,.6,.6,0,0,0,6); put(G.box,IRON,1.85,.45,-13.79,.92,.06,.02,0,0,0,0); put(G.box,BRASS,1.85,.5,-13.79,.1,.12,.03,0,0,0,0);
+  sack(2.2,-12.9,.3,.9); sack(2.5,-13.4,1.2,.85); sack(-2.3,-14.5,.5,.9);
+  B.jit=prev;
+}
+/* La balance du tribut, d’après objet_balance.png : un objet à part, que l’étape 2 fera pencher. */
+const tribScale=new THREE.Group();
+{ const b=new Builder(); b.jit=0; const BR=0xc59a48, BR2=0x9e783e;
+  b.put(G.c16,BR2,0,.02,0,.2,.04,.2); b.put(G.c16,BR,0,.06,0,.15,.05,.15); b.put(G.c16,BR,0,.32,0,.03,.5,.03); b.put(G.s,BR,0,.24,0,.06,.07,.06); b.put(G.s,BR,0,.6,0,.035); b.put(G.k16,BR,0,.66,0,.025,.08,.025);
+  tribScale.add(b.mesh(VC2));
+  const beam=new THREE.Group(); beam.position.y=.55; tribScale.add(beam); tribScale.userData.beam=beam; tribScale.userData.pans=[];
+  const bb=new Builder(); bb.jit=0; bb.put(G.box,BR,0,0,0,.66,.025,.025); for(const s of [-1,1]){ bb.put(G.s,BR,s*.33,0,0,.025); bb.put(G.box,BR,s*.2,.02,0,.12,.03,.02,0,0,s*.4); } bb.put(G.box,BR2,0,0,0,.06,.07,.05);
+  beam.add(bb.mesh(VC2));
+  for(const s of [-1,1]){ const pan=new THREE.Group(); pan.position.set(s*.33,0,0); beam.add(pan); const pb=new Builder(); pb.jit=0;
+    for(let k=0;k<3;k++){ const a=k/3*Math.PI*2; pb.put(G.c8,BR2,Math.cos(a)*.06,-.13,Math.sin(a)*.06,.004,.26,.004,0,Math.sin(a)*.22,-Math.cos(a)*.22); }
+    pb.put(G.c16,BR,0,-.27,0,.13,.025,.13); pb.put(G.c16,BR2,0,-.29,0,.09,.015,.09); pan.add(pb.mesh(VC2)); tribScale.userData.pans.push(pan); }
+  tribScale.position.set(.75,.96,-13.3); scene.add(tribScale); }
+{
+  const prev=B.jit; B.jit=.05;
+  const WAL=0x785139, RED=0xc8321f, RED2=0x9c2a1c, STEEL2=0xa9b0c0, IRON=0x3f3a3a;
+  const rod=(a,b,r,color,round=true)=>{ const v=new THREE.Vector3().fromArray(b).sub(new THREE.Vector3().fromArray(a));
+    const e=new THREE.Euler().setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,1,0),v.clone().normalize()),"YXZ");
+    put(round?G.c8:G.box,color,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2,r,v.length(),r,e.y,e.x,e.z,0); };
+  const sag=(a,b,drop,r,c,n=6)=>{ let p=a; for(let i=1;i<=n;i++){ const t=i/n, q=[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t-drop*Math.sin(Math.PI*t),a[2]+(b[2]-a[2])*t]; rod(p,q,r,c); p=q; } };
+  const basket=(x,z,fruit,s=1)=>{ put(G.c16,0xb08a52,x,.2*s,z,.32*s,.4*s,.32*s,0,0,0,0); put(G.c16,0x8a6a3e,x,.4*s,z,.34*s,.05,.34*s,0,0,0,0);
+    for(let k=0;k<7;k++){ const a=k*2.4,r=.17*Math.sqrt(k)*s; put(G.s,fruit,x+Math.cos(a)*r,.45*s+.04*(k%2),z+Math.sin(a)*r,.09*s); } };
+  const sack=(x,z,ry,s=1)=>{ put(G.s,0xc2a273,x,.3*s,z,.3*s,.32*s,.27*s,ry,0,0,0); put(G.s,0xb39465,x,.58*s,z,.15*s,.12*s,.14*s,ry,0,0,0); put(G.c8,0x6e5338,x,.66*s,z,.07*s,.04,.07*s); put(G.k16,0xc2a273,x,.76*s,z,.09*s,.16*s,.09*s,ry,0,0,0); };
+  const halberd=(x,y,z,ry,tilt=0)=>{ // d’après objet_hallebarde.png
+    put(G.c8,0x8a6a3e,x,y+1.2,z,.022,2.4,.022,ry,0,tilt,6); const hy=y+2.25;
+    put(G.hcyl,STEEL2,x+Math.cos(ry)*.13,hy,z-Math.sin(ry)*.13,.16,.03,.2,ry+Math.PI/2,Math.PI/2,0,0);
+    put(G.k4,STEEL2,x,hy+.3,z,.03,.38,.03,ry,0,0,0); put(G.box,STEEL2,x-Math.cos(ry)*.09,hy+.04,z+Math.sin(ry)*.09,.16,.03,.015,ry,0,.5,0);
+    put(G.s,RED,x,hy-.16,z,.045,.08,.045,0,0,0,0); };
+
+  /* ---- couloir de cordes : la file du tribut se lit d’un coup d’œil ---- */
+  const posts=[]; for(let z=15;z>=-9;z-=3.2) posts.push(z);
+  for(const x of [4.15,6.25]){ for(const z of posts){ put(G.c8,0x6e5338,x,.5,z,.06,1.0,.06,0,0,0,6); put(G.s,0x8e3b2c,x,1.02,z,.07); circles.push([x,z,.1]); }
+    for(let i=0;i<posts.length-1;i++) sag([x,.95,posts[i]],[x,.95,posts[i+1]],.16,.016,0xa9583a); }
+  /* ---- des oriflammes rouges de part et d’autre de l’approche ---- */
+  for(const s of [-1,1]){ const x=s*7.2, z=-12.2;
+    put(G.c8,0x5a4130,x,3,z,.06,6,.06,0,0,0,6); put(G.s,0xc59a48,x,6.05,z,.09);
+    for(let i=0;i<6;i++) put(G.box,i%2?RED:0xb02a1a,x+s*.42,5.3-i*.38,z,.8,.38,.02,0,0,s*.02*i,0);
+    put(G.k4,RED2,x+s*.42,3.1,z,.42,.4,.02,Math.PI/4,0,Math.PI,0); }
+  /* ---- le marché de l’ouest, qui manquait : étals rayés, paniers, sacs, charrette ---- */
+  stall(-16.5,-7.5,0x2f6b78,BLANC); stall(-16.5,8.6,0xb5603a,BLANC);
+  for(const [x,z,f] of [[-14.6,-6.3,0xe08a3a],[-15.4,-6.1,0x6f8f4a],[-18.3,-6.4,0xc2452f],[-14.7,9.9,0xd9b84a],[-18.2,9.7,0x8a9455],[-7.3,9.2,0xe08a3a],[-8.0,11.3,0xc2452f],[12.6,-4.8,0xd9b84a],[9.0,-4.7,0xe08a3a]]) basket(x,z,f,.95);
+  circles.push([-15,-6.2,.6],[-18.3,-6.4,.35],[-14.7,9.9,.35],[-18.2,9.7,.35],[-7.6,10.2,.6],[12.6,-4.8,.35],[9,-4.7,.35]);
+  for(const [x,z,r] of [[-19.4,-1.2,.4],[-19.9,-.4,1.3],[-19.1,-.2,2.2],[7.2,-11.6,.2],[7.7,-12.3,1.1]]) sack(x,z,r,.95);
+  circles.push([-19.5,-.6,.75]);
+  { const x=-14.5, z=-11.6; // charrette à foin
+    put(G.box,0x8a6238,x,.75,z,1.4,.1,2.6,0,0,0,6); for(const s of [-1,1]) put(G.box,0x6e5338,x+s*.7,.95,z,.06,.4,2.6,0,0,0,6);
+    for(const s of [-1,1]){ put(G.c16,0x5a4130,x+s*.78,.55,z+.3,.55,.07,.55,0,0,Math.PI/2,0); put(G.c8,0x3f3a3a,x+s*.81,.55,z+.3,.1,.08,.1,0,0,Math.PI/2,0);
+      for(let k=0;k<4;k++) put(G.box,0x6e5338,x+s*.79,.55,z+.3,.03,1.0,.05,0,k*Math.PI/4,0,6); }
+    for(let k=0;k<9;k++) put(G.ico,[0xd6b45e,0xc9a24e,0xe2c477][k%3],x+(k%3-1)*.4,1.15+((k*5)%3)*.12,z-.9+Math.floor(k/3)*.8,.42,.3,.45,k);
+    rod([x-.25,.7,z-1.3],[x-.35,.15,z-2.6],.04,0x6e5338); rod([x+.25,.7,z-1.3],[x+.35,.15,z-2.6],.04,0x6e5338); }
+  solid(-15.3,-13.7,-12.9,-10.1).low=true;
+  /* ---- la cour des gardes : sol de dalles grises, râteliers, foin, abreuvoir, braséro, table de jeu, bannières ---- */
+  { const tx=new THREE.TextureLoader().load("img/paves.webp"); tx.wrapS=tx.wrapT=THREE.MirroredRepeatWrapping; tx.repeat.set(6,4);
+    const g=new THREE.Mesh(new THREE.PlaneGeometry(23,16),new THREE.MeshToonMaterial({map:tx,color:0xc9cfd8,gradientMap:GRAD}));
+    g.rotation.x=-Math.PI/2; g.position.set(42.6,.008,-1.7); g.receiveShadow=true; scene.add(g); }
+  for(let i=0;i<22;i++) put(G.box,0x8f8a80,32+i*1.0,.02,-1.9,.92,.04,.3,0,0,0,4);
+  for(const x of [33.7,38.7,43.7,48.7,52.2]){ for(let i=0;i<5;i++) put(G.box,i%2?RED:0xb02a1a,x,4.4-i*.36,-10.02,.95,.36,.02,0,0,0,0); put(G.k4,RED2,x,2.6,-10.02,.48,.36,.02,Math.PI/4,0,Math.PI,0); }
+  { const x=36.35, z=-8.85; put(G.box,WAL,x,1.7,z,2.0,.08,.08,0,0,0,6); put(G.box,WAL,x,.35,z+.12,2.0,.08,.3,0,0,0,6);
+    for(const s of [-1,1]) put(G.box,WAL,x+s*.95,.95,z,.08,1.9,.4,0,0,0,6);
+    for(let k=0;k<4;k++) halberd(x-.68+k*.45,0,z+.08,0,.07*(k%2?1:-1)); solid(x-1.0,x+1.0,z-.25,z+.3); }
+  { const x=45.3, z=5.0; put(G.box,0x8f8a80,x,.35,z,2.4,.7,.8,0,0,0,4); put(G.box,0x4f7f86,x,.66,z,2.15,.04,.58,0,0,0,0); solid(x-1.2,x+1.2,z-.4,z+.4); }
+  for(const [x,z,r] of [[50.6,4.6,0],[51.9,4.7,.3],[51.2,3.6,1.4]]){ put(G.box,0xd6b45e,x,.32,z,1.0,.64,.6,r,0,0,0); put(G.box,0xb08d3a,x,.33,z,1.02,.04,.62,r,0,0,0); }
+  solid(50,52.6,3.1,5.1);
+  { const x=40.2, z=-7.4; put(G.box,0x8a6238,x,.72,z,1.4,.08,.8,0,0,0,6); for(const [dx,dz] of [[-.6,-.3],[.6,-.3],[-.6,.3],[.6,.3]]) put(G.box,WAL,x+dx,.35,z+dz,.07,.7,.07,0,0,0,6);
+    for(const [dx,dz] of [[-.3,.1],[.25,-.15]]) put(G.c16,0x7e6a58,x+dx,.84,z+dz,.05,.14,.05,0,0,0,0); for(let k=0;k<5;k++) put(G.box,0xf1e3c2,x-.1+k*.08,.77,z+.12,.07,.01,.1,k*.4,0,0,0);
+    for(const dx of [-1.05,1.05]) put(G.c16,WAL,x+dx,.4,z,.2,.06,.2,0,0,0,6); solid(x-.75,x+.75,z-.42,z+.42); }
+  { const x=47.6, z=-8.2; put(G.c8,IRON,x,.45,z,.05,.9,.05); put(G.c16,IRON,x,.92,z,.38,.18,.38,0,0,0,0); for(let k=0;k<6;k++) put(G.k4,k%2?0xf08a2c:0xf6c66a,x+Math.cos(k)*.15,1.12+(k%3)*.06,z+Math.sin(k)*.15,.1,.3,.1,k,0,0,0); circles.push([x,z,.45]); winLights.push(new THREE.Vector3(x,1.2,z)); }
+  B.jit=prev;
 }
 finishPanels();
 /* poterne */
@@ -1547,8 +1665,15 @@ function human(o){ const g=new THREE.Group(), body=new THREE.Group(); g.add(body
   if(h==="cap"){ H(G.s,hc,0,1.685,-0.01,0.118,0.085,0.125); }
   if(h==="wide"){ H(G.s,hair,0,1.665,-0.02,0.112,0.1,0.12); H(G.c16,hc,0,1.735,0,0.25,0.018,0.25); H(G.c16,hc,0,1.79,0,0.12,0.11,0.12); }
   if(h==="toque"){ H(G.s,0x332e35,-.036,1.753,-.006,.153,.052,.135,0,0,.14); H(G.c16,0x332c30,0,1.721,0,.116,.036,.122); b.put(G.s,0xe9dfcc,0,1.46,0,0.28,0.075,0.19); b.put(G.c8,ORANGE,0,1.3,0.12,0.05,0.05,0.02,0,Math.PI/2); }
-  if(h==="morion"){ H(G.s,STEEL,0,1.68,0,0.125,0.11,0.14); H(G.c16,STEEL,0,1.655,0,0.165,0.02,0.2); H(G.box,STEEL,0,1.775,0,0.02,0.06,0.22); H(G.k16,0xe23a26,0,1.9,-0.03,0.055,0.26,0.055,0,-0.45,0);
-    b.put(G.c8,0x5b4331,0.33,1.3,0.16,0.018,2.6,0.018); b.put(G.box,STEEL,0.33,2.4,0.24,0.02,0.34,0.2); b.put(G.k4,STEEL,0.33,2.72,0.16,0.035,0.3,0.035); b.put(G.box,STEEL,0,1.22,0.1,0.3,0.36,0.06); }
+  if(h==="morion"){ // d’après bastien_tour.png et objet_hallebarde.png
+    H(G.s,STEEL,0,1.685,0,0.128,0.118,0.142); H(G.c16,STEEL,0,1.65,0,0.2,0.018,0.235,0,-.12,0); H(G.box,STEEL,0,1.79,0,0.018,0.07,0.25);
+    for(let k=0;k<6;k++) H(G.k16,k%2?0xe23a26:0xc22a1a,-.02+(k%3)*.02,1.86+k*.02,-.05-k*.02,0.05,0.3-k*.02,0.05,0,-0.6-k*.17,(k%2?.2:-.2));
+    b.put(G.s,STEEL,0,1.2,0.035,0.2,0.27,0.165); b.put(G.box,STEEL,0,0.96,0.02,0.36,0.08,0.26,0,0,0); for(const s of [-1,1]) b.put(G.box,0x6b4a32,s*.11,1.3,.02,.04,.34,.3);
+    b.put(G.box,0x6b4a32,0,1.0,0.02,0.4,0.05,0.3); b.put(G.box,0xc59a48,0.05,1.0,0.17,0.05,0.04,0.02);
+    for(const s of [-1,1]){ b.put(G.s,o.top,s*.215,1.37,0,.11,.12,.11); b.put(G.s,o.legs||o.top,s*.1,.84,0,.13,.15,.13); }
+    b.put(G.box,0xe9e2d2,0,1.47,0,.15,.04,.12); b.put(G.c8,0x2a2c33,-.2,.72,.06,.018,.62,.018,0,0,.18); b.put(G.s,0xc59a48,-.25,1.04,.07,.03);
+    b.put(G.c8,0x8a6a3e,0.33,1.25,0.16,0.02,2.5,0.02); b.put(G.hcyl,0xa9b0c0,0.46,2.32,0.16,0.15,0.025,0.19,Math.PI/2,Math.PI/2,0); b.put(G.k4,0xa9b0c0,0.33,2.68,0.16,0.03,0.4,0.03);
+    b.put(G.box,0xa9b0c0,0.24,2.33,0.16,0.14,0.025,0.015,0,0,.5); b.put(G.s,0xc8321f,0.33,2.12,0.16,0.04,0.07,0.04); }
   if(!h) H(G.s,hair,0,1.665,-0.02,0.112,0.1,0.12);
   if(o.sack){
     b.put(G.s,0x9d845f,.216,1.38,-.125,.209,.286,.214,0,-.26,-.19);
@@ -2105,9 +2230,13 @@ function rayHit(ox,oz,dx,dz,maxd){ let best=maxd;
     if(ok&&t0<best) best=t0; }
   for(const c of circles){ if(c[3]===false) continue; const cx=c[0]-ox,cz=c[1]-oz, tc=cx*dx+cz*dz; if(tc<0||tc-c[2]>best) continue; const d2=cx*cx+cz*cz-tc*tc, r2=c[2]*c[2]; if(d2<r2){ const t=tc-Math.sqrt(r2-d2); if(t>0&&t<best) best=t; } }
   return best; }
+const CONE_MAT=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,
+  vertexShader:"attribute float rim; varying float vR; varying vec2 vW; void main(){ vR=rim; vec4 w=modelMatrix*vec4(position,1.0); vW=w.xz; gl_Position=projectionMatrix*viewMatrix*w; }",
+  fragmentShader:`precision highp float; varying float vR; varying vec2 vW; ${NOISE_GLSL}
+  void main(){ float g=noise(vW*2.3)*.6+noise(vW*7.1)*.4; float pool=smoothstep(.72,.97,vR); float a=.26+.12*g+.36*pool; vec3 c=mix(vec3(.93,.33,.24),vec3(.70,.14,.10),pool*.8+g*.15); gl_FragColor=vec4(c,a*smoothstep(0.,.08,vR)); }`});
 function guard(path,speed,opt){ const g=redcoat(human(Object.assign({x:path[0][0],z:path[0][1]},guardLook))); g.scale.setScalar(1.1);
   const geo=new THREE.BufferGeometry(); geo.setAttribute("position",new THREE.BufferAttribute(new Float32Array((CONE_N+2)*3),3)); const idx=[]; for(let i=0;i<CONE_N;i++) idx.push(0,i+1,i+2); geo.setIndex(idx);
-  const cone=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:0xff4630,transparent:true,opacity:0.6,depthWrite:false,side:THREE.DoubleSide,fog:false})); cone.frustumCulled=false; scene.add(cone);
+  geo.setAttribute("rim",new THREE.BufferAttribute(new Float32Array(CONE_N+2).fill(1).map((v,i)=>i?1:0),1)); const cone=new THREE.Mesh(geo,CONE_MAT); cone.frustumCulled=false; scene.add(cone);
   const o=Object.assign({g,cone,path,i:path.length>1?1:0,dir:1,speed:speed||2,wait:0,base:0,k:1},opt||{}); guards.push(o); return o; }
 function drawCone(o){ const P=o.cone.geometry.attributes.position.array, gx=o.g.position.x, gz=o.g.position.z, a0=o.g.rotation.y; P[0]=gx; P[1]=0.07; P[2]=gz;
   for(let i=0;i<=CONE_N;i++){ const a=a0-CONE_A+2*CONE_A*i/CONE_N, dx=Math.sin(a), dz=Math.cos(a), d=rayHit(gx,gz,dx,dz,CONE_R); P[3+i*3]=gx+dx*d; P[4+i*3]=0.07; P[5+i*3]=gz+dz*d; }
@@ -2560,21 +2689,23 @@ function frame(x,y,z,tx,ty,tz,f){camPos.set(x,y,z);camLook.set(tx,ty,tz);setLens
    Elle suit le cap de la marche, se laisse tourner du doigt (moitié droite de l’écran) et se rapproche
    au lieu de traverser un mur. Le reste de la ville garde la caméra haute de l’acte I. */
 const TP={yaw:2.42,pitch:.2,manual:-9,v:0,snap:true,was:false,ref:null,back:0};
-function tpActive(){ return (S.act===1&&S.stage<=2)||inRue(player.position.x,player.position.z); }
+function tpActive(){ return S.act===1||inRue(player.position.x,player.position.z); }
 function camFree(x,z){
   if(x<-22.4){ if(!rueOK(x,z,.2)) return false; }
-  else if(z<-15.9||z>18.4||x>23.2) return false;
+  else if(z<-15.9||z>18.4) return false;
+  else if(x>22.6&&x<31.4&&!(z>-5.9&&z<1.9)) return false;
+  else if(x>=31.4&&(z<-10.1||z>6.1||x>53.6)) return false;
   for(const b of boxes){ if(b.on&&!b.low&&x>b.x0-.16&&x<b.x1+.16&&z>b.z0-.16&&z<b.z1+.16) return false; }
   for(const c of circles){ if(c[3]===false||c[2]<1) continue; const dx=x-c[0],dz=z-c[1]; if(dx*dx+dz*dz<(c[2]+.1)*(c[2]+.1)) return false; }
   return true; }
 function tpView(){
   const P=player.position, ind=inImp(P.x,P.z), fx=Math.sin(TP.yaw), fz=Math.cos(TP.yaw);
-  const pitch=ind?Math.min(TP.pitch,.3):TP.pitch, want=(ind?2.3:3.2)+(portrait?.55:0);
+  const cour=P.x>22.6, pitch=ind?Math.min(TP.pitch,.3):cour?Math.max(TP.pitch,.46):TP.pitch, want=(ind?2.3:cour?4.6:3.2)+(portrait?.55:0);
   let free=1; for(let i=1;i<=16;i++){ const t=i/16, d=want*Math.cos(pitch)*t; if(!camFree(P.x-fx*d,P.z-fz*d)){ free=(i-1)/16; break; } }
   const dist=Math.max(.62,want*free-(free<1?.12:0)), h=Math.cos(pitch)*dist;
   let cy=1.45+Math.sin(pitch)*dist; if(ind) cy=Math.min(cy,2.6); if(free<1) cy=Math.min(cy+.25*(1-free),ind?2.65:4.5);
   const ahead=ind?1.4:2.6;
-  return [P.x-fx*h,cy,P.z-fz*h,P.x+fx*ahead,ind?1.22:1.38,P.z+fz*ahead,(ind?57:51)+(portrait?11:0)];
+  return [P.x-fx*h,cy,P.z-fz*h,P.x+fx*ahead,ind?1.22:cour?.9:1.38,P.z+fz*ahead,(ind?57:cour?56:51)+(portrait?11:0)];
 }
 function tpFollow(dt,speed){
   if(!TP.was){ TP.was=true; TP.yaw=Math.atan2(camLook.x-camPos.x,camLook.z-camPos.z); }
@@ -2698,6 +2829,7 @@ const MESURE=/[?&]mesure\b/.test(location.search), mesEl=MESURE?document.body.ap
 if(mesEl) mesEl.style.cssText="position:fixed;right:12px;bottom:12px;z-index:99;background:rgba(247,241,227,.92);color:#221f2b;font:600 14px/1.35 ui-monospace,monospace;padding:6px 10px;border-radius:8px;pointer-events:none;white-space:pre";
 function mesure(e){ const now=performance.now(); mesF.push([now,e]); while(mesF.length&&now-mesF[0][0]>5000) mesF.shift(); if(!mesure.t||now-mesure.t>500){ mesure.t=now; const n=mesF.length, span=n>1?(mesF[n-1][0]-mesF[0][0])/1000:1, worst=Math.max(...mesF.map(f=>f[1]))*1000, under=mesF.filter(f=>f[1]>1/28).length;
   mesEl.textContent=`${(n/span).toFixed(1)} im/s · pire ${worst.toFixed(0)} ms\n${under} images > 36 ms (5 s) · ${renderer.info.render.calls} appels · ${S.lite?"allégé":"normal"}`; } }
+const QPOSE=[-.75,-.15,-2.05]; // la main tient la sangle du sac posé sur l’épaule
 function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt=Math.min(elapsed,0.05); time+=dt; if(MESURE) mesure(elapsed);rockBoats(time); postMat.uniforms.uTime.value=time*0.004;
   /* file du tribut */
   for(let i=0;i<file.length;i++){
@@ -2706,7 +2838,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt
     const advance=inOpening?Math.min(elapsed,.16):dt;
     if(lineMoves){p.position.z-=advance*.6;if(p.position.z<-11.5)p.position.z=16.4;}
     animate(p,lineMoves,advance,3.2);
-    p.userData.arms[1].rotation.x=-2.05+(lineMoves?.08*Math.sin(2*p.userData.ph):0);
+    const QP=window.QPOSE||QPOSE; p.userData.arms[1].rotation.x=QP[0]+(lineMoves?.06*Math.sin(2*p.userData.ph):0); p.userData.arms[1].rotation.z=QP[1]; if(p.userData.elbows[1]) p.userData.elbows[1].rotation.x=QP[2];
     p.userData.body.rotation.z=-.073;p.userData.head.rotation.z=.046;
   }
   marker.rotation.y=time*2; alive(dt,time); impSign.rotation.z=Math.sin(time*.85)*.045+Math.sin(time*2.1)*.012; impLamp.intensity=night?1.5:(inImp(player.position.x,player.position.z)||inImp(camPos.x,camPos.z)?.95:.55); feteTick(dt,time); if(mode==="cine2"){ cine2T+=dt; if(cine2T>7.6) endCine2(); }
