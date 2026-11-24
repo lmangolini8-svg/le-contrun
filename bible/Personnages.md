@@ -1,6 +1,6 @@
 # Les personnages de Sarlande · fiches approfondies
 
-*Le Contr’un* · document de travail · version 0.2 du 24 novembre 2026
+*Le Contr’un* · document de travail · version 0.3 du 24 novembre 2026
 
 Ce document complète la partie 6 de la bible. Mêmes statuts : **[Établi]** (dans le jeu ou décidé par Lucas), **[Proposition]** (à trancher). Les citations suivent `Citations_Belin.md`.
 
@@ -78,7 +78,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 **[Établi]** Elle posait des questions. Elle sentait l’encre. Elle a confié à Ysabeau une page qu’il ne fallait pas brûler. « Ta mère aussi posait des questions. Ça lui a passé. Ça passe toujours. » (Ysabeau). Lucas laisse à Claude le choix de son arc ; aucun lien avec la famille de Bastien.
 
-**[Proposition, choix de Claude] Mahaut, celle qui s’est tue et qui se souvient.**
+**[Établi, choix de Claude validé par Lucas] Mahaut, celle qui s’est tue et qui se souvient.**
 
 - **Prénom proposé** : Mahaut.
 - **Ce qu’Aliénor croit** : sa mère est morte d’une fièvre quand elle avait cinq ans. C’est ce qu’Anselme et Ysabeau lui ont dit.
@@ -102,7 +102,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 ## 4. Ce qui tient chaque personnage
 
-**[Proposition, choix de Claude, à la demande de Lucas]** Chaque personnage incarne une ou deux raisons de servir, prises dans le *Discours* et dans le carnet de l’acte II. Les deux colonnes de droite indiquent s’il peut s’en défaire et la citation Belin qui l’éclaire.
+**[Établi, choix de Claude validé par Lucas]** Chaque personnage incarne une ou deux raisons de servir, prises dans le *Discours* et dans le carnet de l’acte II. Les deux colonnes de droite indiquent s’il peut s’en défaire et la citation Belin qui l’éclaire.
 
 | Personnage | Ce qui le tient | Peut-il s’en défaire ? | Citation d’appui (Belin) |
 |---|---|---|---|
@@ -130,7 +130,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 ## 5. L’ordre d’approfondissement
 
-**[Proposition, choix de Claude]** Chaque fiche complète suivra la méthode de la partie 1.
+**[Établi, validé par Lucas]** Chaque fiche complète suit la méthode de la partie 1.
 
 1. **Anselme** : il porte le secret de Mahaut, et donc l’acte III.
 2. **Mahaut** : sa fiche complète, et les scènes de la forêt.
@@ -149,6 +149,63 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 - [x] Relation **facultative**.
 - [x] **Ton** tendre et retenu.
 - [x] Pas de lien entre la mère et la famille de Bastien.
-- [ ] Mahaut, la mère, et son arc (partie 3) : à valider.
-- [ ] Ce qui tient chaque personnage (partie 4) : à valider.
-- [ ] L’ordre d’approfondissement (partie 5) : à valider.
+- [x] Mahaut, la mère, et son arc (partie 3).
+- [x] Ce qui tient chaque personnage (partie 4).
+- [x] L’ordre d’approfondissement (partie 5).
+- [ ] Fiche complète d’Anselme (partie 7) : à valider.
+
+---
+
+## 7. Fiches complètes
+
+### 7.1 Maître Anselme, imprimeur
+
+*Statut : [Proposition], sauf ce qui est marqué [Établi].*
+
+**Ce qui est établi dans le jeu**
+- Vieil homme, béret rouge, tablier taché, outil à la main devant son atelier, à l’ouest de la place.
+- « J’ai imprimé des édits pour l’Un pendant vingt ans. J’ai commencé à lire ce que j’imprimais trop tard. »
+- Il a défait un livre que l’Un a fait brûler, « feuille à feuille », et en a caché les pages dans toute la ville. Il en coud une dans la doublure du sac d’Aliénor.
+- « Tu apprends vite à te taire. Ce n’est pas un compliment. »
+- « Une pierre, ce n’est rien. Mais il n’en fallait pas plus pour savoir de quoi le socle est fait : de nous. »
+- « Une fête, c’est un tribut qu’on paie en riant. »
+- À l’acte II, il organise l’impression des cent feuilles et choisit la page d’Ysabeau. « Va dormir. Cet hiver, il faudra tenir. »
+
+**Les neuf questions**
+
+1. **Ce qu’il veut** : transmettre. Que le livre survive à sa mort, et qu’Aliénor sache lire ce qu’on imprime.
+2. **Ce dont il a besoin** : dire la vérité sur Mahaut, et cesser de racheter son silence par un autre silence.
+3. **Ce qu’il craint** : que l’histoire recommence, qu’Aliénor soit emmenée comme sa mère l’a été, par sa faute.
+4. **Son secret** : Mahaut est vivante. Il y a douze ans, quand les gardes sont venus, il s’est tu ; il a gardé sa presse et laissé emmener Mahaut. Depuis, il a laissé croire à Aliénor que sa mère était morte.
+5. **Ce qui le tient** : la peur, et une complicité ancienne : vingt ans d’édits imprimés pour l’Un, et un silence. Il connaît de l’intérieur la thèse du *Discours* : le pouvoir de l’Un passe par des mains comme les siennes.
+6. **Sa blessure** : la nuit d’il y a douze ans. Mahaut lui a fait un signe de tête en partant, qu’il n’a jamais su lire : pardon, ou reproche ?
+7. **Son lien avec Aliénor** : un père de substitution, protecteur jusqu’à l’étouffement, et rongé par la culpabilité. Il l’a prise en apprentissage à douze ans. Son « Ce n’est pas un compliment » est une adresse à lui-même autant qu’à elle.
+8. **Son arc** : du maître qui protège en se taisant à l’homme qui parle, quoi qu’il en coûte (tableau ci-dessous).
+9. **Ce qui le rend visible** : le béret rouge, couleur terre de Sienne ; le tablier ; des mains noires d’encre jusqu’aux poignets. **Geste signature** : il chausse des besicles pour lire, et les retire quand il ment. **Musique** : la cadence de la presse sert de pulsation ; le luth grave joue seul quand il se tait.
+
+**[Proposition] Le livre brûlé, c’est le *Discours* lui-même.** Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
+
+**Son arc**
+
+| Acte | Ce qui se passe | Choix du joueur et conséquences |
+|---|---|---|
+| I-II | Établi : il envoie Aliénor au tribut, lui confie la première page, prépare et dirige l’impression. | Aucun choix propre ; il juge Aliénor sur sa conduite au tribut. |
+| III | L’hiver. Les perquisitions commencent. Il démonte la presse et la cache pièce par pièce chez ses voisins. Aux archives, Aliénor apprend que Mahaut est vivante, et qu’Anselme le savait. **La confession** (tableau) : il reconnaît son silence. | **Pardonner**, **accuser**, ou **garder le secret pour plus tard**. Le choix modifie la confiance entre eux et l’issue de l’acte IV. |
+| IV | Le traître livre son nom. Le sergent vient le chercher. | Si Aliénor a pardonné, Anselme **se livre lui-même** pour couvrir la troupe : « Cette fois, c’est moi qui parle. » Si elle l’a accusé, il est arrêté sans un mot, et la troupe perd la presse. Si elle a gardé le secret, il lui demande de parler à sa place quand le moment viendra. |
+| V | Selon l’acte IV : libéré par la foule qui cesse de servir, ou mort en prison, ou présent dans la file. | Dernière image possible : son béret posé sur la presse, et Aliénor qui imprime la dernière feuille. |
+
+**Les scènes à écrire**
+
+1. **La nuit d’il y a douze ans** (séquence illustrée, acte III) : la presse, Mahaut qui encre, les coups à la porte, Anselme qui baisse les yeux, le signe de tête de Mahaut. Peu de mots, une narration courte.
+2. **La confession** (tableau, acte III) : dans l’atelier démonté, sous la neige qui entre par le toit. Il retire ses besicles, puis les remet pour lui dire la vérité en la regardant.
+3. **« Cette fois, c’est moi qui parle »** (acte IV) : l’arrestation, si Aliénor a pardonné.
+4. **La dernière feuille** (acte V).
+
+**Les citations Belin qui l’éclairent**
+- « Le Grand Turc a bien compris que les livres et la doctrine permettent plus que toute autre chose aux hommes de se reconnaître et de haïr la tyrannie » (p. 46) : sa raison de vivre.
+- « D’où a-t-il pris tant d’yeux dont il vous épie si vous ne les lui donnez ? Comment a-t-il tant de mains pour vous frapper, s’il ne les prend de vous ? » (p. 26) : ce qu’il a été pendant vingt ans, l’une des mains de l’Un.
+- « ce qui rend un ami assuré de l’autre c’est la connaissance qu’il a de son intégrité » (p. 71) : l’enjeu de la confession, et du pardon.
+
+**Pour l’image**
+- Portraits existants : quatre expressions (neutre, sourire, inquiétude, colère).
+- À commander : une planche de tour (face, profil, dos), une planche de mains (l’encre, les besicles), et la scène de la nuit d’il y a douze ans, avec un Anselme plus jeune, aux cheveux encore bruns sous le béret.
