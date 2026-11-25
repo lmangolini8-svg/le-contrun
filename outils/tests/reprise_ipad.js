@@ -341,6 +341,23 @@ async function testDeniedConfession(browser) {
   console.log('Sauvegarde injectée avant la joute du soir : mensonge, fermeture, réponse de Garin et ralliement.');
 }
 
+async function testMask(browser) {
+  const checkpoint = {act:2,stage:11,pos:[14.55,10.2],flags:{tribut:'paye'}};
+  await withSession(browser, checkpoint, {width:810,height:1080}, async (page,context,reopenTab) => {
+    const resume = () => page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+    await resume();
+    for (const porte of [true,false]) {
+      await page.getByRole('button',{name:'Parler au colporteur'}).tap();
+      await page.locator('#dlg').tap();
+      await page.getByRole('button',{name:porte?'Prendre un masque':'Rendre le masque'}).tap();
+      page = await reopenTab();
+      await resume();
+      assert.deepEqual(await page.evaluate(()=>[S.mask,maskM.visible,act2Hint().startsWith('Masquée')]),[porte,porte,porte]);
+    }
+  });
+  console.log('Sauvegarde injectée devant Bertin. Prendre puis rendre le masque persiste après fermeture de l’onglet pendant chacune de ses réponses.');
+}
+
 async function testPublicReading(browser) {
   const checkpoint = {act:2,stage:12,pos:[-3.4,-3.7],flags:{tribut:'refus'},f:['F1','F2','F3','F6','F7','F8']};
   await withSession(browser, checkpoint, {width:810,height:1080}, async (page,context,reopenTab) => {
@@ -611,7 +628,7 @@ async function testStory(browser) {
   try {
     const groupes = {
       parcours: [testOpening, testGate, testNotebook, testToast, testStory, testPrintInterruption],
-      rencontres: [testPublicReading, testGuardCapture, testBastienReload, testStoneInterruption, testDeniedConfession, testJoustReload]
+      rencontres: [testMask, testPublicReading, testGuardCapture, testBastienReload, testStoneInterruption, testDeniedConfession, testJoustReload]
     };
     const groupe = process.env.TEST_GROUP;
     const tests = groupe ? groupes[groupe] : Object.values(groupes).flat();
