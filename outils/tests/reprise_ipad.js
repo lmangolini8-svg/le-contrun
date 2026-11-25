@@ -5,18 +5,21 @@ const { chromium, webkit } = require('playwright');
 const url = process.argv[2] || 'http://127.0.0.1:8765/index.html';
 const storageKey = 'sarlande-acte1-v1';
 
-async function savedSession(browser, checkpoint, viewport, test) {
+async function withSession(browser, checkpoint, viewport, test) {
   const context = await browser.newContext({viewport, hasTouch: true, isMobile: true});
   const page = await context.newPage();
   page.setDefaultTimeout(45000);
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   try {
-    await page.goto(new URL('README.md', url).href);
-    await page.evaluate(([key, data]) => localStorage.setItem(key, JSON.stringify(data)),
-      [storageKey, {started: true, mute: true, lite: true, ...checkpoint}]);
+    if (checkpoint) {
+      await page.goto(new URL('README.md', url).href);
+      await page.evaluate(([key, data]) => localStorage.setItem(key, JSON.stringify(data)),
+        [storageKey, {started: true, mute: true, lite: true, ...checkpoint}]);
+    }
     await page.goto(url, {waitUntil: 'domcontentloaded'});
-    await page.getByRole('button', {name: 'Reprendre le chemin'}).waitFor();
+    const entry = checkpoint ? 'Reprendre le chemin' : 'Entrer dans la ville';
+    await page.getByRole('button', {name: entry}).waitFor();
     await test(page, context);
     assert.deepEqual(errors, [], 'Erreurs JavaScript dans le jeu');
   } catch (error) {
@@ -32,9 +35,38 @@ async function savedSession(browser, checkpoint, viewport, test) {
   }
 }
 
+async function testOpening(browser) {
+  await withSession(browser, null, {width: 1080, height: 810}, async page => {
+    await page.getByRole('button', {name: /Affichage allégé/}).tap();
+    await page.getByRole('button', {name: 'Entrer dans la ville'}).tap();
+    const skip = page.getByRole('button', {name: 'Passer la scène'});
+    await skip.tap();
+    const speak = page.getByRole('button', {name: 'Parler à Anselme'});
+    await page.keyboard.down('ArrowLeft');
+    try { await speak.waitFor(); } finally { await page.keyboard.up('ArrowLeft'); }
+    await speak.tap();
+    await skip.tap();
+    const dialogue = page.locator('#dlg');
+    await dialogue.getByText(/Te voilà, Aliénor/).tap();
+    await skip.tap();
+    await dialogue.getByText(/C’est le matin du tribut/).tap();
+    await dialogue.getByRole('button', {name: /Un tiers/}).tap();
+    await dialogue.getByText(/Rien que tu verras/).tap();
+    await dialogue.getByText(/dans la doublure/).tap();
+    await dialogue.getByText(/Feuillet retrouvé/).tap();
+    await dialogue.getByText(/J’ai défait ce livre/).tap();
+    assert.match(await page.locator('#obj').textContent(), /Portez le sac du tribut/);
+    await page.locator('#carnetBtn').tap();
+    assert.ok(await page.locator('#n-F1').isVisible());
+    const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
+    assert.deepEqual([saved.stage, saved.f], [1, ['F1']]);
+  });
+  console.log('Partie vierge : déplacement vers Anselme, premier dialogue et remise du feuillet F1.');
+}
+
 async function testGate(browser) {
   const pos = [23.5, -2];
-  await savedSession(browser, {act: 1, stage: 3, pos, f: ['F1', 'F2']},
+  await withSession(browser, {act: 1, stage: 3, pos, f: ['F1', 'F2']},
     {width: 810, height: 1080}, async page => {
       await page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
       const actual = await page.evaluate(() => [player.position.x, player.position.z]);
@@ -76,7 +108,7 @@ async function testGate(browser) {
 async function testNotebook(browser) {
   const checkpoint = {act: 2, stage: 14, pos: [-20, 6.6], flags: {tribut: 'refus'},
     f: ['F1', 'F2', 'F3', 'F6'], notes: {F1: 'Page 12'}};
-  await savedSession(browser, checkpoint, {width: 1080, height: 810}, async (page, context) => {
+  await withSession(browser, checkpoint, {width: 1080, height: 810}, async (page, context) => {
     await page.getByRole('button', {name: 'Recommencer', exact: true}).tap();
     await page.getByRole('button', {name: 'Garder ma partie'}).press('Enter');
     assert.equal(await page.evaluate(key => JSON.parse(localStorage.getItem(key)).stage, storageKey), 14);
@@ -130,7 +162,7 @@ async function testNotebook(browser) {
 
 async function testToast(browser) {
   // Une sauvegarde de l'ancienne version, avant la première annonce à la fontaine.
-  await savedSession(browser, {act: 2, stage: 13, pos: [0, 7.3], allies: {maelle: true, garin: true}},
+  await withSession(browser, {act: 2, stage: 13, pos: [0, 7.3], allies: {maelle: true, garin: true}},
     {width: 1080, height: 810}, async page => {
       await page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
       const dialogue = page.locator('#dlg');
@@ -170,6 +202,7 @@ async function testToast(browser) {
   });
   console.log(engine, browser.version());
   try {
+    await testOpening(browser);
     await testGate(browser);
     await testNotebook(browser);
     await testToast(browser);
