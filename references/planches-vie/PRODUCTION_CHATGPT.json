@@ -1,0 +1,5506 @@
+{
+  "updated_at": "2026-11-25T09:16:38.342048+00:00",
+  "source_repository": "https://github.com/lmangolini8-svg/le-contrun",
+  "source_ref": "a3c2704fe573d99f833d56352674ad7c9e94ada7",
+  "artistic_validation": "pending_final_review",
+  "expected_total": 541,
+  "files_present": 101,
+  "families": {
+    "actes-I-II": {
+      "expected": 196,
+      "files_present": 4
+    },
+    "complements-3d": {
+      "expected": 8,
+      "files_present": 8
+    },
+    "planches-vie": {
+      "expected": 282,
+      "files_present": 76
+    },
+    "vues-aeriennes": {
+      "expected": 55,
+      "files_present": 13
+    }
+  },
+  "assets": [
+    {
+      "key": "act_X1",
+      "code": "X1",
+      "family": "actes-I-II",
+      "filename": "visages_foule_hommes.png",
+      "dest": "references/actes-I-II/visages_foule_hommes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3823335,
+      "sha256": "e5fde903f39bee3fa2f0868b014ba104fd4568e701183651856f715907ebfcf7",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X2",
+      "code": "X2",
+      "family": "actes-I-II",
+      "filename": "visages_foule_femmes.png",
+      "dest": "references/actes-I-II/visages_foule_femmes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3790871,
+      "sha256": "6c8f1521c03af03b81170340906f8876bd98f25fcfda50d7ea29658ffa63f32d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X3",
+      "code": "X3",
+      "family": "actes-I-II",
+      "filename": "visages_gardes.png",
+      "dest": "references/actes-I-II/visages_gardes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3869823,
+      "sha256": "5c60fa3cfa4b65dea645d5c2217df05b551250b46e88dcb573393f75ba8e8fb9",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X4",
+      "code": "X4",
+      "family": "actes-I-II",
+      "filename": "visages_enfants.png",
+      "dest": "references/actes-I-II/visages_enfants.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 4003965,
+      "sha256": "4e87b545a62f67578f82deec437c9a6ff5b8f3addcbb342d3f8ab3c2f76650c7",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-1",
+      "code": "A0-1",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_1.png",
+      "dest": "references/actes-I-II/seq_ouverture_1.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-2",
+      "code": "A0-2",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_2.png",
+      "dest": "references/actes-I-II/seq_ouverture_2.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-3",
+      "code": "A0-3",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_3.png",
+      "dest": "references/actes-I-II/seq_ouverture_3.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-4",
+      "code": "A0-4",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_4.png",
+      "dest": "references/actes-I-II/seq_ouverture_4.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-5",
+      "code": "A0-5",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_5.png",
+      "dest": "references/actes-I-II/seq_ouverture_5.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A0-6",
+      "code": "A0-6",
+      "family": "actes-I-II",
+      "filename": "seq_ouverture_6.png",
+      "dest": "references/actes-I-II/seq_ouverture_6.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A1-1",
+      "code": "A1-1",
+      "family": "actes-I-II",
+      "filename": "gros_manche.png",
+      "dest": "references/actes-I-II/gros_manche.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A1-2",
+      "code": "A1-2",
+      "family": "actes-I-II",
+      "filename": "gros_doublure.png",
+      "dest": "references/actes-I-II/gros_doublure.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A1-3",
+      "code": "A1-3",
+      "family": "actes-I-II",
+      "filename": "tableau_anselme_sac.png",
+      "dest": "references/actes-I-II/tableau_anselme_sac.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A2-1",
+      "code": "A2-1",
+      "family": "actes-I-II",
+      "filename": "tableau_ysabeau_seuil.png",
+      "dest": "references/actes-I-II/tableau_ysabeau_seuil.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A2-2",
+      "code": "A2-2",
+      "family": "actes-I-II",
+      "filename": "gros_cage_ouverte.png",
+      "dest": "references/actes-I-II/gros_cage_ouverte.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A2-3",
+      "code": "A2-3",
+      "family": "actes-I-II",
+      "filename": "tableau_bertin.png",
+      "dest": "references/actes-I-II/tableau_bertin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-1",
+      "code": "A3-1",
+      "family": "actes-I-II",
+      "filename": "gros_balance.png",
+      "dest": "references/actes-I-II/gros_balance.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-2",
+      "code": "A3-2",
+      "family": "actes-I-II",
+      "filename": "tableau_tribut.png",
+      "dest": "references/actes-I-II/tableau_tribut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-3",
+      "code": "A3-3",
+      "family": "actes-I-II",
+      "filename": "gros_bourse.png",
+      "dest": "references/actes-I-II/gros_bourse.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-4",
+      "code": "A3-4",
+      "family": "actes-I-II",
+      "filename": "tableau_denonce.png",
+      "dest": "references/actes-I-II/tableau_denonce.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-5",
+      "code": "A3-5",
+      "family": "actes-I-II",
+      "filename": "gros_plume_nom.png",
+      "dest": "references/actes-I-II/gros_plume_nom.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-6",
+      "code": "A3-6",
+      "family": "actes-I-II",
+      "filename": "tableau_regard_garde.png",
+      "dest": "references/actes-I-II/tableau_regard_garde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A3-7",
+      "code": "A3-7",
+      "family": "actes-I-II",
+      "filename": "tableau_frere_file.png",
+      "dest": "references/actes-I-II/tableau_frere_file.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A4-1",
+      "code": "A4-1",
+      "family": "actes-I-II",
+      "filename": "gros_page_farine.png",
+      "dest": "references/actes-I-II/gros_page_farine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A4-2",
+      "code": "A4-2",
+      "family": "actes-I-II",
+      "filename": "tableau_maelle_etal.png",
+      "dest": "references/actes-I-II/tableau_maelle_etal.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A4-3",
+      "code": "A4-3",
+      "family": "actes-I-II",
+      "filename": "lieu_boulangerie_fermee.png",
+      "dest": "references/actes-I-II/lieu_boulangerie_fermee.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A5-1",
+      "code": "A5-1",
+      "family": "actes-I-II",
+      "filename": "tableau_caisses.png",
+      "dest": "references/actes-I-II/tableau_caisses.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A5-2",
+      "code": "A5-2",
+      "family": "actes-I-II",
+      "filename": "gros_dalle.png",
+      "dest": "references/actes-I-II/gros_dalle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A5-3",
+      "code": "A5-3",
+      "family": "actes-I-II",
+      "filename": "tableau_poterne.png",
+      "dest": "references/actes-I-II/tableau_poterne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A5-4",
+      "code": "A5-4",
+      "family": "actes-I-II",
+      "filename": "tableau_prise.png",
+      "dest": "references/actes-I-II/tableau_prise.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A6-1",
+      "code": "A6-1",
+      "family": "actes-I-II",
+      "filename": "tableau_joute_garin.png",
+      "dest": "references/actes-I-II/tableau_joute_garin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A6-2",
+      "code": "A6-2",
+      "family": "actes-I-II",
+      "filename": "gros_paume.png",
+      "dest": "references/actes-I-II/gros_paume.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A6-3",
+      "code": "A6-3",
+      "family": "actes-I-II",
+      "filename": "tableau_sac_pose.png",
+      "dest": "references/actes-I-II/tableau_sac_pose.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A6-4",
+      "code": "A6-4",
+      "family": "actes-I-II",
+      "filename": "tableau_pierre.png",
+      "dest": "references/actes-I-II/tableau_pierre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A7-1",
+      "code": "A7-1",
+      "family": "actes-I-II",
+      "filename": "tableau_retour.png",
+      "dest": "references/actes-I-II/tableau_retour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A7-2",
+      "code": "A7-2",
+      "family": "actes-I-II",
+      "filename": "fin_acte1_paye.png",
+      "dest": "references/actes-I-II/fin_acte1_paye.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A7-3",
+      "code": "A7-3",
+      "family": "actes-I-II",
+      "filename": "fin_acte1_denonce.png",
+      "dest": "references/actes-I-II/fin_acte1_denonce.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A7-4",
+      "code": "A7-4",
+      "family": "actes-I-II",
+      "filename": "fin_acte1_refus.png",
+      "dest": "references/actes-I-II/fin_acte1_refus.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A8-1",
+      "code": "A8-1",
+      "family": "actes-I-II",
+      "filename": "gros_page_quai.png",
+      "dest": "references/actes-I-II/gros_page_quai.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_A8-2",
+      "code": "A8-2",
+      "family": "actes-I-II",
+      "filename": "gros_page_caisse.png",
+      "dest": "references/actes-I-II/gros_page_caisse.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N0-1",
+      "code": "N0-1",
+      "family": "actes-I-II",
+      "filename": "seq_soir_1.png",
+      "dest": "references/actes-I-II/seq_soir_1.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N0-2",
+      "code": "N0-2",
+      "family": "actes-I-II",
+      "filename": "seq_soir_2.png",
+      "dest": "references/actes-I-II/seq_soir_2.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N0-3",
+      "code": "N0-3",
+      "family": "actes-I-II",
+      "filename": "tableau_anselme_soir.png",
+      "dest": "references/actes-I-II/tableau_anselme_soir.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-1",
+      "code": "N1-1",
+      "family": "actes-I-II",
+      "filename": "tableau_loterie.png",
+      "dest": "references/actes-I-II/tableau_loterie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-2",
+      "code": "N1-2",
+      "family": "actes-I-II",
+      "filename": "gros_billet_dechire.png",
+      "dest": "references/actes-I-II/gros_billet_dechire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-3",
+      "code": "N1-3",
+      "family": "actes-I-II",
+      "filename": "effet_lumiere_doree.png",
+      "dest": "references/actes-I-II/effet_lumiere_doree.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-4",
+      "code": "N1-4",
+      "family": "actes-I-II",
+      "filename": "tableau_masque.png",
+      "dest": "references/actes-I-II/tableau_masque.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-5",
+      "code": "N1-5",
+      "family": "actes-I-II",
+      "filename": "portrait_alienor_masquee.png",
+      "dest": "references/actes-I-II/portrait_alienor_masquee.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N1-6",
+      "code": "N1-6",
+      "family": "actes-I-II",
+      "filename": "gros_pieces.png",
+      "dest": "references/actes-I-II/gros_pieces.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-1",
+      "code": "N2-1",
+      "family": "actes-I-II",
+      "filename": "tableau_farce.png",
+      "dest": "references/actes-I-II/tableau_farce.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-2",
+      "code": "N2-2",
+      "family": "actes-I-II",
+      "filename": "tableau_farce_garin.png",
+      "dest": "references/actes-I-II/tableau_farce_garin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-3",
+      "code": "N2-3",
+      "family": "actes-I-II",
+      "filename": "gros_page_treteaux.png",
+      "dest": "references/actes-I-II/gros_page_treteaux.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-4",
+      "code": "N2-4",
+      "family": "actes-I-II",
+      "filename": "tableau_branle.png",
+      "dest": "references/actes-I-II/tableau_branle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-5",
+      "code": "N2-5",
+      "family": "actes-I-II",
+      "filename": "tableau_femme_masquee.png",
+      "dest": "references/actes-I-II/tableau_femme_masquee.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N2-6",
+      "code": "N2-6",
+      "family": "actes-I-II",
+      "filename": "gros_billet_mahaut.png",
+      "dest": "references/actes-I-II/gros_billet_mahaut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N3-1",
+      "code": "N3-1",
+      "family": "actes-I-II",
+      "filename": "tableau_toast.png",
+      "dest": "references/actes-I-II/tableau_toast.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N3-2",
+      "code": "N3-2",
+      "family": "actes-I-II",
+      "filename": "tableau_grand_toast.png",
+      "dest": "references/actes-I-II/tableau_grand_toast.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N3-3",
+      "code": "N3-3",
+      "family": "actes-I-II",
+      "filename": "tableau_garde_detourne.png",
+      "dest": "references/actes-I-II/tableau_garde_detourne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-1",
+      "code": "N4-1",
+      "family": "actes-I-II",
+      "filename": "temoin_mathurin.png",
+      "dest": "references/actes-I-II/temoin_mathurin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-2",
+      "code": "N4-2",
+      "family": "actes-I-II",
+      "filename": "temoin_jeanne.png",
+      "dest": "references/actes-I-II/temoin_jeanne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-3",
+      "code": "N4-3",
+      "family": "actes-I-II",
+      "filename": "temoin_thibaut.png",
+      "dest": "references/actes-I-II/temoin_thibaut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-4",
+      "code": "N4-4",
+      "family": "actes-I-II",
+      "filename": "temoin_hugues.png",
+      "dest": "references/actes-I-II/temoin_hugues.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-5",
+      "code": "N4-5",
+      "family": "actes-I-II",
+      "filename": "temoin_perrine.png",
+      "dest": "references/actes-I-II/temoin_perrine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-6",
+      "code": "N4-6",
+      "family": "actes-I-II",
+      "filename": "temoin_enfants.png",
+      "dest": "references/actes-I-II/temoin_enfants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-7",
+      "code": "N4-7",
+      "family": "actes-I-II",
+      "filename": "temoin_margot.png",
+      "dest": "references/actes-I-II/temoin_margot.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N4-8",
+      "code": "N4-8",
+      "family": "actes-I-II",
+      "filename": "temoin_mendiants.png",
+      "dest": "references/actes-I-II/temoin_mendiants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-1",
+      "code": "N5-1",
+      "family": "actes-I-II",
+      "filename": "tableau_presse_arrivee.png",
+      "dest": "references/actes-I-II/tableau_presse_arrivee.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-2",
+      "code": "N5-2",
+      "family": "actes-I-II",
+      "filename": "gros_composteur.png",
+      "dest": "references/actes-I-II/gros_composteur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-3",
+      "code": "N5-3",
+      "family": "actes-I-II",
+      "filename": "gros_barre_garin.png",
+      "dest": "references/actes-I-II/gros_barre_garin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-4",
+      "code": "N5-4",
+      "family": "actes-I-II",
+      "filename": "gros_balles_maelle.png",
+      "dest": "references/actes-I-II/gros_balles_maelle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-5",
+      "code": "N5-5",
+      "family": "actes-I-II",
+      "filename": "tableau_tirage.png",
+      "dest": "references/actes-I-II/tableau_tirage.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N5-6",
+      "code": "N5-6",
+      "family": "actes-I-II",
+      "filename": "gros_besicles.png",
+      "dest": "references/actes-I-II/gros_besicles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N6-1",
+      "code": "N6-1",
+      "family": "actes-I-II",
+      "filename": "tableau_litiere_1.png",
+      "dest": "references/actes-I-II/tableau_litiere_1.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N6-2",
+      "code": "N6-2",
+      "family": "actes-I-II",
+      "filename": "tableau_litiere_2.png",
+      "dest": "references/actes-I-II/tableau_litiere_2.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N6-3",
+      "code": "N6-3",
+      "family": "actes-I-II",
+      "filename": "tableau_debout.png",
+      "dest": "references/actes-I-II/tableau_debout.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-1",
+      "code": "N7-1",
+      "family": "actes-I-II",
+      "filename": "gros_colle.png",
+      "dest": "references/actes-I-II/gros_colle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-2",
+      "code": "N7-2",
+      "family": "actes-I-II",
+      "filename": "tableau_jeanne_lit.png",
+      "dest": "references/actes-I-II/tableau_jeanne_lit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-3",
+      "code": "N7-3",
+      "family": "actes-I-II",
+      "filename": "tableau_bastien_lit.png",
+      "dest": "references/actes-I-II/tableau_bastien_lit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-4",
+      "code": "N7-4",
+      "family": "actes-I-II",
+      "filename": "tableau_mains_fieres.png",
+      "dest": "references/actes-I-II/tableau_mains_fieres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-5",
+      "code": "N7-5",
+      "family": "actes-I-II",
+      "filename": "tableau_aube_place.png",
+      "dest": "references/actes-I-II/tableau_aube_place.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_N7-6",
+      "code": "N7-6",
+      "family": "actes-I-II",
+      "filename": "fin_acte2.png",
+      "dest": "references/actes-I-II/fin_acte2.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X10_neutre",
+      "code": "X10_neutre",
+      "family": "actes-I-II",
+      "filename": "mahaut_masquee_neutre.png",
+      "dest": "references/actes-I-II/mahaut_masquee_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X10_inquietude",
+      "code": "X10_inquietude",
+      "family": "actes-I-II",
+      "filename": "mahaut_masquee_inquietude.png",
+      "dest": "references/actes-I-II/mahaut_masquee_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X11_neutre",
+      "code": "X11_neutre",
+      "family": "actes-I-II",
+      "filename": "gervais_neutre.png",
+      "dest": "references/actes-I-II/gervais_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X11_sourire",
+      "code": "X11_sourire",
+      "family": "actes-I-II",
+      "filename": "gervais_sourire.png",
+      "dest": "references/actes-I-II/gervais_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X11_inquietude",
+      "code": "X11_inquietude",
+      "family": "actes-I-II",
+      "filename": "gervais_inquietude.png",
+      "dest": "references/actes-I-II/gervais_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X11_colere",
+      "code": "X11_colere",
+      "family": "actes-I-II",
+      "filename": "gervais_colere.png",
+      "dest": "references/actes-I-II/gervais_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X12_neutre",
+      "code": "X12_neutre",
+      "family": "actes-I-II",
+      "filename": "bonimenteur_neutre.png",
+      "dest": "references/actes-I-II/bonimenteur_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X12_sourire",
+      "code": "X12_sourire",
+      "family": "actes-I-II",
+      "filename": "bonimenteur_sourire.png",
+      "dest": "references/actes-I-II/bonimenteur_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X12_inquietude",
+      "code": "X12_inquietude",
+      "family": "actes-I-II",
+      "filename": "bonimenteur_inquietude.png",
+      "dest": "references/actes-I-II/bonimenteur_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X12_colere",
+      "code": "X12_colere",
+      "family": "actes-I-II",
+      "filename": "bonimenteur_colere.png",
+      "dest": "references/actes-I-II/bonimenteur_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X13_neutre",
+      "code": "X13_neutre",
+      "family": "actes-I-II",
+      "filename": "valet_neutre.png",
+      "dest": "references/actes-I-II/valet_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X13_sourire",
+      "code": "X13_sourire",
+      "family": "actes-I-II",
+      "filename": "valet_sourire.png",
+      "dest": "references/actes-I-II/valet_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X13_inquietude",
+      "code": "X13_inquietude",
+      "family": "actes-I-II",
+      "filename": "valet_inquietude.png",
+      "dest": "references/actes-I-II/valet_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X13_colere",
+      "code": "X13_colere",
+      "family": "actes-I-II",
+      "filename": "valet_colere.png",
+      "dest": "references/actes-I-II/valet_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X14_neutre",
+      "code": "X14_neutre",
+      "family": "actes-I-II",
+      "filename": "crieur_neutre.png",
+      "dest": "references/actes-I-II/crieur_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X14_sourire",
+      "code": "X14_sourire",
+      "family": "actes-I-II",
+      "filename": "crieur_sourire.png",
+      "dest": "references/actes-I-II/crieur_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X14_inquietude",
+      "code": "X14_inquietude",
+      "family": "actes-I-II",
+      "filename": "crieur_inquietude.png",
+      "dest": "references/actes-I-II/crieur_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X14_colere",
+      "code": "X14_colere",
+      "family": "actes-I-II",
+      "filename": "crieur_colere.png",
+      "dest": "references/actes-I-II/crieur_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X15_neutre",
+      "code": "X15_neutre",
+      "family": "actes-I-II",
+      "filename": "colin_neutre.png",
+      "dest": "references/actes-I-II/colin_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X15_sourire",
+      "code": "X15_sourire",
+      "family": "actes-I-II",
+      "filename": "colin_sourire.png",
+      "dest": "references/actes-I-II/colin_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X15_inquietude",
+      "code": "X15_inquietude",
+      "family": "actes-I-II",
+      "filename": "colin_inquietude.png",
+      "dest": "references/actes-I-II/colin_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X15_colere",
+      "code": "X15_colere",
+      "family": "actes-I-II",
+      "filename": "colin_colere.png",
+      "dest": "references/actes-I-II/colin_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X16_sourire",
+      "code": "X16_sourire",
+      "family": "actes-I-II",
+      "filename": "joris_sourire.png",
+      "dest": "references/actes-I-II/joris_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X16_inquietude",
+      "code": "X16_inquietude",
+      "family": "actes-I-II",
+      "filename": "joris_inquietude.png",
+      "dest": "references/actes-I-II/joris_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X16_colere",
+      "code": "X16_colere",
+      "family": "actes-I-II",
+      "filename": "joris_colere.png",
+      "dest": "references/actes-I-II/joris_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X17_sourire",
+      "code": "X17_sourire",
+      "family": "actes-I-II",
+      "filename": "martin_sourire.png",
+      "dest": "references/actes-I-II/martin_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X17_inquietude",
+      "code": "X17_inquietude",
+      "family": "actes-I-II",
+      "filename": "martin_inquietude.png",
+      "dest": "references/actes-I-II/martin_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X17_colere",
+      "code": "X17_colere",
+      "family": "actes-I-II",
+      "filename": "martin_colere.png",
+      "dest": "references/actes-I-II/martin_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X18_neutre",
+      "code": "X18_neutre",
+      "family": "actes-I-II",
+      "filename": "foule_vieille_neutre.png",
+      "dest": "references/actes-I-II/foule_vieille_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X18_sourire",
+      "code": "X18_sourire",
+      "family": "actes-I-II",
+      "filename": "foule_vieille_sourire.png",
+      "dest": "references/actes-I-II/foule_vieille_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X18_inquietude",
+      "code": "X18_inquietude",
+      "family": "actes-I-II",
+      "filename": "foule_vieille_inquietude.png",
+      "dest": "references/actes-I-II/foule_vieille_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X18_colere",
+      "code": "X18_colere",
+      "family": "actes-I-II",
+      "filename": "foule_vieille_colere.png",
+      "dest": "references/actes-I-II/foule_vieille_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X19_neutre",
+      "code": "X19_neutre",
+      "family": "actes-I-II",
+      "filename": "foule_artisan_neutre.png",
+      "dest": "references/actes-I-II/foule_artisan_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X19_sourire",
+      "code": "X19_sourire",
+      "family": "actes-I-II",
+      "filename": "foule_artisan_sourire.png",
+      "dest": "references/actes-I-II/foule_artisan_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X19_inquietude",
+      "code": "X19_inquietude",
+      "family": "actes-I-II",
+      "filename": "foule_artisan_inquietude.png",
+      "dest": "references/actes-I-II/foule_artisan_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X19_colere",
+      "code": "X19_colere",
+      "family": "actes-I-II",
+      "filename": "foule_artisan_colere.png",
+      "dest": "references/actes-I-II/foule_artisan_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X20_neutre",
+      "code": "X20_neutre",
+      "family": "actes-I-II",
+      "filename": "foule_jeune_neutre.png",
+      "dest": "references/actes-I-II/foule_jeune_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X20_sourire",
+      "code": "X20_sourire",
+      "family": "actes-I-II",
+      "filename": "foule_jeune_sourire.png",
+      "dest": "references/actes-I-II/foule_jeune_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X20_inquietude",
+      "code": "X20_inquietude",
+      "family": "actes-I-II",
+      "filename": "foule_jeune_inquietude.png",
+      "dest": "references/actes-I-II/foule_jeune_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X20_colere",
+      "code": "X20_colere",
+      "family": "actes-I-II",
+      "filename": "foule_jeune_colere.png",
+      "dest": "references/actes-I-II/foule_jeune_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X21_neutre",
+      "code": "X21_neutre",
+      "family": "actes-I-II",
+      "filename": "foule_marchande_neutre.png",
+      "dest": "references/actes-I-II/foule_marchande_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X21_sourire",
+      "code": "X21_sourire",
+      "family": "actes-I-II",
+      "filename": "foule_marchande_sourire.png",
+      "dest": "references/actes-I-II/foule_marchande_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X21_inquietude",
+      "code": "X21_inquietude",
+      "family": "actes-I-II",
+      "filename": "foule_marchande_inquietude.png",
+      "dest": "references/actes-I-II/foule_marchande_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X21_colere",
+      "code": "X21_colere",
+      "family": "actes-I-II",
+      "filename": "foule_marchande_colere.png",
+      "dest": "references/actes-I-II/foule_marchande_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X22_neutre",
+      "code": "X22_neutre",
+      "family": "actes-I-II",
+      "filename": "garde_jeune_neutre.png",
+      "dest": "references/actes-I-II/garde_jeune_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X22_sourire",
+      "code": "X22_sourire",
+      "family": "actes-I-II",
+      "filename": "garde_jeune_sourire.png",
+      "dest": "references/actes-I-II/garde_jeune_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X22_inquietude",
+      "code": "X22_inquietude",
+      "family": "actes-I-II",
+      "filename": "garde_jeune_inquietude.png",
+      "dest": "references/actes-I-II/garde_jeune_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X22_colere",
+      "code": "X22_colere",
+      "family": "actes-I-II",
+      "filename": "garde_jeune_colere.png",
+      "dest": "references/actes-I-II/garde_jeune_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X23_neutre",
+      "code": "X23_neutre",
+      "family": "actes-I-II",
+      "filename": "garde_vieux_neutre.png",
+      "dest": "references/actes-I-II/garde_vieux_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X23_sourire",
+      "code": "X23_sourire",
+      "family": "actes-I-II",
+      "filename": "garde_vieux_sourire.png",
+      "dest": "references/actes-I-II/garde_vieux_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X23_inquietude",
+      "code": "X23_inquietude",
+      "family": "actes-I-II",
+      "filename": "garde_vieux_inquietude.png",
+      "dest": "references/actes-I-II/garde_vieux_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X23_colere",
+      "code": "X23_colere",
+      "family": "actes-I-II",
+      "filename": "garde_vieux_colere.png",
+      "dest": "references/actes-I-II/garde_vieux_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X30",
+      "code": "X30",
+      "family": "actes-I-II",
+      "filename": "vignette_F1.png",
+      "dest": "references/actes-I-II/vignette_F1.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X31",
+      "code": "X31",
+      "family": "actes-I-II",
+      "filename": "vignette_F2.png",
+      "dest": "references/actes-I-II/vignette_F2.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X32",
+      "code": "X32",
+      "family": "actes-I-II",
+      "filename": "vignette_F3.png",
+      "dest": "references/actes-I-II/vignette_F3.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X33",
+      "code": "X33",
+      "family": "actes-I-II",
+      "filename": "vignette_F4.png",
+      "dest": "references/actes-I-II/vignette_F4.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X34",
+      "code": "X34",
+      "family": "actes-I-II",
+      "filename": "vignette_F5.png",
+      "dest": "references/actes-I-II/vignette_F5.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X35",
+      "code": "X35",
+      "family": "actes-I-II",
+      "filename": "vignette_F6.png",
+      "dest": "references/actes-I-II/vignette_F6.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X36",
+      "code": "X36",
+      "family": "actes-I-II",
+      "filename": "vignette_F7.png",
+      "dest": "references/actes-I-II/vignette_F7.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X37",
+      "code": "X37",
+      "family": "actes-I-II",
+      "filename": "vignette_F8.png",
+      "dest": "references/actes-I-II/vignette_F8.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X38",
+      "code": "X38",
+      "family": "actes-I-II",
+      "filename": "vignette_billet.png",
+      "dest": "references/actes-I-II/vignette_billet.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X40",
+      "code": "X40",
+      "family": "actes-I-II",
+      "filename": "ciel_matin.png",
+      "dest": "references/actes-I-II/ciel_matin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X41",
+      "code": "X41",
+      "family": "actes-I-II",
+      "filename": "ciel_midi.png",
+      "dest": "references/actes-I-II/ciel_midi.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X42",
+      "code": "X42",
+      "family": "actes-I-II",
+      "filename": "ciel_crepuscule.png",
+      "dest": "references/actes-I-II/ciel_crepuscule.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X43",
+      "code": "X43",
+      "family": "actes-I-II",
+      "filename": "ciel_nuit_fete.png",
+      "dest": "references/actes-I-II/ciel_nuit_fete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X44",
+      "code": "X44",
+      "family": "actes-I-II",
+      "filename": "ciel_minuit.png",
+      "dest": "references/actes-I-II/ciel_minuit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X45",
+      "code": "X45",
+      "family": "actes-I-II",
+      "filename": "ciel_aube.png",
+      "dest": "references/actes-I-II/ciel_aube.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X46",
+      "code": "X46",
+      "family": "actes-I-II",
+      "filename": "nuages.png",
+      "dest": "references/actes-I-II/nuages.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X50",
+      "code": "X50",
+      "family": "actes-I-II",
+      "filename": "recit_01.png",
+      "dest": "references/actes-I-II/recit_01.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X51",
+      "code": "X51",
+      "family": "actes-I-II",
+      "filename": "recit_02.png",
+      "dest": "references/actes-I-II/recit_02.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X52",
+      "code": "X52",
+      "family": "actes-I-II",
+      "filename": "recit_03.png",
+      "dest": "references/actes-I-II/recit_03.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X53",
+      "code": "X53",
+      "family": "actes-I-II",
+      "filename": "recit_04.png",
+      "dest": "references/actes-I-II/recit_04.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X54",
+      "code": "X54",
+      "family": "actes-I-II",
+      "filename": "recit_05.png",
+      "dest": "references/actes-I-II/recit_05.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X55",
+      "code": "X55",
+      "family": "actes-I-II",
+      "filename": "recit_06.png",
+      "dest": "references/actes-I-II/recit_06.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X56",
+      "code": "X56",
+      "family": "actes-I-II",
+      "filename": "recit_07.png",
+      "dest": "references/actes-I-II/recit_07.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X57",
+      "code": "X57",
+      "family": "actes-I-II",
+      "filename": "recit_08.png",
+      "dest": "references/actes-I-II/recit_08.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X58",
+      "code": "X58",
+      "family": "actes-I-II",
+      "filename": "recit_09.png",
+      "dest": "references/actes-I-II/recit_09.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X59",
+      "code": "X59",
+      "family": "actes-I-II",
+      "filename": "recit_10.png",
+      "dest": "references/actes-I-II/recit_10.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X60",
+      "code": "X60",
+      "family": "actes-I-II",
+      "filename": "recit_11.png",
+      "dest": "references/actes-I-II/recit_11.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_X61",
+      "code": "X61",
+      "family": "actes-I-II",
+      "filename": "recit_12.png",
+      "dest": "references/actes-I-II/recit_12.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y1",
+      "code": "Y1",
+      "family": "actes-I-II",
+      "filename": "percepteur_estrade.png",
+      "dest": "references/actes-I-II/percepteur_estrade.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y2",
+      "code": "Y2",
+      "family": "actes-I-II",
+      "filename": "percepteur_fauteuil.png",
+      "dest": "references/actes-I-II/percepteur_fauteuil.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y3",
+      "code": "Y3",
+      "family": "actes-I-II",
+      "filename": "percepteur_objets.png",
+      "dest": "references/actes-I-II/percepteur_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y4",
+      "code": "Y4",
+      "family": "actes-I-II",
+      "filename": "peuple_objets.png",
+      "dest": "references/actes-I-II/peuple_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y5",
+      "code": "Y5",
+      "family": "actes-I-II",
+      "filename": "percepteur_montagne.png",
+      "dest": "references/actes-I-II/percepteur_montagne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y6",
+      "code": "Y6",
+      "family": "actes-I-II",
+      "filename": "percepteur_hierarchie.png",
+      "dest": "references/actes-I-II/percepteur_hierarchie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y7_neutre",
+      "code": "Y7_neutre",
+      "family": "actes-I-II",
+      "filename": "clerc_neutre.png",
+      "dest": "references/actes-I-II/clerc_neutre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y7_sourire",
+      "code": "Y7_sourire",
+      "family": "actes-I-II",
+      "filename": "clerc_sourire.png",
+      "dest": "references/actes-I-II/clerc_sourire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y7_inquietude",
+      "code": "Y7_inquietude",
+      "family": "actes-I-II",
+      "filename": "clerc_inquietude.png",
+      "dest": "references/actes-I-II/clerc_inquietude.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y7_colere",
+      "code": "Y7_colere",
+      "family": "actes-I-II",
+      "filename": "clerc_colere.png",
+      "dest": "references/actes-I-II/clerc_colere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y8",
+      "code": "Y8",
+      "family": "actes-I-II",
+      "filename": "file_elements.png",
+      "dest": "references/actes-I-II/file_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y10",
+      "code": "Y10",
+      "family": "actes-I-II",
+      "filename": "tribut_par_metier.png",
+      "dest": "references/actes-I-II/tribut_par_metier.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y11",
+      "code": "Y11",
+      "family": "actes-I-II",
+      "filename": "porteurs_en_pied.png",
+      "dest": "references/actes-I-II/porteurs_en_pied.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y12",
+      "code": "Y12",
+      "family": "actes-I-II",
+      "filename": "pose_porter_epaule.png",
+      "dest": "references/actes-I-II/pose_porter_epaule.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y13",
+      "code": "Y13",
+      "family": "actes-I-II",
+      "filename": "pose_porter_dos.png",
+      "dest": "references/actes-I-II/pose_porter_dos.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y14",
+      "code": "Y14",
+      "family": "actes-I-II",
+      "filename": "pose_porter_tete.png",
+      "dest": "references/actes-I-II/pose_porter_tete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y15",
+      "code": "Y15",
+      "family": "actes-I-II",
+      "filename": "pose_poser_sac.png",
+      "dest": "references/actes-I-II/pose_poser_sac.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y16",
+      "code": "Y16",
+      "family": "actes-I-II",
+      "filename": "pose_attendre.png",
+      "dest": "references/actes-I-II/pose_attendre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y17",
+      "code": "Y17",
+      "family": "actes-I-II",
+      "filename": "file_vue_haut.png",
+      "dest": "references/actes-I-II/file_vue_haut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y18",
+      "code": "Y18",
+      "family": "actes-I-II",
+      "filename": "file_visages.png",
+      "dest": "references/actes-I-II/file_visages.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y19",
+      "code": "Y19",
+      "family": "actes-I-II",
+      "filename": "file_sortie.png",
+      "dest": "references/actes-I-II/file_sortie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y20",
+      "code": "Y20",
+      "family": "actes-I-II",
+      "filename": "mains_tribut.png",
+      "dest": "references/actes-I-II/mains_tribut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y30",
+      "code": "Y30",
+      "family": "actes-I-II",
+      "filename": "costumes_paysans.png",
+      "dest": "references/actes-I-II/costumes_paysans.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y31",
+      "code": "Y31",
+      "family": "actes-I-II",
+      "filename": "costumes_artisans_cuir_bois_metal.png",
+      "dest": "references/actes-I-II/costumes_artisans_cuir_bois_metal.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y32",
+      "code": "Y32",
+      "family": "actes-I-II",
+      "filename": "costumes_artisans_textile.png",
+      "dest": "references/actes-I-II/costumes_artisans_textile.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y33",
+      "code": "Y33",
+      "family": "actes-I-II",
+      "filename": "costumes_metiers_bouche.png",
+      "dest": "references/actes-I-II/costumes_metiers_bouche.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y34",
+      "code": "Y34",
+      "family": "actes-I-II",
+      "filename": "costumes_marchands.png",
+      "dest": "references/actes-I-II/costumes_marchands.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y35",
+      "code": "Y35",
+      "family": "actes-I-II",
+      "filename": "costumes_bourgeois.png",
+      "dest": "references/actes-I-II/costumes_bourgeois.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y36",
+      "code": "Y36",
+      "family": "actes-I-II",
+      "filename": "costumes_fleuve.png",
+      "dest": "references/actes-I-II/costumes_fleuve.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y37",
+      "code": "Y37",
+      "family": "actes-I-II",
+      "filename": "costumes_serviteurs.png",
+      "dest": "references/actes-I-II/costumes_serviteurs.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y38",
+      "code": "Y38",
+      "family": "actes-I-II",
+      "filename": "costumes_clerge.png",
+      "dest": "references/actes-I-II/costumes_clerge.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y39",
+      "code": "Y39",
+      "family": "actes-I-II",
+      "filename": "costumes_pauvres.png",
+      "dest": "references/actes-I-II/costumes_pauvres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y40",
+      "code": "Y40",
+      "family": "actes-I-II",
+      "filename": "costumes_vieillards_enfants.png",
+      "dest": "references/actes-I-II/costumes_vieillards_enfants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y41",
+      "code": "Y41",
+      "family": "actes-I-II",
+      "filename": "costumes_fete.png",
+      "dest": "references/actes-I-II/costumes_fete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "act_Y42",
+      "code": "Y42",
+      "family": "actes-I-II",
+      "filename": "matieres_par_rang.png",
+      "dest": "references/actes-I-II/matieres_par_rang.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R1",
+      "code": "R1",
+      "family": "planches-vie",
+      "filename": "rue_plan.png",
+      "dest": "references/planches-vie/rue_plan.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3857421,
+      "sha256": "6736cd2ee0a29b240f1c4be61f78ddee5e8708a8b20a2caad74bede8219edca8",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R2",
+      "code": "R2",
+      "family": "planches-vie",
+      "filename": "rue_soir_fete.png",
+      "dest": "references/planches-vie/rue_soir_fete.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3896855,
+      "sha256": "24ec8bc6d05e5726466be28ed8197f1413ef0201330bcf735ee2784af6223380",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R3",
+      "code": "R3",
+      "family": "planches-vie",
+      "filename": "rue_minuit.png",
+      "dest": "references/planches-vie/rue_minuit.png",
+      "status": "needs_correction",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3241046,
+      "sha256": "c7738b271120f0e75f03d16c3e8e919dd6cb3df0480dc9b2dc7fb7d3cc867614",
+      "correction_needed": "Fermer porte principale de l'imprimerie et tous les volets sauf une unique fenêtre atelier éclairée.",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R4",
+      "code": "R4",
+      "family": "planches-vie",
+      "filename": "rue_aube.png",
+      "dest": "references/planches-vie/rue_aube.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3982324,
+      "sha256": "799d257de7df9ac25780c94353c1c31b10e6e40db6935891e8869656658a5d8f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R5",
+      "code": "R5",
+      "family": "planches-vie",
+      "filename": "rue_hiver.png",
+      "dest": "references/planches-vie/rue_hiver.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3982396,
+      "sha256": "5548fedf92a19cc60d229948d590682939625ce02e4d675f1b3aa6079eb3956c",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R6",
+      "code": "R6",
+      "family": "planches-vie",
+      "filename": "rue_printemps.png",
+      "dest": "references/planches-vie/rue_printemps.png",
+      "status": "needs_correction",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3261055,
+      "sha256": "36b00fffa1db73e87288eb5a524e0968f6ecd6dbe2c7c7b690988621e1810c16",
+      "correction_needed": "Supprimer tous les parapluies modernes ; robe de la passante en brun/ocre, orange réservé à Aliénor.",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R7",
+      "code": "R7",
+      "family": "planches-vie",
+      "filename": "rue_cour_arriere.png",
+      "dest": "references/planches-vie/rue_cour_arriere.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 4094994,
+      "sha256": "50adba5948ee870c4abdd866a2f39c404bd6436738fa65436214bc02a7d4e39a",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R8",
+      "code": "R8",
+      "family": "planches-vie",
+      "filename": "rue_chambre_alienor.png",
+      "dest": "references/planches-vie/rue_chambre_alienor.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3834770,
+      "sha256": "d9acf42c29060bfd1eac7d6a93322b91aa5c347e2960316b1348d1c579ae243e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R9",
+      "code": "R9",
+      "family": "planches-vie",
+      "filename": "rue_passage_couvert.png",
+      "dest": "references/planches-vie/rue_passage_couvert.png",
+      "status": "needs_correction",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3449022,
+      "sha256": "552cbfda3e1dbf867d1f5df2ea54225037d5076739133668929ea4b442029517",
+      "correction_needed": "Passage couvert à l'opposé de la place, sortie vers une ruelle descendante, pas de statue visible ni place au bout.",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R10",
+      "code": "R10",
+      "family": "planches-vie",
+      "filename": "facade_ysabeau.png",
+      "dest": "references/planches-vie/facade_ysabeau.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3195023,
+      "sha256": "558bb2b2cca61db735fa32baa3ddccddb7af728e38ceddd85305cf0616b9c2c3",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R11",
+      "code": "R11",
+      "family": "planches-vie",
+      "filename": "facade_chandelier.png",
+      "dest": "references/planches-vie/facade_chandelier.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3406471,
+      "sha256": "05d041c9d9d6383ab7ebb9ed251630287bcf241f16c6eb0f5faecc907bed85f7",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R12",
+      "code": "R12",
+      "family": "planches-vie",
+      "filename": "facade_margot.png",
+      "dest": "references/planches-vie/facade_margot.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3396423,
+      "sha256": "3c8f0161f606df7b36473aae0b6ae4d45998b78720899a1b3fa9e4354268f01f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R13",
+      "code": "R13",
+      "family": "planches-vie",
+      "filename": "facade_cordonnier.png",
+      "dest": "references/planches-vie/facade_cordonnier.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3538210,
+      "sha256": "18d9e2eda9a4cc68ec2c3292c069ef918fcb8cf732dde0cd6efa0ef3ee9a42a4",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R14",
+      "code": "R14",
+      "family": "planches-vie",
+      "filename": "facade_taverne.png",
+      "dest": "references/planches-vie/facade_taverne.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3803694,
+      "sha256": "be112de5884a3fda1f03dc73a1061580cb2c5142656aeefa63fc423f7216dbc5",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R15",
+      "code": "R15",
+      "family": "planches-vie",
+      "filename": "facade_imprimerie_nuit.png",
+      "dest": "references/planches-vie/facade_imprimerie_nuit.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3294247,
+      "sha256": "d51e002effb44de1d4bc5aa2f2a37d5336b3033b31bc1651f16b08832cd1dee9",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R16",
+      "code": "R16",
+      "family": "planches-vie",
+      "filename": "facade_imprimerie_dos.png",
+      "dest": "references/planches-vie/facade_imprimerie_dos.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3713152,
+      "sha256": "94c15f0ecc7c8c85e19f263fc63a4475fceea7dda884904d1ed3ee5e857d782f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R17",
+      "code": "R17",
+      "family": "planches-vie",
+      "filename": "rue_enseignes.png",
+      "dest": "references/planches-vie/rue_enseignes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2719004,
+      "sha256": "c4000683d9cc9c9571efbe5aff751973903807f2981d35bd50ee1b56abe1288f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R18",
+      "code": "R18",
+      "family": "planches-vie",
+      "filename": "rue_portes.png",
+      "dest": "references/planches-vie/rue_portes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3075782,
+      "sha256": "98d79c641185363876b4ddddaedab4a6b611bcdbeb33bc71adc6414c48bde9e2",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R19",
+      "code": "R19",
+      "family": "planches-vie",
+      "filename": "rue_fenetres.png",
+      "dest": "references/planches-vie/rue_fenetres.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2960730,
+      "sha256": "07af60018b05fe7115b494d409863e896968670bf6a24c77c2538fb7c125b129",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R20",
+      "code": "R20",
+      "family": "planches-vie",
+      "filename": "rue_auvents_etals.png",
+      "dest": "references/planches-vie/rue_auvents_etals.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2671095,
+      "sha256": "f43cfff08ce7e316db79209d4e1261555c2810c1c045f0d7606ec46f75e9e52a",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R21",
+      "code": "R21",
+      "family": "planches-vie",
+      "filename": "rue_facades_details.png",
+      "dest": "references/planches-vie/rue_facades_details.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2519073,
+      "sha256": "54e4b09d845f2633a28bc0a217823faa98db7a285d716d9eda2e12c489561b71",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R22",
+      "code": "R22",
+      "family": "planches-vie",
+      "filename": "rue_jardinieres.png",
+      "dest": "references/planches-vie/rue_jardinieres.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2829979,
+      "sha256": "2de30378dd6fdc902cbaba87a4b87c55d23caad80bf4a6c13e9c7e310d4015c2",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R23",
+      "code": "R23",
+      "family": "planches-vie",
+      "filename": "rue_linge.png",
+      "dest": "references/planches-vie/rue_linge.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2544292,
+      "sha256": "04cbbafefd9f6b7717ab98999a7393a317405705d55c27f71978a060669b3c49",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R24",
+      "code": "R24",
+      "family": "planches-vie",
+      "filename": "rue_sol.png",
+      "dest": "references/planches-vie/rue_sol.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2416607,
+      "sha256": "a8b521724a71484a08c2d36d7af1df0ff779a9a22dc4737dbdb69b3a192e6a3e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R25",
+      "code": "R25",
+      "family": "planches-vie",
+      "filename": "rue_toits.png",
+      "dest": "references/planches-vie/rue_toits.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2416700,
+      "sha256": "a43094edbd193499a900ddff0d8dbb0c62b184730f78fe35af9cbffd3da195b7",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R26",
+      "code": "R26",
+      "family": "planches-vie",
+      "filename": "atelier_outils.png",
+      "dest": "references/planches-vie/atelier_outils.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2402703,
+      "sha256": "0db030e2befa89443b2df5a3668d92fa62772d10154f61457e557f9de7a9b7d0",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R27",
+      "code": "R27",
+      "family": "planches-vie",
+      "filename": "atelier_mobilier.png",
+      "dest": "references/planches-vie/atelier_mobilier.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2559059,
+      "sha256": "21d8bdc6f8bf5dcf540ddc44dba4a38386288f2bec4961d5060c71a99431914d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R28",
+      "code": "R28",
+      "family": "planches-vie",
+      "filename": "atelier_papiers.png",
+      "dest": "references/planches-vie/atelier_papiers.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2546833,
+      "sha256": "8d1f765855c4ebb49a386950e00dd95bf03209082732af9e894f79d25cff4350",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R29",
+      "code": "R29",
+      "family": "planches-vie",
+      "filename": "atelier_coin_anselme.png",
+      "dest": "references/planches-vie/atelier_coin_anselme.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3834827,
+      "sha256": "39e23f449ad829ee542c68948043c78ee70a2fb03a8ea067ec9b0964aaa5d05c",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "R30",
+      "code": "R30",
+      "family": "planches-vie",
+      "filename": "atelier_jour.png",
+      "dest": "references/planches-vie/atelier_jour.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3957924,
+      "sha256": "68e54c5f1fa76db302c83160d825dc197ae00f8c9836c780eb93448363f4c430",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B1",
+      "code": "B1",
+      "family": "planches-vie",
+      "filename": "facade_hotel_renaissance.png",
+      "dest": "references/planches-vie/facade_hotel_renaissance.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3638558,
+      "sha256": "86e461a3b77f2cfb126940099f72e23778e14d41efe93bd31deb0857b3619a7f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B2",
+      "code": "B2",
+      "family": "planches-vie",
+      "filename": "facade_pans_de_bois.png",
+      "dest": "references/planches-vie/facade_pans_de_bois.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3423368,
+      "sha256": "4ab1c9c6042caa027648204b99e1d7c58cd6992b5a056108916546e48a5196ff",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B3",
+      "code": "B3",
+      "family": "planches-vie",
+      "filename": "facade_arcades.png",
+      "dest": "references/planches-vie/facade_arcades.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3738294,
+      "sha256": "06ee15f5eec5257fbc6f8d2e1496ef803ca5d0295cf9cf4acfe040c1e290fe5e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B4",
+      "code": "B4",
+      "family": "planches-vie",
+      "filename": "facade_etroite_pignon.png",
+      "dest": "references/planches-vie/facade_etroite_pignon.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 2930030,
+      "sha256": "ba1605fa02d7dcc7fe15ac7b0e93aed6e9ec2cf8aa78ce7f61f8640c9c853274",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B5",
+      "code": "B5",
+      "family": "planches-vie",
+      "filename": "facade_tourelle.png",
+      "dest": "references/planches-vie/facade_tourelle.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3661771,
+      "sha256": "c54ac3745839bb5c6fcb568333eb974e9ed8d66911fbf1b2187da18ba8278bbc",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B6",
+      "code": "B6",
+      "family": "planches-vie",
+      "filename": "facade_pauvre.png",
+      "dest": "references/planches-vie/facade_pauvre.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3673916,
+      "sha256": "f3b998bb42123353eee7e7a94b45eca81632290123d88cee4543591baa7420ab",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B7",
+      "code": "B7",
+      "family": "planches-vie",
+      "filename": "facade_galerie.png",
+      "dest": "references/planches-vie/facade_galerie.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3788949,
+      "sha256": "9af79d5181f6f0e1dc6bb9c58080eaf16519fab5d845bbb7ec54e6a3e4ba0dd1",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B8",
+      "code": "B8",
+      "family": "planches-vie",
+      "filename": "facade_angle.png",
+      "dest": "references/planches-vie/facade_angle.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3761846,
+      "sha256": "c287b4fba67e3586ca56d0ae86b5a3bc9b16beb6d882b2f8c597d18791d17d5b",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B9",
+      "code": "B9",
+      "family": "planches-vie",
+      "filename": "facade_lauzes_pigeonnier.png",
+      "dest": "references/planches-vie/facade_lauzes_pigeonnier.png",
+      "status": "generated",
+      "dimensions": [
+        1024,
+        1536
+      ],
+      "bytes": 3518865,
+      "sha256": "6bcc6cc490a660d48ecc30d7e652648561417e9bb83c8957134cb4cdc5a22084",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B10",
+      "code": "B10",
+      "family": "planches-vie",
+      "filename": "archi_portes.png",
+      "dest": "references/planches-vie/archi_portes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3228130,
+      "sha256": "167de1864cb5952f5e14ec38fb3bcc0a3a66da81f115355f46aefa7a206fa9ff",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B11",
+      "code": "B11",
+      "family": "planches-vie",
+      "filename": "archi_fenetres.png",
+      "dest": "references/planches-vie/archi_fenetres.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2941274,
+      "sha256": "3f67b38415ddfa3439a36dc8d61fb23c675fdd6030e722ac28abfed9ccf9dc99",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B12",
+      "code": "B12",
+      "family": "planches-vie",
+      "filename": "archi_toits.png",
+      "dest": "references/planches-vie/archi_toits.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2569222,
+      "sha256": "f18e40074273bbc5439c283824ca0fdc3694e59bf8828f12969aff5f005d9395",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B13",
+      "code": "B13",
+      "family": "planches-vie",
+      "filename": "archi_decors.png",
+      "dest": "references/planches-vie/archi_decors.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2710415,
+      "sha256": "be2321ab504f29f78d5d23785f9233ce6866f79f5702c6b7545245acd3171822",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B14",
+      "code": "B14",
+      "family": "planches-vie",
+      "filename": "archi_balcons_escaliers.png",
+      "dest": "references/planches-vie/archi_balcons_escaliers.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2902888,
+      "sha256": "0612a16d26d72f964212b0fa54d8d7924077ea0dee4000c587b831071937f5f1",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B15",
+      "code": "B15",
+      "family": "planches-vie",
+      "filename": "archi_bas_murs.png",
+      "dest": "references/planches-vie/archi_bas_murs.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2906754,
+      "sha256": "fed21c493e79b03bd9c03ef61f1cbc877f77adbe437a900f208e602dda0fd854",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B16",
+      "code": "B16",
+      "family": "planches-vie",
+      "filename": "archi_etats_facade.png",
+      "dest": "references/planches-vie/archi_etats_facade.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2811348,
+      "sha256": "31840dbfd558b0fcde4a013f00e5fce13bff55edc37e96a01ab44cf942fc1065",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B17",
+      "code": "B17",
+      "family": "planches-vie",
+      "filename": "motif_pierre_ocre.png",
+      "dest": "references/planches-vie/motif_pierre_ocre.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3668520,
+      "sha256": "c32632d9326e32e18132c7c3894c6653e966ff2f07964b914ca95b52d80ab144",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B18",
+      "code": "B18",
+      "family": "planches-vie",
+      "filename": "motif_colombage.png",
+      "dest": "references/planches-vie/motif_colombage.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3890217,
+      "sha256": "aa7db26c2aae6e6795f6e20c03c777d2c21809bd018b12477f88f52cb474e389",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B19",
+      "code": "B19",
+      "family": "planches-vie",
+      "filename": "motif_lauzes.png",
+      "dest": "references/planches-vie/motif_lauzes.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 4298688,
+      "sha256": "886c5aeb1a823dcb7ab4a73ae0220e7c3262376458b69ed979cd44ae762a31e3",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B20",
+      "code": "B20",
+      "family": "planches-vie",
+      "filename": "motif_enduit_ocre.png",
+      "dest": "references/planches-vie/motif_enduit_ocre.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3242884,
+      "sha256": "e96de27e28356bfafcf6844f9d883d29e3a16cb31e005a968092c9423cd29b8e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "B21",
+      "code": "B21",
+      "family": "planches-vie",
+      "filename": "ruelle_sarlat.png",
+      "dest": "references/planches-vie/ruelle_sarlat.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 4256787,
+      "sha256": "cca044a6027265ee84f87ce772ebac1dd6fa089a4b8df98b8dc201ab32f36274",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P1",
+      "code": "P1",
+      "family": "planches-vie",
+      "filename": "place_plan.png",
+      "dest": "references/planches-vie/place_plan.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P2",
+      "code": "P2",
+      "family": "planches-vie",
+      "filename": "place_etal_maelle.png",
+      "dest": "references/planches-vie/place_etal_maelle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P3",
+      "code": "P3",
+      "family": "planches-vie",
+      "filename": "place_etals.png",
+      "dest": "references/planches-vie/place_etals.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P4",
+      "code": "P4",
+      "family": "planches-vie",
+      "filename": "place_marchandises.png",
+      "dest": "references/planches-vie/place_marchandises.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P5",
+      "code": "P5",
+      "family": "planches-vie",
+      "filename": "place_fontaine.png",
+      "dest": "references/planches-vie/place_fontaine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P6",
+      "code": "P6",
+      "family": "planches-vie",
+      "filename": "place_fontaine_details.png",
+      "dest": "references/planches-vie/place_fontaine_details.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P7",
+      "code": "P7",
+      "family": "planches-vie",
+      "filename": "place_percepteur.png",
+      "dest": "references/planches-vie/place_percepteur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P8",
+      "code": "P8",
+      "family": "planches-vie",
+      "filename": "place_sacs.png",
+      "dest": "references/planches-vie/place_sacs.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P9",
+      "code": "P9",
+      "family": "planches-vie",
+      "filename": "place_palais_facade.png",
+      "dest": "references/planches-vie/place_palais_facade.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P10",
+      "code": "P10",
+      "family": "planches-vie",
+      "filename": "place_vue_balcon.png",
+      "dest": "references/planches-vie/place_vue_balcon.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P11",
+      "code": "P11",
+      "family": "planches-vie",
+      "filename": "place_pluie.png",
+      "dest": "references/planches-vie/place_pluie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P12",
+      "code": "P12",
+      "family": "planches-vie",
+      "filename": "place_un_an_apres.png",
+      "dest": "references/planches-vie/place_un_an_apres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P13",
+      "code": "P13",
+      "family": "planches-vie",
+      "filename": "fete_treteaux.png",
+      "dest": "references/planches-vie/fete_treteaux.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P14",
+      "code": "P14",
+      "family": "planches-vie",
+      "filename": "fete_loterie.png",
+      "dest": "references/planches-vie/fete_loterie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P15",
+      "code": "P15",
+      "family": "planches-vie",
+      "filename": "fete_table_honneur.png",
+      "dest": "references/planches-vie/fete_table_honneur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P16",
+      "code": "P16",
+      "family": "planches-vie",
+      "filename": "fete_lanternes.png",
+      "dest": "references/planches-vie/fete_lanternes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P17",
+      "code": "P17",
+      "family": "planches-vie",
+      "filename": "fete_vaisselle.png",
+      "dest": "references/planches-vie/fete_vaisselle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P18",
+      "code": "P18",
+      "family": "planches-vie",
+      "filename": "fete_masques.png",
+      "dest": "references/planches-vie/fete_masques.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P19",
+      "code": "P19",
+      "family": "planches-vie",
+      "filename": "fete_aube_debris.png",
+      "dest": "references/planches-vie/fete_aube_debris.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P20",
+      "code": "P20",
+      "family": "planches-vie",
+      "filename": "fete_litiere.png",
+      "dest": "references/planches-vie/fete_litiere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "P21",
+      "code": "P21",
+      "family": "planches-vie",
+      "filename": "fete_dais.png",
+      "dest": "references/planches-vie/fete_dais.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S1a",
+      "code": "S1a",
+      "family": "planches-vie",
+      "filename": "etal_boulangere_vide.png",
+      "dest": "references/planches-vie/etal_boulangere_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2880715,
+      "sha256": "e642c6f26db7ccdcaa787b7aeca877e175f487dd3c8beb6fbaa72bf9f16918c5",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S1b",
+      "code": "S1b",
+      "family": "planches-vie",
+      "filename": "etal_boulangere_garni.png",
+      "dest": "references/planches-vie/etal_boulangere_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3125670,
+      "sha256": "a66c07e3a06bfb3b144c40061f523c4dc76fdc326e9f5df3bc56d80be074113d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S1c",
+      "code": "S1c",
+      "family": "planches-vie",
+      "filename": "etal_boulangere_objets.png",
+      "dest": "references/planches-vie/etal_boulangere_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2478655,
+      "sha256": "ac04a2506b2dfc0841c0f87325cf5e7f4b45479d949536ccfea8b8884b7e188f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S2a",
+      "code": "S2a",
+      "family": "planches-vie",
+      "filename": "etal_maraicher_vide.png",
+      "dest": "references/planches-vie/etal_maraicher_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2889796,
+      "sha256": "dd211f9b0eb6af786f7dba4000ec570606fdb4786a24fd4355efca27a381f75e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S2b",
+      "code": "S2b",
+      "family": "planches-vie",
+      "filename": "etal_maraicher_garni.png",
+      "dest": "references/planches-vie/etal_maraicher_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3566372,
+      "sha256": "c3ef1ce5f261fc05eac5e4b271933144ea5a3a28f5694e589e22c8b4742fa5ad",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S2c",
+      "code": "S2c",
+      "family": "planches-vie",
+      "filename": "etal_maraicher_objets.png",
+      "dest": "references/planches-vie/etal_maraicher_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2751158,
+      "sha256": "fc2f142da3288ecf6649ed3c10cfd2b769a5a3bad93b56b05068272eb779a6c7",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S3a",
+      "code": "S3a",
+      "family": "planches-vie",
+      "filename": "etal_fruitier_vide.png",
+      "dest": "references/planches-vie/etal_fruitier_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2916311,
+      "sha256": "cf646ffeaa6570343d4168f814da425cab7311be851c10f041d42e4a95dc0cd9",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S3b",
+      "code": "S3b",
+      "family": "planches-vie",
+      "filename": "etal_fruitier_garni.png",
+      "dest": "references/planches-vie/etal_fruitier_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3166666,
+      "sha256": "6e9825bff49feffa37413eff9c96aeb836f1c2457a34bc92fc96f9659cafa77c",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S3c",
+      "code": "S3c",
+      "family": "planches-vie",
+      "filename": "etal_fruitier_objets.png",
+      "dest": "references/planches-vie/etal_fruitier_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2498509,
+      "sha256": "ccf72c3e8622e81cc7a8d0dbd23ae188ab0df4fea6161634a0f24bb1b4c18eb0",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S4a",
+      "code": "S4a",
+      "family": "planches-vie",
+      "filename": "etal_poissonnier_vide.png",
+      "dest": "references/planches-vie/etal_poissonnier_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3015528,
+      "sha256": "254626f0b090992442d960c4de12dd7b8ab94ec6d486ab71a505662a3b0dba72",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S4b",
+      "code": "S4b",
+      "family": "planches-vie",
+      "filename": "etal_poissonnier_garni.png",
+      "dest": "references/planches-vie/etal_poissonnier_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3226128,
+      "sha256": "c4af7a011fb8d8d4393f38d8458387b5c6967fedb8baf7e13b313008a5c8ef9e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S4c",
+      "code": "S4c",
+      "family": "planches-vie",
+      "filename": "etal_poissonnier_objets.png",
+      "dest": "references/planches-vie/etal_poissonnier_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2266496,
+      "sha256": "4a049eb2d1def786f480af5bcbd84ac30ba4f470c251d9992637b790cf099d38",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S5a",
+      "code": "S5a",
+      "family": "planches-vie",
+      "filename": "etal_boucher_vide.png",
+      "dest": "references/planches-vie/etal_boucher_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2916668,
+      "sha256": "171a1e287a1c83bd2f5b673a2d69bf458a60b78a62765f2e65b5f9bbbf51f9e5",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S5b",
+      "code": "S5b",
+      "family": "planches-vie",
+      "filename": "etal_boucher_garni.png",
+      "dest": "references/planches-vie/etal_boucher_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3208196,
+      "sha256": "b534560f747602e71bcf3cde6bc0dd0c9dc5a6679947ba0245e65a13acbe372c",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S5c",
+      "code": "S5c",
+      "family": "planches-vie",
+      "filename": "etal_boucher_objets.png",
+      "dest": "references/planches-vie/etal_boucher_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2497174,
+      "sha256": "875b35d8269d80e98bb687dd00e27b5c04c13134b5bd49531f45fa3f562f128d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S6a",
+      "code": "S6a",
+      "family": "planches-vie",
+      "filename": "etal_volailler_vide.png",
+      "dest": "references/planches-vie/etal_volailler_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2965909,
+      "sha256": "6f274fc173b0bf51fb79331df5859c637a870ea35154c1ee9a0262c0411ba89e",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S6b",
+      "code": "S6b",
+      "family": "planches-vie",
+      "filename": "etal_volailler_garni.png",
+      "dest": "references/planches-vie/etal_volailler_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3332107,
+      "sha256": "1032c61a4de1d8e183e58ee3377204d371f377ebe237a5ca9548a8e2e0193162",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S6c",
+      "code": "S6c",
+      "family": "planches-vie",
+      "filename": "etal_volailler_objets.png",
+      "dest": "references/planches-vie/etal_volailler_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2375042,
+      "sha256": "1e73e4b660dca67a17ae55f2e7fd30eae94ec5a391114b8338efbdadc531809c",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S7a",
+      "code": "S7a",
+      "family": "planches-vie",
+      "filename": "etal_fromager_vide.png",
+      "dest": "references/planches-vie/etal_fromager_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2954339,
+      "sha256": "b207a52450d0937c921aa14c3d2745bca030054dde8d3a9830bd62d0446f99f5",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S7b",
+      "code": "S7b",
+      "family": "planches-vie",
+      "filename": "etal_fromager_garni.png",
+      "dest": "references/planches-vie/etal_fromager_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3138614,
+      "sha256": "5b8d6c19d0776b9900e52114e68a5c8114e6a40f8f6a51421d082530ac7e9ce8",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S7c",
+      "code": "S7c",
+      "family": "planches-vie",
+      "filename": "etal_fromager_objets.png",
+      "dest": "references/planches-vie/etal_fromager_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2331819,
+      "sha256": "35eb722de6e994257baffaf6b209c2182345ad53076345c12d33f7e3df0aa550",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S8a",
+      "code": "S8a",
+      "family": "planches-vie",
+      "filename": "etal_drapier_vide.png",
+      "dest": "references/planches-vie/etal_drapier_vide.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3148215,
+      "sha256": "764c71495a03c2027bdb60ab1d8c61d8e8c67c9e6bce1a87d2c65e37e6b348c6",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S8b",
+      "code": "S8b",
+      "family": "planches-vie",
+      "filename": "etal_drapier_garni.png",
+      "dest": "references/planches-vie/etal_drapier_garni.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3484370,
+      "sha256": "ccee32511ce5e52fb655c762cfcba8a29fee7857dd3eafbb6c8566ea6675a1e4",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S8c",
+      "code": "S8c",
+      "family": "planches-vie",
+      "filename": "etal_drapier_objets.png",
+      "dest": "references/planches-vie/etal_drapier_objets.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2447777,
+      "sha256": "078b74c70fa89064a3a94530408840fa6fa526de1e8d96332bdba5f86785e6c0",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S9a",
+      "code": "S9a",
+      "family": "planches-vie",
+      "filename": "etal_potier_vide.png",
+      "dest": "references/planches-vie/etal_potier_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S9b",
+      "code": "S9b",
+      "family": "planches-vie",
+      "filename": "etal_potier_garni.png",
+      "dest": "references/planches-vie/etal_potier_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S9c",
+      "code": "S9c",
+      "family": "planches-vie",
+      "filename": "etal_potier_objets.png",
+      "dest": "references/planches-vie/etal_potier_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S10a",
+      "code": "S10a",
+      "family": "planches-vie",
+      "filename": "etal_epicier_vide.png",
+      "dest": "references/planches-vie/etal_epicier_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S10b",
+      "code": "S10b",
+      "family": "planches-vie",
+      "filename": "etal_epicier_garni.png",
+      "dest": "references/planches-vie/etal_epicier_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S10c",
+      "code": "S10c",
+      "family": "planches-vie",
+      "filename": "etal_epicier_objets.png",
+      "dest": "references/planches-vie/etal_epicier_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S11a",
+      "code": "S11a",
+      "family": "planches-vie",
+      "filename": "etal_vin_vide.png",
+      "dest": "references/planches-vie/etal_vin_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S11b",
+      "code": "S11b",
+      "family": "planches-vie",
+      "filename": "etal_vin_garni.png",
+      "dest": "references/planches-vie/etal_vin_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S11c",
+      "code": "S11c",
+      "family": "planches-vie",
+      "filename": "etal_vin_objets.png",
+      "dest": "references/planches-vie/etal_vin_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S12a",
+      "code": "S12a",
+      "family": "planches-vie",
+      "filename": "etal_colporteur_vide.png",
+      "dest": "references/planches-vie/etal_colporteur_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S12b",
+      "code": "S12b",
+      "family": "planches-vie",
+      "filename": "etal_colporteur_garni.png",
+      "dest": "references/planches-vie/etal_colporteur_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S12c",
+      "code": "S12c",
+      "family": "planches-vie",
+      "filename": "etal_colporteur_objets.png",
+      "dest": "references/planches-vie/etal_colporteur_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S13a",
+      "code": "S13a",
+      "family": "planches-vie",
+      "filename": "etal_vannier_vide.png",
+      "dest": "references/planches-vie/etal_vannier_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S13b",
+      "code": "S13b",
+      "family": "planches-vie",
+      "filename": "etal_vannier_garni.png",
+      "dest": "references/planches-vie/etal_vannier_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S13c",
+      "code": "S13c",
+      "family": "planches-vie",
+      "filename": "etal_vannier_objets.png",
+      "dest": "references/planches-vie/etal_vannier_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S14a",
+      "code": "S14a",
+      "family": "planches-vie",
+      "filename": "etal_ferronnier_vide.png",
+      "dest": "references/planches-vie/etal_ferronnier_vide.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S14b",
+      "code": "S14b",
+      "family": "planches-vie",
+      "filename": "etal_ferronnier_garni.png",
+      "dest": "references/planches-vie/etal_ferronnier_garni.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S14c",
+      "code": "S14c",
+      "family": "planches-vie",
+      "filename": "etal_ferronnier_objets.png",
+      "dest": "references/planches-vie/etal_ferronnier_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S15",
+      "code": "S15",
+      "family": "planches-vie",
+      "filename": "etal_contenants.png",
+      "dest": "references/planches-vie/etal_contenants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S16",
+      "code": "S16",
+      "family": "planches-vie",
+      "filename": "etal_mesures.png",
+      "dest": "references/planches-vie/etal_mesures.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S17",
+      "code": "S17",
+      "family": "planches-vie",
+      "filename": "etal_ferme_nuit.png",
+      "dest": "references/planches-vie/etal_ferme_nuit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "S18",
+      "code": "S18",
+      "family": "planches-vie",
+      "filename": "etal_fete.png",
+      "dest": "references/planches-vie/etal_fete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D1",
+      "code": "D1",
+      "family": "planches-vie",
+      "filename": "cathedrale_plan.png",
+      "dest": "references/planches-vie/cathedrale_plan.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D2",
+      "code": "D2",
+      "family": "planches-vie",
+      "filename": "cathedrale_facade.png",
+      "dest": "references/planches-vie/cathedrale_facade.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D3",
+      "code": "D3",
+      "family": "planches-vie",
+      "filename": "cathedrale_facade_laterale.png",
+      "dest": "references/planches-vie/cathedrale_facade_laterale.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D4",
+      "code": "D4",
+      "family": "planches-vie",
+      "filename": "cathedrale_chevet.png",
+      "dest": "references/planches-vie/cathedrale_chevet.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D5",
+      "code": "D5",
+      "family": "planches-vie",
+      "filename": "cathedrale_clocher_tour.png",
+      "dest": "references/planches-vie/cathedrale_clocher_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D6",
+      "code": "D6",
+      "family": "planches-vie",
+      "filename": "cathedrale_portail.png",
+      "dest": "references/planches-vie/cathedrale_portail.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D7",
+      "code": "D7",
+      "family": "planches-vie",
+      "filename": "cathedrale_portes.png",
+      "dest": "references/planches-vie/cathedrale_portes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D8",
+      "code": "D8",
+      "family": "planches-vie",
+      "filename": "cathedrale_fenetres.png",
+      "dest": "references/planches-vie/cathedrale_fenetres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D9",
+      "code": "D9",
+      "family": "planches-vie",
+      "filename": "cathedrale_sculptures.png",
+      "dest": "references/planches-vie/cathedrale_sculptures.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D10",
+      "code": "D10",
+      "family": "planches-vie",
+      "filename": "cathedrale_structure.png",
+      "dest": "references/planches-vie/cathedrale_structure.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D11",
+      "code": "D11",
+      "family": "planches-vie",
+      "filename": "cathedrale_lanterne_morts.png",
+      "dest": "references/planches-vie/cathedrale_lanterne_morts.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D12",
+      "code": "D12",
+      "family": "planches-vie",
+      "filename": "cathedrale_parvis.png",
+      "dest": "references/planches-vie/cathedrale_parvis.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D13",
+      "code": "D13",
+      "family": "planches-vie",
+      "filename": "cathedrale_parvis_hiver.png",
+      "dest": "references/planches-vie/cathedrale_parvis_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D14",
+      "code": "D14",
+      "family": "planches-vie",
+      "filename": "cathedrale_nef.png",
+      "dest": "references/planches-vie/cathedrale_nef.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D15",
+      "code": "D15",
+      "family": "planches-vie",
+      "filename": "cathedrale_interieur_objets.png",
+      "dest": "references/planches-vie/cathedrale_interieur_objets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D16",
+      "code": "D16",
+      "family": "planches-vie",
+      "filename": "cathedrale_cloitre.png",
+      "dest": "references/planches-vie/cathedrale_cloitre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D17",
+      "code": "D17",
+      "family": "planches-vie",
+      "filename": "cathedrale_cloches.png",
+      "dest": "references/planches-vie/cathedrale_cloches.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D18",
+      "code": "D18",
+      "family": "planches-vie",
+      "filename": "cathedrale_matieres.png",
+      "dest": "references/planches-vie/cathedrale_matieres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D19",
+      "code": "D19",
+      "family": "planches-vie",
+      "filename": "cathedrale_vue_place.png",
+      "dest": "references/planches-vie/cathedrale_vue_place.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "D20",
+      "code": "D20",
+      "family": "planches-vie",
+      "filename": "planche_cathedrale.png",
+      "dest": "references/planches-vie/planche_cathedrale.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "C1",
+      "code": "C1",
+      "family": "planches-vie",
+      "filename": "colosse_socle_etats.png",
+      "dest": "references/planches-vie/colosse_socle_etats.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "C2",
+      "code": "C2",
+      "family": "planches-vie",
+      "filename": "colosse_details.png",
+      "dest": "references/planches-vie/colosse_details.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "C3",
+      "code": "C3",
+      "family": "planches-vie",
+      "filename": "colosse_chute.png",
+      "dest": "references/planches-vie/colosse_chute.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q1",
+      "code": "Q1",
+      "family": "planches-vie",
+      "filename": "quai_matin.png",
+      "dest": "references/planches-vie/quai_matin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q2",
+      "code": "Q2",
+      "family": "planches-vie",
+      "filename": "quai_barques.png",
+      "dest": "references/planches-vie/quai_barques.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q3",
+      "code": "Q3",
+      "family": "planches-vie",
+      "filename": "quai_elements.png",
+      "dest": "references/planches-vie/quai_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q4",
+      "code": "Q4",
+      "family": "planches-vie",
+      "filename": "quai_grue.png",
+      "dest": "references/planches-vie/quai_grue.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q5",
+      "code": "Q5",
+      "family": "planches-vie",
+      "filename": "quai_entrepot.png",
+      "dest": "references/planches-vie/quai_entrepot.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q6",
+      "code": "Q6",
+      "family": "planches-vie",
+      "filename": "quai_mendiants.png",
+      "dest": "references/planches-vie/quai_mendiants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q7",
+      "code": "Q7",
+      "family": "planches-vie",
+      "filename": "quai_lavoir.png",
+      "dest": "references/planches-vie/quai_lavoir.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q8",
+      "code": "Q8",
+      "family": "planches-vie",
+      "filename": "quai_lavoir_elevation.png",
+      "dest": "references/planches-vie/quai_lavoir_elevation.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q9",
+      "code": "Q9",
+      "family": "planches-vie",
+      "filename": "quai_hiver.png",
+      "dest": "references/planches-vie/quai_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "Q10",
+      "code": "Q10",
+      "family": "planches-vie",
+      "filename": "quai_crue.png",
+      "dest": "references/planches-vie/quai_crue.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U1",
+      "code": "U1",
+      "family": "planches-vie",
+      "filename": "ruelle_escalier.png",
+      "dest": "references/planches-vie/ruelle_escalier.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U2",
+      "code": "U2",
+      "family": "planches-vie",
+      "filename": "ruelle_nuit.png",
+      "dest": "references/planches-vie/ruelle_nuit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U3",
+      "code": "U3",
+      "family": "planches-vie",
+      "filename": "quartier_populaire.png",
+      "dest": "references/planches-vie/quartier_populaire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U4",
+      "code": "U4",
+      "family": "planches-vie",
+      "filename": "tanneurs_rue.png",
+      "dest": "references/planches-vie/tanneurs_rue.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U5",
+      "code": "U5",
+      "family": "planches-vie",
+      "filename": "tanneurs_elements.png",
+      "dest": "references/planches-vie/tanneurs_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U6",
+      "code": "U6",
+      "family": "planches-vie",
+      "filename": "facade_hugues.png",
+      "dest": "references/planches-vie/facade_hugues.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "U7",
+      "code": "U7",
+      "family": "planches-vie",
+      "filename": "quartier_echoppes.png",
+      "dest": "references/planches-vie/quartier_echoppes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "G1",
+      "code": "G1",
+      "family": "planches-vie",
+      "filename": "poterne_elevation.png",
+      "dest": "references/planches-vie/poterne_elevation.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "G2",
+      "code": "G2",
+      "family": "planches-vie",
+      "filename": "cour_elements.png",
+      "dest": "references/planches-vie/cour_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "G3",
+      "code": "G3",
+      "family": "planches-vie",
+      "filename": "cour_nuit.png",
+      "dest": "references/planches-vie/cour_nuit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "G4",
+      "code": "G4",
+      "family": "planches-vie",
+      "filename": "chapelle_interieur.png",
+      "dest": "references/planches-vie/chapelle_interieur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "G5",
+      "code": "G5",
+      "family": "planches-vie",
+      "filename": "poste_de_garde.png",
+      "dest": "references/planches-vie/poste_de_garde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V1",
+      "code": "V1",
+      "family": "planches-vie",
+      "filename": "palais_escalier.png",
+      "dest": "references/planches-vie/palais_escalier.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V2",
+      "code": "V2",
+      "family": "planches-vie",
+      "filename": "palais_couloir.png",
+      "dest": "references/planches-vie/palais_couloir.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V3",
+      "code": "V3",
+      "family": "planches-vie",
+      "filename": "palais_cuisines.png",
+      "dest": "references/planches-vie/palais_cuisines.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V4",
+      "code": "V4",
+      "family": "planches-vie",
+      "filename": "archives_elements.png",
+      "dest": "references/planches-vie/archives_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V5",
+      "code": "V5",
+      "family": "planches-vie",
+      "filename": "oubliettes_elements.png",
+      "dest": "references/planches-vie/oubliettes_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V6",
+      "code": "V6",
+      "family": "planches-vie",
+      "filename": "chambre_un_meubles.png",
+      "dest": "references/planches-vie/chambre_un_meubles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "V7",
+      "code": "V7",
+      "family": "planches-vie",
+      "filename": "palais_porte.png",
+      "dest": "references/planches-vie/palais_porte.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H1",
+      "code": "H1",
+      "family": "planches-vie",
+      "filename": "portes_cite_elevation.png",
+      "dest": "references/planches-vie/portes_cite_elevation.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H2",
+      "code": "H2",
+      "family": "planches-vie",
+      "filename": "remparts_ronde.png",
+      "dest": "references/planches-vie/remparts_ronde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H3",
+      "code": "H3",
+      "family": "planches-vie",
+      "filename": "horizon_ete.png",
+      "dest": "references/planches-vie/horizon_ete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H4",
+      "code": "H4",
+      "family": "planches-vie",
+      "filename": "horizon_hiver.png",
+      "dest": "references/planches-vie/horizon_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H5",
+      "code": "H5",
+      "family": "planches-vie",
+      "filename": "horizon_printemps.png",
+      "dest": "references/planches-vie/horizon_printemps.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H6",
+      "code": "H6",
+      "family": "planches-vie",
+      "filename": "horizon_nuit.png",
+      "dest": "references/planches-vie/horizon_nuit.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H7",
+      "code": "H7",
+      "family": "planches-vie",
+      "filename": "foret_elements.png",
+      "dest": "references/planches-vie/foret_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H8",
+      "code": "H8",
+      "family": "planches-vie",
+      "filename": "cabane_details.png",
+      "dest": "references/planches-vie/cabane_details.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "H9",
+      "code": "H9",
+      "family": "planches-vie",
+      "filename": "foret_chemin.png",
+      "dest": "references/planches-vie/foret_chemin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F1",
+      "code": "F1",
+      "family": "planches-vie",
+      "filename": "figurant_marchande.png",
+      "dest": "references/planches-vie/figurant_marchande.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F2",
+      "code": "F2",
+      "family": "planches-vie",
+      "filename": "figurant_paysan.png",
+      "dest": "references/planches-vie/figurant_paysan.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F3",
+      "code": "F3",
+      "family": "planches-vie",
+      "filename": "figurant_artisan.png",
+      "dest": "references/planches-vie/figurant_artisan.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F4",
+      "code": "F4",
+      "family": "planches-vie",
+      "filename": "figurant_bourgeoise.png",
+      "dest": "references/planches-vie/figurant_bourgeoise.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F5",
+      "code": "F5",
+      "family": "planches-vie",
+      "filename": "figurant_bourgeois.png",
+      "dest": "references/planches-vie/figurant_bourgeois.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F6",
+      "code": "F6",
+      "family": "planches-vie",
+      "filename": "figurant_vieille.png",
+      "dest": "references/planches-vie/figurant_vieille.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F7",
+      "code": "F7",
+      "family": "planches-vie",
+      "filename": "figurant_jeune_homme.png",
+      "dest": "references/planches-vie/figurant_jeune_homme.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F8",
+      "code": "F8",
+      "family": "planches-vie",
+      "filename": "figurant_lavandiere.png",
+      "dest": "references/planches-vie/figurant_lavandiere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F9",
+      "code": "F9",
+      "family": "planches-vie",
+      "filename": "figurant_porteur.png",
+      "dest": "references/planches-vie/figurant_porteur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F10",
+      "code": "F10",
+      "family": "planches-vie",
+      "filename": "figurant_valet.png",
+      "dest": "references/planches-vie/figurant_valet.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F11",
+      "code": "F11",
+      "family": "planches-vie",
+      "filename": "figurant_crieur.png",
+      "dest": "references/planches-vie/figurant_crieur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F12",
+      "code": "F12",
+      "family": "planches-vie",
+      "filename": "figurant_musicien.png",
+      "dest": "references/planches-vie/figurant_musicien.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F13",
+      "code": "F13",
+      "family": "planches-vie",
+      "filename": "figurant_enfants.png",
+      "dest": "references/planches-vie/figurant_enfants.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F14",
+      "code": "F14",
+      "family": "planches-vie",
+      "filename": "figurant_garde.png",
+      "dest": "references/planches-vie/figurant_garde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F15",
+      "code": "F15",
+      "family": "planches-vie",
+      "filename": "pose_file_tribut.png",
+      "dest": "references/planches-vie/pose_file_tribut.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F16",
+      "code": "F16",
+      "family": "planches-vie",
+      "filename": "pose_toast.png",
+      "dest": "references/planches-vie/pose_toast.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F17",
+      "code": "F17",
+      "family": "planches-vie",
+      "filename": "pose_reverence.png",
+      "dest": "references/planches-vie/pose_reverence.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F18",
+      "code": "F18",
+      "family": "planches-vie",
+      "filename": "pose_marchander.png",
+      "dest": "references/planches-vie/pose_marchander.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F19",
+      "code": "F19",
+      "family": "planches-vie",
+      "filename": "pose_bavarder.png",
+      "dest": "references/planches-vie/pose_bavarder.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F20",
+      "code": "F20",
+      "family": "planches-vie",
+      "filename": "pose_ivrogne.png",
+      "dest": "references/planches-vie/pose_ivrogne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F21",
+      "code": "F21",
+      "family": "planches-vie",
+      "filename": "pose_fontaine.png",
+      "dest": "references/planches-vie/pose_fontaine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F22",
+      "code": "F22",
+      "family": "planches-vie",
+      "filename": "pose_lire_affiche.png",
+      "dest": "references/planches-vie/pose_lire_affiche.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F23",
+      "code": "F23",
+      "family": "planches-vie",
+      "filename": "pose_enfants_jeux.png",
+      "dest": "references/planches-vie/pose_enfants_jeux.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F24",
+      "code": "F24",
+      "family": "planches-vie",
+      "filename": "pose_garde_ronde.png",
+      "dest": "references/planches-vie/pose_garde_ronde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "F25",
+      "code": "F25",
+      "family": "planches-vie",
+      "filename": "pose_garde_alerte.png",
+      "dest": "references/planches-vie/pose_garde_alerte.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K1",
+      "code": "K1",
+      "family": "planches-vie",
+      "filename": "alienor_hiver_tour.png",
+      "dest": "references/planches-vie/alienor_hiver_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K2",
+      "code": "K2",
+      "family": "planches-vie",
+      "filename": "alienor_fete_tour.png",
+      "dest": "references/planches-vie/alienor_fete_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K3",
+      "code": "K3",
+      "family": "planches-vie",
+      "filename": "anselme_hiver_tour.png",
+      "dest": "references/planches-vie/anselme_hiver_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K4",
+      "code": "K4",
+      "family": "planches-vie",
+      "filename": "maelle_hiver_tour.png",
+      "dest": "references/planches-vie/maelle_hiver_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K5",
+      "code": "K5",
+      "family": "planches-vie",
+      "filename": "garin_hiver_tour.png",
+      "dest": "references/planches-vie/garin_hiver_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K6",
+      "code": "K6",
+      "family": "planches-vie",
+      "filename": "bastien_hiver_tour.png",
+      "dest": "references/planches-vie/bastien_hiver_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K7",
+      "code": "K7",
+      "family": "planches-vie",
+      "filename": "percepteur_fete_tour.png",
+      "dest": "references/planches-vie/percepteur_fete_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K8",
+      "code": "K8",
+      "family": "planches-vie",
+      "filename": "brisset_fete_tour.png",
+      "dest": "references/planches-vie/brisset_fete_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K9",
+      "code": "K9",
+      "family": "planches-vie",
+      "filename": "costume_coiffes.png",
+      "dest": "references/planches-vie/costume_coiffes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K10",
+      "code": "K10",
+      "family": "planches-vie",
+      "filename": "costume_chaussures.png",
+      "dest": "references/planches-vie/costume_chaussures.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K11",
+      "code": "K11",
+      "family": "planches-vie",
+      "filename": "costume_ceintures.png",
+      "dest": "references/planches-vie/costume_ceintures.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K12",
+      "code": "K12",
+      "family": "planches-vie",
+      "filename": "costume_tabliers.png",
+      "dest": "references/planches-vie/costume_tabliers.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K13",
+      "code": "K13",
+      "family": "planches-vie",
+      "filename": "costume_etoffes.png",
+      "dest": "references/planches-vie/costume_etoffes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "K14",
+      "code": "K14",
+      "family": "planches-vie",
+      "filename": "costume_tenues_hiver.png",
+      "dest": "references/planches-vie/costume_tenues_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A1",
+      "code": "A1",
+      "family": "planches-vie",
+      "filename": "animal_chat_tour.png",
+      "dest": "references/planches-vie/animal_chat_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A2",
+      "code": "A2",
+      "family": "planches-vie",
+      "filename": "animal_chat_poses.png",
+      "dest": "references/planches-vie/animal_chat_poses.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A3",
+      "code": "A3",
+      "family": "planches-vie",
+      "filename": "animal_chien_tour.png",
+      "dest": "references/planches-vie/animal_chien_tour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A4",
+      "code": "A4",
+      "family": "planches-vie",
+      "filename": "animal_chien_poses.png",
+      "dest": "references/planches-vie/animal_chien_poses.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A5",
+      "code": "A5",
+      "family": "planches-vie",
+      "filename": "animal_pigeons.png",
+      "dest": "references/planches-vie/animal_pigeons.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A6",
+      "code": "A6",
+      "family": "planches-vie",
+      "filename": "animal_basse_cour.png",
+      "dest": "references/planches-vie/animal_basse_cour.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A7",
+      "code": "A7",
+      "family": "planches-vie",
+      "filename": "animal_cheval_charrette.png",
+      "dest": "references/planches-vie/animal_cheval_charrette.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2612163,
+      "sha256": "b37aad441bcc816b2f52edab23dbd678c89913df40b913db82119672638f9fa3",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A8",
+      "code": "A8",
+      "family": "planches-vie",
+      "filename": "animal_cheval_poses.png",
+      "dest": "references/planches-vie/animal_cheval_poses.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A9",
+      "code": "A9",
+      "family": "planches-vie",
+      "filename": "animal_ane.png",
+      "dest": "references/planches-vie/animal_ane.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A10",
+      "code": "A10",
+      "family": "planches-vie",
+      "filename": "animal_oiseaux_bertin.png",
+      "dest": "references/planches-vie/animal_oiseaux_bertin.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A11",
+      "code": "A11",
+      "family": "planches-vie",
+      "filename": "animal_alouette_vol.png",
+      "dest": "references/planches-vie/animal_alouette_vol.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A12",
+      "code": "A12",
+      "family": "planches-vie",
+      "filename": "animal_nuisibles.png",
+      "dest": "references/planches-vie/animal_nuisibles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "A13",
+      "code": "A13",
+      "family": "planches-vie",
+      "filename": "animal_cigogne.png",
+      "dest": "references/planches-vie/animal_cigogne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "N1",
+      "code": "N1",
+      "family": "planches-vie",
+      "filename": "vegetal_lierre.png",
+      "dest": "references/planches-vie/vegetal_lierre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "N2",
+      "code": "N2",
+      "family": "planches-vie",
+      "filename": "vegetal_herbes.png",
+      "dest": "references/planches-vie/vegetal_herbes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "N3",
+      "code": "N3",
+      "family": "planches-vie",
+      "filename": "vegetal_arbre_place.png",
+      "dest": "references/planches-vie/vegetal_arbre_place.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "N4",
+      "code": "N4",
+      "family": "planches-vie",
+      "filename": "vegetal_fleurs_peintes.png",
+      "dest": "references/planches-vie/vegetal_fleurs_peintes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "N5",
+      "code": "N5",
+      "family": "planches-vie",
+      "filename": "vegetal_feuilles.png",
+      "dest": "references/planches-vie/vegetal_feuilles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O1",
+      "code": "O1",
+      "family": "planches-vie",
+      "filename": "objet_feuillets.png",
+      "dest": "references/planches-vie/objet_feuillets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O2",
+      "code": "O2",
+      "family": "planches-vie",
+      "filename": "objet_registre.png",
+      "dest": "references/planches-vie/objet_registre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O3",
+      "code": "O3",
+      "family": "planches-vie",
+      "filename": "objet_monnaie.png",
+      "dest": "references/planches-vie/objet_monnaie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O4",
+      "code": "O4",
+      "family": "planches-vie",
+      "filename": "objet_lumieres.png",
+      "dest": "references/planches-vie/objet_lumieres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O5",
+      "code": "O5",
+      "family": "planches-vie",
+      "filename": "objet_affiche.png",
+      "dest": "references/planches-vie/objet_affiche.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O6",
+      "code": "O6",
+      "family": "planches-vie",
+      "filename": "objet_colle.png",
+      "dest": "references/planches-vie/objet_colle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O7",
+      "code": "O7",
+      "family": "planches-vie",
+      "filename": "objet_cles.png",
+      "dest": "references/planches-vie/objet_cles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O8",
+      "code": "O8",
+      "family": "planches-vie",
+      "filename": "objet_billets.png",
+      "dest": "references/planches-vie/objet_billets.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O9",
+      "code": "O9",
+      "family": "planches-vie",
+      "filename": "objet_cuisine.png",
+      "dest": "references/planches-vie/objet_cuisine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O10",
+      "code": "O10",
+      "family": "planches-vie",
+      "filename": "objet_maison.png",
+      "dest": "references/planches-vie/objet_maison.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O11",
+      "code": "O11",
+      "family": "planches-vie",
+      "filename": "objet_outils.png",
+      "dest": "references/planches-vie/objet_outils.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O12",
+      "code": "O12",
+      "family": "planches-vie",
+      "filename": "objet_armes_gardes.png",
+      "dest": "references/planches-vie/objet_armes_gardes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "O13",
+      "code": "O13",
+      "family": "planches-vie",
+      "filename": "objet_farce.png",
+      "dest": "references/planches-vie/objet_farce.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E1",
+      "code": "E1",
+      "family": "planches-vie",
+      "filename": "effet_goutte_encre.png",
+      "dest": "references/planches-vie/effet_goutte_encre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E2",
+      "code": "E2",
+      "family": "planches-vie",
+      "filename": "effet_gouttes_suspendues.png",
+      "dest": "references/planches-vie/effet_gouttes_suspendues.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E3",
+      "code": "E3",
+      "family": "planches-vie",
+      "filename": "effet_eclaboussures.png",
+      "dest": "references/planches-vie/effet_eclaboussures.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E4",
+      "code": "E4",
+      "family": "planches-vie",
+      "filename": "effet_fumee.png",
+      "dest": "references/planches-vie/effet_fumee.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E5",
+      "code": "E5",
+      "family": "planches-vie",
+      "filename": "effet_flamme_chandelle.png",
+      "dest": "references/planches-vie/effet_flamme_chandelle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E6",
+      "code": "E6",
+      "family": "planches-vie",
+      "filename": "effet_flamme_torche.png",
+      "dest": "references/planches-vie/effet_flamme_torche.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E7",
+      "code": "E7",
+      "family": "planches-vie",
+      "filename": "effet_neige.png",
+      "dest": "references/planches-vie/effet_neige.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E8",
+      "code": "E8",
+      "family": "planches-vie",
+      "filename": "effet_pluie.png",
+      "dest": "references/planches-vie/effet_pluie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E9",
+      "code": "E9",
+      "family": "planches-vie",
+      "filename": "effet_confettis.png",
+      "dest": "references/planches-vie/effet_confettis.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E10",
+      "code": "E10",
+      "family": "planches-vie",
+      "filename": "effet_feuille_envol.png",
+      "dest": "references/planches-vie/effet_feuille_envol.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E11",
+      "code": "E11",
+      "family": "planches-vie",
+      "filename": "effet_linge_vent.png",
+      "dest": "references/planches-vie/effet_linge_vent.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E12",
+      "code": "E12",
+      "family": "planches-vie",
+      "filename": "effet_souffle.png",
+      "dest": "references/planches-vie/effet_souffle.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E13",
+      "code": "E13",
+      "family": "planches-vie",
+      "filename": "effet_poussiere_doree.png",
+      "dest": "references/planches-vie/effet_poussiere_doree.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E14",
+      "code": "E14",
+      "family": "planches-vie",
+      "filename": "effet_eau_fontaine.png",
+      "dest": "references/planches-vie/effet_eau_fontaine.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E15",
+      "code": "E15",
+      "family": "planches-vie",
+      "filename": "effet_lavis_transition.png",
+      "dest": "references/planches-vie/effet_lavis_transition.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "E16",
+      "code": "E16",
+      "family": "planches-vie",
+      "filename": "effet_poussiere_pierre.png",
+      "dest": "references/planches-vie/effet_poussiere_pierre.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I1",
+      "code": "I1",
+      "family": "planches-vie",
+      "filename": "carnet_double_page.png",
+      "dest": "references/planches-vie/carnet_double_page.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I2",
+      "code": "I2",
+      "family": "planches-vie",
+      "filename": "carnet_ornements.png",
+      "dest": "references/planches-vie/carnet_ornements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I3",
+      "code": "I3",
+      "family": "planches-vie",
+      "filename": "carnet_icones_causes.png",
+      "dest": "references/planches-vie/carnet_icones_causes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I4",
+      "code": "I4",
+      "family": "planches-vie",
+      "filename": "carnet_icones_actions.png",
+      "dest": "references/planches-vie/carnet_icones_actions.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I5",
+      "code": "I5",
+      "family": "planches-vie",
+      "filename": "carnet_carte_sarlande.png",
+      "dest": "references/planches-vie/carnet_carte_sarlande.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I6",
+      "code": "I6",
+      "family": "planches-vie",
+      "filename": "carnet_boutons.png",
+      "dest": "references/planches-vie/carnet_boutons.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "I7",
+      "code": "I7",
+      "family": "planches-vie",
+      "filename": "carnet_bords_feuille.png",
+      "dest": "references/planches-vie/carnet_bords_feuille.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T1",
+      "code": "T1",
+      "family": "planches-vie",
+      "filename": "planche_chateau.png",
+      "dest": "references/planches-vie/planche_chateau.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T2",
+      "code": "T2",
+      "family": "planches-vie",
+      "filename": "planche_sarlande.png",
+      "dest": "references/planches-vie/planche_sarlande.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T3",
+      "code": "T3",
+      "family": "planches-vie",
+      "filename": "planche_ruelles.png",
+      "dest": "references/planches-vie/planche_ruelles.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T4",
+      "code": "T4",
+      "family": "planches-vie",
+      "filename": "planche_palais.png",
+      "dest": "references/planches-vie/planche_palais.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T5",
+      "code": "T5",
+      "family": "planches-vie",
+      "filename": "planche_oubliettes.png",
+      "dest": "references/planches-vie/planche_oubliettes.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T6",
+      "code": "T6",
+      "family": "planches-vie",
+      "filename": "planche_quartiers.png",
+      "dest": "references/planches-vie/planche_quartiers.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T7",
+      "code": "T7",
+      "family": "planches-vie",
+      "filename": "planche_portes_palais.png",
+      "dest": "references/planches-vie/planche_portes_palais.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T8",
+      "code": "T8",
+      "family": "planches-vie",
+      "filename": "planche_imprimerie.png",
+      "dest": "references/planches-vie/planche_imprimerie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T9",
+      "code": "T9",
+      "family": "planches-vie",
+      "filename": "planche_tanneurs.png",
+      "dest": "references/planches-vie/planche_tanneurs.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "T10",
+      "code": "T10",
+      "family": "planches-vie",
+      "filename": "planche_hiver.png",
+      "dest": "references/planches-vie/planche_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M01",
+      "code": "M01",
+      "family": "complements-3d",
+      "filename": "imprimerie_quatre_faces.png",
+      "dest": "references/complements-3d/imprimerie_quatre_faces.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2767428,
+      "sha256": "9c3bfbad7ac048eb7dc1131f0acccf73047696b9884fc71c57ce09178c8ecf8d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M02",
+      "code": "M02",
+      "family": "complements-3d",
+      "filename": "portail_palais_quatre_faces.png",
+      "dest": "references/complements-3d/portail_palais_quatre_faces.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2282343,
+      "sha256": "346da6ba026340be65464d68824adcc59df834e1ea2a7f640136c7479a7fab85",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M03",
+      "code": "M03",
+      "family": "complements-3d",
+      "filename": "pavillon_palais_quatre_faces.png",
+      "dest": "references/complements-3d/pavillon_palais_quatre_faces.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2553400,
+      "sha256": "8bddbefd29a58b13698485016d68c101553a9dc99cdc57e0796d6f197e3a557b",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M04",
+      "code": "M04",
+      "family": "complements-3d",
+      "filename": "grand_logis_quatre_faces.png",
+      "dest": "references/complements-3d/grand_logis_quatre_faces.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2418867,
+      "sha256": "4efb6b34835c586a2d9eaae91e4fc42b5485a49f0111df339ab2b411b7f5b259",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M05",
+      "code": "M05",
+      "family": "complements-3d",
+      "filename": "chapelle_gardes_quatre_faces.png",
+      "dest": "references/complements-3d/chapelle_gardes_quatre_faces.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2125276,
+      "sha256": "0b27d1b3b60043a99111d6c38f274f36d314c82f460641fb24194f1f31b266a8",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M06",
+      "code": "M06",
+      "family": "complements-3d",
+      "filename": "presse_details_assemblage.png",
+      "dest": "references/complements-3d/presse_details_assemblage.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2289495,
+      "sha256": "ce7dcd99a5563e1ecf3db429252449d6c69a94cb09fac9454b6a22e6964b710d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M07",
+      "code": "M07",
+      "family": "complements-3d",
+      "filename": "charrette_details_assemblage.png",
+      "dest": "references/complements-3d/charrette_details_assemblage.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2130467,
+      "sha256": "79a35fcc5e90d128b2f93ee5062b3b7aacb0492bacd46bf1345fd858aadaae65",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "model_M08",
+      "code": "M08",
+      "family": "complements-3d",
+      "filename": "etals_details_assemblage.png",
+      "dest": "references/complements-3d/etals_details_assemblage.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 2250912,
+      "sha256": "8daa9655b1e5e13b9728bd9fa54647f3961125fdf045589d4ac61de198ff8197",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V1",
+      "code": "V1",
+      "family": "vues-aeriennes",
+      "filename": "plan_zone_jouable.png",
+      "dest": "references/vues-aeriennes/plan_zone_jouable.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3709110,
+      "sha256": "7e77f8db50ec9775b23000fdc6f45ae3b55636db4199ffb04266f4b870194b7f",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V2",
+      "code": "V2",
+      "family": "vues-aeriennes",
+      "filename": "plan_directeur.png",
+      "dest": "references/vues-aeriennes/plan_directeur.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3913167,
+      "sha256": "1c08b09c63cfece577f4131b795a0c6ca7cf763720bf64bb0b7dcedc76ea05d2",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V3",
+      "code": "V3",
+      "family": "vues-aeriennes",
+      "filename": "plan_zones.png",
+      "dest": "references/vues-aeriennes/plan_zones.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3852144,
+      "sha256": "9c3948b11d3a9ea7ee5231b696cdc68c4251579255bc0f0cbd27332d932d19ef",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V4",
+      "code": "V4",
+      "family": "vues-aeriennes",
+      "filename": "plan_rues.png",
+      "dest": "references/vues-aeriennes/plan_rues.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3396794,
+      "sha256": "3fd33be570fe79f9fe33ba5cdf5a11f7015fa095f73516e9a5202c8f64537e53",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V10",
+      "code": "V10",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud.png",
+      "dest": "references/vues-aeriennes/vue_sud.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3831805,
+      "sha256": "bd45dfbd764d527787a5c4eddb179ce64368ba0ae8eec00dedde5b56e3fcf4c9",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V11",
+      "code": "V11",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_est.png",
+      "dest": "references/vues-aeriennes/vue_sud_est.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3870933,
+      "sha256": "22503352b63050c93a15c5579d26aa66c3b7f1c798bab47769e5eab73bd77816",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V12",
+      "code": "V12",
+      "family": "vues-aeriennes",
+      "filename": "vue_est.png",
+      "dest": "references/vues-aeriennes/vue_est.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V13",
+      "code": "V13",
+      "family": "vues-aeriennes",
+      "filename": "vue_nord_est.png",
+      "dest": "references/vues-aeriennes/vue_nord_est.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V14",
+      "code": "V14",
+      "family": "vues-aeriennes",
+      "filename": "vue_nord.png",
+      "dest": "references/vues-aeriennes/vue_nord.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V15",
+      "code": "V15",
+      "family": "vues-aeriennes",
+      "filename": "vue_nord_ouest.png",
+      "dest": "references/vues-aeriennes/vue_nord_ouest.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V16",
+      "code": "V16",
+      "family": "vues-aeriennes",
+      "filename": "vue_ouest.png",
+      "dest": "references/vues-aeriennes/vue_ouest.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V17",
+      "code": "V17",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_ouest.png",
+      "dest": "references/vues-aeriennes/vue_sud_ouest.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V20",
+      "code": "V20",
+      "family": "vues-aeriennes",
+      "filename": "vue_cavaliere.png",
+      "dest": "references/vues-aeriennes/vue_cavaliere.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V21",
+      "code": "V21",
+      "family": "vues-aeriennes",
+      "filename": "vue_ancienne.png",
+      "dest": "references/vues-aeriennes/vue_ancienne.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V22",
+      "code": "V22",
+      "family": "vues-aeriennes",
+      "filename": "vue_colline.png",
+      "dest": "references/vues-aeriennes/vue_colline.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V23",
+      "code": "V23",
+      "family": "vues-aeriennes",
+      "filename": "vue_depuis_colosse.png",
+      "dest": "references/vues-aeriennes/vue_depuis_colosse.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V24",
+      "code": "V24",
+      "family": "vues-aeriennes",
+      "filename": "vue_depuis_clocher.png",
+      "dest": "references/vues-aeriennes/vue_depuis_clocher.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V25",
+      "code": "V25",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_fete.png",
+      "dest": "references/vues-aeriennes/vue_sud_fete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V26",
+      "code": "V26",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_nuit_hiver.png",
+      "dest": "references/vues-aeriennes/vue_sud_nuit_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V27",
+      "code": "V27",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_printemps.png",
+      "dest": "references/vues-aeriennes/vue_sud_printemps.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V28",
+      "code": "V28",
+      "family": "vues-aeriennes",
+      "filename": "vue_sud_aube.png",
+      "dest": "references/vues-aeriennes/vue_sud_aube.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V30",
+      "code": "V30",
+      "family": "vues-aeriennes",
+      "filename": "quartier_place.png",
+      "dest": "references/vues-aeriennes/quartier_place.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V31",
+      "code": "V31",
+      "family": "vues-aeriennes",
+      "filename": "quartier_imprimerie.png",
+      "dest": "references/vues-aeriennes/quartier_imprimerie.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V32",
+      "code": "V32",
+      "family": "vues-aeriennes",
+      "filename": "quartier_quai.png",
+      "dest": "references/vues-aeriennes/quartier_quai.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V33",
+      "code": "V33",
+      "family": "vues-aeriennes",
+      "filename": "quartier_gardes.png",
+      "dest": "references/vues-aeriennes/quartier_gardes.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3773802,
+      "sha256": "87cddf9132dc4d37590c2bfaa2d291502e4d48ba12db0996d2130f3ec24d5970",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V34",
+      "code": "V34",
+      "family": "vues-aeriennes",
+      "filename": "quartier_cathedrale.png",
+      "dest": "references/vues-aeriennes/quartier_cathedrale.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V35",
+      "code": "V35",
+      "family": "vues-aeriennes",
+      "filename": "quartier_tanneurs.png",
+      "dest": "references/vues-aeriennes/quartier_tanneurs.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V36",
+      "code": "V36",
+      "family": "vues-aeriennes",
+      "filename": "quartier_populaire.png",
+      "dest": "references/vues-aeriennes/quartier_populaire.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V37",
+      "code": "V37",
+      "family": "vues-aeriennes",
+      "filename": "quartier_notables.png",
+      "dest": "references/vues-aeriennes/quartier_notables.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_V38",
+      "code": "V38",
+      "family": "vues-aeriennes",
+      "filename": "quartier_remparts.png",
+      "dest": "references/vues-aeriennes/quartier_remparts.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P1",
+      "code": "P1",
+      "family": "vues-aeriennes",
+      "filename": "palais_plan_masse.png",
+      "dest": "references/vues-aeriennes/palais_plan_masse.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 3434113,
+      "sha256": "4687293a88423256cd20239485703b41823e16ea8e5e1fbc3f22e22a17f1a209",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P2",
+      "code": "P2",
+      "family": "vues-aeriennes",
+      "filename": "palais_vue_cavaliere.png",
+      "dest": "references/vues-aeriennes/palais_vue_cavaliere.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3092240,
+      "sha256": "6de65d4569c51ee8d7f05a886574d6417dfc913dcaa101d59cc2a1e4a9a4d7c8",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P3",
+      "code": "P3",
+      "family": "vues-aeriennes",
+      "filename": "palais_plan_niveaux.png",
+      "dest": "references/vues-aeriennes/palais_plan_niveaux.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P4",
+      "code": "P4",
+      "family": "vues-aeriennes",
+      "filename": "palais_coupe.png",
+      "dest": "references/vues-aeriennes/palais_coupe.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P10",
+      "code": "P10",
+      "family": "vues-aeriennes",
+      "filename": "palais_front_sud.png",
+      "dest": "references/vues-aeriennes/palais_front_sud.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3147612,
+      "sha256": "a489a10dc3a7277a6876192ad50ed9b6ab7b4bf21c705c17103c3bce7e80e55d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P11",
+      "code": "P11",
+      "family": "vues-aeriennes",
+      "filename": "palais_cote_est.png",
+      "dest": "references/vues-aeriennes/palais_cote_est.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P12",
+      "code": "P12",
+      "family": "vues-aeriennes",
+      "filename": "palais_cote_ouest.png",
+      "dest": "references/vues-aeriennes/palais_cote_ouest.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P13",
+      "code": "P13",
+      "family": "vues-aeriennes",
+      "filename": "palais_arriere_nord.png",
+      "dest": "references/vues-aeriennes/palais_arriere_nord.png",
+      "status": "generated",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 3321435,
+      "sha256": "9b432e6a427bf51781e80a4a1162845f7e47ec0aaafd10129b576cf7f53dab77",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P14",
+      "code": "P14",
+      "family": "vues-aeriennes",
+      "filename": "palais_cour_nord.png",
+      "dest": "references/vues-aeriennes/palais_cour_nord.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2982804,
+      "sha256": "efe2b23fa5524ad2971d913c258dd3d42ea26c5f8a8aaf58d650daec8c19269d",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P15",
+      "code": "P15",
+      "family": "vues-aeriennes",
+      "filename": "palais_pavillon.png",
+      "dest": "references/vues-aeriennes/palais_pavillon.png",
+      "status": "generated",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 2956571,
+      "sha256": "551b90c1972a35d25e426cd4154be93287de50d3026e29b55cbc90add54b9378",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P16",
+      "code": "P16",
+      "family": "vues-aeriennes",
+      "filename": "palais_donjon.png",
+      "dest": "references/vues-aeriennes/palais_donjon.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P17",
+      "code": "P17",
+      "family": "vues-aeriennes",
+      "filename": "palais_balcon.png",
+      "dest": "references/vues-aeriennes/palais_balcon.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P20",
+      "code": "P20",
+      "family": "vues-aeriennes",
+      "filename": "palais_cour_honneur.png",
+      "dest": "references/vues-aeriennes/palais_cour_honneur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P21",
+      "code": "P21",
+      "family": "vues-aeriennes",
+      "filename": "palais_rue_service.png",
+      "dest": "references/vues-aeriennes/palais_rue_service.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P22",
+      "code": "P22",
+      "family": "vues-aeriennes",
+      "filename": "palais_jardins.png",
+      "dest": "references/vues-aeriennes/palais_jardins.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P23",
+      "code": "P23",
+      "family": "vues-aeriennes",
+      "filename": "palais_chemin_ronde.png",
+      "dest": "references/vues-aeriennes/palais_chemin_ronde.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P24",
+      "code": "P24",
+      "family": "vues-aeriennes",
+      "filename": "palais_hotel_percepteur.png",
+      "dest": "references/vues-aeriennes/palais_hotel_percepteur.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P25",
+      "code": "P25",
+      "family": "vues-aeriennes",
+      "filename": "palais_cuisines.png",
+      "dest": "references/vues-aeriennes/palais_cuisines.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P30",
+      "code": "P30",
+      "family": "vues-aeriennes",
+      "filename": "palais_fete.png",
+      "dest": "references/vues-aeriennes/palais_fete.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P31",
+      "code": "P31",
+      "family": "vues-aeriennes",
+      "filename": "palais_hiver.png",
+      "dest": "references/vues-aeriennes/palais_hiver.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P32",
+      "code": "P32",
+      "family": "vues-aeriennes",
+      "filename": "palais_printemps.png",
+      "dest": "references/vues-aeriennes/palais_printemps.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P33",
+      "code": "P33",
+      "family": "vues-aeriennes",
+      "filename": "palais_an_suivant.png",
+      "dest": "references/vues-aeriennes/palais_an_suivant.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P40",
+      "code": "P40",
+      "family": "vues-aeriennes",
+      "filename": "palais_tours.png",
+      "dest": "references/vues-aeriennes/palais_tours.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P41",
+      "code": "P41",
+      "family": "vues-aeriennes",
+      "filename": "palais_elements.png",
+      "dest": "references/vues-aeriennes/palais_elements.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    },
+    {
+      "key": "sky_P42",
+      "code": "P42",
+      "family": "vues-aeriennes",
+      "filename": "palais_matieres.png",
+      "dest": "references/vues-aeriennes/palais_matieres.png",
+      "status": "not_started",
+      "user_validation": "pending_final_review"
+    }
+  ]
+}

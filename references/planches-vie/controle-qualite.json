@@ -1,0 +1,43 @@
+{
+  "user_validation": "pending",
+  "fixes": [
+    {
+      "code": "R3",
+      "issue": "Fermer porte principale de l'imprimerie et tous les volets sauf une unique fenêtre atelier éclairée."
+    },
+    {
+      "code": "R6",
+      "issue": "Supprimer tous les parapluies modernes ; robe de la passante en brun/ocre, orange réservé à Aliénor."
+    },
+    {
+      "code": "R9",
+      "issue": "Passage couvert à l'opposé de la place, sortie vers une ruelle descendante, pas de statue visible ni place au bout."
+    }
+  ],
+  "resolved": [
+    {
+      "code": "R1",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R15",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R21",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R22",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R26",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R28",
+      "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    }
+  ]
+}
