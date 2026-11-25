@@ -2440,6 +2440,7 @@ const PLATES={
   fete:{n:"XIV",dest:"La fête de l’Un",cam:[-17,3.0,15],look:[3,3.2,-8],txt:[{t:"Chaque année, le soir du tribut, le palais offre une fête à la ville."}]},
   quai:{n:"XIII",dest:"Les quais de Sarlande",cam:[-13,1.6,24.5],look:[14,5.5,0],txt:[{r:"Selon son ami Montaigne, La Boétie écrit le Discours très jeune. Il meurt en 1563, à trente-deux ans."}]}
 };
+const plateCount=Object.values(PLATES).filter(p=>!p.page).length;
 const DEST={ville:["cite","citation","portesCite","quartiers","ruelles","quai"],place:["place","portes"],cour:["cour"],chateau:["chateau","palais"]}; DEST.fete=["fete"]; for(const k in PLATES) DEST["_"+k]=[k];
 const dioBuilt={};
 const plateSeen={}, plateTxt={}, zoneShown={}; let plateTick=0, plate=null, plateReady=false, plateThen=null, zone=null;
@@ -2454,12 +2455,31 @@ function plateCaption(waiting){ const k=plate.key, t=plate.txt[plateTxt[k]%plate
   const picture=views[k]; plateEl.style.backgroundImage=picture?'url("img/lieux/'+picture+'.webp")':"none";
   const tail=waiting?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#221f2b" stroke-width="2.6" stroke-linecap="round" transform="rotate(-90 20 20)"/></svg><span>Chargement…</span>`:`<span class="go">Touchez pour tourner la page</span>`;
   if(plate.page){ plateEl.innerHTML=`<div class="quote">${EMBLEME_UN}<p class="qq">${esc(t.q)}</p><div class="qa">Étienne de La Boétie</div>${FLEURON}<div class="ind">${tail}</div></div>`; return; }
-  plateEl.innerHTML=`<div class="num">Planche ${plate.n}</div><div class="cap cart"><div class="lab">Destination</div><h2>${esc(plate.dest)}</h2>${t.q?`<p class="q">${esc(t.q)}</p><p class="src">${SRC}</p>`:(t.t?`<p class="rep">${esc(t.t)}</p>`:`<p class="rep"><b>Repère.</b> ${esc(t.r)}</p>`)}<div class="ind">${waiting?`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#221f2b" stroke-width="2.6" stroke-linecap="round" transform="rotate(-90 20 20)"/></svg><span>Chargement…</span>`:`<span class="go">Touchez pour tourner la page</span>`}</div></div>`; }
+  plateEl.innerHTML=`<div class="num">Planche ${plate.n}</div><div class="cap cart"><div class="lab">Destination</div><h2>${esc(plate.dest)}</h2>${t.q?`<p class="q">${esc(t.q)}</p><p class="src">${SRC}</p>`:(t.t?`<p class="rep">${esc(t.t)}</p>`:`<p class="rep"><b>Repère.</b> ${esc(t.r)}</p>`)}<div class="ind">${tail}</div></div>`; }
 function turnPage(dest,then,work,pre){ joyEnd(); mode="turn"; refreshHud(); sfx("page"); wash(()=>{ if(pre) pre(); const k=pickPlate(dest); plate=Object.assign({key:k},PLATES[k]); plateTxt[k]=(plateTxt[k]===undefined?0:plateTxt[k]+1); mode="plate"; plateThen=then; setCones(false); if(plate.dio||k!=="fete") setScene(false,"day"); else setScene(true);
-    const need=plate.dio&&!dioBuilt[plate.dio]; if(need){ const d=plate.dio; const build=new Promise(res=>setTimeout(()=>{ const t0=performance.now(); try{ DIO[d](O[d][0],O[d][1]); flushWin(); dioBuilt[d]=true; }catch(e){ console.error(e); } res(); },380)); work=work?Promise.all([work,build]):build; revealDir=0; }
+    const d=plate.dio;
+    if(d&&!dioBuilt[d]){
+      // La légende est peinte avant la construction du décor à la trame suivante.
+      const build=new Promise((resolve,reject)=>requestAnimationFrame(()=>{
+        try{ DIO[d](O[d][0],O[d][1]); flushWin(); dioBuilt[d]=true; resolve(); }
+        catch(error){ reject(error); }
+      }));
+      work=work?Promise.all([work,build]):build;
+      revealDir=0;
+    }
     plateReady=!work; scene.fog.near=plate.fog?plate.fog[0]:(plate.dio?60:FOGN+20); scene.fog.far=plate.fog?plate.fog[1]:(plate.dio?300:FOGF+90); birdO=plate.dio?[O[plate.dio][0],O[plate.dio][1]+20]:[0,0];
     camPos.set(plate.cam[0],plate.cam[1],plate.cam[2]); camLook.set(plate.look[0],plate.look[1],plate.look[2]); plateEl.style.display="block"; plateCaption(!!work);
-    if(work) Promise.resolve(work).catch(()=>{}).then(()=>{ if(mode==="plate"&&plate&&plate.key===k){ plateReady=true; revealDir=1; const el=plateEl.querySelector(".ind"); if(el) el.innerHTML=`<span class="go">Touchez pour tourner la page</span>`; } }); }); }
+    if(work) Promise.resolve(work).then(
+      ()=> "Touchez pour tourner la page",
+      error=>{ console.error("Décor de la planche",k,error);return "Décor indisponible. Touchez pour tourner la page."; }
+    ).then(hint=>{
+      if(mode!=="plate"||!plate||plate.key!==k) return;
+      plateReady=true;revealDir=1;
+      const go=document.createElement("span");go.className="go";go.textContent=hint;
+      plateEl.querySelector(".ind").replaceChildren(go);
+    });
+  });
+}
 function leavePlate(){ if(mode!=="plate"||!plateReady) return; plateReady=false; sfx("page"); wash(()=>{ plateEl.style.display="none"; plateEl.innerHTML=""; plate=null; setCones(true); setScene(true); scene.fog.near=FOGN; scene.fog.far=FOGF; birdO=[0,0]; const f=plateThen; plateThen=null; if(f)f(); }); }
 plateEl.addEventListener("click",leavePlate);
 const EMBLEME_UN=`<svg class="embleme-un" viewBox="0 0 100 100" aria-hidden="true" fill="#b88731"><circle cx="50" cy="23" r="18"/><path d="M25 45h50v11H25z M16 60h68v13H16z M6 77h88v16H6z"/></svg>`;
@@ -2472,7 +2492,7 @@ function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refres
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
   <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`; }
 function platesList(){ return `<div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n||"✦"}</i> ${esc(PLATES[k].dest||"Page de citation")}</button>`).join("")}</div>`; }
-function showPlates(){ mode="title"; plBack="title"; refreshHud(); panel(`<span class="kick">Le livre des planches</span><h2>Treize vues de Sarlande</h2><p class="small">Touchez une planche pour l’ouvrir.</p>${platesList()}<div class="row"><button class="pri" data-a="home">Retour à la page de titre</button></div>`,true); }
+function showPlates(){ mode="title"; plBack="title"; refreshHud(); panel(`<span class="kick">Le livre des planches</span><h2>${plateCount} vues de Sarlande</h2><p class="small">Touchez une planche pour l’ouvrir.</p>${platesList()}<div class="row"><button class="pri" data-a="home">Retour à la page de titre</button></div>`,true); }
 function startPlay(newGame=false){
   closePanel();S.started=true;applyStage();save();fpsT=0;fpsN=0;setScene(true);setCones(true);
   if(newGame){firstExchange=false;player.rotation.y=-Math.PI/2;startMovie("matin",enterPlay);}
@@ -2486,7 +2506,7 @@ function startPlay(newGame=false){
 function showCarnet(){ if(mode==="play") save(); mode="panel"; plBack="carnet"; refreshHud();
   panel(`<span class="kick">Carnet d’Aliénor</span><h2>${S.f.length} feuillets sur ${NF}</h2><p class="small">Pour chaque feuillet, retrouvez le passage dans votre édition et notez la page. Ce carnet vous servira pour réviser.</p>`+
   Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
-  mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">Treize vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p><div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n}</i> ${esc(PLATES[k].dest)}</button>`).join("")}</div></div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
+  mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">${plateCount} vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p>${platesList()}</div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
 function mapSVG(){ const X=x=>((x+34)*3.4+4).toFixed(1), Y=z=>((z+48)*2.9+4).toFixed(1); const t=targetNow(); const P=player.position;
   const L=(x,z,txt,rot)=>`<text x="${X(x)}" y="${Y(z)}"${rot?` transform="rotate(${rot} ${X(x)} ${Y(z)})"`:""}>${txt}</text>`;
   return `<div class="feuil"><span class="kick">Sarlande, de mémoire</span><svg class="map" viewBox="0 0 320 232" fill="none" stroke="#221f2b" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
