@@ -117,7 +117,11 @@ Les citations viennent de l'Atelier La Boétie. Les phrases d'explication sont �
 - **Planches** : `turnPage(dest, ...)`, avec les tables `PLATES` et `DEST`.
 - **Progression** : la constante `OBJ` donne les objectifs de l'acte I, `act2Obj()` ceux de l'acte II, et `S.stage` l'étape en cours (0 à 6 pour l'acte I, 10 à 16 pour l'acte II).
 - **Sauvegarde** : dans le localStorage, sous la clé `sarlande-acte1-v1`.
-- **Son** : tout est synthétisé dans la page avec Web Audio. La musique est procédurale (hymne de l'Un, basse obstinée). Les voix de la foule sont rendues hors ligne. Les ambiances et les bruits sont spatialisés.
+- **Son** : de vrais enregistrements, générés avec ElevenLabs (offre Starter) et rangés dans `son/` en MP3, 16 Mo en tout.
+  - **Dix musiques Renaissance** (`mus-*.mp3`) : titre et planches, jour, cour des gardes, fête en deux morceaux qui alternent avec un fondu : une gaillarde (`mus-branle.mp3`) et une ronde (`mus-ronde.mp3`), farce, nuit, aube, fanfare du toast, litière. `musicNow()` choisit le morceau selon le moment du récit. Les morceaux s'enchaînent en fondu ; ceux de la fête s'étouffent avec la distance.
+  - **Treize ambiances en boucle** (`amb-*.mp3`) : marché, fontaine, quai, cour, chapelle, imprimerie, fête, nuit, aube, ruelle, feu, vent, pluie. `ambient()` les mêle selon la place d'Aliénor.
+  - **Une trentaine de bruitages** : pas sur les pavés, pas en armure, page, feuillet, pièces, sac, plume, presse, colle, pierre, cloche, rires, applaudissements, acclamation, gobelets, chouette.
+  - **Mémoire** : musiques et ambiances ne sont décodées qu'au moment où on les entend, puis libérées, pour ménager l'iPad.
 - **Commandes** : un joystick tactile sur iPad et téléphone, le clavier sur ordinateur.
 - **Tests** : faits avec Playwright, dans Chrome. Le jeu n'a pas encore été testé sur un vrai iPad ni écouté sur un appareil réel.
 
