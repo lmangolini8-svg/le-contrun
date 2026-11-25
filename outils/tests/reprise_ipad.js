@@ -112,7 +112,7 @@ async function testNotebook(browser) {
 
 async function testToast(browser) {
   // Une sauvegarde de l'ancienne version, avant la première annonce à la fontaine.
-  await savedSession(browser, {act: 2, stage: 13, pos: [0, 6.2], allies: {maelle: true, garin: true}},
+  await savedSession(browser, {act: 2, stage: 13, pos: [0, 7.3], allies: {maelle: true, garin: true}},
     {width: 1080, height: 810}, async page => {
       await page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
       const dialogue = page.locator('#dlg');
