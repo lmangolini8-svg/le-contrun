@@ -92,6 +92,38 @@ async function testNotebook(browser) {
   console.log('Acte II : carnet, action à proximité, joystick, interruption, reprise et nouvelle partie.');
 }
 
+async function testToast(browser) {
+  // Une sauvegarde de l'ancienne version, avant la première annonce à la fontaine.
+  await savedSession(browser, {act: 2, stage: 13, pos: [0, 6.2], allies: {maelle: true, garin: true}},
+    {width: 1080, height: 810}, async page => {
+      await page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+      const dialogue = page.locator('#dlg');
+      await dialogue.getByText(/Les gardes tiennent la rue/).waitFor();
+      await dialogue.tap();
+      await dialogue.getByText(/on attend que Sarlande/).waitFor();
+      await dialogue.tap();
+      await dialogue.getByText(/Le crieur monte/).waitFor();
+      await dialogue.tap();
+      await page.waitForFunction(() => T2.on && T2.big && T2.t > 0);
+      await page.locator('#carnetBtn').tap();
+      const paused = await page.evaluate(() => ({clock: time, toast: T2.t}));
+      await page.waitForFunction(t => time > t + .1, paused.clock);
+      assert.equal(await page.evaluate(() => T2.t), paused.toast, 'Le carnet suspend le grand toast');
+      await page.reload({waitUntil: 'domcontentloaded'});
+      await page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+      const resumed = await page.evaluate(() => ({
+        active: T2.on && T2.big, elapsed: T2.t, saved: S.toastEcoule,
+        escort: S.maelleSuit, warned: S.toastExplique,
+        guards: fete.ng.every(guard => guard.blind)
+      }));
+      assert.deepEqual([resumed.active, resumed.escort, resumed.warned, resumed.guards], [true, true, true, true]);
+      assert.equal(resumed.saved, paused.toast);
+      assert.ok(resumed.elapsed >= paused.toast);
+      assert.match(await page.locator('#obj').textContent(), /Traversez maintenant/);
+    });
+  console.log('Acte II : le carnet suspend le grand toast, la reprise conserve le temps et les alliés.');
+}
+
 (async () => {
   const browser = await chromium.launch({
     executablePath: process.env.CHROME_BIN || undefined,
@@ -100,6 +132,7 @@ async function testNotebook(browser) {
   try {
     await testGate(browser);
     await testNotebook(browser);
+    await testToast(browser);
   } finally {
     await browser.close();
   }
