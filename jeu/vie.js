@@ -150,11 +150,21 @@ const _zoneOf = zoneOf; zoneOf = function () { return enClos() ? "clos" : _zoneO
 const _sceneWanted = sceneWanted;
 sceneWanted = function () {
   if (enClos()) return M.plage(V()) === 2 ? "soir" : "day";
+  // Sur la place, à l'acte I, la lumière suit l'horloge : l'après-midi s'ambre, le soir rougit.
+  if (S.act === 1 && V()) { const p = M.plage(V()); if (p === 1) return "apresmidi"; if (p === 2) return "soir"; }
   return _sceneWanted();
 };
 const _setScene = setScene;
+let cleVie = null;
 setScene = function (force, over) {
   const key = over || sceneWanted();
+  if (key !== cleVie) { force = true; cleVie = key; }
+  if (key === "apresmidi") {
+    _setScene(force, "day");
+    sun.color.set(0xffc98a); hemi.color.set(0xc8bcd6); hemi.groundColor.set(0x86789a); scene.fog.color.set(0xdcc8b0); renderer.setClearColor(0xdcc8b0, 1); postMat.uniforms.uNight.value = 0.08;
+    if (V().recit.nuit) for (const p of file) p.visible = false;
+    return;
+  }
   if (key === "soir") {
     _setScene(force, "dawn");
     sun.color.set(0xffb27a); hemi.color.set(0x9c98c4); hemi.groundColor.set(0x4e4470); scene.fog.color.set(0xb7a3a6); renderer.setClearColor(0xb7a3a6, 1); postMat.uniforms.uNight.value = 0.45;
@@ -453,7 +463,7 @@ ACTIONS.rep = b => { const i = +b.dataset.i, e = EPREUVE[i]; if (+b.dataset.k ==
 const inter = lab => INTER.find(x => x.label === lab);
 const maelleI = inter("Parler à Maëlle"), _maelle = maelleI.act;
 maelleI.act = function () { if (S.act === 1 && S.stage < 2) return fournil(true); return _maelle.call(this); };
-INTER.push({ p: () => ({ x: 8.4, z: -4.6 }), r: 1.5, label: "Le fournil", can: () => S.act === 1 && S.stage >= 2, act() { fournil(false); } });
+INTER.push({ p: () => ({ x: N.maelle.position.x - 1.6, z: N.maelle.position.z - 0.2 }), r: 1.5, label: "Le fournil", can: () => S.act === 1 && S.stage >= 2, act() { fournil(false); } });
 function fournil(avantTribut) {
   const v = V(), r = v.recit, j = M.jour(v);
   M.saluer(v, "maelle");
@@ -497,22 +507,32 @@ function sujetBon() {
 }
 
 /* Les halles : le boucher, les paniers de Jeanne, le banc du chasseur (jours de marché). */
+// D'après l'atlas : les halles au sud-est de la fontaine, avec les étals tournants du marché.
 const HALLES = [
-  { b: "paysanne", lab: "Les paniers de Jeanne", x: -9, z: 11.6, look: { top: 0x8a6a48, bottom: 0x6e5338, skirt: true, apron: OCRE, hat: "coif" } },
-  { b: "boucher", lab: "L’étal du boucher", x: -5.4, z: 11.6, look: { top: BLANC, apron: 0xd8c8b8, legs: SEPIA, hat: "cap", hatc: SIENNE, beard: 0x5a4130 } },
-  { b: "chasseur", lab: "Le banc du chasseur", x: -12.6, z: 11.6, look: { top: FORET, legs: SEPIA, hat: "hood", hatc: 0x4f6f4e, pouch: SEPIA } }
+  { b: "boucher", lab: "L’étal du boucher", x: 11, z: 15.2, look: { top: BLANC, apron: 0xd8c8b8, legs: SEPIA, hat: "cap", hatc: SIENNE, beard: 0x5a4130 } },
+  { b: "paysanne", lab: "Les paniers de Jeanne", x: 15.5, z: 15.2, look: { top: 0x8a6a48, bottom: 0x6e5338, skirt: true, apron: OCRE, hat: "coif" } },
+  { b: "chasseur", lab: "Le banc du chasseur", x: 18.4, z: 15.2, look: { top: FORET, legs: SEPIA, hat: "hood", hatc: 0x4f6f4e, pouch: SEPIA } }
 ];
 // Les étals ne sont là qu'à l'acte I : le soir de la fête, cette partie de la place appartient aux tréteaux.
 const hallesSolides = [];
 const hallesMesh = (() => {
   B.p = []; B.n = []; B.c = []; B.t = []; B.pop();
-  const n = boxes.length; stall(-5.4, 10, SIENNE, BLANC); put(G.box, WOOD, -12.6, 0.45, 10.4, 1.8, 0.9, 0.6); solid(-13.5, -11.7, 10.1, 10.7);
+  const n = boxes.length; stall(11, 13.6, SIENNE, BLANC); stall(15.5, 13.6, OCRE, BLANC); put(G.box, WOOD, 18.4, 0.45, 13.8, 1.8, 0.9, 0.6); solid(17.5, 19.3, 13.5, 14.1);
+  // pas de toit : la caméra passe au sud des étals quand Aliénor traverse la place
   hallesSolides.push(...boxes.slice(n)); B.pop();
   const m = wobble(B.mesh(cityPaint), 0.32); B.p = []; B.n = []; B.c = []; B.t = []; scene.add(m); return m;
 })();
 for (const h of HALLES) { h.g = human(Object.assign({ noOutline: true, x: h.x, z: h.z, ry: 0 }, h.look)); h.c = [h.x, h.z, 0.55, false]; circles.push(h.c); }
+// La Caisse des métiers, au nord-est de la place, contre le palais.
+dio(0, () => {
+  simpleHouse(16, -13.2, 0, 6, 3.4, 4.6, 0xd8c9a4, SLATE); solid(13, 19, -14.9, -11.5);
+  put(G.box, SEPIA, 16, 1.2, -11.47, 1.4, 2.4, 0.08); put(G.box, SIENNE, 16, 3.1, -11.45, 3.2, 0.7, 0.06);
+  for (const dx of [-2, 2]) put(G.box, 0x2b2f45, 16 + dx, 1.6, -11.47, 0.9, 1.1, 0.08);
+});
+INTER.push({ p: () => ({ x: 16, z: -10.2 }), r: 2, label: "La Caisse des métiers", can: () => !enClos() && S.act === 1, act() {
+  const v = V(); talk([["", "La Caisse des métiers : un comptoir, un registre, des devis épinglés. On y épargne, on y demande une avance sur un devis."], ["", M.estJourTribut(M.jour(v)) ? "« Fermé le jour du tribut. »" : "Le commis lève les yeux : « Revenez avec un devis du menuisier. »"]], apres); } });
 function majHalles() { if (!HALLES[0].g) return; const jour = S.act === 1 && !enClos(); hallesMesh.visible = S.act === 1; for (const x of hallesSolides) x.on = S.act === 1; for (const h of HALLES) h.c[3] = h.g.visible = jour && M.ouvert(V(), h.b); }
-for (const h of HALLES) INTER.push({ p: () => ({ x: h.x, z: h.z + 1.2 }), r: 1.8, label: h.lab, can: () => S.act === 1, act() { halle(h); } });
+for (const h of HALLES) INTER.push({ p: () => ({ x: h.x, z: h.z + 0.9 }), r: 1.8, label: h.lab, can: () => S.act === 1, act() { halle(h); } });
 function halle(h) {
   const v = V(), B = M.BOUTIQUES[h.b], art = B.articles[0], A = M.ARTICLES[art];
   v.adresses[h.b] = M.horaires(h.b);

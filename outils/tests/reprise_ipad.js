@@ -61,7 +61,7 @@ async function reprendreFeuillet(page, reopenTab, id, attendus) {
 
 async function testSheets(browser) {
   const cas = [
-    {id:'F2', stage:2, pos:[10,-2.6], action:'Parler à Maëlle', avant:['F1'], suite:3, objectif:/fouillez la chapelle/},
+    {id:'F2', stage:2, pos:[-10,-1.4], action:'Parler à Maëlle', avant:['F1'], suite:3, objectif:/fouillez la chapelle/},
     {id:'F3', stage:3, pos:[51,-2], action:'Fouiller la chapelle', avant:['F1','F2'], suite:4, objectif:/Garin le tanneur/},
     {id:'F4', stage:5, pos:[17.5,17.6], action:'Ramasser le feuillet', avant:['F1','F2','F3'], suite:5, objectif:/Racontez à maître Anselme/},
     {id:'F5', stage:4, pos:[51.9,-8.5], action:'Ramasser le feuillet', avant:['F1','F2','F3'], suite:4, objectif:/Garin le tanneur/},
@@ -663,7 +663,7 @@ async function testPrintInterruption(browser) {
 
 async function testJoustReload(browser) {
   const cases = [
-    {act:1, stage:4, pos:[-10,-1.4], first:'F1', second:'F2'},
+    {act:1, stage:4, pos:[10,-2.6], first:'F1', second:'F2'},
     {act:2, stage:11, pos:[12.6,2.4], first:'F6', second:'F7'},
     {act:2, stage:12, pos:[2.6,-1.5], first:'F6', second:'F7'}
   ];
