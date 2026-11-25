@@ -1,5 +1,25 @@
 # Sarlande — cahier de suivi des planches
 
+## Atlas topographique du 25 novembre 2026
+
+[Feuilleter les 32 planches de l’atlas](Sarlande_Atlas_topographique.pdf) · [Télécharger les cartes, le carnet par acte et les données de terrain](Sarlande_Cartes_et_terrain.zip)
+
+[Vue peinte de l’écurie et de l’atelier du charron](Faubourg_ecurie_et_charron.png)
+
+Le quai se tient à environ 4 m au-dessus du zéro local, le marché à 10,4 m, le parvis à 22 m, le couvent à 35,5 m et le refuge de Mahaut à 44,1 m. Les rues rejoignent ces paliers en suivant les épaules du versant. La carte des secteurs délimite dix quartiers intra-muros et les abords. Les vues rapprochées détaillent le cimetière au chevet, le clos conventuel, la clairière et la cabane, les bâtiments de chaque quartier et les trois niveaux du palais.
+
+| Choix retenu | Consigne de production |
+|---|---|
+| Faubourg de la porte du Pont | Construire une écurie, une réserve de foin, un abreuvoir, une cour de manœuvre et un atelier de charron. Montrer les roues en cours de montage, les essieux et les charrettes. Le ferronnier est établi sur le quai. |
+| Boutiques | Reporter les douze enseignes des classeurs sur les parcelles indiquées. Le fichier commerces.csv relie les 1 040 références uniques au quartier, au prix, à l’acte et aux coordonnées. Les six commerces du chapitre et les étals tournants du marché disposent de repères propres. |
+| Déplacements | La voie de charroi entre place et quai fait 202 m, avec une pente maximale de 3,2 % sur 10 m. Le parcours court qui relie l’atelier, la place et le quai atteint 11,3 %. Prévoir le premier pour les charrettes. |
+| Matières | Calcaire usé et gravier au chevet, pavés au marché, limon et madriers sur les rives, humus et racines dans le bois. Maintenir un trajet sur sol ferme le long des berges. |
+| Vérifications en 3D | Parcourir sur iPad le raccord cloître–cimetière et les deux routes du quai. Vérifier le gabarit d’une charrette dans la cour de l’écurie, le tablier du pont et la montée des eaux au lavoir et à la grue. |
+| Carnet d’Aliénor | Distribuer une seule planche à la fois. Le refuge et sa branche de sentier apparaissent à l’acte IV après la rencontre. Le carnet de l’acte V suppose cette découverte préalable. |
+
+Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 209 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
+
+
 ## Priorité 1 · Cartographier Sarlande et ses abords
 
 Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les quartiers, les deux portes et les chemins. Le nord est en haut. La rivière coule vers l’est, au sud de la place. Elle sépare le quai de la rive habitée. Le pont à trois arches se trouve à l’ouest du quai, la porte du pont au-delà des maisons de la rive sud.
