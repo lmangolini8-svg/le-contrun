@@ -384,7 +384,7 @@
   }
   function horaires(b) {
     const B = BOUTIQUES[b];
-    return `${B.jours.map(d => Cal.JOURS[d]).join(", ")} · ${B.plages.map(p => Cal.PLAGES[p]).join(" et ")}`;
+    return `${B.jours.map(d => Cal.JOURS[d]).join(", ")}${B.tribut ? ", et le jour du tribut" : ""} · ${B.plages.map(p => Cal.PLAGES[p]).join(" et ")}`;
   }
   function acheter(vie, b, article) {
     const B = BOUTIQUES[b], A = ARTICLES[article];
