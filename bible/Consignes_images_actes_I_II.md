@@ -15,9 +15,10 @@ Ce document rassemble **toutes les images encore à faire pour les actes I et II
 4. les **visages de face de la foule et des gardes**, pour que les figurants ne se ressemblent plus en 3D ;
 5. une **vignette pour chaque feuillet**, pour le carnet et les révisions ;
 6. les **ciels** de chaque moment ;
-7. les **planches de fin d’acte** et un **récit en images** des deux actes.
+7. les **planches de fin d’acte** et un **récit en images** des deux actes ;
+8. **le peuple qui paie** : la supériorité du percepteur dans le décor, la foule et ses fardeaux, et les costumes de tous les états de la ville, avec une règle de couleurs et de matières par rang.
 
-Il y a **161 images**, en codes **A** (acte I), **N** (acte II) et **X** (communes aux deux actes).
+Il y a **196 images**, en codes **A** (acte I), **N** (acte II), **X** (communes aux deux actes) et **Y** (le peuple qui paie : le percepteur, la foule, les costumes).
 
 ---
 
@@ -33,8 +34,9 @@ Il y a **161 images**, en codes **A** (acte I), **N** (acte II) et **X** (commun
 1. les visages de la foule, des gardes et des enfants (X1 à X4), qui changent tout le jeu ;
 2. les tableaux de l’acte I ;
 3. ceux de l’acte II ;
-4. les portraits manquants ;
-5. le reste.
+4. le peuple qui paie (lot Y) ;
+5. les portraits manquants ;
+6. le reste.
 
 **Où trouver les portraits à joindre** : `img/portraits/nom_neutre.webp` (par exemple `img/portraits/garin_neutre.webp`). Pour les costumes en pied : `references/planches-3d/nom_tour.png`.
 
@@ -86,7 +88,7 @@ Fichiers : `nom_neutre.png`, `nom_sourire.png`, `nom_inquietude.png`, `nom_coler
 
 ---
 
-## 4. Les visages de la foule et des gardes (X1 à X3)
+## 4. Les visages de la foule, des gardes et des enfants (X1 à X4)
 
 **Joindre** : `img/visages-modeles.webp` (pour le cadrage et le style).
 
@@ -398,7 +400,88 @@ C’est l’exercice prévu dans la fiche du projet : les élèves écrivent les
 
 ---
 
-## 11. Récapitulatif
+## 11. Lot Y · Le peuple qui paie
+
+Trois idées, que l’image doit dire sans un mot :
+1. **Le percepteur est au-dessus** : il est assis en hauteur, sur une estrade, sous un dais, entouré d’objets précieux ; le peuple est debout, en bas, et lève les yeux.
+2. **Tout le peuple paie** : chaque métier, chaque âge, chaque rang porte son tribut, et chacun le porte à sa façon.
+3. **Chacun son habit** : les couleurs et les matières disent le métier et le rang, d’un coup d’œil, même de loin.
+
+### La règle des couleurs et des matières, par rang
+
+C’est elle qui guidera ChatGPT pour les costumes, et Claude pour les figurants en 3D.
+
+| Rang | Matières | Couleurs | Signes |
+|---|---|---|---|
+| **Les pauvres** | toile de chanvre, bure, laine grossière, chiffons | écru sale, gris, brun délavé | rapiéçages, ourlets effilochés, pieds nus ou enveloppés de chiffons |
+| **Les paysans** | toile, futaine, laine brute, paille, sabots | écru, ocre, brun, vert sauge passé | chapeau de paille, guêtres de toile, terre sur les genoux |
+| **Les artisans** | cuir, toile épaisse, laine | terre de Sienne, sépia, ocre, bleu délavé | tablier de leur métier, outils à la ceinture, mains marquées (farine, encre, teinture, suie) |
+| **Les marchands** | drap de laine, lin, serge | bleu pétrole, vert forêt, prune, ocre profond | bourse à la ceinture, coiffe propre, boutons de corne |
+| **Les bourgeois** | drap fin, velours, fourrure aux poignets | bleu nuit, vert sombre, bordeaux, noir | chaîne fine, gants, toque, col plissé |
+| **Le pouvoir** | velours, damas, soie, fourrure, or, acier | rouge vif, or, bleu nuit profond | fraise, chaîne d’office, emblème de l’Un brodé ou gravé |
+
+Le rouge vif et l’or n’appartiennent qu’au pouvoir. L’orange lumineux n’appartient qu’à Aliénor et au feu.
+
+### Y-A · La supériorité du percepteur
+
+**Joindre** : `img/portraits/percepteur_neutre.webp`, `references/planches-3d/percepteur_tour.png`, `references/planches-3d/objet_balance.png`, `references/planches-3d/objet_emblème_un.png`.
+
+| Fait | Code | Fichier | Gabarit | Contenu |
+|---|---|---|---|---|
+| [ ] | Y1 | `percepteur_estrade.png` | G3 | [SUJET] = « l’estrade du percepteur devant la porte du palais : une estrade de chêne à trois marches, haute comme la moitié d’un homme, couverte d’un tapis bleu nuit frangé d’or ; dessus, une longue table haute nappée de bleu nuit ; derrière, un fauteuil à très haut dossier sculpté, surmonté de l’emblème de l’Un en or, avec un coussin de velours rouge ; au-dessus, un dais de velours rouge frangé d’or ; au pied des marches, à hauteur du peuple, la balance de laiton ; à côté, en contrebas, une petite table nue pour le clerc » |
+| [ ] | Y2 | `percepteur_fauteuil.png` | G4 | [SUJET] = « le fauteuil du percepteur : chêne sombre sculpté de feuillages, très haut dossier terminé par l’emblème de l’Un doré, accoudoirs à têtes de lion, coussin et assise de velours rouge clouté d’or, repose-pieds brodé » |
+| [ ] | Y3 | `percepteur_objets.png` | G1 | [NOMBRE] = 16 · [VUE] = « de trois quarts » · [LISTE] = « seize objets du pouvoir du percepteur : écritoire d’argent ciselé avec encrier et plumes d’oie ; sablier de laiton ; sceau de bronze à l’emblème de l’Un ; bâton de cire rouge ; registre relié de cuir noir à fermoirs d’or ; bâton d’office à pommeau doré ; chaîne d’office en or ; coupe d’argent ; gants de peau brodés ; série de poids de bronze marqués de l’emblème ; coffre ferré ouvert, plein de pièces ; bourse de velours rouge ; sonnette de bronze ; coussin de velours ; tapis frangé d’or plié ; lunettes à monture d’or » |
+| [ ] | Y4 | `peuple_objets.png` | G1 | [NOMBRE] = 16 · [VUE] = « de trois quarts » · [LISTE] = « seize objets du peuple, pour le contraste : écuelle de bois ; bourse de toile rapiécée ; cuillère de bois ; gobelet de corne ; sabots usés ; bonnet de laine troué ; ceinture de corde ; couteau ébréché ; quignon de pain noir ; sac vide plié ; panier percé ; tabouret bancal ; chandelle de suif à moitié fondue ; trois pièces de cuivre usées ; mouchoir rapiécé ; chapelet de bois » |
+| [ ] | Y5 | `percepteur_montagne.png` | G2 | [SCÈNE] = « derrière l’estrade du percepteur, contre le mur du palais : la montagne de tout ce que le peuple a payé ce matin, sacs de grain, rouleaux d’étoffe, tonneaux, cages de poules, fromages, peaux, fagots, jarres ; deux valets en livrée la font entrer par une porte basse dans le palais ; un garde veille » · [LUMIÈRE] = « matin doré, la montagne dans l’ombre du palais, ombres indigo » |
+| [ ] | Y6 | `percepteur_hierarchie.png` | G9 | [SCÈNE] = « la hiérarchie en un seul regard : le percepteur trône sur son estrade, sous le dais, plume levée, sans regarder personne ; un clerc maigre, assis plus bas, écrit sous sa dictée ; au pied des marches, Aliénor debout lève les yeux vers lui, son sac sur la balance ; deux gardes encadrent l’estrade » · [QUI] = le percepteur, le clerc (voir Y7), Aliénor, deux gardes · [CADRAGE] = contre-plongée, depuis la hauteur des yeux d’Aliénor · [LUMIÈRE] = matin, le dais dans une ombre rouge |
+| [ ] | Y7 | `clerc_*.png` | G11 | Le clerc du percepteur, trente ans : « visage maigre et pâle, dos voûté, yeux plissés de myope, doigts tachés d’encre noire · robe noire râpée, petit col blanc, écritoire à la ceinture ». Quatre expressions. Il ne parle pas encore ; il sert à montrer qu’on sert aussi en dessous du percepteur. |
+| [ ] | Y8 | `file_elements.png` | G1 | [NOMBRE] = 9 · [VUE] = « de face » · [LISTE] = « neuf éléments qui organisent la file : poteau de bois à anneau ; corde rouge tendue entre deux poteaux ; barrière de bois basse ; borne de pierre ; banc d’attente usé ; marque peinte au sol à l’emblème de l’Un ; panneau de bois sans lettres ; seau d’eau pour les gardes ; hallebarde plantée dans un support » |
+
+### Y-B · La foule et ses sacs
+
+**Joindre** : `references/lieux-originaux/place-du-marche-et-tribut.webp`, `references/planches-3d/objet_sac.png`, `references/planches-3d/jeanne_tour.png` (pour l’échelle).
+
+| Fait | Code | Fichier | Gabarit | Contenu |
+|---|---|---|---|---|
+| [ ] | Y10 | `tribut_par_metier.png` | G1 | Format paysage. [NOMBRE] = 24 · [VUE] = « de trois quarts, posés au sol » · [LISTE] = « vingt-quatre tributs, un par métier : sac de farine du meunier ; panier d’œufs de la fermière ; peaux tannées roulées du tanneur ; rouleau de drap du tisserand ; tonnelet de vin du vigneron ; fagot du bûcheron ; cage de poules ; trois fromages sur un linge ; jarre d’huile de noix ; fers à cheval enfilés sur une corde, du forgeron ; botte de chandelles du chandelier ; corbeille de pains ; poissons séchés en chapelet ; ballot de laine ; sac de sel ; pot de miel et rayons de cire ; rame de papier ficelée, de l’imprimerie ; rouleau de corde du cordier ; pots de terre empilés du potier ; paire de souliers neufs du cordonnier ; botte de foin ; cochon de lait dans un panier ; sac de noix ; petite bourse de pièces » |
+| [ ] | Y11 | `porteurs_en_pied.png` | G1 | Format paysage. [NOMBRE] = 12 · [VUE] = « de face, en pied, chacun entier » · [LISTE] = « douze habitants qui portent leur tribut, chacun à sa façon : un meunier, sac de farine sur l’épaule, blanc de farine ; une fermière, panier d’œufs sur la hanche ; un tanneur, peaux roulées sur le dos ; une paysanne, fagot sur la tête ; un vigneron, tonnelet dans les bras ; une vieille, petite bourse serrée contre la poitrine ; un garçon, chèvre au bout d’une corde ; un forgeron, fers à cheval en collier ; une tisserande, rouleau de drap sous le bras ; un pêcheur, chapelet de poissons à l’épaule ; un homme courbé sous un sac énorme ; une jeune mère, enfant sur un bras et panier sur l’autre » |
+| [ ] | Y12 | `pose_porter_epaule.png` | G5 | [SUJET] = « un homme qui porte un sac lourd sur l’épaule, une main retenant le sac » · [NOMBRE] = 8 · [POSES] = « cycle de marche lente en huit images, le corps penché sous le poids, de profil » |
+| [ ] | Y13 | `pose_porter_dos.png` | G5 | [SUJET] = « une vieille femme courbée sous un sac porté sur le dos, tenu par une sangle sur le front » · [NOMBRE] = 8 · [POSES] = « cycle de marche très lente en huit images, de profil » |
+| [ ] | Y14 | `pose_porter_tete.png` | G5 | [SUJET] = « une jeune paysanne qui porte un panier sur la tête, une main levée pour le tenir » · [NOMBRE] = 8 · [POSES] = « cycle de marche droite en huit images, de profil » |
+| [ ] | Y15 | `pose_poser_sac.png` | G5 | [SUJET] = « un paysan devant la balance du percepteur » · [NOMBRE] = 6 · [POSES] = « il arrive, le sac sur l’épaule ; il le fait glisser ; il le pose sur le plateau ; il recule d’un pas ; il regarde le sac ; il repart, les épaules plus droites mais les mains vides » |
+| [ ] | Y16 | `pose_attendre.png` | G5 | [SUJET] = « des habitants qui attendent dans la file, leur sac à leurs pieds » · [NOMBRE] = 6 · [POSES] = « six attitudes d’attente, six personnes différentes : appuyé sur son sac ; assis sur son sac ; qui s’essuie le front ; qui compte ses pièces ; qui tient un enfant endormi ; qui regarde le balcon » |
+| [ ] | Y17 | `file_vue_haut.png` | G9 | [SCÈNE] = « la file du tribut vue d’en haut, depuis le balcon : un long serpent de gens et de sacs de toutes les couleurs qui traverse toute la place jusqu’à l’estrade ; on distingue chaque métier à son fardeau » · [QUI] = la foule · [CADRAGE] = plongée verticale · [LUMIÈRE] = matin |
+| [ ] | Y18 | `file_visages.png` | G9 | [SCÈNE] = « la file de près, à hauteur des visages : des gens las, résignés, qui ne se parlent pas ; un vieil homme ferme les yeux ; une femme serre son sac comme un enfant ; un jeune homme regarde ses pieds » · [QUI] = des figurants · [CADRAGE] = plan serré, de profil, la file qui fuit vers le fond · [LUMIÈRE] = matin |
+| [ ] | Y19 | `file_sortie.png` | G9 | [SCÈNE] = « de l’autre côté de l’estrade, ceux qui ont payé repartent : sacs vides pliés sous le bras, paniers vides, mains vides ; aucun ne se retourne » · [QUI] = des figurants · [CADRAGE] = plan moyen · [LUMIÈRE] = matin |
+| [ ] | Y20 | `mains_tribut.png` | G1 | [NOMBRE] = 9 · [VUE] = « de face, en gros plan » · [LISTE] = « neuf mains qui donnent leur tribut, toutes différentes : main calleuse de paysan qui tend un sac ; main poudrée de farine ; main noire de suie ; main teinte de bleu de tisserand ; main ridée de vieille qui lâche trois pièces ; petite main d’enfant qui tend un œuf ; main gantée de bourgeois qui tend une bourse de velours ; main tremblante ; main tachée d’encre bleue » |
+
+### Y-C · Tout le peuple paie : les costumes
+
+**Joindre** : `references/planches-3d/jeanne_tour.png`, `references/planches-3d/thibaut_tour.png`, `references/planches-3d/hugues_tour.png`.
+
+Chaque planche montre **neuf personnages en pied, de face**, même pose (debout, bras légèrement écartés, sans objet sauf indication), même échelle, en grille de 3 × 3, au gabarit G1 avec [NOMBRE] = 9 et [VUE] = « de face, en pied, chacun entier, même pose ». Les couleurs et les matières suivent la règle par rang ci-dessus. **Aucun ne ressemble à un personnage nommé.**
+
+| Fait | Code | Fichier | [LISTE] |
+|---|---|---|---|
+| [ ] | Y30 | `costumes_paysans.png` | « paysan en chemise de chanvre écrue et gilet de laine brune, chapeau de paille, guêtres de toile ; paysanne en robe de futaine ocre, tablier de toile, fichu, sabots ; vieux paysan en sarrau gris délavé, bonnet de laine ; jeune vacher en chemise et culotte de toile, pieds nus ; moissonneuse aux manches retroussées, robe vert sauge passé, chapeau de paille ; berger en cape de bure brune à capuche, houlette ; vendangeur au tablier taché de violet ; fermière en corsage brun lacé, jupe relevée sur un jupon rouge sombre ; bûcheron en veste de peau retournée, cognée à l’épaule » |
+| [ ] | Y31 | `costumes_artisans_cuir_bois_metal.png` | « tanneur au tablier de cuir taché, bras nus teintés de brun ; cordonnier en pourpoint de toile, tablier de cuir, alène à la ceinture ; forgeron au tablier de cuir brûlé, bras couverts de suie ; charpentier en chemise et culotte de toile épaisse, ceinture d’outils ; tonnelier au tablier de cuir, manches retroussées ; menuisier au bonnet de laine, copeaux sur le tablier ; serrurier en pourpoint sépia, trousseau de clés ; cordier en blouse de chanvre, corde enroulée à l’épaule ; maçon en blouse blanchie de chaux, chapeau mou » |
+| [ ] | Y32 | `costumes_artisans_textile.png` | « tisserand en robe de laine bleu délavé, navette à la ceinture ; teinturier aux bras teints de bleu et de rouge, tablier taché de toutes couleurs ; fileuse en robe gris-brun, quenouille à la ceinture ; tailleur en pourpoint ajusté vert forêt, mètre de ruban autour du cou ; couturière en corsage lacé prune, épingles piquées au col ; foulon aux jambes nues mouillées, culotte retroussée ; chapelier en pourpoint ocre portant trois chapeaux empilés ; brodeuse en robe bleu pétrole, manchettes blanches ; drapier en robe de drap brun fourrée aux poignets » |
+| [ ] | Y33 | `costumes_metiers_bouche.png` | « meunier tout blanc de farine, bonnet blanc ; boulanger au tablier blanc, bras nus poudrés ; boucher au tablier taché de rouge sombre, couteau à la ceinture ; poissonnière au tablier mouillé, manches retroussées, fichu bleu ; aubergiste ventru au tablier écru, pichet à la main ; marchande de fromages en coiffe blanche, robe ocre ; vigneron au tablier violet de vin ; pâtissier au bonnet plat blanc ; laitière en robe brune, palanche sur les épaules » |
+| [ ] | Y34 | `costumes_marchands.png` | « marchand de drap en robe longue bleu pétrole fourrée, bourse de cuir ; épicier en pourpoint vert forêt, tablier propre ; marchande de vin en robe prune, coiffe à bavolet ; colporteur en cape grise, hotte d’osier ; mercière en robe ocre profond, boîte de rubans ; marchand de sel en pourpoint brun, balance pendue à la ceinture ; changeur en robe noire, petite balance de laiton ; apothicaire en robe bleu nuit râpée, bonnet rond ; libraire en robe brune, livres sous le bras » |
+| [ ] | Y35 | `costumes_bourgeois.png` | « bourgeois en houppelande bleu nuit doublée de fourrure, toque, gants ; bourgeoise en robe de velours vert sombre, manches à crevés, col plissé, chaîne fine ; notaire en robe noire, bonnet carré, écritoire ; médecin en robe bordeaux, bonnet rond, fiole à la ceinture ; échevin en robe longue noire et rouge sombre (sans rouge vif) ; fille de bourgeois en robe bleu pétrole brodée, coiffe à perles ; vieux rentier en manteau fourré, canne à pommeau ; marchande enrichie en robe de damas brun et or pâle ; fils de bourgeois en pourpoint à crevés, chausses bicolores » |
+| [ ] | Y36 | `costumes_fleuve.png` | « batelier en chemise ouverte, culotte retroussée, bonnet rouge délavé presque rose ; pêcheur en vareuse de toile cirée brune, nasse à l’épaule ; lavandière à genoux, robe relevée, bras nus mouillés ; porteur d’eau, palanche et deux seaux ; débardeur aux épaules énormes, gilet de cuir ; femme de pêcheur en fichu, panier de poissons ; passeur en cape de laine bleue délavée, perche ; vieux marinier à la barbe blanche, bonnet de laine ; gamin du quai, en chemise trop grande et pieds nus » |
+| [ ] | Y37 | `costumes_serviteurs.png` | « servante en robe grise et tablier blanc, coiffe ; valet d’écurie en blouse de toile, fourche ; cuisinière ronde au tablier taché, louche ; chambrière en robe bleu délavé et col blanc ; marmiton en chemise blanche, joues rouges ; nourrice en corsage lacé brun, châle ; portier en livrée usée, clés ; laquais de bourgeois en pourpoint vert sombre ; vieille gouvernante en noir, trousseau de clés » |
+| [ ] | Y38 | `costumes_clerge.png` | « curé de la paroisse en soutane noire râpée et bonnet carré ; jeune vicaire en surplis blanc sur soutane ; moine en bure brune à capuchon et corde à trois nœuds ; moinesse en voile noir et guimpe blanche ; sacristain en robe grise, cierges sous le bras ; enfant de chœur en aube blanche ; ermite en bure rapiécée, barbe hirsute ; frère quêteur, besace et sébile ; chanoine en aumusse de fourrure grise sur l’épaule » |
+| [ ] | Y39 | `costumes_pauvres.png` | « mendiant en haillons rapiécés, couverture sur les épaules ; veuve en robe noire usée jusqu’à la trame ; journalier en chemise déchirée, pieds enveloppés de chiffons ; vieille femme courbée sous un châle troué ; orphelin en chemise trop grande ; infirme sur des béquilles de bois ; aveugle guidé par un bâton ; mère pauvre et son nourrisson dans un châle ; vieux soldat estropié en pourpoint rouge délavé jusqu’au rose, sans insigne » |
+| [ ] | Y40 | `costumes_vieillards_enfants.png` | « vieil homme voûté en robe de laine grise et bonnet ; vieille femme en coiffe et mantelet noir ; vieux couple bras dessus bras dessous ; grand-mère en tablier et châle vert passé ; garçon de dix ans en culotte et chemise, bonnet ; fillette de huit ans en robe et tablier, cheveux nattés ; petit enfant en chemise longue ; adolescent apprenti en pourpoint trop court ; adolescente en corsage lacé et fichu » |
+| [ ] | Y41 | `costumes_fete.png` | « les mêmes gens du peuple en habits du dimanche pour la fête : paysanne en robe propre avec un ruban de couleur ; artisan en pourpoint brossé et chapeau à plume de coq ; marchande en coiffe brodée ; jeune homme en chausses de couleur ; jeune fille avec une couronne de fleurs ; vieil homme en manteau sorti du coffre ; enfant déguisé en roi avec une couronne de papier ; bourgeois masqué d’un loup ; musicien en costume bigarré » |
+| [ ] | Y42 | `matieres_par_rang.png` | Gabarit G1, [NOMBRE] = 16, [VUE] = « strictement de face, à plat, chaque carré rempli par l’étoffe » · « seize échantillons d’étoffe en carrés égaux, du plus pauvre au plus riche, en quatre rangées : 1. toile de chanvre écrue rapiécée, bure brune, laine grossière grise, chiffon délavé ; 2. futaine ocre, toile bleu délavé, laine vert sauge, cuir brun usé ; 3. drap bleu pétrole, serge prune, lin fin blanc, laine vert forêt ; 4. velours bleu nuit, damas bordeaux, fourrure de martre, brocart rouge et or à l’emblème de l’Un » |
+
+**À vérifier pour toutes les planches de costumes** : neuf personnages entiers, tous différents ; aucun rouge vif ni orange lumineux, sauf pour le pouvoir ; on devine le métier sans légende.
+
+---
+
+## 12. Récapitulatif
 
 | Partie | Contenu | Images |
 |---|---|---|
@@ -409,7 +492,8 @@ C’est l’exercice prévu dans la fiche du projet : les élèves écrivent les
 | 8 | Vignettes des feuillets | 9 |
 | 9 | Ciels | 7 |
 | 10 | Récit en images | 12 |
-| **Total** | | **161** |
+| 11 | Le peuple qui paie : le percepteur, la foule et ses sacs, les costumes | 35 |
+| **Total** | | **196** |
 
 **Avec `Consignes_images_vie.md`**, voici ce qui sert aux actes I et II, à faire en même temps : lots R, B, S, P, C, Q, G, F, A, E, N, O, K (sauf les costumes d’hiver K1 et K3 à K6), I, et les planches de livre T3 et T8. Les lots D (cathédrale), U (quartiers et tanneurs), V (palais, archives, oubliettes), H (hors les murs) et les variantes d’hiver et de printemps servent aux actes III à V : ils peuvent attendre.
 
