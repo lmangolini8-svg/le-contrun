@@ -2,6 +2,8 @@
 
 Cahier des charges pour Claude · 25 novembre 2026
 
+Pour les thèmes, les ambiances et leur intégration, consulter le [cahier des charges musique et son](Musique_et_son_de_Sarlande.md).
+
 ## 1. Direction et décisions de référence
 
 - Faire du *Contr’un* un jeu de vie et de rôle narratif en 3D autour d’une imprimeuse de la Renaissance. Le public joue chez lui sur ordinateur ou iPad, en sessions libres. La Boétie se ressent dans le travail, les relations de dépendance et la circulation des écrits.
