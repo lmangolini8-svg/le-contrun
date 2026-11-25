@@ -1,0 +1,4 @@
+# Modèles bruts Meshy (souvent > 90 Mo) : retéléchargeables par leur identifiant de tâche.
+modeles/**/meshy_output/**/*.glb
+# Fiches de tâche Meshy : elles contiennent des liens signés, à ne pas publier.
+modeles/**/meshy_output/**/task_*.json

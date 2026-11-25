@@ -355,10 +355,11 @@ scene.add(sun,sun.target); const hemi=new THREE.HemisphereLight(0x93a2ea,0x5f5ea
 function aimSun(x,z){ sun.target.position.set(x,0,z); sun.position.set(x+SUN.x*90,SUN.y*90,z+SUN.z*90); }
 
 /* ================= Modèles GLB (Blender, Meshy) ================= */
-// La statue de Sarlande (Blender, v2) remplace par défaut le colosse procédural, dans toutes les scènes.
-// index.html?glb=ancien garde l'ancien colosse ; ?glb=colosse charge le GLB de test de la chaîne.
-const GLB_TEST=new URLSearchParams(location.search).get("glb")||"statue";
-const GLB_SWAP={colosse:"modeles/test/colosse_blender_test.glb",statue:"modeles/statue/statue_sarlande.glb"};
+// La statue de Sarlande (Meshy Pro, allégée dans Blender) remplace par défaut le colosse procédural,
+// dans toutes les scènes. ?glb=statue : version modelée dans Blender (v2) ; ?glb=ancien : ancien colosse ;
+// ?glb=colosse : GLB de test de la chaîne.
+const GLB_TEST=new URLSearchParams(location.search).get("glb")||"meshy";
+const GLB_SWAP={colosse:"modeles/test/colosse_blender_test.glb",statue:"modeles/statue/statue_sarlande.glb",meshy:"modeles/statue/statue_sarlande_meshy.glb"};
 let gltfReady=null;
 function gltfLoader(){ if(!gltfReady) gltfReady=new Promise((ok,ko)=>{ const t=document.createElement("script"); t.src="vendor/GLTFLoader.r128.js"; t.onload=()=>ok(new THREE.GLTFLoader()); t.onerror=ko; document.head.appendChild(t); }); return gltfReady; }
 // Les matériaux PBR du GLB deviennent des Lambert, comme le reste de Sarlande :
@@ -368,7 +369,7 @@ function inkMaterials(root){ root.traverse(o=>{ if(!o.isMesh)return; const m=o.m
   const lam=new THREE.MeshLambertMaterial({color:m.color?m.color.clone():0xffffff,map:m.map||null,vertexColors:!!o.geometry.attributes.color,side:THREE.DoubleSide}); m.dispose(); o.material=lam; o.castShadow=true; o.receiveShadow=true; }); return root; }
 // Le GLB a son origine au pied, centrée : on le pose exactement là où était l'objet remplacé.
 function swapForGLB(old,url){ gltfLoader().then(L=>L.load(url,g=>{ const box=new THREE.Box3().setFromObject(old), m=inkMaterials(g.scene); m.name=old.name+" (GLB)"; // Le colosse de test est centré sur sa boîte ; la statue a son origine au pied, sur l’axe du socle.
-  if(GLB_TEST==="statue") m.position.set(old.position.x,box.min.y,old.position.z); else m.position.set((box.min.x+box.max.x)/2,box.min.y,(box.min.z+box.max.z)/2); scene.add(m); old.visible=false; if(GLB_TEST!=="statue")say("Test GLB : "+old.name+" chargé depuis Blender.",5); },undefined,e=>{ console.error(e); say("Test GLB : échec du chargement.",6); })); }
+  if(GLB_TEST!=="colosse") m.position.set(old.position.x,box.min.y,old.position.z); else m.position.set((box.min.x+box.max.x)/2,box.min.y,(box.min.z+box.max.z)/2); scene.add(m); old.visible=false; if(GLB_TEST==="colosse")say("Test GLB : "+old.name+" chargé depuis Blender.",5); },undefined,e=>{ console.error(e); say("Test GLB : échec du chargement.",6); })); }
 
 /* ================= Constructeur de géométrie fusionnée ================= */
 const G={ box:new THREE.BoxGeometry(1,1,1), c8:new THREE.CylinderGeometry(1,1,1,8), c16:new THREE.CylinderGeometry(1,1,1,18), k16:new THREE.ConeGeometry(1,1,18), k4:new THREE.ConeGeometry(1,1,4), s:new THREE.SphereGeometry(1,14,10), ico:new THREE.IcosahedronGeometry(1,1),

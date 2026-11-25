@@ -1,5 +1,5 @@
 """Prépare un GLB Meshy de la statue de Sarlande pour le jeu.
-Usage : python statue_meshy.py <meshy.glb> <sortie.glb> <dossier_apercus> [rotation_y_degres]
+Usage : python statue_meshy.py <meshy.glb> <sortie.glb> <dossier_apercus> [rotation_z_degres] [triangles_max] [facteur_patine]
 - fusionne les objets, applique les transformations ;
 - ramène la statue à la hauteur du colosse actuel (29,6 m sans socle), origine au pied ;
 - réduit à 60 000 triangles au plus, textures à 2048 px au plus, export JPEG ;
@@ -12,7 +12,7 @@ args = sys.argv[sys.argv.index("--")+1:] if "--" in sys.argv else sys.argv[1:]
 src, dst, out = args[:3]
 rot = float(args[3]) if len(args) > 3 else 0.0
 HAUTEUR = 29.6
-MAX_TRIS = 60000
+MAX_TRIS = int(args[4]) if len(args) > 4 else 60000
 MAX_TEX = 2048
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -35,7 +35,10 @@ def bornes():
     return (Vector([min(v[i] for v in vs) for i in range(3)]), Vector([max(v[i] for v in vs) for i in range(3)]))
 mn, mx = bornes()
 k = HAUTEUR / (mx.z - mn.z)
-ob.data.transform(Matrix.Scale(k, 4) @ Matrix.Translation(Vector((-(mn.x+mx.x)/2, -(mn.y+mx.y)/2, -mn.z))))
+# Origine au centre des pieds (bas de la robe), pas au centre de la boîte : le globe déborde d'un côté.
+pied = [v.co for v in ob.data.vertices if v.co.z < mn.z + 0.04 * (mx.z - mn.z)]
+cx = (min(v.x for v in pied) + max(v.x for v in pied)) / 2; cy = (min(v.y for v in pied) + max(v.y for v in pied)) / 2
+ob.data.transform(Matrix.Scale(k, 4) @ Matrix.Translation(Vector((-cx, -cy, -mn.z))))
 tris0 = sum(len(p.vertices) - 2 for p in ob.data.polygons)
 if tris0 > MAX_TRIS:
     m = ob.modifiers.new("reduction", 'DECIMATE'); m.ratio = MAX_TRIS / tris0
@@ -44,6 +47,28 @@ tris = sum(len(p.vertices) - 2 for p in ob.data.polygons)
 for img in bpy.data.images:
     if img.size[0] > MAX_TEX or img.size[1] > MAX_TEX:
         f = MAX_TEX / max(img.size); img.scale(int(img.size[0]*f), int(img.size[1]*f))
+# Le jeu convertit en Lambert et n'utilise que la couleur : on retire relief fin et métal/rugosité
+# (fichier plus léger pour l'iPad) et on fonce la patine bleue de 20 %, sans toucher aux dorures.
+import numpy as np
+FONCE = float(args[5]) if len(args) > 5 else 0.80
+for mat in ob.data.materials:
+    nt = mat.node_tree; bsdf = next(n for n in nt.nodes if n.type == 'BSDF_PRINCIPLED')
+    for entree in ("Normal", "Metallic", "Roughness"):
+        for l in list(bsdf.inputs[entree].links): nt.links.remove(l)
+    for n in list(nt.nodes):
+        if n.type == 'NORMAL_MAP' or (n.type == 'TEX_IMAGE' and not any(l.to_node == bsdf and l.to_socket.name == "Base Color" for o in n.outputs for l in o.links)):
+            nt.nodes.remove(n)
+    bsdf.inputs["Metallic"].default_value = 0.0; bsdf.inputs["Roughness"].default_value = 0.8
+    for n in nt.nodes:
+        if n.type == 'TEX_IMAGE':
+            img = n.image; px = np.array(img.pixels[:], dtype=np.float32).reshape(-1, 4)
+            r, g, bl = px[:, 0], px[:, 1], px[:, 2]
+            dore = np.clip((r - bl - 0.04) / 0.10, 0, 1)          # 1 sur l'or, 0 sur la patine bleue
+            k = FONCE + (1 - FONCE) * dore
+            px[:, :3] *= k[:, None]
+            img.pixels[:] = px.ravel(); img.update()
+for img in list(bpy.data.images):
+    if img.users == 0: bpy.data.images.remove(img)
 mn, mx = bornes(); d = mx - mn
 print(f"TRIANGLES {tris0} -> {tris}")
 print(f"DIMENSIONS (m) largeur {d.x:.2f} profondeur {d.y:.2f} hauteur {d.z:.2f}")

@@ -60,3 +60,22 @@ Pour transmettre le résultat à Lucas et à ChatGPT, compléter cette section a
   `apercus/nuit_ancien_vs_v2.jpg` (la nuit, ancien colosse à gauche, v2 à droite : dans les deux cas,
   une silhouette sombre ; le globe et l'épée restent lisibles). Aucune erreur dans la console.
 - Reste à faire : le contrôle sur iPad.
+
+### Meshy Pro, essai 1 (25 novembre 2026) — statue par défaut dans le jeu
+
+- Génération multi-vues (face, profil, dos découpés dans `statue_tour.png` :
+  `meshy/entrees/statue_{face,profil,dos}.png`), texturée 4k. Tâche Meshy
+  `01a2103b-0af5-76dd-95bc-5d699644e023` (multi-image-to-3d), **30 crédits**.
+- Brut : 1 758 686 triangles, 94 Mo (non versionné, voir `.gitignore` ; retéléchargeable avec
+  `meshy multi-image-to-3d get <tâche>`). Suivi Meshy dans `meshy/meshy_output/`.
+- Préparé par `outils/blender/statue_meshy.py` : 60 000 triangles, origine au centre des pieds,
+  29,6 m, une seule texture couleur 2048 px (relief fin et métal retirés : le jeu ne les utilise
+  pas), patine bleue foncée de 20 % sans toucher aux dorures → `statue_sarlande_meshy.glb` (3,3 Mo).
+- Contrôle : globe ajouré dans SA main droite, épée pointe en bas dans SA main gauche, couronne à
+  fleurons à facettes, visage classique, drapés et motifs dorés de la planche.
+- En jeu : modèle **par défaut** (`?glb=meshy`). `?glb=statue` = version Blender v2,
+  `?glb=ancien` = ancien colosse. Aucune erreur console ; de nuit, silhouette sombre comme avant.
+- Aperçus : `apercus/meshy_essai1_face_profil_dos.jpg`, `apercus/meshy_essai1_4_vues_en_jeu.jpg`,
+  `apercus/meshy_essai1_nuit.jpg`.
+- Limites : globe simplifié (anneaux en croix, moins d'anneaux que sur la planche) ; motifs du tissu
+  en rinceaux dont certains rappellent des fleurs de lys malgré la consigne. Contrôle iPad à faire.
