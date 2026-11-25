@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -Rf *)",
+      "Bash(rm -fR *)",
+      "Bash(rm -r -f *)",
+      "Bash(rm -f -r *)",
+      "Bash(rm --recursive --force*)",
+      "Bash(rm --force --recursive*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(git push *--force*)",
+      "Bash(git push * -f*)",
+      "Bash(git push * +*)",
+      "Bash(git reset --hard*)",
+      "Bash(git *reset *--hard*)",
+      "Bash(git clean* -f*)",
+      "Bash(git clean* --force*)",
+      "Bash(git clean* -df*)",
+      "Bash(git clean* -xf*)",
+      "Bash(git clean* -dxf*)",
+      "Bash(git clean* -xdf*)",
+      "Bash(sudo *)",
+      "Bash(chmod 777*)",
+      "Read(**/.env*)",
+      "Edit(**/.env*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/verifier-json.sh\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}
