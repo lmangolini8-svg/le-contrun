@@ -219,6 +219,7 @@ const KEY="sarlande-acte1-v1";
 const fresh=()=>({stage:0,flags:{},f:[],notes:{},pos:[-19,7],lite:false,started:false,mute:false,talk:{},act:1,allies:{},oubli:0,toasts:0,pieces:0,coinsT:[],temo:[],cls:{},clsMiss:{},mask:false,noted:0,discrets:0,bastien:{vu:false,nom:false,conf:0,expo:0,refus:false,danse:false,lit:false,b2:false,b3:false,b4:false,b6:false},mahaut:{billet:false,question:false}});
 let S=fresh();
 function save(){ if(player){S.pos=[+player.position.x.toFixed(2),+player.position.z.toFixed(2)];}
+  if(S.stage!==14) delete S.impression;
   if(S.stage!==13) delete S.toastEcoule;
   else if(mode==="play") S.toastEcoule=T2.on&&T2.big?T2.t:null;
   try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
@@ -2498,6 +2499,8 @@ function startPlay(newGame=false){
   if(newGame){firstExchange=false;player.rotation.y=-Math.PI/2;startMovie("matin",enterPlay);}
   else{
     inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
+    if(S.act===1&&S.stage===4&&S.pierreEnAttente===true) startCine();
+    if(S.act===2&&S.stage===14) reprendreImpression();
     if(S.act===2&&S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION){
       startToast(true,S.toastEcoule);
     }
@@ -2624,8 +2627,10 @@ function joute(i,miss){ if(i===0&&!miss) jMiss=0; if(i>=ROUNDS.length) return ta
 
 /* cinématique : une pierre du socle tombe */
 let cineT=0, fallT=-1;
-function startCine(){turnPage("chateau",()=>startMovie("pierre",()=>{
-  setStage(5);enterPlay();
+function startCine(){
+  S.pierreEnAttente=true; save();
+  turnPage("chateau",()=>startMovie("pierre",()=>{
+  delete S.pierreEnAttente; setStage(5);enterPlay();
   talk([["","Au pied du colosse, une pierre gît hors du socle. Sur la place, personne ne l’a encore remarqué."],["","Maître Anselme doit l’apprendre. L’imprimerie est à l’ouest de la place : suivez la flèche."]]);
 }));}
 
@@ -3324,10 +3329,17 @@ function joute2(k,i,miss){ const J=J2[k]; if(i===0&&!miss) j2Miss=0;
 
 /* ---------- la presse ---------- */
 const LINE=["« Pauvres","et misérables","peuples insensés,","nations opiniâtres","en votre mal","et aveugles","à votre bien ! »"], LINE_ORD=[3,0,5,1,6,2,4];
+function reprendreImpression(){
+  const travail=S.impression;
+  if(!travail) return;
+  if(Number.isInteger(travail.mots)&&travail.mots>=0&&travail.mots<LINE.length) compose(travail.mots);
+  else if(Number.isInteger(travail.tirages)&&travail.tirages>=0&&travail.tirages<=3) press(travail.tirages);
+}
 function compose(n,miss){ if(n>=LINE.length) return press(0);
+  if(!miss){ S.impression={mots:n}; save(); }
   const head=`<div class="who">La casse d’imprimerie</div><p class="more">Composez la ligne : touchez les mots dans l’ordre de la page.</p><p class="txt" style="min-height:2.6em;border-bottom:2px solid var(--ink);padding-bottom:4px">${esc(LINE.slice(0,n).join(" "))||"&nbsp;"}</p>${miss?`<p class="more">Ce mot ne vient pas là. ${n===0?"La page commence par « Pauvres ».":""}</p>`:""}`;
   talk([{head,choices:LINE_ORD.filter(i=>i>=n).map(i=>[LINE[i],()=>{ if(i===n){ sfx("type"); compose(n+1); } else compose(n,true); }])}]); }
-function press(k){ const t=["La forme est serrée. Garin empoigne la barre.","Une feuille. Maëlle l’étend sur la corde.","Dix feuilles. L’encre sent la noix et la suie."][k];
+function press(k){ S.impression={tirages:k}; save(); const t=["La forme est serrée. Garin empoigne la barre.","Une feuille. Maëlle l’étend sur la corde.","Dix feuilles. L’encre sent la noix et la suie."][k];
   if(k>=3) return talk([["","Cent feuilles sèchent au-dessus de vos têtes."],[AN,"« Voilà. Demain, la ville saura lire ce qu’on lui cache. »"],branch([["« Et s’ils ne veulent pas lire ? »",[[AN,"« Alors ils verront au moins qu’on a osé l’écrire. C’est déjà une fissure. »"]]],["« Garin, tu regrettes ton vin ? »",[[GA,"« Demande-moi ça demain, quand j’aurai soif. Ce soir, non. »"]]]],[["","Dehors, les tambours se taisent d’un coup. Le beffroi sonne minuit."]],()=>{ sfx("minuit"); startCine2(); })]);
   talk([{head:`<div class="who">La presse</div><p class="txt narr">${esc(t)}</p>`,choices:[["Tirer la barre",()=>{ sfx("press"); press(k+1); }]]}]); }
 
