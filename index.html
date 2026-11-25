@@ -371,6 +371,24 @@ function inkMaterials(root){ root.traverse(o=>{ if(!o.isMesh)return; const m=o.m
 function swapForGLB(old,url){ gltfLoader().then(L=>L.load(url,g=>{ const box=new THREE.Box3().setFromObject(old), m=inkMaterials(g.scene); m.name=old.name+" (GLB)"; // Le colosse de test est centré sur sa boîte ; la statue a son origine au pied, sur l’axe du socle.
   if(GLB_TEST!=="colosse") m.position.set(old.position.x,box.min.y,old.position.z); else m.position.set((box.min.x+box.max.x)/2,box.min.y,(box.min.z+box.max.z)/2); scene.add(m); old.visible=false; if(GLB_TEST==="colosse")say("Test GLB : "+old.name+" chargé depuis Blender.",5); },undefined,e=>{ console.error(e); say("Test GLB : échec du chargement.",6); })); }
 
+// Château de l'Un : pièces Meshy posées à la place des anciens volumes. [fichier, x, z, échelle, rotation y, étirement x]
+const CHATEAU_PIECES=[
+  ["porte",0,-19.4,1],
+  ["rempart",-19.7,-18.85,1,0,1.09],["rempart",19.7,-18.85,1,0,1.09],
+  ["tour",-31.2,-18.6,0.6],["tour",31.2,-18.6,0.6],
+  ["pavillon",-19,-33,1],["pavillon",19,-33,1],
+  ["tour",-29,-44,0.95],["tour",29,-44,0.95],
+  ["palais",0,-57,1],
+  ["tour",-24,-62,1.05],["tour",24,-62,1.05],
+  ["donjon",0,-76,1],
+];
+function buildChateau(){ const groupe=new THREE.Group(); groupe.name="Château de l’Un (GLB)"; scene.add(groupe);
+  const fichiers=[...new Set(CHATEAU_PIECES.map(p=>p[0]))];
+  gltfLoader().then(L=>Promise.all(fichiers.map(f=>new Promise((ok,ko)=>L.load("modeles/chateau/"+f+".glb",g=>ok([f,inkMaterials(g.scene)]),undefined,ko))))).then(modeles=>{
+    const parNom=Object.fromEntries(modeles);
+    for(const [f,x,z,k,ry,sx] of CHATEAU_PIECES){ const m=parNom[f].clone(); m.position.set(x,0,z); m.rotation.y=ry||0; m.scale.set(k*(sx||1),k,k); groupe.add(m); }
+  }).catch(e=>{ console.error("Château : échec du chargement",e); }); }
+
 /* ================= Constructeur de géométrie fusionnée ================= */
 const G={ box:new THREE.BoxGeometry(1,1,1), c8:new THREE.CylinderGeometry(1,1,1,8), c16:new THREE.CylinderGeometry(1,1,1,18), k16:new THREE.ConeGeometry(1,1,18), k4:new THREE.ConeGeometry(1,1,4), s:new THREE.SphereGeometry(1,14,10), ico:new THREE.IcosahedronGeometry(1,1),
   torso:new THREE.CylinderGeometry(1,0.8,1,12), skirt:new THREE.CylinderGeometry(0.17,0.4,0.98,14), flare:new THREE.CylinderGeometry(0.17,0.26,0.36,12), leg:new THREE.CylinderGeometry(0.078,0.062,0.84,8), arm:new THREE.CylinderGeometry(0.055,0.045,0.56,8), hcyl:new THREE.CylinderGeometry(1,1,1,16,1,false,0,Math.PI) };
@@ -819,6 +837,9 @@ tree(-13,-15.2,1.1); tree(13,-15.2,1.15); tree(-20.5,-15,0.95); tree(20.5,-15,1.
 
 /* mur du palais, tours, porte */
 const WS=0xe6d7ae;
+// Château modélisé (Meshy, allégé dans Blender) ; ?chateau=ancien garde l'ancien château en volumes simples.
+const CHATEAU_MESHY=new URLSearchParams(location.search).get("chateau")!=="ancien";
+if(!CHATEAU_MESHY){
 for(const sx of [-1,1]){ put(G.box,WS,sx*18.5,3,-18,25,6,2); put(G.box,ST2,sx*18.5,5.4,-17,25,0.25,0.3);
   for(let i=0;i<16;i++) put(G.box,WS,sx*(6.6+i*1.56),6.5,-17.25,0.95,1.0,0.5); for(let i=0;i<4;i++){ put(G.box,ST2,sx*(9+i*6),2.2,-16.8,1.0,4.4,0.6); put(G.box,0x2a2c33,sx*(12+i*6),3.6,-16.98,0.16,1.1,0.06); }
   put(G.c16,WS,sx*4.7,5.5,-18,2.3,11,2.3); put(G.c16,ST2,sx*4.7,10.7,-18,2.65,0.7,2.65); for(let i=0;i<10;i++){ const a=i/10*Math.PI*2; put(G.box,WS,sx*4.7+Math.cos(a)*2.45,11.5,-18+Math.sin(a)*2.45,0.75,0.9,0.5,-a+Math.PI/2); }
@@ -828,12 +849,15 @@ for(const sx of [-1,1]){ put(G.box,WS,sx*18.5,3,-18,25,6,2); put(G.box,ST2,sx*18
 put(G.box,WS,0,7.6,-18,5.2,3.6,2); for(let i=0;i<4;i++) put(G.box,WS,-1.95+i*1.3,9.9,-17.25,0.85,1.0,0.5);
 put(G.box,0x23252c,0,2.1,-17.3,4.4,4.2,0.7); put(G.c16,0x23252c,0,4.2,-17.3,2.2,0.7,2.2,0,Math.PI/2);
 for(let i=0;i<8;i++) put(G.box,0x6a5e52,-1.92+i*0.55,3.0,-16.92,0.09,6,0.09); for(let i=0;i<5;i++) put(G.box,0x6a5e52,0,0.7+i*1.1,-16.9,4.3,0.09,0.09);
+}
 solid(-31,31,-19,-16.6);
 /* palais */
 B.jit=0.03;
+if(!CHATEAU_MESHY){
 for(const [x,z,w,h] of [[-19,-33,10,14],[19,-33,10,14]]){ put(G.box,0xe3dcc8,x,h/2,z,w,h,w); for(let r=0;r<3;r++)for(let c=0;c<3;c++) put(G.box,WIN,x-2.8+c*2.8,4+r*3.6,z+w/2+0.02,0.9,1.7,0.06); put(G.k4,SLATE,x,h+3.2,z,w*0.78,6.4,w*0.78,Math.PI/4); }
 for(const [x,z,r,h] of [[-29,-44,3.6,22],[29,-44,3.6,22],[-11,-52,3,26],[11,-52,3,26]]){ put(G.c16,0xe0d8c4,x,h/2,z,r,h,r); put(G.k16,SLATE,x,h+4,z,r*1.15,8,r*1.15); }
 put(G.box,0xe3dcc8,0,9,-56,34,18,8); put(G.prism,SLATE,0,18,-56,9,7,35,Math.PI/2);
+} else buildChateau();
 /* cathédrale et flèches dans la brume */
 function spire(x,z,r,h,sh){ put(G.box,0xd8d0c0,x,h/2,z,r*2,h,r*2); put(G.k4,SLATE,x,h+sh/2,z,r*1.25,sh,r*1.25,Math.PI/4); for(const [dx,dz] of [[-1,-1],[1,-1],[-1,1],[1,1]]) put(G.k4,SLATE,x+dx*r*0.95,h+sh*0.14,z+dz*r*0.95,r*0.28,sh*0.3,r*0.28,Math.PI/4); for(let k=0;k<3;k++) put(G.box,0x23252c,x,h*(0.45+k*0.17),z+r+0.03,r*0.5,h*0.09,0.08); }
 put(G.box,0xd8d0c0,-52,11,-46,16,22,40); put(G.prism,SLATE,-52,22,-46,17,10,41); spire(-47,-24,3.2,34,30); spire(-57,-24,3.2,30,26); put(G.k4,SLATE,-52,39,-50,1.6,22,1.6,Math.PI/4); for(let i=0;i<6;i++){ put(G.box,0xcfc6b4,-43.4,8,-30-i*6,1.2,16,1.6); put(G.k4,SLATE,-43.4,18.5,-30-i*6,0.9,5,0.9,Math.PI/4); }
@@ -1182,14 +1206,17 @@ put(G.box,WS,54.8,14.6,-2,1.0,2.6,2.2); put(G.box,0x23252c,54.6,14.5,-2,1.2,1.5,
 solid(53.7,56,-11,7);
 for(const [x,z,w,h] of [[33.6,-4.6,2,1.9],[40,0.6,2.4,2.1],[44.2,-3,2,1.8],[48.2,2.4,2.2,2],[36.2,4,2,1.7],[49.5,-7.6,2,1.9]]) crate(x,z,w,h);
 barrel(41.7,0.9); barrel(46.4,3.2); circles.push([41.7,0.9,0.45],[46.4,3.2,0.45]); put(G.s,0xb9a27c,34.9,0.3,-4.2,0.4,0.3,0.34);
+if(!CHATEAU_MESHY){
 paintedPanel(1,0,3.62,-16.40,5.15,7.24,0);
 for(const side of [-1,1]){
   for(const dx of [7.6,17.6,26.4]) paintedPanel(3,side*dx,3.78,-16.48,1.34,3.64,0,[[0,.12],[.5,0],[1,.12],[1,1],[0,1]]);
   for(let i=0;i<3;i++) for(let j=0;j<3;j++) paintedPanel(2,side*19-2.8+i*2.8,4+j*3.6,-27.83,1.32,2.02,0);
 }
+}
 paintedPanel(5,53.8,6.6,-2,2.9,2.9,-Math.PI/2);
 paintedPanel(1,53.78,1.85,-2,2.95,3.70,-Math.PI/2);
 for(const x of [33.7,38.7,43.7,48.7,52.2]) paintedPanel(3,x,3.84,-10.1,1.1,2.0,0);
+if(!CHATEAU_MESHY){
 const espalier=new THREE.MeshLambertMaterial({map:new THREE.TextureLoader().load("img/espalier.webp")});
 const gardenWall=new THREE.InstancedMesh(new THREE.PlaneGeometry(12.48,5.96),espalier,4);
 for(let i=0;i<4;i++){
@@ -1234,6 +1261,7 @@ for(let j=0;j<=16;j++){
 for(const side of [-1,1]){
   put(G.box,ST2,side*2.63,2.20,-16.31,.53,4.40,.55);
   put(G.box,ST,side*2.63,4.39,-16.24,.82,.26,.69);
+}
 }
 finishPanels();
 /* poterne */

@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "folder": "20261125_011746_chateau_01a21047",
+      "prompt": "chateau",
+      "task_type": "text-to-image",
+      "root_task_id": "01a21047-b017-702f-a2e0-28e82cb5cb54",
+      "created_at": "2026-11-25T01:17:46.937Z",
+      "updated_at": "2026-11-25T01:22:23.756Z",
+      "task_count": 13
+    }
+  ]
+}

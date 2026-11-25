@@ -1,0 +1,222 @@
+{
+  "schema_version": 2,
+  "project_name": "chateau",
+  "folder": "20261125_011746_chateau_01a21047",
+  "root_task_id": "01a21047-b017-702f-a2e0-28e82cb5cb54",
+  "created_at": "2026-11-25T01:17:46.937Z",
+  "updated_at": "2026-11-25T01:22:23.756Z",
+  "tasks": [
+    {
+      "task_id": "01a21047-b017-702f-a2e0-28e82cb5cb54",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_porte",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "porte/image_0.png"
+      ],
+      "task_json": "task_01a21047-b017-702f-a2e0-28e82cb5cb54.json",
+      "operation_id": null,
+      "created_at": "2026-11-25T01:18:54.161Z",
+      "updated_at": "2026-11-25T01:18:55.401Z"
+    },
+    {
+      "task_id": "01a21049-0c79-73ae-aa62-63de741454ad",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_rempart",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "rempart/image_0.png"
+      ],
+      "task_json": "task_01a21049-0c79-73ae-aa62-63de741454ad.json",
+      "operation_id": "2236dc7f-4cfe-4eb8-8646-38bf00283797",
+      "created_at": "2026-11-25T01:19:12.827Z",
+      "updated_at": "2026-11-25T01:19:34.729Z"
+    },
+    {
+      "task_id": "01a21049-1128-744a-82d9-bee4227d289f",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_palais",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "palais/image_0.png"
+      ],
+      "task_json": "task_01a21049-1128-744a-82d9-bee4227d289f.json",
+      "operation_id": "8efff699-7cd8-4bd6-a590-7f305c633573",
+      "created_at": "2026-11-25T01:19:14.009Z",
+      "updated_at": "2026-11-25T01:19:36.819Z"
+    },
+    {
+      "task_id": "01a21049-15af-724a-8d9b-ec7681f92fbf",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_tour",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "tour/image_0.png"
+      ],
+      "task_json": "task_01a21049-15af-724a-8d9b-ec7681f92fbf.json",
+      "operation_id": "94b50077-f852-4d17-bd19-0167e84dc6df",
+      "created_at": "2026-11-25T01:19:15.282Z",
+      "updated_at": "2026-11-25T01:19:38.969Z"
+    },
+    {
+      "task_id": "01a21049-1aa0-73c0-9927-e66784e6ebc7",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_donjon",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "donjon/image_0.png"
+      ],
+      "task_json": "task_01a21049-1aa0-73c0-9927-e66784e6ebc7.json",
+      "operation_id": "950df875-14d8-456c-bf88-32f3c558363d",
+      "created_at": "2026-11-25T01:19:16.505Z",
+      "updated_at": "2026-11-25T01:19:41.043Z"
+    },
+    {
+      "task_id": "01a21049-1f8f-7015-b0dd-71fb029b9c4d",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_pavillon",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "pavillon/image_0.png"
+      ],
+      "task_json": "task_01a21049-1f8f-7015-b0dd-71fb029b9c4d.json",
+      "operation_id": "a339b620-a37f-4549-bf6c-a1ff1ea6491d",
+      "created_at": "2026-11-25T01:19:17.763Z",
+      "updated_at": "2026-11-25T01:19:46.257Z"
+    },
+    {
+      "task_id": "01a21049-3c7e-70a9-be9a-641b9163b2eb",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_porte",
+      "parent_task_id": "01a21047-b017-702f-a2e0-28e82cb5cb54",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/porte.glb",
+        "bruts/porte_apercu.png"
+      ],
+      "task_json": null,
+      "operation_id": "736b04b8-aeed-46a8-bf8f-8bb349bae519",
+      "created_at": "2026-11-25T01:19:25.878Z",
+      "updated_at": "2026-11-25T01:22:14.439Z"
+    },
+    {
+      "task_id": "01a21049-bfba-7166-b75f-5097b4eaed42",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_rempart",
+      "parent_task_id": "01a21049-0c79-73ae-aa62-63de741454ad",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/rempart.glb",
+        "bruts/rempart_apercu.png"
+      ],
+      "task_json": "task_01a21049-bfba-7166-b75f-5097b4eaed42.json",
+      "operation_id": "780cabd4-7210-4796-9cd3-88dbdc0ac889",
+      "created_at": "2026-11-25T01:19:59.780Z",
+      "updated_at": "2026-11-25T01:22:19.882Z"
+    },
+    {
+      "task_id": "01a21049-c87b-77d2-8cf6-c65390ad4221",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_palais",
+      "parent_task_id": "01a21049-1128-744a-82d9-bee4227d289f",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/palais.glb",
+        "bruts/palais_apercu.png"
+      ],
+      "task_json": "task_01a21049-c87b-77d2-8cf6-c65390ad4221.json",
+      "operation_id": "73bdf27c-c0f2-4613-8661-922ee86f173d",
+      "created_at": "2026-11-25T01:20:02.201Z",
+      "updated_at": "2026-11-25T01:22:04.073Z"
+    },
+    {
+      "task_id": "01a21049-d23d-73f9-b9ae-61c7e7082012",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_tour",
+      "parent_task_id": "01a21049-15af-724a-8d9b-ec7681f92fbf",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/tour.glb",
+        "bruts/tour_apercu.png"
+      ],
+      "task_json": "task_01a21049-d23d-73f9-b9ae-61c7e7082012.json",
+      "operation_id": "a84c692d-01a4-40f6-854a-644be63b6110",
+      "created_at": "2026-11-25T01:20:03.969Z",
+      "updated_at": "2026-11-25T01:22:23.756Z"
+    },
+    {
+      "task_id": "01a21049-d950-71b4-97ce-cdcb52f10377",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_donjon",
+      "parent_task_id": "01a21049-1aa0-73c0-9927-e66784e6ebc7",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/donjon.glb",
+        "bruts/donjon_apercu.png"
+      ],
+      "task_json": "task_01a21049-d950-71b4-97ce-cdcb52f10377.json",
+      "operation_id": "5e409e7a-7f1e-457d-b83b-86dee175dbea",
+      "created_at": "2026-11-25T01:20:05.935Z",
+      "updated_at": "2026-11-25T01:21:56.422Z"
+    },
+    {
+      "task_id": "01a21049-e0b6-7717-a7d3-e838d0fab57e",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_pavillon",
+      "parent_task_id": "01a21049-1f8f-7015-b0dd-71fb029b9c4d",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/pavillon.glb",
+        "bruts/pavillon_apercu.png"
+      ],
+      "task_json": "task_01a21049-e0b6-7717-a7d3-e838d0fab57e.json",
+      "operation_id": "4ce2c128-b8e6-4bab-805b-aa7477b5a2bc",
+      "created_at": "2026-11-25T01:20:07.868Z",
+      "updated_at": "2026-11-25T01:22:09.662Z"
+    },
+    {
+      "task_id": "01a21049-3c7e-70a9-be9a-641b9163b2eb",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_porte3d",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [],
+      "task_json": "task_01a21049-3c7e-70a9-be9a-641b9163b2eb.json",
+      "operation_id": null,
+      "created_at": "2026-11-25T01:21:45.172Z",
+      "updated_at": "2026-11-25T01:21:45.172Z"
+    }
+  ]
+}
