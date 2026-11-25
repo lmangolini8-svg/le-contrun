@@ -189,7 +189,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 8. **Son arc** : du maître qui protège en se taisant à l’homme qui parle, quoi qu’il en coûte (tableau ci-dessous).
 9. **Ce qui le rend visible** : le béret rouge, couleur terre de Sienne ; le tablier ; des mains noires d’encre jusqu’aux poignets. **Geste signature** : il chausse des besicles pour lire, et les retire quand il ment. **Musique** : la cadence de la presse sert de pulsation ; le luth grave joue seul quand il se tait.
 
-**[Établi] Le livre brûlé, c’est le *Discours* lui-même.** Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
+**[Révisé le 25 novembre 2026] Le livre brûlé n’est plus le *Discours* : c’est un libelle clandestin de Sarlande, dont les feuillets portent dans leurs marges des passages recopiés du manuscrit de La Boétie. L’ancienne formulation suit, pour mémoire.** ~~Le livre brûlé, c’est le *Discours* lui-même.~~ Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
 
 **Son arc**
 
@@ -367,6 +367,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 *Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 1. **Ce qu’elle veut** : que sa fille vive. C’est pour cela qu’elle a accepté de passer pour morte.
+- **[Décidé le 25 novembre 2026]** C’est elle qui glisse sous la porte d’Aliénor, le matin du tribut, la lettre demandant de faire peser la miche de Maëlle. Révélé à l’acte III.
 2. **Ce dont elle a besoin** : se pardonner d’avoir cédé.
 3. **Ce qu’elle craint** : que sa fille paie à son tour ; revoir les murs de la prison.
 4. **Ses secrets** :
@@ -603,7 +604,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 | Il y a 20 ans | Anselme commence à imprimer les édits de l’Un. Bastien naît vers cette époque. |
 | Il y a 17 ans | Naissance d’Aliénor. |
 | Il y a 15 ans | Le père d’Aliénor, batelier, se noie. |
-| Il y a 12 ans | Anselme et Mahaut impriment une édition clandestine du livre. Les gardes viennent ; Anselme se tait ; Mahaut est emmenée. Le tirage est brûlé ; Anselme sauve un exemplaire et le défait feuille à feuille. |
+| Il y a 12 ans | Anselme et Mahaut impriment un libelle clandestin propre à Sarlande [révisé le 25 novembre 2026 : ce n’est pas le *Discours*, qui n’est pas encore écrit ; les feuillets cachés portent dans leurs marges des passages recopiés d’un manuscrit récent venu du Périgord]. Les gardes viennent ; Anselme se tait ; Mahaut est emmenée. Le tirage est brûlé ; Anselme sauve un exemplaire et le défait feuille à feuille. |
 | Il y a 11 ans | Mahaut, relâchée sur promesse de silence, est bannie. Mahaut impose à Anselme de laisser Aliénor la croire morte. On dit à Aliénor que sa mère est morte d’une fièvre. Elle vit chez Ysabeau. |
 | Il y a 10 ans | Jacquemin, le mari de Margot, refuse de payer et disparaît au palais. |
 | Il y a 5 ans | Aliénor entre en apprentissage chez Anselme. |

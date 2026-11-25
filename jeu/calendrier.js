@@ -11,10 +11,9 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  /* Décisions encore ouvertes pour Lucas : date exacte du réveil et jour annuel du tribut.
-     Valeurs provisoires : la Saint-Michel, terme traditionnel des redevances. */
-  const DEPART = { a: 1550, m: 9, j: 29, aFixer: true };
-  const TRIBUT = { m: 9, j: 29, aFixer: true };
+  /* Décidé le 25 novembre 2026 : réveil et tribut à la Saint-Michel, terme traditionnel des redevances. */
+  const DEPART = { a: 1550, m: 9, j: 29 };
+  const TRIBUT = { m: 9, j: 29 };
 
   const PLAGES = ["matin", "après-midi", "soir"];
   const JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];

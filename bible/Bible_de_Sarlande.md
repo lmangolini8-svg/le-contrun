@@ -477,9 +477,9 @@ Les questions sont classées par ordre d’urgence. Rien de ce qui en dépend ne
 11. Faut-il appliquer tout de suite au jeu les corrections de citations listées dans `bible/Citations_Belin.md`, partie 1 ?
 
 **Pour la refonte (cahier des charges du 25 novembre 2026)**
-12. Le libelle brûlé. La chronologie actuelle (`Personnages.md`, partie 8) place un premier bûcher il y a quarante ans et l’édition clandestine d’Anselme et de Mahaut il y a douze ans, soit vers 1510 et 1538. Le *Discours* est écrit vers 1546-1548 et circule en manuscrit. Proposition : le libelle de Sarlande est un texte local ; les feuillets qu’Anselme a cachés portent, recopiés dans leurs marges, des passages d’un manuscrit récent venu du Périgord. Faut-il retenir ce cadre, ou déplacer les dates ?
-13. L’auteur de la lettre glissée sous la porte et son motif. Le jeu le laisse indéterminé.
-14. La date exacte du réveil et le jour annuel du tribut. Le jeu utilise provisoirement le lundi 29 septembre 1550, la Saint-Michel (`jeu/calendrier.js`).
+12. ~~Le libelle brûlé~~ : **décidé**. Les dates sont conservées. Le libelle de Sarlande est un texte local ; les feuillets qu’Anselme a cachés portent, recopiés dans leurs marges, des passages d’un manuscrit récent venu du Périgord. Les citations restent authentiques et le *Discours* n’est jamais présenté comme imprimé en 1550.
+13. ~~L’auteur de la lettre~~ : **décidé, Mahaut**. Elle sait par Ysabeau que la farine du palais est pesée court. Le jeu ne le révèle pas avant l’acte III, au moment de la confession d’Anselme : la lettre reste anonyme dans les textes de l’ouverture.
+14. ~~La date~~ : **décidé**. Réveil et tribut le lundi 29 septembre 1550, à la Saint-Michel, terme traditionnel des redevances. Le premier anniversaire du tribut tombe le 29 septembre 1551.
 15. Le déclenchement de la cloche, les seuils des barres et les montants. Valeurs provisoires dans `jeu/monde.js`.
 
 ---

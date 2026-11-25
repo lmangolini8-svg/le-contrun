@@ -44,4 +44,4 @@ Suivi du [cahier des charges](Refonte_Sarlande.md) · 25 novembre 2026
 - La lumière de l’après-midi sur la place quand une commande fait avancer le temps.
 - La Caisse des métiers, l’arbre de compétences, les catalogues de boutiques (identifiants des deux classeurs).
 - Le lendemain sur la place : il attend l’acte III.
-- Décisions ouvertes pour Lucas : bible, partie 10, questions 12 à 15.
+- Décisions prises le 25 novembre 2026 : cadre du libelle (manuscrit recopié dans les marges), Mahaut autrice de la lettre (révélé à l’acte III), Saint-Michel 1550. Reste ouverte : la question 15 (cloche, seuils, montants), à régler après essais avec des élèves.

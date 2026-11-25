@@ -214,6 +214,7 @@ startPlay = function (newGame) {
 };
 function closPeutSortir() { const r = V().recit; return enClos() && (r.etape === "reveil" || r.etape === "soir" || r.etape === "lendemain"); }
 
+// La lettre est de Mahaut (décision du 25 novembre 2026). Elle reste anonyme jusqu’à l’acte III.
 const LETTRE = "On pèse le pain du palais avec la balance du palais. Faites peser la miche de Maëlle, devant qui vous voudrez, et voyez ce qu’il en reste.";
 INTER.push(
   { p: () => CL(3.35, 0.6), r: 1.7, label: "Lire la lettre", can: () => enClos() && V().recit.lettre === "glissee", act() { lireLettre(); } },
