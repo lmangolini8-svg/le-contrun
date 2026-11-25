@@ -15,6 +15,8 @@ Ce document fixe l’univers, l’histoire, les personnages, l’image et le son
 
 Les questions à trancher sont rassemblées à la fin, dans la partie 10.
 
+Le [supplément sur la vie quotidienne d’Aliénor](Vie_quotidienne_Alienor.md) détaille l’apprentissage, les commandes, les besoins, la maison et les deux catalogues de boutiques.
+
 ---
 
 ## 1. Le projet en une page
