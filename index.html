@@ -2227,7 +2227,7 @@ const _aliV=new THREE.Vector3();
 function aliRate(v){return Math.max(7,Math.min(13,v*.56*Math.PI/Math.min(.27,.17+.035*v)));}
 const player=sculptedAlienor();player.position.set(S.pos[0],0,S.pos[1]);
 const useMeshyAlienor=new URLSearchParams(location.search).get("alienor")==="meshy";
-let meshyAlienor=null;
+let meshyAlienor=null,meshyRig=null,meshyExpression="";
 if(useMeshyAlienor){
   gltfLoader().then(loader=>loader.loadAsync("modeles/personnages/alienor_meshy.glb")).then(({scene:asset})=>{
     const box=new THREE.Box3().setFromObject(asset), height=box.max.y-box.min.y;
@@ -2235,11 +2235,21 @@ if(useMeshyAlienor){
     const size=1.68/height, center=box.getCenter(new THREE.Vector3());
     asset.scale.multiplyScalar(size);
     asset.position.set(-center.x*size,-box.min.y*size,-center.z*size);
+    let skin;
     asset.traverse(obj=>{
       if(!obj.isMesh)return;
       obj.castShadow=true;
       obj.receiveShadow=true;
+      if(obj.isSkinnedMesh)skin=obj;
     });
+    const joints=["BrasG","BrasD","AvantBrasG","AvantBrasD","CuisseG","CuisseD","JambeG","JambeD","PiedG","PiedD"];
+    const bones=Object.fromEntries(joints.map(name=>[name,asset.getObjectByName(name)]));
+    if(!skin||joints.some(name=>!bones[name]?.isBone))throw new Error("Squelette incomplet pour Aliénor Meshy");
+    const expressions=["Sourire","Inquietude"];
+    if(expressions.some(name=>skin.morphTargetDictionary?.[name]===undefined))throw new Error("Expressions manquantes pour Aliénor Meshy");
+    skin.frustumCulled=false;
+    meshyRig={skin,bones,expressions,rest:Object.fromEntries(joints.map(name=>[name,bones[name].quaternion.clone()])),
+      axis:new THREE.Vector3(1,0,0),rotation:new THREE.Quaternion()};
     meshyAlienor=new THREE.Group();
     meshyAlienor.name="Aliénor Meshy";
     meshyAlienor.visible=false;
@@ -2247,15 +2257,30 @@ if(useMeshyAlienor){
     player.add(meshyAlienor);
   }).catch(error=>console.error("Chargement d’Aliénor Meshy",error));
 }
-function updateAlienorModel(){
+function updateAlienorModel(dt){
   if(!meshyAlienor)return;
   const u=player.userData;
-  const visible=mode==="play"&&!u.posed&&!u.sit;
+  const visible=(mode==="play"||mode==="dialog")&&!u.posed&&!u.sit;
   meshyAlienor.visible=visible;
   u.body.visible=!visible;
   for(const leg of u.legs)leg.visible=!visible;
-  meshyAlienor.position.y=.022*u.amp*Math.abs(Math.sin(u.ph));
-  meshyAlienor.rotation.z=.023*u.amp*Math.sin(u.ph);
+  meshyAlienor.position.y=.016*u.amp*Math.abs(Math.sin(u.ph));
+  const {skin,bones,expressions,rest,axis,rotation}=meshyRig;
+  const bend=(name,angle)=>bones[name].quaternion.copy(rest[name]).multiply(rotation.setFromAxisAngle(axis,angle));
+  const wave=Math.sin(u.ph), swing=wave*u.amp;
+  for(const [side,dir] of [["G",1],["D",-1]]){
+    const lift=Math.max(0,dir*Math.cos(u.ph))*u.amp;
+    bend("Bras"+side,-.24*dir*swing);
+    bend("AvantBras"+side,-.10*lift);
+    bend("Cuisse"+side,.23*dir*swing);
+    bend("Jambe"+side,.29*lift);
+    bend("Pied"+side,-.16*lift);
+  }
+  for(const name of expressions){
+    const i=skin.morphTargetDictionary[name];
+    const target=mode==="dialog"&&meshyExpression===name?1:0;
+    skin.morphTargetInfluences[i]+=(target-skin.morphTargetInfluences[i])*Math.min(1,dt*9);
+  }
 }
 const playerSack=new THREE.Group(),satchel=aliSatchel();
 {const s=ALI_SACK,p=player.userData.sackPivot;p.position.set(Math.sin(s.a)*s.r,s.y,Math.cos(s.a)*s.r);p.rotation.y=0;
@@ -2264,8 +2289,10 @@ const playerSack=new THREE.Group(),satchel=aliSatchel();
 // Expression d’Aliénor pendant les dialogues : sourire quand la réplique l’appelle.
 function aliExpression(line){
   if(!player.userData.smile)return;
+  meshyExpression="";
   let on=false;if(Array.isArray(line)&&line[1]){const w=line[1].normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
-    on=/comme d.habitude|merci|bien joue|tu as reussi|bonne idee/.test(w);}
+    on=/comme d.habitude|merci|bien joue|tu as reussi|bonne idee/.test(w);
+    meshyExpression=on?"Sourire":/peur|danger|inquiet|prends garde/.test(w)?"Inquietude":"";}
   player.userData.smile(on);
 }
 { const gm=new THREE.MeshBasicMaterial({color:0xf2b27a,depthFunc:THREE.GreaterDepth,depthWrite:false,fog:false}); const add=(src,par)=>{ src.renderOrder=2; const c=new THREE.Mesh(src.geometry,gm); c.renderOrder=1; par.add(c); return c; }; player.userData.ghost=add(player.userData.body.children[0],player.userData.body); player.userData.ghost2=add(player.userData.head.children[0],player.userData.head); }
@@ -3086,7 +3113,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
   if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
     let a=Math.atan2(mx,mz), d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*Math.min(1,dt*12); moving=true; }
-  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); updateAlienorModel(); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
+  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); updateAlienorModel(dt); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
   if(S.act===1&&S.stage===0&&!sceneRun&&mode==="play"&&!firstExchange&&toolDown===0){
     const u=N.anselme.userData,bend=.5+.5*Math.sin(time*2.8);
     u.elbows[1].rotation.x=-.72-.48*bend;u.arms[1].rotation.x=-.50+.17*bend;
