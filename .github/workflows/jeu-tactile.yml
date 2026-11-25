@@ -4,6 +4,7 @@ on:
     paths:
       - index.html
       - outils/tests/reprise_ipad.js
+      - outils/tests/parcours_recit.js
       - .github/workflows/jeu-tactile.yml
 concurrency:
   group: reprise-tablette-${{ github.event.pull_request.number }}
