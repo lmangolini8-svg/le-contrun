@@ -3286,10 +3286,10 @@ INTER.push({p:()=>MAHAUT.position,r:2.6,label:"S’approcher de la femme masqué
 /* ================= Son : enregistrements réels (dossier son/), mixés et spatialisés dans la page =================
    Musiques, ambiances et bruitages générés avec ElevenLabs. Les musiques et les ambiances ne sont décodées
    qu’au moment où on les entend, puis libérées, pour ménager la mémoire de l’iPad. */
-const Snd={ctx:null,buf:{},loading:{},last:{},amb:{},mus:[],musKey:"",want:"",lastPh:0,laughT:9,clinkT:4,owlT:16,bellT:40,gcT:0,stepI:0};
+const Snd={ctx:null,buf:{},loading:{},last:{},amb:{},mus:[],musKey:"",want:"",lastPh:0,alt:{},laughT:9,clinkT:4,owlT:16,bellT:40,gcT:0,stepI:0};
 const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4"];
 /* gap : silence entre deux passages du morceau (négatif : fondu enchaîné, pour la musique jouée sur la place) */
-const MUSIC={titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8} /* la gaillarde de la fête */,farce:{gap:-3,vol:.8},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85},litiere:{gap:-4,vol:.8}};
+const MUSIC={titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8,files:["mus-branle","mus-ronde"]} /* la fête : gaillarde et ronde en alternance */,farce:{gap:-3,vol:.8},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85},litiere:{gap:-4,vol:.8}};
 const AMBS=["marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
 
 function sndLoad(name){ const c=Snd.ctx; if(!c) return null; Snd.last[name]=c.currentTime; if(Snd.buf[name]) return Snd.buf[name]; if(Snd.loading[name]) return null;
@@ -3350,16 +3350,19 @@ function musicNow(){ if(mode==="plate"||mode==="turn"||mode==="title") return "t
   if(mode==="cine") return "aube"; return zoneOf()==="cour"?"cour":"jour"; }
 function feteDist(){ return Math.hypot(player.position.x,player.position.z+2); }
 function muffleHz(){ if(!(S.act===2&&night&&S.stage>=11&&S.stage<=13)||mode==="farce"||mode==="plate"||mode==="turn"||mode==="title") return 16000; const d=feteDist(); return d<11?16000:Math.max(560,16000*Math.pow(0.82,d-11)); }
-function musStart(key,at,fadeIn){ const c=Snd.ctx, b=Snd.buf["mus-"+key]; const s=c.createBufferSource(); s.buffer=b; const g=c.createGain(); s.connect(g); g.connect(Snd.mbus);
+const musName=(key,off)=>{ const f=MUSIC[key].files; return f?f[((Snd.alt[key]||0)+(off||0))%f.length]:"mus-"+key; };
+function musStart(key,at,fadeIn,name){ const c=Snd.ctx, b=Snd.buf[name]; const s=c.createBufferSource(); s.buffer=b; const g=c.createGain(); s.connect(g); g.connect(Snd.mbus);
   const v=MUSIC[key].vol; g.gain.setValueAtTime(fadeIn?0.0001:v,at); if(fadeIn) g.gain.linearRampToValueAtTime(v,at+fadeIn);
-  s.start(at); const m={key,s,g,at,end:at+b.duration}; s.onended=()=>{ s.disconnect(); g.disconnect(); Snd.mus=Snd.mus.filter(x=>x!==m); }; Snd.mus.push(m); return m; }
+  s.start(at); const m={key,name,s,g,at,end:at+b.duration}; s.onended=()=>{ s.disconnect(); g.disconnect(); Snd.mus=Snd.mus.filter(x=>x!==m); }; Snd.mus.push(m); return m; }
+/* le morceau suivant : pour la fête, on passe de la gaillarde à la ronde et inversement */
+function musNext(key){ const n=musName(key,1); if(n!==musName(key)&&Snd.buf[n]){ Snd.alt[key]=(Snd.alt[key]||0)+1; return n; } return musName(key); }
 function musTick(){ const c=Snd.ctx, now=c.currentTime, key=musicNow();
   if(key!==Snd.musKey){ for(const m of Snd.mus){ if(m.key===Snd.musKey||m.key!==key){ m.g.gain.cancelScheduledValues(now); m.g.gain.setTargetAtTime(0.0001,now,0.8); try{ m.s.stop(now+4); }catch(e){} m.dead=true; } } Snd.musKey=key; Snd.musNext=0; }
   if(!key) return;
-  const name="mus-"+key; if(!sndLoad(name)) return; const cfg=MUSIC[key], live=Snd.mus.filter(m=>m.key===key&&!m.dead);
-  if(!live.length){ if(!Snd.musNext) { const m=musStart(key,now+0.05,2.5); Snd.musNext=m.end+cfg.gap; } else if(now>=Snd.musNext-0.3){ const m=musStart(key,Math.max(now+0.05,Snd.musNext),cfg.gap<0?-cfg.gap:0.05); Snd.musNext=m.end+cfg.gap; } return; }
+  if(!sndLoad(musName(key))) return; sndLoad(musName(key,1)); const cfg=MUSIC[key], live=Snd.mus.filter(m=>m.key===key&&!m.dead);
+  if(!live.length){ if(!Snd.musNext){ const m=musStart(key,now+0.05,2.5,musName(key)); Snd.musNext=m.end+cfg.gap; } else if(now>=Snd.musNext-0.3){ const m=musStart(key,Math.max(now+0.05,Snd.musNext),cfg.gap<0?-cfg.gap:0.05,musNext(key)); Snd.musNext=m.end+cfg.gap; } return; }
   const cur=live[live.length-1];
-  if(cfg.gap<0&&now>=cur.end+cfg.gap-0.4&&cur.end+cfg.gap>now-0.5){ if(!cur.chained){ cur.chained=true; const x=-cfg.gap; cur.g.gain.setValueAtTime(cfg.vol,cur.end-x); cur.g.gain.linearRampToValueAtTime(0.0001,cur.end); const m=musStart(key,Math.max(now+0.02,cur.end-x),x); Snd.musNext=m.end+cfg.gap; } }
+  if(cfg.gap<0&&now>=cur.end+cfg.gap-0.4&&cur.end+cfg.gap>now-0.5){ if(!cur.chained){ cur.chained=true; const x=-cfg.gap; cur.g.gain.setValueAtTime(cfg.vol,cur.end-x); cur.g.gain.linearRampToValueAtTime(0.0001,cur.end); const m=musStart(key,Math.max(now+0.02,cur.end-x),x,musNext(key)); Snd.musNext=m.end+cfg.gap; } }
   else if(cfg.gap>=0) Snd.musNext=cur.end+cfg.gap; }
 
 /* ---------- ambiances : chaque lieu a sa nappe, mêlée selon la place d’Aliénor ---------- */
@@ -3402,7 +3405,7 @@ function ambient(dt){ const c=Snd.ctx, now=c.currentTime, P=player.position, inG
   if(!night&&!dawn&&inGame&&S.act!==2&&mode==="play"){ Snd.bellT-=dt; if(Snd.bellT<=0){ Snd.bellT=80+Math.random()*60; playSfx("cloche",0.22,-0.5,1.25); } }
   /* mémoire : on libère ce qu’on n’entend plus */
   Snd.gcT-=dt; if(Snd.gcT<=0){ Snd.gcT=5; for(const n in Snd.buf){ if(!(n.startsWith("mus-")||n.startsWith("amb-"))) continue; const k=n.slice(4);
-    if(n.startsWith("mus-")&&(k===Snd.musKey||Snd.mus.some(m=>m.key===k))) continue; if(n.startsWith("amb-")&&Snd.amb[k]&&Snd.amb[k].src) continue;
+    if(n.startsWith("mus-")&&Snd.mus.some(m=>m.name===n)) continue; if(n.startsWith("amb-")&&Snd.amb[k]&&Snd.amb[k].src) continue;
     if(now-(Snd.last[n]||0)>40) delete Snd.buf[n]; } } }
 function soundTick(dt){ if(!Snd.ctx||Snd.ctx.state!=="running") return; ambient(dt); musTick();
   const U=player.userData, k=Math.floor(U.ph/Math.PI); if(k!==Snd.lastPh){ Snd.lastPh=k; if(U.amp>0.35) stepSound(player.position.x,player.position.z,0.55); }
