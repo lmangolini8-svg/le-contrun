@@ -29,3 +29,14 @@ Pour transmettre le résultat à Lucas et à ChatGPT, compléter cette section a
   Elle servira à l'essai 2 (plusieurs images) si le plan gratuit le permet.
 - **Blocage** : Meshy n'a ni connecteur ni API sur le plan gratuit ; l'essai doit être lancé par Lucas
   sur meshy.ai, puis `essai1.glb` déposé dans `meshy/`. Rien ne peut être généré depuis la session de Claude.
+
+### Essai Blender v1 (25 novembre 2026, 0 €)
+
+- Meshy : le plugin fonctionne (connexion validée par Lucas, 140 crédits gratuits), mais l'API répond
+  « Task creation on the free plan is no longer supported » (402). Aucun crédit débité.
+- Hugging Face (TRELLIS.2) : jeton enregistré mais refusé (« Invalid username or password »).
+- Repli retenu : statue modelée par script, `outils/blender/statue_sarlande.py` → `statue_sarlande.glb`
+  (38 000 triangles, 1,1 Mo, couleurs de sommets). Globe ajouré dans SA main droite, épée pointe en bas
+  dans SA main gauche, couronne à fleurons à facettes, pommeau à facettes, sans fleur de lys.
+- Aperçus : `apercus/blender_v1_face_profil_dos.jpg`, `apercus/blender_v1_4_vues_en_jeu.jpg`.
+- En jeu : `index.html?glb=statue` (le colosse procédural reste le défaut tant que ce n'est pas validé).
