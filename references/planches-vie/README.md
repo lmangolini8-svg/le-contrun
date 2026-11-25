@@ -45,6 +45,23 @@ Ces dix PNG sont des références de production. Leur intégration au jeu est à
 
 Contrôle du colosse d’après la [référence officielle](../../modeles/statue/README.md). Les apparitions de D19, H2 et N7-6 reprennent le colosse dans la cour du palais, tel qu’on l’aperçoit depuis la ville.
 
+## Lot de 100 planches validées et déposées
+
+Les 100 PNG validés par Lucas sont déposés dans [Actes I et II](../actes-I-II/) et [Vues aériennes et palais](../vues-aeriennes/).
+
+| Ensemble | Planches déposées | PNG |
+|---|---|---:|
+| Acte II | [N3-3](../actes-I-II/tableau_garde_detourne.png) | 1 |
+| Le peuple qui paie | [Y1](../actes-I-II/percepteur_estrade.png) · [Y2](../actes-I-II/percepteur_fauteuil.png) · [Y3](../actes-I-II/percepteur_objets.png) · [Y4](../actes-I-II/peuple_objets.png) · [Y5](../actes-I-II/percepteur_montagne.png) · [Y6](../actes-I-II/percepteur_hierarchie.png) · [Y7 neutre](../actes-I-II/clerc_neutre.png) · [Y7 sourire](../actes-I-II/clerc_sourire.png) · [Y7 inquietude](../actes-I-II/clerc_inquietude.png) · [Y7 colere](../actes-I-II/clerc_colere.png) · [Y8](../actes-I-II/file_elements.png) · [Y10](../actes-I-II/tribut_par_metier.png) · [Y11](../actes-I-II/porteurs_en_pied.png) · [Y12](../actes-I-II/pose_porter_epaule.png) · [Y13](../actes-I-II/pose_porter_dos.png) · [Y14](../actes-I-II/pose_porter_tete.png) · [Y15](../actes-I-II/pose_poser_sac.png) · [Y16](../actes-I-II/pose_attendre.png) · [Y17](../actes-I-II/file_vue_haut.png) · [Y18](../actes-I-II/file_visages.png) · [Y19](../actes-I-II/file_sortie.png) · [Y20](../actes-I-II/mains_tribut.png) · [Y30](../actes-I-II/costumes_paysans.png) · [Y31](../actes-I-II/costumes_artisans_cuir_bois_metal.png) · [Y32](../actes-I-II/costumes_artisans_textile.png) · [Y33](../actes-I-II/costumes_metiers_bouche.png) · [Y34](../actes-I-II/costumes_marchands.png) · [Y35](../actes-I-II/costumes_bourgeois.png) · [Y36](../actes-I-II/costumes_fleuve.png) · [Y37](../actes-I-II/costumes_serviteurs.png) · [Y38](../actes-I-II/costumes_clerge.png) · [Y39](../actes-I-II/costumes_pauvres.png) · [Y40](../actes-I-II/costumes_vieillards_enfants.png) · [Y41](../actes-I-II/costumes_fete.png) · [Y42](../actes-I-II/matieres_par_rang.png) | 35 |
+| Vignettes du carnet | [X30](../actes-I-II/vignette_F1.png) · [X31](../actes-I-II/vignette_F2.png) · [X32](../actes-I-II/vignette_F3.png) · [X33](../actes-I-II/vignette_F4.png) · [X34](../actes-I-II/vignette_F5.png) · [X35](../actes-I-II/vignette_F6.png) · [X36](../actes-I-II/vignette_F7.png) · [X37](../actes-I-II/vignette_F8.png) · [X38](../actes-I-II/vignette_billet.png) | 9 |
+| Ciels de Sarlande | [X40](../actes-I-II/ciel_matin.png) · [X41](../actes-I-II/ciel_midi.png) · [X42](../actes-I-II/ciel_crepuscule.png) · [X43](../actes-I-II/ciel_nuit_fete.png) · [X44](../actes-I-II/ciel_minuit.png) · [X45](../actes-I-II/ciel_aube.png) · [X46](../actes-I-II/nuages.png) | 7 |
+| Récit illustré | [X50](../actes-I-II/recit_01.png) · [X51](../actes-I-II/recit_02.png) · [X52](../actes-I-II/recit_03.png) · [X53](../actes-I-II/recit_04.png) · [X54](../actes-I-II/recit_05.png) · [X55](../actes-I-II/recit_06.png) · [X56](../actes-I-II/recit_07.png) · [X57](../actes-I-II/recit_08.png) · [X58](../actes-I-II/recit_09.png) · [X59](../actes-I-II/recit_10.png) · [X60](../actes-I-II/recit_11.png) · [X61](../actes-I-II/recit_12.png) | 12 |
+| Portraits de dialogue | [X10 neutre](../actes-I-II/mahaut_masquee_neutre.png) · [X10 inquietude](../actes-I-II/mahaut_masquee_inquietude.png) · [X11 neutre](../actes-I-II/gervais_neutre.png) · [X11 sourire](../actes-I-II/gervais_sourire.png) · [X11 inquietude](../actes-I-II/gervais_inquietude.png) · [X11 colere](../actes-I-II/gervais_colere.png) · [X16 sourire](../actes-I-II/joris_sourire.png) · [X16 inquietude](../actes-I-II/joris_inquietude.png) · [X16 colere](../actes-I-II/joris_colere.png) | 9 |
+| Quartiers de Sarlande | [V30](../vues-aeriennes/quartier_place.png) · [V31](../vues-aeriennes/quartier_imprimerie.png) · [V32](../vues-aeriennes/quartier_quai.png) · [V34](../vues-aeriennes/quartier_cathedrale.png) · [V35](../vues-aeriennes/quartier_tanneurs.png) · [V36](../vues-aeriennes/quartier_populaire.png) · [V37](../vues-aeriennes/quartier_notables.png) · [V38](../vues-aeriennes/quartier_remparts.png) | 8 |
+| Le palais de l’Un | [P3](../vues-aeriennes/palais_plan_niveaux.png) · [P4](../vues-aeriennes/palais_coupe.png) · [P11](../vues-aeriennes/palais_cote_est.png) · [P12](../vues-aeriennes/palais_cote_ouest.png) · [P16](../vues-aeriennes/palais_donjon.png) · [P17](../vues-aeriennes/palais_balcon.png) · [P20](../vues-aeriennes/palais_cour_honneur.png) · [P21](../vues-aeriennes/palais_rue_service.png) · [P22](../vues-aeriennes/palais_jardins.png) · [P23](../vues-aeriennes/palais_chemin_ronde.png) · [P24](../vues-aeriennes/palais_hotel_percepteur.png) · [P25](../vues-aeriennes/palais_cuisines.png) · [P30](../vues-aeriennes/palais_fete.png) · [P31](../vues-aeriennes/palais_hiver.png) · [P32](../vues-aeriennes/palais_printemps.png) · [P33](../vues-aeriennes/palais_an_suivant.png) · [P40](../vues-aeriennes/palais_tours.png) · [P41](../vues-aeriennes/palais_elements.png) · [P42](../vues-aeriennes/palais_matieres.png) | 19 |
+
+Le quartier du quai reprend Q1. La rue des Tanneurs reprend la maison d’Hugues de U6. Le colosse conserve sa place derrière le portail et les attributs de sa [référence officielle](../../modeles/statue/README.md).
+
 ## Atlas topographique du 25 novembre 2026
 
 [Feuilleter les 32 planches de l’atlas](Sarlande_Atlas_topographique.pdf) · [Télécharger les cartes, le carnet par acte et les données de terrain](Sarlande_Cartes_et_terrain.zip)
@@ -62,7 +79,7 @@ Le quai se tient à environ 4 m au-dessus du zéro local, le marché à 10,4 m, 
 | Vérifications en 3D | Parcourir sur iPad le raccord cloître–cimetière et les deux routes du quai. Vérifier le gabarit d’une charrette dans la cour de l’écurie, le tablier du pont et la montée des eaux au lavoir et à la grue. |
 | Carnet d’Aliénor | Distribuer une seule planche à la fois. Le refuge et sa branche de sentier apparaissent à l’acte IV après la rencontre. Le carnet de l’acte V suppose cette découverte préalable. |
 
-Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 143 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
+Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et le détail du lot de portraits figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
 
 
 ## Priorité 1 · Cartographier Sarlande et ses abords
@@ -93,15 +110,15 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 
 Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**25 novembre 2026 · 398 des 541 planches sont produites ou consignées comme produites. Il en reste 143 à réaliser.** Ce pointage comprend les 50 nouvelles planches validées, réparties à parts égales entre Vie de Sarlande et Actes I et II.
+**541 planches produites ou consignées sur 541**, dont **490 PNG déposés**. Les 43 dernières expressions attendent une validation. Huit autres planches produites ou consignées restent à retrouver ou à déposer.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
-| Actes I et II | 196 | 80 | 80 | 116 |
+| Actes I et II | 196 | 196 | 153 | 0 |
 | Vie de Sarlande | 282 | 282 | 277 | 0 |
-| Vues aériennes et palais | 55 | 28 | 25 | 27 |
+| Vues aériennes et palais | 55 | 55 | 52 | 0 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **398** | **390** | **143** |
+| **Total** | **541** | **541** | **490** | **0** |
 
 ## Générations retrouvées et dépôts à terminer
 
@@ -116,28 +133,24 @@ Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Ga
 | Vues sud | V26, V27, V28 | vue_sud_nuit_hiver.png, vue_sud_printemps.png, vue_sud_aube.png — neige de nuit, crue printanière, aube rose |
 | Colosse | C1, C2, C3 | colosse_socle_etats.png, colosse_details.png, colosse_chute.png — retrouver les originaux consignés |
 
-## Les 143 planches à réaliser
+## Les 43 expressions de dialogue à valider
 
-Les codes reprennent ceux des commandes originales. Une plage comprend ses deux bornes. Chaque expression de portrait correspond à un PNG. Le préfixe P ou V se lit dans la famille indiquée.
+Le lot de portraits est prêt pour la validation artistique. Chaque expression reprend le visage et le cadrage de référence.
 
-### Actes I et II · 116
-
-| Série | Codes restant à réaliser | PNG |
-|---|---|---:|
-| Acte II, farce et toast | N3-3, Bastien détourne le regard | 1 |
-| Portraits de dialogue | X10, Mahaut masquée (neutre, inquiète) · X11 à X15, quatre expressions chacun · X16 et X17, trois expressions chacun (sourire, inquiétude, colère) · X18 à X23, quatre expressions chacun | 52 |
-| Carnet, ciels et récit illustré | X30 à X38, neuf vignettes · X40 à X46, sept ciels · X50 à X61, douze illustrations pour la classe | 28 |
-| Le peuple qui paie | Y1 à Y6, percepteur et peuple · Y7, quatre expressions du clerc · Y8, file · Y10 à Y20, tribut, porteurs et gestes · Y30 à Y42, costumes et matières | 35 |
-
-### Vues aériennes et palais · 27
-
-| Série | Codes restant à réaliser | PNG |
-|---|---|---:|
-| Quartiers en vue rapprochée | V30 place, V31 imprimerie, V32 quai, V34 cathédrale, V35 tanneurs, V36 quartier populaire, V37 notables, V38 remparts | 8 |
-| Palais, architecture | P3 niveaux, P4 coupe, P11 et P12 côtés est et ouest, P16 donjon, P17 balcon | 6 |
-| Palais, abords | P20 à P25 — cour d’honneur, rue de service, jardins, chemin de ronde, hôtel du percepteur, cuisines | 6 |
-| Palais, états du récit | P30 à P33 — fête, hiver, printemps, un an après | 4 |
-| Palais, modélisation | P40 à P42 — tours, éléments d’architecture, matières | 3 |
+| Code | Personnage | Expressions | PNG |
+|---|---|---|---:|
+| X12 | Le bonimenteur | neutre, sourire, inquiétude, colère | 4 |
+| X13 | Le valet | neutre, sourire, inquiétude, colère | 4 |
+| X14 | Le crieur | neutre, sourire, inquiétude, colère | 4 |
+| X15 | Colin | neutre, sourire, inquiétude, colère | 4 |
+| X17 | Martin | sourire, inquiétude, colère | 3 |
+| X18 | La vieille femme de la foule | neutre, sourire, inquiétude, colère | 4 |
+| X19 | L’artisan de la foule | neutre, sourire, inquiétude, colère | 4 |
+| X20 | Le jeune homme de la foule | neutre, sourire, inquiétude, colère | 4 |
+| X21 | La marchande de la foule | neutre, sourire, inquiétude, colère | 4 |
+| X22 | Le jeune garde | neutre, sourire, inquiétude, colère | 4 |
+| X23 | Le vieux garde | neutre, sourire, inquiétude, colère | 4 |
+| **Total** | | | **43** |
 
 ### Extension de la cathédrale · hors des 541
 
