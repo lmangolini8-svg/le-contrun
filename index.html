@@ -2293,7 +2293,8 @@ function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="
 dlg.addEventListener("click",e=>{ if(waitingChoice){ const b=e.target.closest("[data-c]"); if(!b)return; const c=dlg._choices[+b.dataset.c]; waitingChoice=false; c[1](); return; } nextLine(); });
 
 function refreshHud(){ const playing=mode==="play"; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
-  $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
+  $("carnetBtn").setAttribute("aria-label",`Ouvrir le carnet, ${S.f.length} feuillet${S.f.length>1?"s":""} sur ${NF}`);
+  $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg aria-hidden="true" viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
   $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez le doigt pour marcher":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
 function panel(html,full){ ov.className=full?"full":""; ov.innerHTML=`<div class="box cart">${html}</div>`; ov.style.display="flex"; }
 function closePanel(){ ov.style.display="none"; ov.innerHTML=""; }
@@ -2506,7 +2507,10 @@ function startPlay(newGame=false){
       else if(S.stage===4&&S.pierreEnAttente===true) startCine();
       else reprendreJoute();
     } else if(S.act===2){
-      if(S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
+      if(S.stage===12&&S.farce==="scene") startFarce();
+      else if(S.stage===12&&S.farce==="recit") recitFarce();
+      else if(S.stage===12&&["citation","foule"].includes(S.lecturePublique)) lireSurTreteaux(S.lecturePublique);
+      else if(S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
       else if(S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION) startToast(true,S.toastEcoule);
       else if(S.stage===14) reprendreImpression();
       else reprendreJoute();
@@ -2516,7 +2520,7 @@ function startPlay(newGame=false){
 function showCarnet(){ if(mode==="play") save(); mode="panel"; plBack="carnet"; refreshHud();
   panel(`<span class="kick">Carnet d’Aliénor</span><h2>${S.f.length} feuillets sur ${NF}</h2><p class="small">Pour chaque feuillet, retrouvez le passage dans votre édition et notez la page. Ce carnet vous servira pour réviser.</p>`+
   (S.act===2&&S.stage===16?'<button class="sec" data-a="bilan">Relire le bilan de l’acte II</button>':"")+
-  Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
+  Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit" id="cit-${id}">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Feuillet ${id.slice(1)} · Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}" aria-describedby="cit-${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
   mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">${plateCount} vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p>${platesList()}</div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
 function mapSVG(){ const X=x=>((x+34)*3.4+4).toFixed(1), Y=z=>((z+48)*2.9+4).toFixed(1); const t=targetNow(); const P=player.position;
   const L=(x,z,txt,rot)=>`<text x="${X(x)}" y="${Y(z)}"${rot?` transform="rotate(${rot} ${X(x)} ${Y(z)})"`:""}>${txt}</text>`;
@@ -3276,7 +3280,7 @@ function act2Caught(kind){ if(mode==="turn") return; seen=0; endBig(); T2.bwait=
 function act2Arrive(){ endBig(); setStage(14); const bb=bstate(), seenBy=bb.vu&&!bb.refus?[["",bb.nom?"Bastien vous a vus passer. Il a détourné la tête vers le balcon.":"Au coin de la rue, sous une lanterne, un garde vous a vus passer. Il a détourné la tête vers le balcon."]]:[]; talk(seenBy.concat([["","Vous refermez la porte de l’atelier derrière vous. Dehors, la place crie encore « Vive l’Un ! »."],[GA,"« Personne ne nous a vus. Ils regardaient tous le balcon. »"],[MA,"« Ils obéissaient. Et c’est leur obéissance qui nous a cachés. »"]]),()=>A2.anselme()); }
 
 /* ---------- la farce ---------- */
-function startFarce(){ mode="farce"; farT=0; fete.cues={}; refreshHud(); $("obj").style.display="none"; fete.com1.position.set(-3.6,1.0,-8.0); fete.com2.position.set(3.4,1.0,-8.6); fete.sack.position.set(0,1.18,-0.22); camPos.set(5.5,3.0,2.0); camLook.set(0,2.2,-8.4); }
+function startFarce(){ mode="farce"; S.farce="scene"; save(); farT=0; fete.cues={}; refreshHud(); $("obj").style.display="none"; fete.com1.position.set(-3.6,1.0,-8.0); fete.com2.position.set(3.4,1.0,-8.6); fete.sack.position.set(0,1.18,-0.22); camPos.set(5.5,3.0,2.0); camLook.set(0,2.2,-8.4); }
 function farceCam(dt){ if(farT<12.2){ tmp.set(5.2,2.9,1.4); camPos.lerp(tmp,Math.min(1,dt*1.2)); tmp.set(-0.4,2.1,-8.4); camLook.lerp(tmp,Math.min(1,dt*2)); aimSun(0,-6); }
   else { const g=N.garin.position; tmp.set(g.x+1.9,1.95,g.z+2.6); camPos.lerp(tmp,Math.min(1,dt*2.4)); tmp.set(g.x,1.5,g.z); camLook.lerp(tmp,Math.min(1,dt*3)); aimSun(g.x,g.z); } }
 function farceTick(dt){ farT+=dt; const c1=fete.com1, c2=fete.com2, U1=c1.userData, U2=c2.userData; const cue=(n,at,fn)=>{ if(farT>=at&&!fete.cues[n]){ fete.cues[n]=1; fn(); } };
@@ -3286,7 +3290,11 @@ function farceTick(dt){ farT+=dt; const c1=fete.com1, c2=fete.com2, U1=c1.userDa
   else { faceTo(c1,c1.position.x,2,dt,6); faceTo(c2,c2.position.x,2,dt,6); animate(c1,false,dt); animate(c2,false,dt); const b=Math.max(0,Math.sin(Math.min(1,(farT-10.6)/1.4)*Math.PI))*0.6; U1.body.rotation.x=b; U2.body.rotation.x=b; }
   const G2=N.garin.userData; if(farT<14){ G2.arms[0].rotation.x=-1.1+Math.sin(farT*15)*0.35; G2.arms[1].rotation.x=-2.3+Math.cos(farT*15)*0.3; G2.body.position.y=Math.abs(Math.sin(farT*7.5))*0.05; G2.body.rotation.x=-0.12; } else { G2.arms[0].rotation.x*=0.9; G2.arms[1].rotation.x*=0.9; G2.body.position.y=0; G2.body.rotation.x=0.08; }
   cue("l1",4.9,()=>{ sfx("laughBig"); say("Le comédien pose son sac. Toute la place éclate de rire.",3.4); }); cue("l2",7.0,()=>sfx("laugh")); cue("l3",8.8,()=>sfx("laugh")); cue("a1",10.8,()=>sfx("applause")); cue("l4",12.4,()=>sfx("laughBig")); cue("g",14.0,()=>say("Garin ne rit plus.",2.6));
-  if(farT>16.6){ mode="play"; U1.body.rotation.x=0; U2.body.rotation.x=0; fete.sack.position.set(0,1.18,-0.22); refreshHud(); talk([["","Toute la place a ri. Garin plus fort que les autres, le gobelet levé."],["","Puis le comédien a posé son sac, avec exactement le geste de ce matin. Le rire de Garin s’est arrêté net."],["","Autour de lui, on rit encore."]]); } }
+  if(farT>16.6){ mode="play"; U1.body.rotation.x=0; U2.body.rotation.x=0; fete.sack.position.set(0,1.18,-0.22); refreshHud(); recitFarce(); } }
+function recitFarce(){
+  S.farce="recit"; save();
+  talk([["","Toute la place a ri. Garin plus fort que les autres, le gobelet levé."],["","Puis le comédien a posé son sac, avec exactement le geste de ce matin. Le rire de Garin s’est arrêté net."],["","Autour de lui, on rit encore."]],()=>{ delete S.farce; save(); });
+}
 
 /* ---------- tout ce qui bouge pendant la fête ---------- */
 function feteTick(dt,time){ if(!fete||S.act!==2) return;
@@ -3521,10 +3529,21 @@ for(const i of [1,8,11]) INTER.push({p:()=>fete.crowd[i].position,r:2.0,label:"�
 INTER.push({p:()=>({x:-10.6,z:-12.85}),r:2.4,label:"Parler au sergent",can:()=>isFete(),act(){ A2.sergent(); }});
 PILES.forEach((p,i)=>INTER.push({p:()=>({x:p[0],z:p[1]}),r:1.6,label:"Ramasser les pièces",can:()=>isFete()&&S.stage>=11&&S.stage<=13&&!(S.coinsT||[]).includes(i),act(){ S.coinsT=(S.coinsT||[]).concat([i]); S.pieces=(S.pieces||0)+1; fete.piles[i].visible=false; sfx("coins"); daze=Math.min(0.92,daze+0.3);
   if(S.pieces===1) talk([["","Trois pièces, encore chaudes de la main du valet. Elles portent toutes le même profil : celui de l’Un."],["","La tête vous tourne un peu. C’est agréable."]]); else say("Encore des pièces. La tête vous tourne.",2.6); save(); }}));
+function lireSurTreteaux(phase){
+  S.lecturePublique=phase;
+  player.position.set(-1.2,1,-7); player.rotation.y=0; snapCam(); save();
+  if(phase==="citation"){
+    return talk([[AL,FEU.F8.cit]],()=>{ sfx("applause"); sfx("laughBig"); lireSurTreteaux("foule"); });
+  }
+  talk([["","Un silence. Puis la place éclate en applaudissements. Ils croient que c’est la suite de la farce."],["Le comédien","« Et voici la prophétesse du tanneur ! Applaudissez-la bien fort, braves gens ! »"],["","On rit. On passe à autre chose."],["","Au fond, près de la fontaine, deux visages ne rient pas : une femme et un vieil homme. Ils vous regardent comme on regarde quelqu’un qu’on reconnaîtra."],["","À la table d’honneur, le percepteur a posé son gobelet. Il écrit quelque chose."]],()=>{
+    delete S.lecturePublique;
+    S.flags.scene=true; S.discrets=2;
+    player.position.set(-3.3,0,-4.3); snapCam(); refreshHud(); save();
+  });
+}
 INTER.push({p:()=>({x:-3.3,z:-4.8}),r:1.8,label:"Monter sur les tréteaux",can:()=>isFete()&&S.stage===12&&!S.flags.scene,act(){
   if(!S.f.includes("F8")) return talk([["","Vous posez le pied sur la première marche. Deux cents visages. Vous ouvrez la bouche, et rien ne vient."],["","Il vous faudrait une page qui parle aux peuples eux-mêmes. La vieille Ysabeau garde quelque chose depuis quarante ans, devant sa porte."]]);
-  talk([["","Vous montez les trois marches. Les comédiens s’écartent, surpris. Deux cents visages se tournent vers vous."],{choices:[["Lire la page d’Ysabeau",()=>{ player.position.set(-1.2,1.0,-7.0); player.rotation.y=0; snapCam(); talk([[AL,FEU.F8.cit]],()=>{ sfx("applause"); sfx("laughBig");
-      talk([["","Un silence. Puis la place éclate en applaudissements. Ils croient que c’est la suite de la farce."],["Le comédien","« Et voici la prophétesse du tanneur ! Applaudissez-la bien fort, braves gens ! »"],["","On rit. On passe à autre chose."],["","Au fond, près de la fontaine, deux visages ne rient pas : une femme et un vieil homme. Ils vous regardent comme on regarde quelqu’un qu’on reconnaîtra."],["","À la table d’honneur, le percepteur a posé son gobelet. Il écrit quelque chose."]],()=>{ S.flags.scene=true; S.discrets=2; player.position.set(-3.3,0,-4.3); snapCam(); refreshHud(); save(); }); }); }],
+  talk([["","Vous montez les trois marches. Les comédiens s’écartent, surpris. Deux cents visages se tournent vers vous."],{choices:[["Lire la page d’Ysabeau",()=>lireSurTreteaux("citation")],
     ["Redescendre sans rien dire",()=>talk([["","Vous redescendez. Personne n’a rien remarqué. C’est peut-être pire."]])]]}]); }});
 INTER.push({p:()=>({x:0,z:6.1}),r:2.4,label:"Coller l’affiche",can:()=>S.act===2&&S.stage===15,act(){ sfx("glue"); talk([["","Vous lissez la feuille contre la pierre de la fontaine. La colle est froide. Vos mains tremblent un peu."],["","Une femme s’arrête. C’est Jeanne, celle des trois pièces. Elle lit lentement, en suivant les lignes du doigt."],["Jeanne","« Pauvres et misérables peuples insensés… C’est de nous qu’il parle ? »"],["","Puis une deuxième personne s’arrête. Puis une troisième. Personne ne dit rien. Personne n’arrache la feuille."]],()=>{ setStage(16); fete.poster.visible=true; showEnd2(); }); }});
 
