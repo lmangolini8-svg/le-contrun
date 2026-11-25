@@ -141,11 +141,11 @@ async function traverserClos(page) {
   const dialogue = page.locator('#dlg');
   await dialogue.getByText(/Le jour passe par les fentes/).tap();
   await dialogue.getByText(/Sous la porte/).tap();
-  await page.evaluate(() => player.position.set(O.clos[0]+8, 0, O.clos[1]+10.4));
-  await page.getByRole('button', {name: 'Partir'}).tap();
-  await dialogue.getByText(/Avant de partir/).tap();
-  await dialogue.getByRole('button', {name: 'Partir pour l’atelier'}).tap();
-  await page.locator('#plate .go').tap();
+  // La rue du clos mène à la porte de l’imprimerie ; la marche elle-même est jouée dans parcours_recit.js.
+  await page.evaluate(() => player.position.set(O.clos[0]-141.5, 0, O.clos[1]));
+  await page.locator('#act', {hasText: 'Entrer à l’atelier'}).tap();
+  await dialogue.getByText(/Avant d’entrer|La porte de l’atelier/).tap();
+  await dialogue.getByRole('button', {name: 'Entrer à l’atelier'}).tap();
 }
 
 async function testOpening(browser) {

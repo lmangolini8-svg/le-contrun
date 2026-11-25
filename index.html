@@ -44,6 +44,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 #snd{position:fixed;right:22px;top:20px;width:50px;height:50px;padding:9px;z-index:6;transition:top .3s}
 #snd svg{width:100%;height:100%;display:block}
 #sndPanel{position:fixed;right:22px;top:78px;z-index:7;width:min(260px,calc(100vw - 44px));background:var(--page);color:var(--ink);border:1px solid #816e57;border-radius:4px;box-shadow:0 4px 16px #44341f33;padding:12px 14px;display:grid;gap:4px;font-family:var(--hand);font-size:18px}
+#sndPanel[hidden]{display:none}
 #sndPanel .t{margin:0 0 4px;font-size:20px}
 #sndPanel input{width:100%;accent-color:var(--indigo)}
 #sndPanel button{margin-top:8px;font:inherit;background:transparent;border:1px solid #816e57;border-radius:4px;padding:4px 10px;color:var(--ink);cursor:pointer}
@@ -4031,6 +4032,7 @@ if(hot&&hot.ready)hot.ready(start);else start((hot&&hot.data)||{});
 </script>
 <script src="jeu/calendrier.js"></script>
 <script src="jeu/monde.js"></script>
+<script src="jeu/commerces.js"></script>
 <script src="jeu/vie.js"></script>
 </body>
 </html>

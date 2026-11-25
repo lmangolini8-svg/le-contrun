@@ -1,0 +1,20 @@
+name: Règles du jeu
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  regles:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Calendrier, monde et première journée (règles)
+        run: node --test outils/tests/monde.test.js
+      - name: Syntaxe des scripts du jeu
+        run: for f in jeu/*.js; do node --check "$f"; done

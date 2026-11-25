@@ -12,12 +12,15 @@ M.migrer(S);
 O.clos = [-1500, 1600];
 const CL = (x, z) => ({ x: O.clos[0] + x, z: O.clos[1] + z });
 const enClos = () => player.position.z > 1300;
-/* La collision de la ville refuse tout ce qui sort de la carte : le clos a ses propres limites. */
+/* La collision de la ville refuse tout ce qui sort de la carte : le clos et sa rue ont leurs propres limites.
+   Plan d'après l'atlas du 25 novembre 2026 : le clos au sud-est contre le rempart, la rivière au sud,
+   la rue qui part vers l'ouest, longe la cour des gardes, la Caisse des métiers, les halles et les Drapiers,
+   et finit à la porte de l'imprimerie. Distances du clos à l'échelle ; la rue est raccourcie de moitié. */
+const dansClos = (lx, lz) => (lx >= -37 && lx <= 28.5 && lz >= -29 && lz <= 22.5) || (lx >= -150 && lx < -36 && lz >= -3.2 && lz <= 3.2);
 const _blocked = blocked;
 blocked = function (x, z) {
   if (z < 1300) return _blocked(x, z);
-  const lx = x - O.clos[0], lz = z - O.clos[1];
-  if (lx < -12 || lx > 28 || lz < -8.4 || lz > 16) return true;
+  if (!dansClos(x - O.clos[0], z - O.clos[1])) return true;
   for (const b of boxes) if (b.on && x > b.x0 - PR && x < b.x1 + PR && z > b.z0 - PR && z < b.z1 + PR) return true;
   for (const c of circles) { if (c[3] === false) continue; const dx = x - c[0], dz = z - c[1]; if (dx * dx + dz * dz < (c[2] + PR) * (c[2] + PR)) return true; }
   return false;
@@ -25,70 +28,105 @@ blocked = function (x, z) {
 const clos = {};
 const ENDUIT = 0xe8dcc0, PLANCHER = 0x9a7c55;
 
+/* Les enseignes visibles depuis le clos et la rue : point (local), boutique des catalogues, couleur. */
+const ENSEIGNES = [
+  { b: "Menuisier", lab: "Le menuisier", x: -19.6, z: -14, c: WOOD },
+  { b: "Tapissière", lab: "La tapissière", x: -6.6, z: -23, c: SIENNE },
+  { b: "Pépiniériste", lab: "Le pépiniériste", x: 9, z: -12.4, c: FORET },
+  { b: "Tailleur", lab: "Le tailleur", x: -104, z: -3.35, c: INDIGO },
+  { b: "Coiffeuse", lab: "La coiffeuse", x: -114, z: -3.35, c: OCRE },
+  { b: "Marchande de fards et parures", lab: "La marchande de fards", x: -124, z: -3.35, c: 0xc46a7a }
+];
 DIO.clos = function (ox, oz) {
-  floorAt(ox + 6, oz, 90, 70, 0xb8a77e);
+  floorAt(ox - 4, oz - 3, 66, 52, 0xb8a77e);
+  floorAt(ox - 93, oz, 116, 7, 0xc9b78c);
+  floorAt(ox - 4, oz + 31, 70, 16, 0x7f9fb0);
   floorAt(ox, oz, 8, 6, PLANCHER);
   const P = (g, c, x, y, z, sx, sy, sz, ry, rx, rz) => put(g, c, ox + x, y, oz + z, sx, sy, sz, ry, rx, rz);
   const S_ = (x0, x1, z0, z1) => solid(ox + x0, ox + x1, oz + z0, oz + z1);
+  const H = (x, z, w, d, h, pl, rf) => { simpleHouse(ox + x, oz + z, 0, w, d, h, pl, rf); S_(x - w / 2, x + w / 2, z - d / 2, z + d / 2); };
   dio(0, () => {
-    // la pièce : murs bas au sud pour que la caméra voie l'intérieur
+    // la pièce : murs bas au sud pour que la caméra voie l'intérieur ; la porte s'ouvre à l'ouest, vers la ville
     P(G.box, ENDUIT, 0, 1.0, -3, 8.4, 2.0, 0.25); S_(-4.2, 4.2, -3.25, -2.75);
-    P(G.box, ENDUIT, -4, 1.0, 0, 0.25, 2.0, 6); S_(-4.25, -3.75, -3, 3);
+    P(G.box, ENDUIT, 4, 1.0, 0, 0.25, 2.0, 6); S_(3.75, 4.25, -3, 3);
     // porte de 2 m : Aliénor occupe un rayon de 0,5 m
-    P(G.box, ENDUIT, 4, 1.0, -1.7, 0.25, 2.0, 2.6); S_(3.75, 4.25, -3, -0.4);
-    P(G.box, ENDUIT, 4, 1.0, 2.3, 0.25, 2.0, 1.4); S_(3.75, 4.25, 1.6, 3);
-    P(G.box, SEPIA, 4, 1.9, 0.6, 0.3, 0.22, 2.2);
+    P(G.box, ENDUIT, -4, 1.0, -1.7, 0.25, 2.0, 2.6); S_(-4.25, -3.75, -3, -0.4);
+    P(G.box, ENDUIT, -4, 1.0, 2.3, 0.25, 2.0, 1.4); S_(-4.25, -3.75, 1.6, 3);
+    P(G.box, SEPIA, -4, 1.9, 0.6, 0.3, 0.22, 2.2);
     P(G.box, ENDUIT, 0, 0.3, 3, 8.4, 0.6, 0.25); S_(-4.2, 4.2, 2.75, 3.25);
     for (const x of [-3.9, 3.9]) P(G.box, SEPIA, x, 1.0, -2.9, 0.2, 2.0, 0.2);
-    // fenêtre au nord
+    // fenêtre au nord, vers les jardins qui montent
     P(G.box, 0x9fb3c8, 1.2, 1.35, -2.86, 1.0, 0.9, 0.04); P(G.box, SEPIA, 1.2, 0.88, -2.8, 1.2, 0.08, 0.2);
     // lit, coffre, table, tabouret, âtre
     P(G.box, WOOD, -2.9, 0.25, -1.9, 1.5, 0.5, 2.0); P(G.box, BLANC, -2.9, 0.55, -1.85, 1.35, 0.14, 1.8); P(G.box, INDIGO, -2.9, 0.6, -1.3, 1.38, 0.1, 0.9); P(G.box, BLANC, -2.9, 0.66, -2.55, 0.9, 0.14, 0.35); S_(-3.7, -2.1, -2.9, -0.9);
     P(G.box, 0x6e5338, -1.6, 0.3, -2.5, 0.9, 0.6, 0.5); S_(-2.05, -1.15, -2.8, -2.2);
     P(G.box, WOOD, 0.8, 0.75, 1.6, 1.4, 0.08, 0.8); for (const [dx, dz] of [[-.6, -.3], [.6, -.3], [-.6, .3], [.6, .3]]) P(G.box, 0x5b4331, 0.8 + dx, 0.37, 1.6 + dz, 0.08, 0.74, 0.08); S_(0.05, 1.55, 1.15, 2.05);
-    P(G.c16, 0x5b4331, 1.9, 0.25, 1.6, 0.22, 0.5, 0.22);
-    P(G.box, ST2, -3.5, 0.5, 1.9, 0.9, 1.0, 1.4); P(G.box, 0x3a3236, -3.25, 0.4, 1.9, 0.5, 0.5, 0.9); S_(-4, -3, 1.15, 2.65);
-    // miroir et robes aux patères
-    P(G.box, SEPIA, -3.84, 1.25, 0, 0.08, 1.4, 0.7); P(G.box, 0xc7d3dc, -3.8, 1.25, 0, 0.04, 1.25, 0.56);
-    P(G.box, SEPIA, -3.84, 1.75, -0.95, 0.1, 0.06, 0.06); P(G.robe, OCRE, -3.6, 0.42, -0.95, 0.09, 0.095, 0.06);
-    P(G.box, SEPIA, -3.84, 1.75, 0.95, 0.1, 0.06, 0.06); P(G.robe, INDIGO, -3.6, 0.42, 0.95, 0.09, 0.095, 0.06);
-    // dehors : muraille et poterne au nord
-    P(G.box, ST2, 8, 3.2, -9.5, 40, 6.4, 1.6); S_(-12, 28, -10.3, -8.7);
-    P(G.box, 0x2a2730, 16, 1.3, -8.66, 1.8, 2.6, 0.1); P(G.c16, ST, 16, 2.6, -8.62, 0.95, 0.12, 0.95, 0, Math.PI / 2);
-    for (let i = -10; i < 28; i += 2.2) P(G.box, ST2, i, 6.8, -9.5, 1.1, 0.8, 1.6);
-    // jardin
-    for (const [x, z] of [[6.6, -5.4], [9.4, -5.4], [6.6, -3.6], [9.4, -3.6]]) { P(G.box, 0x6b5136, x, 0.15, z, 2.4, 0.3, 1.2); for (let k = -1; k <= 1; k++) P(G.s, k ? SAUGE : FORET, x + k * 0.7, 0.45, z, 0.28, 0.22, 0.28); }
-    S_(5.3, 10.7, -6.1, -2.9);
-    // puits commun
-    P(G.c16, ST, 9, 0.45, 2.5, 0.95, 0.9, 0.95); P(G.c16, 0x2a2730, 9, 0.91, 2.5, 0.72, 0.03, 0.72);
-    for (const x of [8.1, 9.9]) P(G.box, WOOD, x, 1.4, 2.5, 0.14, 1.9, 0.14);
-    P(G.c16, WOOD, 9, 2.25, 2.5, 0.08, 2.0, 0.08, 0, 0, Math.PI / 2); P(G.c16, 0x6e5338, 9.3, 1.3, 2.5, 0.22, 0.3, 0.22);
-    S_(7.95, 10.05, 1.5, 3.5);
-    // pépinière près de la poterne
-    for (let i = 0; i < 6; i++) { P(G.c16, TILE, 12.5 + (i % 3) * 0.8, 0.25, -7.4 + Math.floor(i / 3) * 0.8, 0.28, 0.5, 0.28); P(G.s, i % 2 ? SAUGE : FORET, 12.5 + (i % 3) * 0.8, 0.7, -7.4 + Math.floor(i / 3) * 0.8, 0.32, 0.35, 0.32); }
-    S_(12, 14.6, -7.8, -6.4);
+    P(G.c16, 0x5b4331, -0.4, 0.25, 1.6, 0.22, 0.5, 0.22);
+    P(G.box, ST2, 3.5, 0.5, 1.9, 0.9, 1.0, 1.4); P(G.box, 0x3a3236, 3.25, 0.4, 1.9, 0.5, 0.5, 0.9); S_(3, 4, 1.15, 2.65);
+    // miroir et robes aux patères, sur le mur est
+    P(G.box, SEPIA, 3.84, 1.25, -0.6, 0.08, 1.4, 0.7); P(G.box, 0xc7d3dc, 3.8, 1.25, -0.6, 0.04, 1.25, 0.56);
+    P(G.box, SEPIA, 3.84, 1.75, -1.55, 0.1, 0.06, 0.06); P(G.robe, OCRE, 3.6, 0.42, -1.55, 0.09, 0.095, 0.06);
+    P(G.box, SEPIA, 3.84, 1.75, 0.35, 0.1, 0.06, 0.06); P(G.robe, INDIGO, 3.6, 0.42, 0.35, 0.09, 0.095, 0.06);
+    // le rempart à l'est, avec ses tours, et la rivière au sud
+    P(G.box, ST2, 30, 3.5, -4, 2, 7, 54); S_(29, 31, -31, 23);
+    for (const z of [-24, 0, 20]) { P(G.c16, ST2, 30.5, 4.2, z, 2.4, 8.4, 2.4); P(G.k16, SLATE, 30.5, 9.4, z, 2.7, 2.2, 2.7); }
+    for (let z = -29; z < 23; z += 2.2) P(G.box, ST2, 30, 7.4, z, 2, 0.8, 1.1);
+    P(G.box, ST, -4, 0.35, 23.4, 66, 0.7, 0.8); S_(-37, 29, 23, 24);
+    // le jardin d'Aliénor, entre la maison et la rivière
+    for (const [x, z] of [[1.5, 8], [5, 8], [1.5, 10.4], [5, 10.4]]) { P(G.box, 0x6b5136, x, 0.15, z, 2.6, 0.3, 1.4); for (let k = -1; k <= 1; k++) P(G.s, k ? SAUGE : FORET, x + k * 0.75, 0.45, z, 0.28, 0.22, 0.28); }
+    S_(0.1, 6.4, 7.2, 11.2);
+    for (let x = -1; x <= 8; x += 1.5) P(G.box, WOOD, x, 0.45, 6.4, 0.08, 0.9, 0.08);
+    // puits des voisins, au nord-ouest de la maison
+    P(G.c16, ST, -11, 0.45, -5, 0.95, 0.9, 0.95); P(G.c16, 0x2a2730, -11, 0.91, -5, 0.72, 0.03, 0.72);
+    for (const x of [-11.9, -10.1]) P(G.box, WOOD, x, 1.4, -5, 0.14, 1.9, 0.14);
+    P(G.c16, WOOD, -11, 2.25, -5, 0.08, 2.0, 0.08, 0, 0, Math.PI / 2); P(G.c16, 0x6e5338, -10.7, 1.3, -5, 0.22, 0.3, 0.22);
+    S_(-12.05, -9.95, -6, -4);
+    // pépinière du pépiniériste, au nord-est
+    for (let i = 0; i < 9; i++) { const x = 7.5 + (i % 3) * 1.1, z = -16 + Math.floor(i / 3) * 1.1; P(G.c16, TILE, x, 0.25, z, 0.3, 0.5, 0.3); P(G.s, i % 2 ? SAUGE : FORET, x, 0.72, z, 0.36, 0.4, 0.36); }
+    S_(7, 10.7, -16.6, -13.1);
+    // la rue : la cour des gardes au nord, sa poterne, la Caisse des métiers, les halles au sud
+    P(G.box, ST2, -62, 3, -6, 22, 6, 1.2); P(G.box, 0x2a2730, -62, 1.3, -5.36, 1.8, 2.6, 0.1); P(G.c16, ST, -62, 2.6, -5.32, 0.95, 0.12, 0.95, 0, Math.PI / 2);
+    P(G.box, 0xd8c9a4, -84, 2.6, -6.2, 12, 5.2, 4); P(G.box, SIENNE, -84, 3.8, -4.15, 3.4, 0.7, 0.06); P(G.box, SEPIA, -84, 1.2, -4.15, 1.4, 2.4, 0.08);
+    for (const x of [-92, -86, -80, -74]) for (const z of [7, 12]) P(G.box, WOOD, x, 1.8, z, 0.25, 3.6, 0.25);
+    P(G.box, TILE, -83, 3.75, 9.5, 20, 0.3, 7.5);
+    // la place, devinée entre deux maisons, puis la fontaine
+    P(G.c16, ST, -96, 0.45, 8, 1.6, 0.9, 1.6); P(G.c8, ST2, -96, 1.4, 8, 0.25, 1.9, 0.25);
+    // les Drapiers : trois boutiques au nord ; l'imprimerie ferme la rue à l'ouest
+    P(G.box, 0xe2d6bc, -147, 3, 0, 4, 6, 9); S_(-150, -145, -4.5, 4.5); P(G.box, SEPIA, -145, 1.2, 0, 0.1, 2.4, 1.6); P(G.box, 0x23252c, -144.9, 3.4, 0, 0.06, 0.9, 2.6);
   });
-  // maisons des voisins : Ysabeau, le menuisier, la tapissière, et l'arrière de la maison d'Aliénor
   dio(0, () => {
-    simpleHouse(ox + 17.5, oz + 0.5, 0, 6, 6, 4.2, 0xecd9a6, TILE); solid(ox + 14.5, ox + 20.5, oz - 2.5, oz + 3.5);
-    simpleHouse(ox + 23, oz - 5, 0, 5, 5, 3.8, 0xe2d6bc, SLATE); solid(ox + 20.5, ox + 25.5, oz - 7.5, oz - 2.5);
-    simpleHouse(ox + 24, oz + 7, 0, 6, 5, 4.4, BLANC, LAUZE); solid(ox + 21, ox + 27, oz + 4.5, oz + 9.5);
-    simpleHouse(ox - 9, oz + 0, 0, 9, 7, 4.6, 0xeed2b4, TILE); solid(ox - 13.5, ox - 4.5, oz - 3.5, oz + 3.5);
-    simpleHouse(ox - 4, oz - 6, 0, 8, 5, 4.0, 0xe2d6bc, SLATE); solid(ox - 8, ox, oz - 8.5, oz - 3.5);
-    simpleHouse(ox - 9, oz + 11, 0, 8, 6, 4.2, BLANC, TILE); solid(ox - 13, ox - 5, oz + 8, oz + 14);
-    put(G.box, SEPIA, ox + 14.42, 1.1, oz + 0.5, 0.1, 2.2, 1.1); // porte d'Ysabeau
-    put(G.box, SEPIA, ox + 20.42, 1.1, oz - 5, 0.1, 2.2, 1.0); put(G.box, WOOD, ox + 20.3, 2.6, oz - 5, 0.06, 0.5, 1.4); // menuisier et son enseigne
-    put(G.box, SEPIA, ox + 20.92, 1.1, oz + 7, 0.1, 2.2, 1.0); put(G.box, 0xa9583a, ox + 20.8, 2.7, oz + 7, 0.06, 0.6, 1.2); // tapissière
+    // voisins du clos : Ysabeau, le menuisier, la tapissière ; maisons de la traverse
+    // au sud du chemin, les maisons restent à 8 m au moins : la caméra se tient derrière Aliénor
+    H(-17, 11.5, 7, 6, 4.2, 0xecd9a6, TILE); put(G.box, SEPIA, ox - 17, 1.1, oz + 8.45, 1.1, 2.2, 0.1);
+    H(-22, -17, 6, 5, 3.8, 0xe2d6bc, SLATE);
+    H(-9, -26, 7, 5, 4.4, BLANC, LAUZE);
+    H(-2, -14, 6, 5, 4.6, 0xeed2b4, TILE);
+    H(16, -6, 6, 6, 4.4, 0xe2d6bc, TILE);
+    H(18, 12, 7, 6, 4.0, BLANC, SLATE);
+    H(-24, -4, 6, 5, 4.4, 0xeed2b4, TILE);
+    H(-30, -14, 7, 6, 4.8, 0xe2d6bc, LAUZE);
+    // la rue, côté nord : façades hautes, côté sud : jardins et murets, pour que la caméra voie la rue
+    const nord = [[-42, 0xeed2b4, TILE], [-49, BLANC, SLATE], [-75, 0xe2d6bc, TILE], [-104, 0xecd9a6, SLATE], [-114, BLANC, TILE], [-124, 0xeed2b4, LAUZE], [-134, 0xe2d6bc, TILE], [-140, BLANC, SLATE]];
+    for (const [x, pl, rf] of nord) {
+      simpleHouse(ox + x, oz - 7.5, 0, 7, 8, 5.4, pl, rf);
+      put(G.box, SEPIA, ox + x - 1.6, 1.1, oz - 3.45, 1.1, 2.2, 0.1); // porte
+      for (const dx of [0.6, 2.2]) put(G.box, 0x2b2f45, ox + x + dx, 1.5, oz - 3.45, 0.9, 1.1, 0.08); // fenêtres
+      for (const dx of [-1.8, 0, 1.8]) put(G.box, 0x2b2f45, ox + x + dx, 3.9, oz - 3.45, 0.8, 1.0, 0.08);
+      put(G.box, SEPIA, ox + x, 2.95, oz - 3.42, 7, 0.12, 0.08); // colombage
+    }
+    for (let x = -148; x < -38; x += 2.4) if (x < -100 || x > -93) put(G.box, ST, ox + x, 0.35, oz + 3.8, 2.3, 0.7, 0.4);
   });
-  tree(ox + 2, oz - 7, 0.8); tree(ox + 27, oz - 1, 0.9); tree(ox + 4, oz + 13, 0.7);
-  // objets qui bougent : volets, lettre, porte
+  for (const e of ENSEIGNES) { put(G.box, SEPIA, ox + e.x, 2.62, oz + e.z + 0.1, 1.2, 0.06, 0.06); }
+  tree(ox + 12, oz + 4, 0.8); tree(ox - 26, oz + 15, 0.9); tree(ox - 2, oz + 18, 0.7); tree(ox - 58, oz + 8, 0.8); tree(ox - 118, oz + 7, 0.7);
+  // objets qui bougent : volets, lettre, enseignes
   const m = (g, c, x, y, z, sx, sy, sz) => { const o = new THREE.Mesh(g, LM(c)); o.position.set(ox + x, y, oz + z); o.scale.set(sx, sy, sz); o.castShadow = true; scene.add(o); return o; };
   const pivot = (x, z) => { const g = new THREE.Group(); g.position.set(ox + x, 1.35, oz + z); scene.add(g); return g; };
   clos.voletG = pivot(0.7, -2.78); clos.voletD = pivot(1.7, -2.78);
   for (const [g, s] of [[clos.voletG, 1], [clos.voletD, -1]]) { const p = new THREE.Mesh(G.box, LM(PETROLE)); p.scale.set(0.5, 0.92, 0.05); p.position.set(0.25 * s, 0, 0); p.castShadow = true; g.add(p); }
-  clos.lettre = m(G.box, 0xf6efe0, 3.35, 0.02, 0.6, 0.32, 0.01, 0.22);
+  for (const e of ENSEIGNES) m(G.box, e.c, e.x, 2.2, e.z + 0.12, 1.0, 0.75, 0.05); // enseignes peintes sur la façade, face à la rue
+  clos.lettre = m(G.box, 0xf6efe0, -3.35, 0.02, 0.6, 0.32, 0.01, 0.22);
   clos.lettre.rotation.y = 0.4;
-  clos.feu = m(G.s, ORANGE, -3.2, 0.35, 1.9, 0.22, 0.16, 0.3);
+  clos.feu = m(G.s, ORANGE, 3.2, 0.35, 1.9, 0.22, 0.16, 0.3);
   majClos();
 };
 function batirClos() { if (dioBuilt.clos) return; DIO.clos(O.clos[0], O.clos[1]); flushWin(); dioBuilt.clos = true; }
@@ -100,8 +138,8 @@ function majClos() {
   clos.feu.visible = r.etape === "soir" || r.etape === "nuit";
 }
 
-PLATES.clos = { n: "XV", dest: "Le clos des murailles", dio: "clos", cam: at("clos", [9, 4.2, 15]), look: at("clos", [3, 1.2, -6]),
-  txt: [{ r: "Le clos s’adosse à la muraille, près de la poterne. Puits commun, jardins, menuisier, tapissière : un quartier où l’on se connaît par ses fenêtres." }] };
+PLATES.clos = { n: "XV", dest: "Le clos des murailles", dio: "clos", cam: at("clos", [-14, 5, 16]), look: at("clos", [6, 1.4, -8]),
+  txt: [{ r: "Le clos s’adosse au rempart de l’est, au-dessus de la rivière. Puits des voisins, jardins, menuisier, tapissière, pépiniériste : un quartier où l’on se connaît par ses fenêtres." }] };
 PLATES.drapiers = { n: "XVI", dest: "La rue des Drapiers", dio: "ruelles", cam: PLATES.ruelles.cam, look: PLATES.ruelles.look, fog: PLATES.ruelles.fog,
   txt: [{ r: "Tailleur, coiffeuse, marchande de fards et de parures : la rue s’éveille avant la place. Le chemin de l’atelier s’apprend à pied." }] };
 DEST._clos = ["clos"]; DEST._drapiers = ["drapiers"]; DEST.clos = ["clos"];
@@ -137,7 +175,7 @@ objText = function () {
   return _objText();
 };
 const _targetNow = targetNow, _targetName = targetName;
-const closCible = () => { const r = V().recit; if (r.etape === "nuit") return CL(-2.9, -0.6); if (r.etape === "lendemain") return CL(3.2, 0.6); return CL(8, 11); };
+const closCible = () => { const r = V().recit; if (r.etape === "nuit") return CL(-2.9, -0.6); if (r.etape === "lendemain" && M.visiteEnCours(V())) return CL(-3.2, 0.6); return CL(-142.5, 0); };
 targetNow = function () { return enClos() ? closCible() : _targetNow(); };
 targetName = function () { const r = V().recit; return enClos() ? (r.etape === "nuit" ? "votre lit" : r.etape === "lendemain" ? "la porte" : r.etape === "soir" ? "la place" : "l’atelier") : _targetName(); };
 
@@ -164,6 +202,8 @@ style.textContent = `.vie-alm{display:block;margin-top:5px;font:italic 14px/1.2 
 .miroir svg{width:110px;height:170px;display:block;margin:0 auto}
 .compo{font:24px/1.3 Georgia,serif;letter-spacing:.04em;padding:6px 10px;border:1px solid #b9a77f;background:#fbf6ea;display:inline-block}
 .compo.envers{transform:scaleX(-1)}
+.vitrine{list-style:none;margin:8px 0;padding:0;columns:2;column-gap:24px}.vitrine li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted #b9a77f;padding:3px 0;break-inside:avoid}.vitrine span{color:var(--sienne);white-space:nowrap}
+.carte-acte{width:100%;border:1px solid #b9a77f;margin:6px 0}
 .vie-carnet ul{margin:4px 0 8px 18px;padding:0}.vie-carnet li{margin:2px 0}`;
 document.head.appendChild(style);
 
@@ -185,12 +225,16 @@ function carnetVie() {
   const adr = Object.keys(v.adresses).map(k => `<li>${esc(M.BOUTIQUES[k].nom)} : ${esc(v.adresses[k])}</li>`);
   const ex = Object.keys(M.EXAMENS).map(k => `<li>${esc(M.EXAMENS[k].nom)} : ${v.examens[k] === "reussi" ? "réussie" : v.examens[k] === "echoue" ? "à reprendre" : "pas encore tentée"}</li>`);
   const ev = v.evenements.slice(-6).reverse().map(e => `<li>${esc(C.lisible(e.t).plage)}, ${esc(C.lisible(e.t).date)} : ${esc(e.texte)}</li>`);
-  return `<div class="feuil vie-carnet"><span class="kick">Almanach et journal</span>
+  const ens = Object.keys(v.enseignes || {}).map(k => `<li>${esc(k)} : ${esc(v.enseignes[k])}</li>`);
+  const carte = ["I", "II", "III", "IV", "V"][Math.min(5, S.act || 1) - 1];
+  return `<div class="feuil vie-carnet"><span class="kick">Ma carte · acte ${carte}</span><img class="carte-acte" src="img/carnet/carnet_${carte}.webp" alt="Carte du carnet pour l’acte ${carte} : les lieux et les chemins repérés par Aliénor."></div>
+  <div class="feuil vie-carnet"><span class="kick">Almanach et journal</span>
   <p><b>${esc(a.date)}</b>, ${esc(a.plage)}.${a.actes ? ` ${esc(a.actes)}.` : ""}${a.fetes.length ? ` Aujourd’hui : ${esc(a.fetes.join(", "))}.` : ""}${a.prochaine ? ` Prochaine fête : ${esc(a.prochaine)}.` : ""}${a.marche ? " Jour de marché." : ""}</p>
   <p><b>Bourse :</b> ${v.bourse} sous. <b>Sur soi et chez soi :</b> ${inv.length ? esc(inv.join(", ")) : "rien"}.${v.tenue ? ` Tenue du jour : la robe ${esc(v.tenue)}.` : ""}</p>
   <p><b>Repos</b> ${Math.round(b.repos)}, <b>Satiété</b> ${Math.round(b.satiete)}, <b>Endurance</b> ${Math.round(b.endurance)}, <b>Convictions</b> ${Math.round(b.convictions)}. ${esc(v.conviction)}</p>
   ${suj.length ? `<p class="small">Sujets abordés, à relire avant d’y revenir :</p><ul>${suj.join("")}</ul>` : ""}
   ${adr.length ? `<p class="small">Adresses et horaires découverts :</p><ul>${adr.join("")}</ul>` : ""}
+  ${ens.length ? `<p class="small">Enseignes repérées :</p><ul>${ens.join("")}</ul>` : ""}
   <p class="small">Épreuves de l’atelier :</p><ul>${ex.join("")}</ul>
   ${ev.length ? `<p class="small">Ces derniers temps :</p><ul>${ev.join("")}</ul>` : ""}</div>`;
 }
@@ -228,21 +272,38 @@ function closPeutSortir() { const r = V().recit; return enClos() && (r.etape ===
 // La lettre est de Mahaut (décision du 25 novembre 2026). Elle reste anonyme jusqu’à l’acte III.
 const LETTRE = "On pèse le pain du palais avec la balance du palais. Faites peser la miche de Maëlle, devant qui vous voudrez, et voyez ce qu’il en reste.";
 INTER.push(
-  { p: () => CL(3.35, 0.6), r: 1.7, label: "Lire la lettre", can: () => enClos() && V().recit.lettre === "glissee", act() { lireLettre(); } },
+  { p: () => CL(-3.35, 0.6), r: 1.7, label: "Lire la lettre", can: () => enClos() && V().recit.lettre === "glissee", act() { lireLettre(); } },
   { p: () => CL(1.2, -2.3), r: 1.6, label: "Les volets", can: () => enClos(), act() {
       const r = V().recit; r.volets = !r.volets; majClos(); sfx("volets");
       say(r.volets ? (M.plage(V()) === 2 ? "Le soir rougit la muraille." : "Le clos s’éveille : un seau au puits, une porte, la poterne qu’on déverrouille.") : "La pièce retombe dans la pénombre."); apres(); } },
   { p: () => CL(0.8, 1.0), r: 1.4, label: "Les provisions", can: () => enClos() && V().recit.etape !== "soir", act() { provisions(); } },
-  { p: () => CL(-2.9, 1.9), r: 1.6, label: "Préparer un repas", can: () => enClos() && V().recit.etape === "soir", act() { repas(); } },
-  { p: () => CL(-3.3, 0), r: 1.5, label: "Le miroir", can: () => enClos(), act() { miroir(); } },
+  { p: () => CL(2.6, 1.9), r: 1.6, label: "Préparer un repas", can: () => enClos() && V().recit.etape === "soir", act() { repas(); } },
+  { p: () => CL(3.3, -0.6), r: 1.5, label: "Le miroir", can: () => enClos(), act() { miroir(); } },
   { p: () => CL(-2.9, -0.7), r: 1.5, label: "Le lit", can: () => enClos() && (V().recit.etape === "nuit" || (V().recit.etape === "soir" && !V().recit.sieste)), act() { lit(); } },
-  { p: () => CL(8, -2.6), r: 1.8, label: "Le jardin", can: () => enClos(), act() { jardin(); } },
-  { p: () => CL(9, 3.8), r: 1.8, label: "Le puits commun", can: () => enClos(), act() { puits(); } },
-  { p: () => CL(13.7, 0.5), r: 1.6, label: "Frapper chez Ysabeau", can: () => enClos(), act() { chezYsabeau(); } },
-  { p: () => CL(19.7, -5), r: 1.6, label: "Le menuisier", can: () => enClos(), act() { talk([["", "La porte est close. Sur le battant, des devis à la craie : « Un banc, une étagère : 25 sous. Une réserve attenante : 60 sous. Acompte possible à la Caisse des métiers. »"], ["", "Le menuisier est parti porter son sac au palais, comme tout le monde."]]); } },
-  { p: () => CL(3.25, 0.6), r: 1.3, label: "Ouvrir la porte", can: () => enClos() && V().recit.etape === "lendemain" && !!M.visiteEnCours(V()), act() { visite(); } },
-  { p: () => CL(8, 11), r: 2.2, label: "Partir", can: closPeutSortir, act() { sortir(); } }
+  { p: () => CL(3.2, 6), r: 1.8, label: "Le jardin", can: () => enClos(), act() { jardin(); } },
+  { p: () => CL(-11, -3.6), r: 1.8, label: "Le puits des voisins", can: () => enClos(), act() { puits(); } },
+  { p: () => CL(-17, 7.2), r: 1.6, label: "Frapper chez Ysabeau", can: () => enClos(), act() { chezYsabeau(); } },
+  ...ENSEIGNES.map(e => ({ p: () => CL(e.x, e.z + (e.z < -10 ? 2.2 : 1.4)), r: 1.8, label: e.lab, can: () => enClos(), act() { vitrine(e.b); } })),
+  { p: () => CL(-3.25, 0.6), r: 1.3, label: "Ouvrir la porte", can: () => enClos() && V().recit.etape === "lendemain" && !!M.visiteEnCours(V()), act() { visite(); } },
+  { p: () => CL(-142.5, 0), r: 2.4, get label() { const e = V().recit.etape; return e === "soir" ? "Rejoindre la fête" : e === "lendemain" ? "Vers la place" : "Entrer à l’atelier"; }, can: closPeutSortir, act() { sortir(); } },
+  { p: () => CL(-62, -3.6), r: 2.2, label: "La poterne des gardes", can: () => enClos(), act() { talk([["", "La poterne de la cour des gardes. Le matin, quelqu’un la laisse ouverte, on ne sait pas qui."]]); } },
+  { p: () => CL(-84, -3.4), r: 2.2, label: "La Caisse des métiers", can: () => enClos(), act() { talk([["", "La Caisse des métiers : un comptoir, un registre, des devis épinglés. On y épargne, on y demande une avance sur un devis."], ["", "« Fermé le jour du tribut. »"]]); } }
 );
+
+/* Les vitrines : les articles des catalogues, dans leur quartier. Les adresses vues vont au carnet. */
+function vitrine(nom) {
+  const v = V(), B = (window.COMMERCES || {})[nom];
+  if (!B) return talk([["", nom + " : la boutique est fermée."]]);
+  v.enseignes = v.enseignes || {}; v.enseignes[nom] = B.quartier; save();
+  const acte = S.act || 1, dispo = B.articles.filter(a => a[3] <= acte).sort((a, b) => a[2] - b[2]);
+  const jourT = M.estJourTribut(M.jour(v)) && !v.recit.tribut;
+  mode = "panel"; refreshHud();
+  panel(`<span class="kick">${esc(B.quartier)}</span><h2>${esc(nom)}</h2>
+    <p class="small">${jourT ? "Le volet est mi-clos : le maître est parti porter son sac au palais. On regarde la vitrine." : "On regarde la vitrine."} ${dispo.length} articles en ce moment, ${B.articles.length - dispo.length} autres arriveront plus tard.</p>
+    <ul class="vitrine">${dispo.slice(0, 8).map(a => `<li>${esc(a[1])} <span>${a[2]} sou${a[2] > 1 ? "s" : ""}</span></li>`).join("")}</ul>
+    <p class="small">L’adresse est notée dans le carnet. Les achats en boutique arriveront avec la Caisse des métiers.</p>
+    <div class="row"><button class="pri" data-v="fermer">Continuer</button></div>`);
+}
 
 function lireLettre() {
   const r = V().recit; sfx("feuillet"); if (r.lettre === "glissee") sfx("lettre");
@@ -308,7 +369,7 @@ function sortir() {
     const reste = [];
     if (r.lettre === "glissee") reste.push("la lettre est encore sur le seuil");
     if (!V().tenue) reste.push("vous n’avez pas choisi de robe");
-    return talk([["", reste.length ? "Avant de partir : " + reste.join(", ") + "." : "Le clos derrière vous, la ville devant."], choix([["Partir pour l’atelier", partirAtelier], ["Rester encore un peu", rien]])]);
+    return talk([["", reste.length ? "Avant d’entrer : " + reste.join(", ") + "." : "La porte de l’atelier. On entend déjà la presse."], choix([["Entrer à l’atelier", partirAtelier], ["Pas encore", rien]])]);
   }
   if (r.etape === "soir") return talk([["", "Des rires montent de la place. La Fête de l’Un commence."], choix([["Aller à la fête (acte II)", () => { r.etape = "fete"; save(); startAct2(); }], ["Rester encore un peu", rien]])]);
   if (r.etape === "lendemain") return talk([["", "Le lendemain de la fête, la ville se lève tard. La suite du récit, l’hiver et l’acte III, est en cours d’écriture."], ["", "Votre journée est enregistrée : vous la retrouverez telle quelle."]], apres);
@@ -316,7 +377,8 @@ function sortir() {
 function partirAtelier() {
   fermerDlg(); const v = V(); if (!v.tenue) v.tenue = "ocre";
   v.recit.etape = "ville"; zoneShown.place = 1; save();
-  turnPage("_drapiers", () => { setScene(true); firstExchange = false; player.rotation.y = -Math.PI / 2; startMovie("matin", enterPlay); }, null, () => { if (!dioBuilt.ruelles) { DIO.ruelles(O.ruelles[0], O.ruelles[1]); flushWin(); dioBuilt.ruelles = true; } player.position.set(-19, 0, 7); });
+  mode = "turn"; refreshHud(); sfx("porte");
+  wash(() => { player.position.set(-19, 0, 7); setScene(true); firstExchange = false; player.rotation.y = -Math.PI / 2; startMovie("matin", enterPlay); });
 }
 
 /* ================= Prise de poste, cloche et tableau des commandes ================= */
