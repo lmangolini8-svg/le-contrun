@@ -12,6 +12,16 @@ M.migrer(S);
 O.clos = [-1500, 1600];
 const CL = (x, z) => ({ x: O.clos[0] + x, z: O.clos[1] + z });
 const enClos = () => player.position.z > 1300;
+/* La collision de la ville refuse tout ce qui sort de la carte : le clos a ses propres limites. */
+const _blocked = blocked;
+blocked = function (x, z) {
+  if (z < 1300) return _blocked(x, z);
+  const lx = x - O.clos[0], lz = z - O.clos[1];
+  if (lx < -12 || lx > 28 || lz < -8.4 || lz > 16) return true;
+  for (const b of boxes) if (b.on && x > b.x0 - PR && x < b.x1 + PR && z > b.z0 - PR && z < b.z1 + PR) return true;
+  for (const c of circles) { if (c[3] === false) continue; const dx = x - c[0], dz = z - c[1]; if (dx * dx + dz * dz < (c[2] + PR) * (c[2] + PR)) return true; }
+  return false;
+};
 const clos = {};
 const ENDUIT = 0xe8dcc0, PLANCHER = 0x9a7c55;
 
@@ -24,9 +34,10 @@ DIO.clos = function (ox, oz) {
     // la pièce : murs bas au sud pour que la caméra voie l'intérieur
     P(G.box, ENDUIT, 0, 1.0, -3, 8.4, 2.0, 0.25); S_(-4.2, 4.2, -3.25, -2.75);
     P(G.box, ENDUIT, -4, 1.0, 0, 0.25, 2.0, 6); S_(-4.25, -3.75, -3, 3);
-    P(G.box, ENDUIT, 4, 1.0, -1.5, 0.25, 2.0, 3); S_(3.75, 4.25, -3, 0);
-    P(G.box, ENDUIT, 4, 1.0, 2.1, 0.25, 2.0, 1.8); S_(3.75, 4.25, 1.2, 3);
-    P(G.box, SEPIA, 4, 1.9, 0.6, 0.3, 0.22, 1.4);
+    // porte de 2 m : Aliénor occupe un rayon de 0,5 m
+    P(G.box, ENDUIT, 4, 1.0, -1.7, 0.25, 2.0, 2.6); S_(3.75, 4.25, -3, -0.4);
+    P(G.box, ENDUIT, 4, 1.0, 2.3, 0.25, 2.0, 1.4); S_(3.75, 4.25, 1.6, 3);
+    P(G.box, SEPIA, 4, 1.9, 0.6, 0.3, 0.22, 2.2);
     P(G.box, ENDUIT, 0, 0.3, 3, 8.4, 0.6, 0.25); S_(-4.2, 4.2, 2.75, 3.25);
     for (const x of [-3.9, 3.9]) P(G.box, SEPIA, x, 1.0, -2.9, 0.2, 2.0, 0.2);
     // fenêtre au nord
