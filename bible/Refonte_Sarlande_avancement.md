@@ -70,3 +70,10 @@ Source : branche `codex/planches-vie-2026-11-25`, dossier `references/planches-v
 **À reprendre directement**
 - `commerces.csv` : 1 040 références, boutique, quartier, prix, acte et point, pour remplir les boutiques du jeu (cahier des charges, partie 6).
 - Les cinq cartes du carnet, à donner une à une, acte par acte, à la place de la carte schématique actuelle.
+
+## Atlas dans le jeu · lot 1 (issue 7)
+
+- `outils/atlas_import.py` lit `Donnees/` de `Sarlande_Cartes_et_terrain.zip` et écrit `jeu/atlas_donnees.js` : relief 16 bits recopié sans retouche, secteurs, 86 sites, 17 profils, 20 ruelles, enceinte et bras occidental.
+- `jeu/atlas.js` (`Atlas` dans la page) donne l’altitude interpolée, le secteur, les sites, les longueurs et pentes des voies, et **la seule transformation vers Three.js** : `x = X − 340`, `z = Y − 429`, `y = altitude − 8,81`. L’origine est la fontaine, dont le sol reste à y = 0 ; ni rotation ni échelle. Caméra, collisions, personnages et carte doivent passer par `Atlas.versScene`, `Atlas.depuisScene` et `Atlas.solScene`.
+- `node --test outils/tests/atlas.test.js` vérifie la grille, les 86 sites posés sur le relief, les cotes du quai (4 m), du marché (10,4 m), du chapitre (22 m), du couvent (35,5 m) et du refuge (44,1 m), l’alignement de la fontaine, du portail, du pont et de la poterne, et les profils (passage piéton à 11,3 %, charroi de 202 m à 3,2 % au plus).
+- Reste pour clore le lot 1 : reposer les scènes existantes de la place (aujourd’hui environ trois fois resserrée) et du clos (`O.clos`, détaché de la carte) sur ce repère. Les lots 2 à 8 de l’issue ne sont pas commencés.
