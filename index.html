@@ -2286,7 +2286,7 @@ function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="
   if(firstExchange&&Array.isArray(queue[0])&&queue[0][1].startsWith("« C’est le matin du tribut.")){
     firstExchange=false;startMovie("outil",()=>{mode="dialog";nextLine();refreshHud();});return;
   }
-  const l=queue.shift(); waitingChoice=false; aliExpression(l); dlg.style.display="block"; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
+  const l=queue.shift(); waitingChoice=false; aliExpression(l); dlg.style.display="block"; dlg.scrollTop=0; if(Array.isArray(l)){ speakerG=l[0]?groupFor(l[0]):null; if(speakerG&&speakerG!==player&&speakerG.parent===scene&&speakerG.visible&&Math.hypot(speakerG.position.x-player.position.x,speakerG.position.z-player.position.z)<6) partner=speakerG; }
   if(l.feu){ sfx("feuillet"); if(!S.f.includes(l.feu))S.f.push(l.feu); const f=FEU[l.feu]; dlg.innerHTML=`<div class="feu"><div class="who">Feuillet retrouvé · ${S.f.length} sur ${NF}</div><div class="cit">${esc(f.cit)}</div><div class="idee">${esc(f.idee)}</div></div><div class="more">Touchez pour continuer</div>`; return; }
   if(l.choices){ waitingChoice=true; dlg.innerHTML=(l.head||"")+`<div class="ch">${l.choices.map((c,i)=>`<button data-c="${i}">${esc(c[0])}</button>`).join("")}</div>`; dlg._choices=l.choices; return; }
   dlg.innerHTML=portraitForLine(l)+(l[0]?`<div class="who">${esc(l[0])}</div>`:"")+`<p class="txt${l[0]?"":" narr"}">${esc(l[1])}</p><div class="more">Touchez pour continuer</div>`; }
@@ -2499,6 +2499,7 @@ function startPlay(newGame=false){
   if(newGame){firstExchange=false;player.rotation.y=-Math.PI/2;startMovie("matin",enterPlay);}
   else{
     inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
+    if(S.act===1&&S.stage===1) suiteTribut();
     if(S.act===1&&S.stage===4&&S.pierreEnAttente===true) startCine();
     if(S.act===2&&S.stage===14) reprendreImpression();
     if(S.act===2&&S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION){
@@ -2559,6 +2560,30 @@ function setStage(n){ S.stage=n; applyStage(); refreshHud(); save(); }
 const AN="Maître Anselme", YS="Ysabeau", BE="Bertin, colporteur", MA="Maëlle", PE="Le percepteur", GA="Garin, tanneur", AL="Aliénor", GD="Un garde de la porte";
 function vary(id,arr){ S.talk=S.talk||{}; const i=S.talk[id]||0; S.talk[id]=i+1; return arr[i%arr.length]; }
 function branch(opts,rest,done){ return {choices:opts.map(o=>[o[0],()=>{ if(o[2]) o[2](); talk(o[1].concat(rest||[]),done); }])}; }
+const TRIBUT=[
+  {id:"paye", choix:"Payer la mesure de votre poche",
+   lignes:[[PE,"« Bien. Tu vois, quand on veut. Suivant. »"],["","Vous videz votre bourse. Il ne vous regarde déjà plus."]],
+   garde:"Le jeune garde, à gauche de la porte, regarde ses pieds, comme on le lui a appris."},
+  {id:"denonce", choix:"Dire que le sac de Garin, le tanneur, était bien plus léger",
+   lignes:[[PE,"« Garin ? Tiens donc. Gardes, qu’on me ramène le tanneur. »"],[PE,"« Tu iras loin, petite. Le palais a toujours besoin de gens qui regardent le sac des autres. »"],["","Il raye votre dette. Vous venez de payer avec le nom d’un autre."]],
+   garde:"Le jeune garde, à gauche de la porte, lève les yeux sur vous. Puis il les détourne, comme on détourne les yeux d’une flaque. Il a quelque chose à vous dire."},
+  {id:"refus", choix:"Demander à quoi sert le tribut",
+   lignes:[[PE,"« À nourrir les gardes. »"],[AL,"« Et les gardes ? »"],[PE,"« À veiller à ce que tu paies. Ton nom ? … Aliénor. Je l’écris en grand. »"],["","Les gardes vous suivent des yeux. Vous n’êtes plus un sac parmi les autres."]],
+   garde:"Le jeune garde, à gauche de la porte, ne regarde plus ses pieds. Il vous regarde, comme s’il voulait vous parler."}
+];
+function suiteTribut(){
+  const issue=TRIBUT.find(option=>option.id===S.flags.tribut);
+  if(issue) talk(issue.lignes.concat([["",issue.garde],["","Près de son étal, Maëlle vous fait signe."]]),()=>setStage(2));
+}
+function choisirTribut(id){
+  S.flags.tribut=id;
+  const b=bstate();
+  if(id!=="paye") b.vu=true;
+  if(id==="denonce") b.conf=-1;
+  save();
+  sfx(id==="paye"?"coins":"plume");
+  suiteTribut();
+}
 const INTER=[
  {p:()=>N.anselme.position,label:"Parler à Anselme",act(){ if(S.act===2) return A2.anselme();
    if(S.stage===0) return beginMeeting([[AN,"« Te voilà, Aliénor. De l’encre jusqu’aux coudes, comme d’habitude. »"],[AN,"« C’est le matin du tribut. Le tiers de ce que l’atelier a gagné part au palais. Porte ce sac au percepteur, au nord de la place. »"],
@@ -2595,13 +2620,8 @@ const INTER=[
        [[MA,"« Il y en a une autre dans la chapelle du vieux cloître, à l’est, derrière la cour des gardes. La poterne est ouverte le matin. »"],[MA,"« Reste hors du rouge et passe derrière les caisses. S’ils te voient, ils te jettent dehors. »"]],()=>setStage(3))]); }},
  {p:()=>N.percepteur.position,get r(){ return S.act===1&&S.stage===1?3.4:2.4; },label:"Parler au percepteur",act(){ if(S.act===2) return A2.percepteur();
    if(S.stage!==1) return talk([[PE,vary("pe",["« Suivant. »","« L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. »","« Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. »"])]]);
-   const B1={paye:"Le jeune garde, à gauche de la porte, regarde ses pieds, comme on le lui a appris.",denonce:"Le jeune garde, à gauche de la porte, lève les yeux sur vous. Puis il les détourne, comme on détourne les yeux d’une flaque. Il a quelque chose à vous dire.",refus:"Le jeune garde, à gauche de la porte, ne regarde plus ses pieds. Il vous regarde, comme s’il voulait vous parler."};
-   const done=(flag,lines)=>()=>{ S.flags.tribut=flag; sfx(flag==="paye"?"coins":"plume"); const b=bstate(); if(flag!=="paye") b.vu=true; if(flag==="denonce") b.conf=-1; talk(lines.concat([["",B1[flag]],["","Près de son étal, Maëlle vous fait signe."]]),()=>setStage(2)); };
-   sfx("sac"); talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],{choices:[
-     ["Payer la mesure de votre poche",done("paye",[[PE,"« Bien. Tu vois, quand on veut. Suivant. »"],["","Vous videz votre bourse. Il ne vous regarde déjà plus."]])],
-     ["Dire que le sac de Garin, le tanneur, était bien plus léger",done("denonce",[[PE,"« Garin ? Tiens donc. Gardes, qu’on me ramène le tanneur. »"],[PE,"« Tu iras loin, petite. Le palais a toujours besoin de gens qui regardent le sac des autres. »"],["","Il raye votre dette. Vous venez de payer avec le nom d’un autre."]])],
-     ["Demander à quoi sert le tribut",done("refus",[[PE,"« À nourrir les gardes. »"],[AL,"« Et les gardes ? »"],[PE,"« À veiller à ce que tu paies. Ton nom ? … Aliénor. Je l’écris en grand. »"],["","Les gardes vous suivent des yeux. Vous n’êtes plus un sac parmi les autres."]])]
-   ]}]); }},
+   sfx("sac"); talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],
+     {choices:TRIBUT.map(option=>[option.choix,()=>choisirTribut(option.id)])}]); }},
  {p:()=>({x:-3.1,z:-14.5}),r:2.7,get label(){ return S.act===1&&GATE_L.visible?(bstate().nom?"Parler à Bastien":"Parler au jeune garde"):"Parler au garde"; },act(){ if(S.act===2) return A2.garde(); bastienPorte(); }},
  {p:()=>N.garin.position,label:"Parler à Garin",act(){ if(S.act===2) return A2.garin();
    if(S.stage>4) return talk([[GA,vary("ga5",["« Mon sac est toujours par terre. J’attends de voir qui posera le sien. »","« Ma femme dit que je suis fou. Elle a peut-être raison. Mais je dors mieux. »"])]]);
@@ -3330,6 +3350,7 @@ function joute2(k,i,miss){ const J=J2[k]; if(i===0&&!miss) j2Miss=0;
 /* ---------- la presse ---------- */
 const LINE=["« Pauvres","et misérables","peuples insensés,","nations opiniâtres","en votre mal","et aveugles","à votre bien ! »"], LINE_ORD=[3,0,5,1,6,2,4];
 function reprendreImpression(){
+  if(typeof S.flags.incline==="boolean") return reponseLitiere(S.flags.incline);
   const travail=S.impression;
   if(!travail) return;
   if(Number.isInteger(travail.mots)&&travail.mots>=0&&travail.mots<LINE.length) compose(travail.mots);
@@ -3348,7 +3369,12 @@ function startCine2(){ if(!litter){ litter=new THREE.Group(); const b=new Builde
     for(const [dx,dz] of [[-2.2,-0.8],[2.2,-0.8],[-2.2,0.8],[2.2,0.8]]){ const g=redcoat(human(Object.assign({x:0,z:0,ry:Math.PI/2},guardLook))); scene.remove(g); g.position.set(dx,0,dz); g.userData.arms[1].rotation.x=0; litter.add(g); } litter.position.set(-24,0,8.2); scene.add(litter); }
   litter.visible=true; cine2T=0; mode="cine2"; refreshHud(); camPos.set(0,3.4,19); camLook.set(-6,2.2,8); }
 function endCine2(){ mode="play"; litter.visible=false; snapCam();
-  talk([["","Une litière fermée a traversé la place. Les rideaux étaient tirés. Toute la place s’est inclinée."],[AN,"« Tu vois ? Ils s’inclinent devant un rideau. »"],{choices:[["S’incliner, comme tout le monde",()=>{ S.flags.incline=true; talk([["","Vous baissez la tête. Personne ne vous voit, derrière la vitre. Vous l’avez fait quand même."]],afterLitter); }],["Rester debout, dans l’ombre",()=>{ S.flags.incline=false; talk([["","Vous restez debout. Personne ne le saura. Sauf vous."]],afterLitter); }]]}]); }
+  talk([["","Une litière fermée a traversé la place. Les rideaux étaient tirés. Toute la place s’est inclinée."],[AN,"« Tu vois ? Ils s’inclinent devant un rideau. »"],{choices:[["S’incliner, comme tout le monde",()=>reponseLitiere(true)],["Rester debout, dans l’ombre",()=>reponseLitiere(false)]]}]); }
+function reponseLitiere(incline){
+  S.flags.incline=incline; save();
+  const reponse=incline?"Vous baissez la tête. Personne ne vous voit, derrière la vitre. Vous l’avez fait quand même.":"Vous restez debout. Personne ne le saura. Sauf vous.";
+  talk([["",reponse]],afterLitter);
+}
 function afterLitter(){ talk([[AL,"« Qui est dedans ? »"],[AN,"« Personne ne l’a jamais vu. C’est tout son pouvoir. »"]],()=>{ mode="turn"; wash(()=>{ player.position.set(-19.4,0,7.6); player.rotation.y=Math.PI/2; setStage(15); snapCam(); mode="play"; refreshHud();
   talk([["","L’aube. Sur la place, des gobelets renversés, des rubans dans les flaques. Des hommes dorment sur les marches."],["","Cent feuilles ont séché pendant la nuit. Anselme vous en tend une, avec un pot de colle."],[AN,"« La première, sur la fontaine. Là où tout le monde passe. »"]]); }); }); }
 function showEnd2(){ mode="panel"; refreshHud(); const n=S.oubli||0, t=S.toasts||0, p=S.pieces||0, w=(S.temo||[]).length, c=Object.keys(S.cls||{}).length, L=[];
