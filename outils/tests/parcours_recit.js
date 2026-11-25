@@ -40,7 +40,8 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
             break;
           }
           const buttons = [...dlg.querySelectorAll('button')];
-          const wanted = remaining.shift();
+          const rencontrePoterne = tribute === 'denonce' && buttons.some(b => b.textContent.includes('Pourquoi tu me laisses'));
+          const wanted = rencontrePoterne ? 'Pourquoi tu me laisses' : remaining.shift();
           const button = wanted === undefined ? buttons[0] : buttons.find(b => b.textContent.includes(wanted));
           if (!button) fail('Choix absent ' + wanted);
           button.click();
@@ -201,10 +202,19 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     }
     expectStage(2);
     if (S.flags.tribut !== tribute) fail('Choix du tribut perdu');
+    if (tribute === 'denonce') {
+      await interact('Parler au jeune garde',-3.1,-14.5,2.35,['J’ai eu peur']);
+      if (!S.bastien.b2 || S.bastien.conf !== 0) fail('Réponse à Bastien perdue après le tribut');
+    }
     await person('Maëlle','maelle');
     expectStage(3);
     await interact('Fouiller la chapelle',52.7,-2,2.4);
     expectStage(4);
+    if (tribute === 'denonce') {
+      await walk(23.75,-.3,.65);
+      if (!S.bastien.b3) await interact('Parler au garde',24.5,1.2,2);
+      if (!S.bastien.nom || S.bastien.conf !== 1) fail('Nom de Bastien absent à la poterne');
+    }
     if (tribute === 'paye') {
       await interact('Ramasser le feuillet',51.9,-8.5,1.8);
       if (!S.f.includes('F5')) fail('Feuillet de la cour absent');
@@ -225,6 +235,11 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     expectStage(10);
     await person('Anselme','anselme');
     expectStage(11);
+    if (tribute === 'denonce') {
+      await interact('Parler à Bastien',-7.4,-1.6,2,['Danser']);
+      await interact('S’approcher de la femme masquée',-6.6,10.4,2.3);
+      if (!S.bastien.danse || !S.mahaut.billet || S.bastien.conf !== 2) fail('Branle ou billet absent');
+    }
     if (tribute === 'refus') {
       for (const witness of WIT) {
         await interact(witness.label,witness.night[0],witness.night[1],2);
@@ -272,6 +287,15 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
   expectStage(16);
   if (!fete.poster.visible || !ov.textContent.includes('Cent feuilles avant l’aube'))
     fail('Affiche ou bilan absent');
+  if (tribute === 'denonce') {
+    click('[data-a="back"]');
+    await interact('Parler à Bastien',-2.6,7.9,2,['Tu sais lire']);
+    if (!state().bastien.lit || S.bastien.conf !== 3 || S.bastien.expo !== 0)
+      fail('Conversation devant l’affiche sans sa conséquence');
+    click('#carnetBtn');
+    if (!ov.textContent.includes('Un billet écrit à la main')) fail('Billet de la femme masquée absent du carnet');
+    click('[data-a="bilan"]');
+  }
   const saved = state();
   return {gestures, stage:saved.stage, tribute:saved.flags.tribut, bow:saved.flags.incline,
     confession:saved.flags.aveu, sheets:saved.f.slice().sort()};

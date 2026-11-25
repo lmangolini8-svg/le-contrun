@@ -221,7 +221,14 @@ async function testGuardCapture(browser) {
     await dialogue.getByText(/Le garde qui vous raccompagne/).waitFor();
     await dialogue.tap();
     await dialogue.tap();
-    await dialogue.getByRole('button', {name: /Je cherchais un chat/}).tap();
+    const answer = dialogue.getByRole('button', {name: /Je cherchais un chat/});
+    await answer.waitFor();
+    await page.reload({waitUntil: 'domcontentloaded'});
+    await resume();
+    await dialogue.getByText(/Le garde qui vous raccompagne/).waitFor();
+    await dialogue.tap();
+    await dialogue.tap();
+    await answer.tap();
     await dialogue.tap();
     await dialogue.tap();
     await page.waitForFunction(() => mode === 'play');
@@ -233,6 +240,39 @@ async function testGuardCapture(browser) {
     assert.equal(saved.renvoiCour, undefined);
   });
   console.log('Sauvegarde injectée devant la patrouille : alerte, renvoi, rechargement à la poterne et dialogue de Bastien.');
+}
+
+async function testBastienReload(browser) {
+  const meetings = [
+    {act:1, stage:2, pos:[-4.6,-13.75], label:'Parler au jeune garde', question:/Comment tu t’appelles/, flag:'b2', result:'nom'},
+    {act:1, stage:4, pos:[23.75,-.3], label:'Parler au garde', question:/Laisse-moi tranquille/, flag:'b3', result:'refus'},
+    {act:2, stage:11, pos:[-8.9,-.85], label:'Parler au garde', question:/^Danser$/, flag:'b4', result:'danse'},
+    {act:2, stage:16, pos:[-4.1,8.65], label:'Parler au garde', question:/Tu sais lire/, flag:'b6', result:'lit'}
+  ];
+  for (const {act,stage,pos,label,question,flag,result} of meetings) {
+    const checkpoint = {act,stage,pos,flags:{tribut:'refus'},bastien:{vu:true,nom:false,conf:0,expo:0}};
+    await withSession(browser, checkpoint, {width:810,height:1080}, async page => {
+      const dialogue = page.locator('#dlg');
+      const answer = dialogue.getByRole('button',{name:question});
+      async function meet() {
+        await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+        await page.getByRole('button',{name:label,exact:true}).tap();
+        await dialogue.tap();
+        if (flag==='b3') await dialogue.tap();
+        await answer.waitFor();
+      }
+      await meet();
+      await page.reload({waitUntil:'domcontentloaded'});
+      await meet();
+      await answer.tap();
+      const saved = await page.evaluate(key=>JSON.parse(localStorage.getItem(key)).bastien,storageKey);
+      assert.equal(saved[flag],true);
+      assert.equal(saved[result],true);
+      assert.equal(saved.conf,result==='refus'?0:1);
+      assert.equal(saved.expo,0);
+    });
+  }
+  console.log('Bastien : quatre sauvegardes injectées, fermeture avant réponse puis choix joué à la porte, à la poterne, au bal et devant l’affiche.');
 }
 
 async function testStoneInterruption(browser) {
@@ -482,7 +522,7 @@ async function testStory(browser) {
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
       + (joystick ? ' Déplacements au joystick avec gestes tactiles Chromium.' : '')
-      + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : '')
+      + (tribute === 'denonce' ? ' Partie rechargée à l’aube. Bastien rencontré à la porte, à la poterne, au bal et devant l’affiche. Billet de Mahaut retrouvé dans le carnet.' : '')
       + (tribute === 'refus' ? ' Partie rechargée à la réponse du percepteur. F7 et F8 retrouvés après les indices des joutes.' : ''));
   }
 }
@@ -503,6 +543,7 @@ async function testStory(browser) {
     await testStory(browser);
     await testPrintInterruption(browser);
     await testGuardCapture(browser);
+    await testBastienReload(browser);
     await testStoneInterruption(browser);
     await testDeniedConfession(browser);
     await testJoustReload(browser);
