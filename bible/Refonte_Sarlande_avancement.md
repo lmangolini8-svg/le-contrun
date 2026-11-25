@@ -45,3 +45,22 @@ Suivi du [cahier des charges](Refonte_Sarlande.md) · 25 novembre 2026
 - La Caisse des métiers, l’arbre de compétences, les catalogues de boutiques (identifiants des deux classeurs).
 - Le lendemain sur la place : il attend l’acte III.
 - Décisions prises le 25 novembre 2026 : cadre du libelle (manuscrit recopié dans les marges), Mahaut autrice de la lettre (révélé à l’acte III), Saint-Michel 1550. Reste ouverte : la question 15 (cloche, seuils, montants), à régler après essais avec des élèves.
+
+## Cartographie du 25 novembre 2026 : ce qu’elle change pour le jeu
+
+Source : branche `codex/planches-vie-2026-11-25`, dossier `references/planches-vie/` (carte de production, plan des circulations, atlas de 32 planches, carnets des cinq actes, `Sarlande_Cartes_et_terrain.zip`). Repère des données : 1 m par unité, X vers l’est, Y vers le sud, altitudes relatives.
+
+**Accords avec la première journée**
+- Quartiers : le clos des murailles (secteur 8), l’imprimerie et les Drapiers (5), la place et les halles (6), la cour des gardes (7), le quai (9) correspondent aux quartiers de `jeu/monde.js`.
+- Le carnet de l’acte I (« Le matin du tribut ») repère l’imprimerie, le fournil, la fontaine, la Caisse des métiers et la poterne : ce sont les lieux de la première journée.
+- Les commerces du clos (menuisier, tapissière, pépiniériste) sont ceux du décor.
+
+**Écarts à corriger**
+1. **Orientation du clos.** Dans l’atlas, le clos est au sud-est, contre l’enceinte est, au-dessus de la rivière. La maison d’Aliénor est à la cote 6,2 m, le puits des voisins à 14 m au nord-ouest, le menuisier à 30 m au nord-ouest, la tapissière à 30 m au nord, le pépiniériste à 20 m au nord-est ; le terrain monte vers le nord. Le décor actuel met la muraille au nord et la pépinière près d’une poterne : à refaire sur ce plan. La poterne de l’atlas est celle de la cour des gardes, à une centaine de mètres à l’ouest.
+2. **Échelle de la place.** La scène 3D existante est environ trois fois plus resserrée que l’atlas (de l’imprimerie à la chapelle des gardes : 75 m en jeu, 228 m sur le plan). Les positions relatives sont justes (imprimerie à l’ouest, cour des gardes à l’est, palais au nord, quai au sud) ; le fournil et les halles sont à replacer : fournil entre l’imprimerie et la fontaine, halles au sud-est de la fontaine, Caisse des métiers au nord-est.
+3. **Trajet du matin.** De la maison à l’imprimerie, environ 270 m à vol d’oiseau, par les rues du clos et le sud de la place, puis la rue de l’imprimerie (le parcours court place–quai monte jusqu’à 11 %). Le trajet à pied du cahier des charges doit suivre ce tracé, raccourci pour le jeu.
+4. **Boucher et chasseur.** Ils ne figurent pas parmi les douze enseignes ; ils relèvent des étals tournants du marché (planche 08b). À placer sous les halles.
+
+**À reprendre directement**
+- `commerces.csv` : 1 040 références, boutique, quartier, prix, acte et point, pour remplir les boutiques du jeu (cahier des charges, partie 6).
+- Les cinq cartes du carnet, à donner une à une, acte par acte, à la place de la carte schématique actuelle.
