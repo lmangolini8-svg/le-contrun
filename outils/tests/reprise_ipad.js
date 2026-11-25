@@ -194,6 +194,69 @@ async function testToast(browser) {
   console.log('Acte II : le carnet suspend le grand toast, la reprise conserve le temps et les alliés.');
 }
 
+async function testStoneInterruption(browser) {
+  // Sauvegarde injectée avant Garin. Aucune victoire ni cinématique dans cet état.
+  await withSession(browser, {stage: 4, f: ['F1','F2','F3'], flags: {tribut: 'paye'}, pos: [-10,-1.4]},
+    {width: 1080, height: 810}, async page => {
+      const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+      await resume();
+      await page.getByRole('button', {name: 'Parler à Garin'}).tap();
+      const dialogue = page.locator('#dlg');
+      const answers = await page.evaluate(() => ['F1','F2','F3'].map(id => FEU[id].cit));
+      for (let line = 0; line < 3; line++) await dialogue.tap();
+      for (const answer of answers) {
+        await dialogue.getByRole('button', {name: answer, exact: true}).tap();
+        await dialogue.tap();
+      }
+      await dialogue.tap();
+      await dialogue.tap();
+      const plate = page.locator('#plate');
+      await plate.getByText('Touchez pour tourner la page').waitFor();
+      await page.reload({waitUntil: 'domcontentloaded'});
+      await resume();
+      await plate.getByText('Touchez pour tourner la page').tap();
+      await page.getByRole('button', {name: 'Passer la scène'}).tap();
+      await dialogue.getByText(/une pierre gît hors du socle/).waitFor();
+      const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
+      assert.equal(saved.stage, 5);
+      assert.equal(saved.pierreEnAttente, undefined);
+    });
+  console.log('Sauvegarde injectée avant Garin : trois réponses jouées, reprise sur la pierre après la joute.');
+}
+
+async function testPrintInterruption(browser) {
+  // Sauvegarde injectée de l’ancien format. Tous les mots et tirages sont ensuite joués.
+  await withSession(browser, {act: 2, stage: 14, pos: [-20, 6.6]},
+    {width: 810, height: 1080}, async page => {
+      const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+      async function reload() {
+        await page.reload({waitUntil: 'domcontentloaded'});
+        await resume();
+      }
+      const dialogue = page.locator('#dlg');
+      const pick = name => dialogue.getByRole('button', {name, exact: true}).tap();
+      await resume();
+      await page.getByRole('button', {name: 'Parler à Anselme'}).tap();
+      await dialogue.tap();
+      await dialogue.tap();
+      await pick('Composer la page');
+      for (const word of ['« Pauvres','et misérables','peuples insensés,']) await pick(word);
+      await pick('et aveugles');
+      await dialogue.getByText(/Ce mot ne vient pas là/).waitFor();
+      await reload();
+      assert.equal(await dialogue.locator('.txt').textContent(), '« Pauvres et misérables peuples insensés,');
+      for (const word of ['nations opiniâtres','en votre mal','et aveugles','à votre bien ! »']) await pick(word);
+      await pick('Tirer la barre');
+      await reload();
+      await dialogue.getByText('Une feuille. Maëlle l’étend sur la corde.', {exact: true}).waitFor();
+      await pick('Tirer la barre');
+      await pick('Tirer la barre');
+      await reload();
+      await dialogue.getByText('Cent feuilles sèchent au-dessus de vos têtes.', {exact: true}).waitFor();
+    });
+  console.log('Sauvegarde injectée à l’atelier : reprise après trois mots, un tirage puis trois tirages.');
+}
+
 async function testStory(browser) {
   for (const tribute of ['paye', 'denonce', 'refus']) {
     await withSession(browser, null, {width: 810, height: 1080}, async page => {
@@ -210,7 +273,8 @@ async function testStory(browser) {
       assert.equal(result.tribute, tribute);
       assert.equal(result.bow, tribute === 'paye');
       assert.equal(result.confession, tribute === 'denonce' ? true : undefined);
-      assert.deepEqual(result.sheets, ['F1','F2','F3','F6','F7','F8']);
+      const expectedSheets = tribute === 'paye' ? ['F1','F2','F3','F4','F5','F6','F7','F8'] : ['F1','F2','F3','F6','F7','F8'];
+      assert.deepEqual(result.sheets, expectedSheets);
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
       + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : ''));
@@ -231,6 +295,8 @@ async function testStory(browser) {
     await testNotebook(browser);
     await testToast(browser);
     await testStory(browser);
+    await testPrintInterruption(browser);
+    await testStoneInterruption(browser);
   } finally {
     await browser.close();
   }

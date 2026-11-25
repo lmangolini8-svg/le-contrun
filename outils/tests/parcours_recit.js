@@ -173,6 +173,12 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     expectStage(3);
     interact('Fouiller la chapelle',52.7,-2,2.4);
     expectStage(4);
+    if (tribute === 'paye') {
+      interact('Ramasser le feuillet',51.9,-8.5,1.8);
+      if (!S.f.includes('F5')) fail('Feuillet de la cour absent');
+      interact('Ramasser le feuillet',17.5,17.6,2.15);
+      if (!S.f.includes('F4')) fail('Feuillet du quai absent');
+    }
     if (tribute === 'refus') {
       person('Garin','garin',quotes('F2','F2'));
       expectStage(4);
@@ -205,6 +211,7 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     advance(['Composer la page',...LINE,...press,'Et s’ils',litter], true);
     expectStage(15);
     const dawnSave = state();
+    if (dawnSave.impression !== undefined) fail('Travail d’imprimerie encore actif à l’aube');
     if (dawnSave.stage !== 15 || dawnSave.pos[0] !== player.position.x || dawnSave.pos[1] !== player.position.z)
       fail('Position sauvegardée avant la sortie de l’atelier : '+JSON.stringify(dawnSave.pos));
     if (interruptDawn) return 'aube';
