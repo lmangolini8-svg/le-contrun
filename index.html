@@ -2226,6 +2226,37 @@ function sculptedAlienor(){
 const _aliV=new THREE.Vector3();
 function aliRate(v){return Math.max(7,Math.min(13,v*.56*Math.PI/Math.min(.27,.17+.035*v)));}
 const player=sculptedAlienor();player.position.set(S.pos[0],0,S.pos[1]);
+const useMeshyAlienor=new URLSearchParams(location.search).get("alienor")==="meshy";
+let meshyAlienor=null;
+if(useMeshyAlienor){
+  gltfLoader().then(loader=>loader.loadAsync("modeles/personnages/alienor_meshy.glb")).then(({scene:asset})=>{
+    const box=new THREE.Box3().setFromObject(asset), height=box.max.y-box.min.y;
+    if(!Number.isFinite(height)||height<=0)throw new Error("Dimensions invalides pour Aliénor Meshy");
+    const size=1.68/height, center=box.getCenter(new THREE.Vector3());
+    asset.scale.multiplyScalar(size);
+    asset.position.set(-center.x*size,-box.min.y*size,-center.z*size);
+    asset.traverse(obj=>{
+      if(!obj.isMesh)return;
+      obj.castShadow=true;
+      obj.receiveShadow=true;
+    });
+    meshyAlienor=new THREE.Group();
+    meshyAlienor.name="Aliénor Meshy";
+    meshyAlienor.visible=false;
+    meshyAlienor.add(asset);
+    player.add(meshyAlienor);
+  }).catch(error=>console.error("Chargement d’Aliénor Meshy",error));
+}
+function updateAlienorModel(){
+  if(!meshyAlienor)return;
+  const u=player.userData;
+  const visible=mode==="play"&&!u.posed&&!u.sit;
+  meshyAlienor.visible=visible;
+  u.body.visible=!visible;
+  for(const leg of u.legs)leg.visible=!visible;
+  meshyAlienor.position.y=.022*u.amp*Math.abs(Math.sin(u.ph));
+  meshyAlienor.rotation.z=.023*u.amp*Math.sin(u.ph);
+}
 const playerSack=new THREE.Group(),satchel=aliSatchel();
 {const s=ALI_SACK,p=player.userData.sackPivot;p.position.set(Math.sin(s.a)*s.r,s.y,Math.cos(s.a)*s.r);p.rotation.y=0;
   const yaw=new THREE.Group();yaw.rotation.y=s.a;yaw.position.copy(p.position);p.position.set(0,0,0);yaw.add(p);p.add(satchel);satchel.scale.setScalar(1.08);
@@ -2588,7 +2619,19 @@ function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refres
     <select id="statue-model">${GLB_CHOICES.map(([id,label])=>`<option value="${id}"${(GLB_SWAP[GLB_TEST]?GLB_TEST:"ancien")===id?" selected":""}>${label}</option>`).join("")}</select>
   </label>
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
+  <label class="modelChoice">Aliénor
+    <select id="alienor-model">
+      <option value=""${useMeshyAlienor?"":" selected"}>Modèle animé du jeu</option>
+      <option value="meshy"${useMeshyAlienor?" selected":""}>Export Meshy</option>
+    </select>
+  </label>
   <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`;
+  ov.querySelector("#alienor-model").addEventListener("change",event=>{
+    const url=new URL(location.href);
+    if(event.target.value)url.searchParams.set("alienor",event.target.value);
+    else url.searchParams.delete("alienor");
+    location.assign(url.href);
+  });
   ov.querySelector("#statue-model").addEventListener("change",event=>{
     const url=new URL(location.href);
     if(event.target.value==="meshy")url.searchParams.delete("glb");
@@ -3043,7 +3086,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
   if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
     let a=Math.atan2(mx,mz), d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*Math.min(1,dt*12); moving=true; }
-  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
+  player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); updateAlienorModel(); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
   if(S.act===1&&S.stage===0&&!sceneRun&&mode==="play"&&!firstExchange&&toolDown===0){
     const u=N.anselme.userData,bend=.5+.5*Math.sin(time*2.8);
     u.elbows[1].rotation.x=-.72-.48*bend;u.arms[1].rotation.x=-.50+.17*bend;
