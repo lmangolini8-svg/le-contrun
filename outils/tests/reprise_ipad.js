@@ -404,7 +404,9 @@ async function reviseWitnesses(page) {
   await panel.getByRole('button',{name:'Ouvrir le carnet'}).tap();
   const card = name => panel.locator('.temo').filter({has:page.getByText(name,{exact:true})});
   const jeanne = card('Jeanne, aux trois pièces');
-  await jeanne.getByRole('button',{name:'La coutume'}).tap();
+  const wrong = jeanne.getByRole('button',{name:'La coutume'});
+  await wrong.press('Enter');
+  assert.ok(await wrong.evaluate(button=>button===document.activeElement), 'Le clavier reste dans la fiche après une erreur');
   await jeanne.getByText('Pas tout à fait.',{exact:false}).waitFor();
   await page.reload({waitUntil:'domcontentloaded'});
   await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
@@ -423,7 +425,9 @@ async function reviseWitnesses(page) {
   for (const [name,answer] of answers) {
     const witness = card(name);
     await witness.getByRole('button',{name:answer,exact:true}).tap();
-    assert.ok((await witness.locator('.cause').innerText()).startsWith(answer+'.'));
+    const feedback = witness.locator('.cause');
+    assert.ok((await feedback.innerText()).startsWith(answer+'.'));
+    assert.ok(await feedback.evaluate(p=>p===document.activeElement), 'Le clavier rejoint l’explication');
   }
   await page.reload({waitUntil:'domcontentloaded'});
   await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
