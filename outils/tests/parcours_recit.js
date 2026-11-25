@@ -136,7 +136,11 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
       advance();
       tick();
       if (mode !== 'play') continue;
-      if (Math.hypot(p.x-tx,p.z-tz) < radius && (!label || current?.label === label)) return;
+      if (Math.hypot(p.x-tx,p.z-tz) < radius) {
+        if (!label || current?.label === label) return;
+        // Le toast ordinaire prend temporairement la priorité sur la conversation.
+        if (current === RAISE) { click('#act'); continue; }
+      }
       const inCourt = S.act === 1 && (p.x > 26 || tx > 30);
       const path = pathTo(tx, tz, radius, inCourt);
       if (!path) {
@@ -152,7 +156,7 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
         await move(key, 2*(i-start));
         if (mode !== 'play') break;
       }
-      if (mode === 'play' && label && current?.label !== label && Math.hypot(p.x-tx,p.z-tz) < radius) {
+      if (mode === 'play' && label && current !== RAISE && current?.label !== label && Math.hypot(p.x-tx,p.z-tz) < radius) {
         radius -= .15;
       }
     }
@@ -221,16 +225,31 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     expectStage(10);
     await person('Anselme','anselme');
     expectStage(11);
-    await person('Ysabeau','ysabeau');
+    if (tribute === 'refus') {
+      await person('Maëlle','maelle',quotes('F6'));
+      expectStage(11);
+      if (!dlg.textContent.includes('derrière les tréteaux')) fail('Indice de Maëlle absent pour F7');
+    } else await person('Ysabeau','ysabeau');
     await interact('Ramasser le feuillet',5.7,-11.7,1.8);
     await person('Maëlle','maelle',quotes('F6','F7'));
     expectStage(12);
+    if (tribute === 'refus') {
+      await person('Garin','garin',quotes('F6','F7'));
+      expectStage(12);
+      if (!dlg.textContent.includes('Ysabeau')) fail('Indice de Garin absent pour F8');
+      await person('Ysabeau','ysabeau');
+    }
     const replies = quotes('F6','F7','F8');
     if (tribute === 'denonce') replies.unshift('C’était moi');
     await person('Garin','garin',replies);
     expectStage(13);
     await walk(0,7.3,1);
-    for (let n = 0; n < 1200 && !(T2.on && T2.big); n++) { advance(); tick(); }
+    // Si la fête la ramène au quai, Aliénor rejoint à nouveau la fontaine avec ses compagnons.
+    for (let n = 0; n < 1200 && !(T2.on && T2.big); n++) {
+      advance();
+      if (Math.hypot(player.position.x,player.position.z-3) >= 5.8) await walk(0,7.3,1);
+      tick();
+    }
     if (!T2.big || !S.maelleSuit || !S.allies.garin) fail('Escorte absente au grand toast');
     await walk(ATELIER.x,ATELIER.z,3,undefined,14);
     expectStage(14);

@@ -379,7 +379,7 @@ async function testStory(browser) {
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
       + (joystick ? ' Déplacements au joystick avec gestes tactiles Chromium.' : '')
       + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : '')
-      + (tribute === 'refus' ? ' Partie rechargée à la réponse du percepteur.' : ''));
+      + (tribute === 'refus' ? ' Partie rechargée à la réponse du percepteur. F7 et F8 retrouvés après les indices des joutes.' : ''));
   }
 }
 
