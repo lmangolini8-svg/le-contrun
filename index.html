@@ -218,7 +218,10 @@ function objText(){ if(S.act===2) return act2Obj(); if(S.stage===2&&typeof basti
 const KEY="sarlande-acte1-v1";
 const fresh=()=>({stage:0,flags:{},f:[],notes:{},pos:[-19,7],lite:false,started:false,mute:false,talk:{},act:1,allies:{},oubli:0,toasts:0,pieces:0,coinsT:[],temo:[],cls:{},clsMiss:{},mask:false,noted:0,discrets:0,bastien:{vu:false,nom:false,conf:0,expo:0,refus:false,danse:false,lit:false,b2:false,b3:false,b4:false,b6:false},mahaut:{billet:false,question:false}});
 let S=fresh();
-function save(){ if(player){S.pos=[+player.position.x.toFixed(2),+player.position.z.toFixed(2)];} try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
+function save(){ if(player){S.pos=[+player.position.x.toFixed(2),+player.position.z.toFixed(2)];}
+  if(S.stage!==13) delete S.toastEcoule;
+  else if(mode==="play") S.toastEcoule=T2.on&&T2.big?T2.t:null;
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} }
 function load(){ try{const d=JSON.parse(localStorage.getItem(KEY)||"null"); if(d&&typeof d==="object")S=Object.assign(fresh(),d);}catch(e){} }
 let mode="title"; // title | play | dialog | cine | panel
 
@@ -2473,9 +2476,14 @@ function showPlates(){ mode="title"; plBack="title"; refreshHud(); panel(`<span 
 function startPlay(newGame=false){
   closePanel();S.started=true;applyStage();save();fpsT=0;fpsN=0;setScene(true);setCones(true);
   if(newGame){firstExchange=false;player.rotation.y=-Math.PI/2;startMovie("matin",enterPlay);}
-  else{inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();}
+  else{
+    inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
+    if(S.act===2&&S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION){
+      startToast(true,S.toastEcoule);
+    }
+  }
 }
-function showCarnet(){ mode="panel"; plBack="carnet"; refreshHud();
+function showCarnet(){ if(mode==="play") save(); mode="panel"; plBack="carnet"; refreshHud();
   panel(`<span class="kick">Carnet d’Aliénor</span><h2>${S.f.length} feuillets sur ${NF}</h2><p class="small">Pour chaque feuillet, retrouvez le passage dans votre édition et notez la page. Ce carnet vous servira pour réviser.</p>`+
   Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
   mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">Treize vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p><div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n}</i> ${esc(PLATES[k].dest)}</button>`).join("")}</div></div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
@@ -2868,8 +2876,9 @@ Object.assign(FEU,{
 });
 const ACT_T={1:"Acte I · La coutume",2:"Acte II · Les appâts"};
 function actTitle(){ return ACT_T[S.act||1]; }
-let mJoin=false, night=false, dawn=false, sceneKey="day", fete=null, daze=0, inZone=false, cine2T=0, litter=null, farT=0;
-const T2={next:30,on:false,big:false,t:0,raised:false,checked:false,stare:0,sus:0,bwait:0,saidM:false,cues:{}};
+let night=false, dawn=false, sceneKey="day", fete=null, daze=0, inZone=false, cine2T=0, litter=null, farT=0;
+const TOAST_DURATION=25.5;
+const T2={next:30,on:false,big:false,t:0,raised:false,checked:false,stare:0,sus:0,bwait:0};
 const ATELIER={x:-20.6,z:6.6};
 function say(t,s){ const e=$("say"); e.textContent=t; e.style.opacity=1; clearTimeout(say.h); say.h=setTimeout(()=>{ e.style.opacity=0; },(s||3)*1000); }
 function nightCircle(x,z,r,tag){ const c=[x,z,r,false,tag||"night"]; circles.push(c); fete.circ.push(c); return c; }
@@ -3171,8 +3180,8 @@ function placeCast(){ for(const k in ORIG) mvN(k,ORIG[k][0],ORIG[k][1],ORIG[k][2
   if(S.act!==2) return; const st=S.stage, p=player.position;
   if(night){ mvN("percepteur",-15.4,-12.85,0); N.percepteur.userData.sit=true;
     if(st<=11) mvN("garin",-13.0,2.75,Math.PI); else if(st===12) mvN("garin",2.6,-3.0,Math.PI+0.3); else if(st===13) mvN("garin",p.x+1,p.z+1.4,0); else mvN("garin",-20.4,4.2,Math.PI/2);
-    if(st<=11) mvN("maelle",12.6,0.9,2.83); else if(st===12) mvN("maelle",2.9,6.6,-2.4); else if(st===13){ if(mJoin) mvN("maelle",p.x-1,p.z+1.4,0); else mvN("maelle",2.9,6.6,-2.4); } else mvN("maelle",-20.2,9.0,Math.PI/2);
-    if(st===13){ N.garin.userData.circle[3]=false; if(mJoin) N.maelle.userData.circle[3]=false; } }
+    if(st<=11) mvN("maelle",12.6,0.9,2.83); else if(st===12) mvN("maelle",2.9,6.6,-2.4); else if(st===13){ if(S.maelleSuit) mvN("maelle",p.x-1,p.z+1.4,0); else mvN("maelle",2.9,6.6,-2.4); } else mvN("maelle",-20.2,9.0,Math.PI/2);
+    if(st===13){ N.garin.userData.circle[3]=false; if(S.maelleSuit) N.maelle.userData.circle[3]=false; } }
   else { mvN("garin",-20.4,4.4,Math.PI/2); mvN("maelle",-20.2,9.0,Math.PI/2); mvN("percepteur",-4.4,-12.3,0.6); } }
 function placeAllies(){ placeCast(); placeExtras(); if(fete){ for(const o of fete.ng){ o.g.visible=S.act===2&&night&&S.stage===13; o.blind=false; } fete.poster.visible=S.act===2&&dawn&&S.stage>=16; } }
 
@@ -3188,17 +3197,17 @@ function act2Obj(){ const s=S.stage;
 function act2Target(){ const s=S.stage; if(s===10||s===14) return [N.anselme.position,"maître Anselme"]; if(s===11) return [N.maelle.position,"Maëlle"]; if(s===12) return [N.garin.position,"Garin"];
   if(s===13) return (T2.on&&T2.big)?[{x:ATELIER.x,z:ATELIER.z},"l’imprimerie"]:[{x:0,z:6.2},"la fontaine"]; if(s===15) return [{x:0,z:6.1},"la fontaine"]; return [null,""]; }
 function act2Hint(){ if(S.stage<11||S.stage>13) return ""; return S.mask?"Masquée : la foule ne vous remarque plus aux toasts, mais la fête vous prend plus vite.":""; }
-function startAct2(){ closePanel(); turnPage("fete",()=>{ mode="play"; zone=zoneOf(); refreshHud(); snapCam(); talk([["","Le soir est tombé sur Sarlande. Sur la place, on a dressé des tréteaux, percé des tonneaux, allumé cent lanternes."],["","C’est la Fête de l’Un. Elle a lieu chaque année, le soir du tribut. Ce matin, ces mêmes gens portaient leurs sacs."]]); },null,()=>{ S.act=2; S.stage=10; S.allies={}; S.oubli=0; S.toasts=0; S.pieces=0; S.coinsT=[]; S.mask=false; S.noted=0; mJoin=false; daze=0; T2.on=false; T2.next=30; T2.sus=0; T2.saidM=false; player.position.set(-19,0,7); applyStage(); save(); }); }
+function startAct2(){ closePanel(); turnPage("fete",()=>{ mode="play"; zone=zoneOf(); refreshHud(); snapCam(); talk([["","Le soir est tombé sur Sarlande. Sur la place, on a dressé des tréteaux, percé des tonneaux, allumé cent lanternes."],["","C’est la Fête de l’Un. Elle a lieu chaque année, le soir du tribut. Ce matin, ces mêmes gens portaient leurs sacs."]]); },null,()=>{ S.act=2; S.stage=10; S.allies={}; S.oubli=0; S.toasts=0; S.pieces=0; S.coinsT=[]; S.mask=false; S.noted=0; S.maelleSuit=false; daze=0; T2.on=false; T2.next=30; T2.sus=0; S.toastExplique=false; player.position.set(-19,0,7); applyStage(); save(); }); }
 
 /* ---------- toasts, poursuite, regards ---------- */
 function nearCrowd(){ let m=99; const p=player.position; for(const g of fete.crowd){ const d=Math.hypot(g.position.x-p.x,g.position.z-p.z); if(d<m) m=d; } return m; }
 const RAISE={label:"Lever le gobelet",act(){ T2.raised=true; S.toasts=(S.toasts||0)+1; sfx("clink1"); if(S.toasts===1) say("Vous levez le gobelet. Tout le monde le fait. Personne ne le remarque, pas même vous.",4.5); save(); }};
 function act2Special(){ if(S.act===2&&night&&fete&&T2.on&&!T2.big&&T2.t<4.3&&!T2.raised&&!S.mask&&nearCrowd()<7) return RAISE; return null; }
-function startToast(big){ T2.on=true; T2.big=big; T2.t=0; T2.raised=false; T2.checked=false; T2.cues={}; if(big){ for(const o of fete.ng) o.blind=true; refreshHud(); } }
+function startToast(big,elapsed=0){ T2.on=true; T2.big=big; T2.t=elapsed; T2.raised=false; T2.checked=false; if(big){ for(const o of fete.ng) o.blind=true; refreshHud(); } }
 function endBig(){ T2.on=false; for(const o of fete.ng) o.blind=false; refreshHud(); }
 function act2Caught(kind){ if(mode==="turn") return; seen=0; endBig(); T2.bwait=4; if(kind==="toast") S.noted=(S.noted||0)+1;
   const lines=kind==="toast"?[["Un sergent","« On ne trinque pas à l’Un, petite ? »"],["","Il vous prend le bras et vous reconduit jusqu’aux marches de l’imprimerie."],["Un sergent","« Va dormir. Et demain, souviens-toi de lever ton verre. »"]]:[["Un garde","« Halte. Où allez-vous, à cette heure ? La fête est par là. »"],["","On vous raccompagne jusqu’à la fontaine. Les gardes reprennent leur place au coin de la rue."]];
-  talk(lines,()=>{ mode="turn"; wash(()=>{ if(kind==="toast") player.position.set(-19.4,0,9.8); else player.position.set(2.4,0,7.8); if(S.stage===13){ mvN("garin",player.position.x+1,player.position.z+1.3,0); N.garin.userData.circle[3]=false; if(mJoin){ mvN("maelle",player.position.x-1,player.position.z+1.3,0); N.maelle.userData.circle[3]=false; } } snapCam(); mode="play"; refreshHud(); }); }); }
+  talk(lines,()=>{ mode="turn"; wash(()=>{ if(kind==="toast") player.position.set(-19.4,0,9.8); else player.position.set(2.4,0,7.8); if(S.stage===13){ mvN("garin",player.position.x+1,player.position.z+1.3,0); N.garin.userData.circle[3]=false; if(S.maelleSuit){ mvN("maelle",player.position.x-1,player.position.z+1.3,0); N.maelle.userData.circle[3]=false; } } snapCam(); mode="play"; refreshHud(); }); }); }
 function act2Arrive(){ endBig(); setStage(14); const bb=bstate(), seenBy=bb.vu&&!bb.refus?[["",bb.nom?"Bastien vous a vus passer. Il a détourné la tête vers le balcon.":"Au coin de la rue, sous une lanterne, un garde vous a vus passer. Il a détourné la tête vers le balcon."]]:[]; talk(seenBy.concat([["","Vous refermez la porte de l’atelier derrière vous. Dehors, la place crie encore « Vive l’Un ! »."],[GA,"« Personne ne nous a vus. Ils regardaient tous le balcon. »"],[MA,"« Ils obéissaient. Et c’est leur obéissance qui nous a cachés. »"]]),()=>A2.anselme()); }
 
 /* ---------- la farce ---------- */
@@ -3248,25 +3257,27 @@ function feteTick(dt,time){ if(!fete||S.act!==2) return;
   for(const w of WIT) for(const {g} of w.objs){ if(!g.visible) continue; animate(g,false,dt); const U=g.userData;
     if(U.pose==="king"){ U.arms[0].rotation.x=-2.6; U.arms[1].rotation.x=-0.4+Math.sin(time*3)*0.3; } else if(U.pose==="carry"){ U.body.rotation.x=0.4; } else if(U.pose==="shout"){ const s=Math.max(0,Math.sin(time*2.2)); U.arms[0].rotation.x=-2.7*s; U.arms[1].rotation.x=-2.7*s; } }
   /* la poursuite : Maëlle et Garin suivent */
-  if(S.stage===13&&(mode==="play"||mode==="dialog")){ const fw=player.rotation.y; [["garin",1],["maelle",-1]].forEach(([k,s])=>{ const g=N[k]; if(k==="maelle"&&!mJoin){ if(Math.hypot(g.position.x-P.x,g.position.z-P.z)<5) mJoin=true; else { g.userData.walking=false; return; } } const tx=P.x-Math.sin(fw)*1.5+Math.cos(fw)*0.9*s, tz=P.z-Math.cos(fw)*1.5-Math.sin(fw)*0.9*s; const dx=tx-g.position.x, dz=tz-g.position.z, d=Math.hypot(dx,dz), mv=d>0.35&&mode==="play";
+  if(S.stage===13&&(mode==="play"||mode==="dialog")){ const fw=player.rotation.y; [["garin",1],["maelle",-1]].forEach(([k,s])=>{ const g=N[k]; if(k==="maelle"&&!S.maelleSuit){ if(Math.hypot(g.position.x-P.x,g.position.z-P.z)<5) S.maelleSuit=true; else { g.userData.walking=false; return; } } const tx=P.x-Math.sin(fw)*1.5+Math.cos(fw)*0.9*s, tz=P.z-Math.cos(fw)*1.5-Math.sin(fw)*0.9*s; const dx=tx-g.position.x, dz=tz-g.position.z, d=Math.hypot(dx,dz), mv=d>0.35&&mode==="play";
       if(mv){ const sp=Math.min(d,(d>4?7:4.6)*dt); g.position.x+=dx/d*sp; g.position.z+=dz/d*sp; faceTo(g,tx,tz,dt,8); } g.userData.walking=mv; const c=g.userData.circle; c[0]=g.position.x; c[1]=g.position.z; c[3]=false; }); }
   else { N.garin.userData.walking=false; N.maelle.userData.walking=false; }
   /* l’oubli */
   if(mode==="play"&&S.stage>=11&&S.stage<=13){ const px=P.x,pz=P.z; let q=0,cx=0,cz=0; for(const zn of fete.zones){ const d=Math.hypot(px-zn.x,pz-zn.z); if(d<zn.r){ const k=1-d/zn.r; if(k>=q){ q=Math.max(k,0.001); cx=zn.x; cz=zn.z; } } }
     inZone=q>0; daze=Math.max(0,Math.min(1,daze+(inZone?dt*(0.12+0.22*q)*(S.mask?1.7:1):-dt*0.11)));
     if(inZone){ const d=Math.hypot(cx-px,cz-pz)||1, f=0.85*q*dt, nx=px+(cx-px)/d*f, nz=pz+(cz-pz)/d*f; if(!blocked(nx,nz)) player.position.set(nx,0,nz); }
-    if(daze>=1){ daze=0; S.oubli=(S.oubli||0)+1; mode="turn"; sfx("halte"); endBig(); wash(()=>{ player.position.set(-6,0,15.6); if(S.stage===13){ mvN("garin",-5,15.0,0); N.garin.userData.circle[3]=false; if(mJoin){ mvN("maelle",-7,15.0,0); N.maelle.userData.circle[3]=false; } } snapCam(); mode="play"; refreshHud(); talk([["","Vous avez ri, bu, applaudi. Quand la musique s’éloigne, vous êtes assise au bord du quai, et la lune a tourné."],["","Vous aviez presque oublié pourquoi vous étiez sortie."]]); }); } }
+    if(daze>=1){ daze=0; S.oubli=(S.oubli||0)+1; mode="turn"; sfx("halte"); endBig(); wash(()=>{ player.position.set(-6,0,15.6); if(S.stage===13){ mvN("garin",-5,15.0,0); N.garin.userData.circle[3]=false; if(S.maelleSuit){ mvN("maelle",-7,15.0,0); N.maelle.userData.circle[3]=false; } } snapCam(); mode="play"; refreshHud(); talk([["","Vous avez ri, bu, applaudi. Quand la musique s’éloigne, vous êtes assise au bord du quai, et la lune a tourné."],["","Vous aviez presque oublié pourquoi vous étiez sortie."]]); }); } }
   else { inZone=false; if(mode!=="dialog") daze=Math.max(0,daze-dt*0.3); }
   /* les toasts */
-  if(T2.on){ T2.t+=dt; const tc=(n,at,fn)=>{ if(T2.t>=at&&!T2.cues[n]){ T2.cues[n]=1; fn(); } };
-    if(!T2.big){ tc("c",0.2,()=>say("Le crieur, sur le rempart : « Vive l’Un ! »",2.6)); tc("v",0.7,()=>sfx("vive")); tc("k",1.7,()=>sfx("clinks"));
+  if(T2.on&&mode==="play"){
+    const before=T2.t; T2.t+=dt;
+    const cue=(at,fn)=>{ if(before<at&&T2.t>=at) fn(); };
+    if(!T2.big){ cue(0.2,()=>say("Le crieur, sur le rempart : « Vive l’Un ! »",2.6)); cue(0.7,()=>sfx("vive")); cue(1.7,()=>sfx("clinks"));
       if(T2.t>4.3&&!T2.checked){ T2.checked=true; if(mode==="play"&&!S.mask&&!T2.raised&&nearCrowd()<7){ T2.sus++; T2.stare=3.5; sfx("murmur"); say(T2.sus>=2?"« Encore elle ! Elle ne trinque jamais, celle-là. »":"« Elle ne trinque pas, celle-là. »",3); if(T2.sus>=2){ T2.sus=0; act2Caught("toast"); } } }
       if(T2.t>5.8){ T2.on=false; T2.next=40+Math.random()*22; } }
-    else { [1.0,7.6,14.2,20.6].forEach((at,i)=>{ tc("v"+i,at,()=>{ sfx("vive"); if(i===0) say("Toute la place se tourne vers le balcon. C’est le moment : traversez !",4); }); tc("k"+i,at+1.2,()=>sfx("clinks")); });
+    else { [1.0,7.6,14.2,20.6].forEach((at,i)=>{ cue(at,()=>{ sfx("vive"); if(i===0) say("Toute la place se tourne vers le balcon. C’est le moment : traversez !",4); }); cue(at+1.2,()=>sfx("clinks")); });
       if(mode==="play"&&Math.hypot(P.x-ATELIER.x,P.z-ATELIER.z)<3.4) act2Arrive();
-      else if(T2.t>25.5){ endBig(); T2.bwait=5; say("Le toast est fini. Les gardes regardent de nouveau la rue. Attendez le prochain, près de la fontaine.",4.5); } } }
+      else if(T2.t>TOAST_DURATION){ endBig(); T2.bwait=5; say("Le toast est fini. Les gardes regardent de nouveau la rue. Attendez le prochain, près de la fontaine.",4.5); } } }
   else if(mode==="play"){ if(S.stage===11||S.stage===12){ T2.next-=dt; if(T2.next<=0) startToast(false); }
-    if(S.stage===13){ T2.bwait-=dt; if(Math.hypot(P.x,P.z-3)<5.8&&T2.bwait<=0){ if(!T2.saidM){ T2.saidM=true; mJoin=true; talk([[MA,"« Les gardes tiennent la rue de l’imprimerie. Mais au grand toast, toute la place regarde le balcon. Même eux. »"],[GA,"« Alors on attend que Sarlande lève son verre. »"],["","Le crieur monte sur le rempart."]],()=>{ T2.bwait=2.2; }); } else startToast(true); } } }
+    if(S.stage===13){ T2.bwait-=dt; if(Math.hypot(P.x,P.z-3)<5.8&&T2.bwait<=0){ if(!S.toastExplique){ S.maelleSuit=true; talk([[MA,"« Les gardes tiennent la rue de l’imprimerie. Mais au grand toast, toute la place regarde le balcon. Même eux. »"],[GA,"« Alors on attend que Sarlande lève son verre. »"],["","Le crieur monte sur le rempart."]],()=>{ S.toastExplique=true; T2.bwait=2.2; }); } else startToast(true); } } }
   if(S.stage===13&&mode==="play"&&!(T2.on&&T2.big)&&Math.hypot(P.x-ATELIER.x,P.z-ATELIER.z)<7.4) act2Caught("rue");
   const dz=$("daze"); dz.style.opacity=daze>0.02&&(mode==="play"||mode==="dialog")?1:0; $("dazeP").setAttribute("stroke-dashoffset",(100-daze*100).toFixed(1));
   postMat.uniforms.uDaze.value=daze; }
