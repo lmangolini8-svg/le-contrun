@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "folder": "20261125_010405_statue-sarlande_01a2103b",
+      "prompt": "statue_sarlande",
+      "task_type": "multi-image-to-3d",
+      "root_task_id": "01a2103b-0af5-76dd-95bc-5d699644e023",
+      "created_at": "2026-11-25T01:04:05.128Z",
+      "updated_at": "2026-11-25T01:06:06.537Z",
+      "task_count": 1
+    }
+  ]
+}

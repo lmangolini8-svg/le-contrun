@@ -1,0 +1,162 @@
+# Images de référence du Contr’un
+
+Ouvrir dans Claude Code le dossier décompressé qui contient index.html. Les répertoires img/, fonts/, son/ et vendor/ sont nécessaires au fonctionnement du jeu. La fiche de conception d’origine est Le_Contrun_fiche_projet.md.
+
+## Pour Aliénor
+
+Les deux portraits originaux, alienor-neutre.webp et alienor-sourire.webp, donnent le visage, le chignon et la palette. La planche alienor-costume-face-et-dos.webp montre le costume en pied. La capture alienor-de-profil-sac-ecarte.jpg montre le défaut signalé dans une ancienne version. Les captures de la livraison actuelle se trouvent dans dossier/, dont Sarlande_telephone_jeu.jpg et Sarlande_telephone_manche.jpg.
+
+## Pour Anselme et le colosse
+
+Le portrait du maître est anselme.webp. L’illustration de référence du monument est alienor-au-quai-et-statue-de-l-un.webp. La comparaison avec la statue en jeu se trouve dans dossier/Sarlande_statue.jpg.
+
+## Liste exacte des images
+
+Cette édition pour téléphone contient les références compressées. Les chemins partent de la racine du projet.
+
+- dossier/Sarlande_iPad.jpg
+- dossier/Sarlande_iPad_Anselme.jpg
+- dossier/Sarlande_iPad_manche.jpg
+- dossier/Sarlande_statue.jpg
+- dossier/Sarlande_telephone.jpg
+- dossier/Sarlande_telephone_jeu.jpg
+- dossier/Sarlande_telephone_manche.jpg
+- img/alienor-atelier.webp
+- img/alienor-profil.webp
+- img/bois.jpg
+- img/brocart.webp
+- img/enduit.jpg
+- img/erable.webp
+- img/espalier.webp
+- img/etoffes.webp
+- img/horizon.webp
+- img/lanterne.webp
+- img/lieux/archives.webp
+- img/lieux/aube.webp
+- img/lieux/cour.webp
+- img/lieux/couverture.webp
+- img/lieux/fete.webp
+- img/lieux/foret.webp
+- img/lieux/marche.webp
+- img/lieux/portes.webp
+- img/lieux/quai.webp
+- img/mascaron.webp
+- img/ornements.webp
+- img/palais-pierre.webp
+- img/paves.webp
+- img/pierre.jpg
+- img/portraits/alienor_colere.webp
+- img/portraits/alienor_inquietude.webp
+- img/portraits/alienor_neutre.webp
+- img/portraits/alienor_sourire.webp
+- img/portraits/anselme_colere.webp
+- img/portraits/anselme_inquietude.webp
+- img/portraits/anselme_neutre.webp
+- img/portraits/anselme_sourire.webp
+- img/portraits/bertin_colere.webp
+- img/portraits/bertin_inquietude.webp
+- img/portraits/bertin_neutre.webp
+- img/portraits/bertin_sourire.webp
+- img/portraits/comedien_colere.webp
+- img/portraits/comedien_inquietude.webp
+- img/portraits/comedien_neutre.webp
+- img/portraits/comedien_sourire.webp
+- img/portraits/fille_colere.webp
+- img/portraits/fille_inquietude.webp
+- img/portraits/fille_neutre.webp
+- img/portraits/fille_sourire.webp
+- img/portraits/garcon_colere.webp
+- img/portraits/garcon_inquietude.webp
+- img/portraits/garcon_neutre.webp
+- img/portraits/garcon_sourire.webp
+- img/portraits/garde_colere.webp
+- img/portraits/garde_inquietude.webp
+- img/portraits/garde_neutre.webp
+- img/portraits/garde_sourire.webp
+- img/portraits/garin_colere.webp
+- img/portraits/garin_inquietude.webp
+- img/portraits/garin_neutre.webp
+- img/portraits/garin_sourire.webp
+- img/portraits/hugues_colere.webp
+- img/portraits/hugues_inquietude.webp
+- img/portraits/hugues_neutre.webp
+- img/portraits/hugues_sourire.webp
+- img/portraits/jeanne_colere.webp
+- img/portraits/jeanne_inquietude.webp
+- img/portraits/jeanne_neutre.webp
+- img/portraits/jeanne_sourire.webp
+- img/portraits/maelle_colere.webp
+- img/portraits/maelle_inquietude.webp
+- img/portraits/maelle_neutre.webp
+- img/portraits/maelle_sourire.webp
+- img/portraits/margot_colere.webp
+- img/portraits/margot_inquietude.webp
+- img/portraits/margot_neutre.webp
+- img/portraits/margot_sourire.webp
+- img/portraits/mathurin_colere.webp
+- img/portraits/mathurin_inquietude.webp
+- img/portraits/mathurin_neutre.webp
+- img/portraits/mathurin_sourire.webp
+- img/portraits/mendiant_colere.webp
+- img/portraits/mendiant_inquietude.webp
+- img/portraits/mendiant_neutre.webp
+- img/portraits/mendiant_sourire.webp
+- img/portraits/percepteur_colere.webp
+- img/portraits/percepteur_inquietude.webp
+- img/portraits/percepteur_neutre.webp
+- img/portraits/percepteur_sourire.webp
+- img/portraits/perrine_colere.webp
+- img/portraits/perrine_inquietude.webp
+- img/portraits/perrine_neutre.webp
+- img/portraits/perrine_sourire.webp
+- img/portraits/thibaut_colere.webp
+- img/portraits/thibaut_inquietude.webp
+- img/portraits/thibaut_neutre.webp
+- img/portraits/thibaut_sourire.webp
+- img/portraits/ysabeau_colere.webp
+- img/portraits/ysabeau_inquietude.webp
+- img/portraits/ysabeau_neutre.webp
+- img/portraits/ysabeau_sourire.webp
+- img/rideau.webp
+- img/tuiles.jpg
+- img/visages-modeles.webp
+- img/visages.webp
+- references/captures-telephone/alienor-de-face-place.jpg
+- references/captures-telephone/alienor-de-face-porte-et-garde.jpg
+- references/captures-telephone/alienor-de-profil-sac-ecarte.jpg
+- references/captures-telephone/ancienne-version-place.jpg
+- references/lieux-originaux/alienor-au-quai-et-statue-de-l-un.webp
+- references/lieux-originaux/bibliotheque-archives.webp
+- references/lieux-originaux/cour-des-gardes-et-chapelle.webp
+- references/lieux-originaux/foret-et-sarlande-au-loin.webp
+- references/lieux-originaux/place-apres-la-fete-a-l-aube.webp
+- references/lieux-originaux/place-du-marche-et-tribut.webp
+- references/lieux-originaux/place-en-fete-de-nuit.webp
+- references/lieux-originaux/porte-fortifiee-et-pont.webp
+- references/lieux-originaux/quai-au-couchant.webp
+- references/planches-de-travail/alienor-costume-face-et-dos.webp
+- references/planches-de-travail/atlas-costume-lanterne-et-fontaine.webp
+- references/planches-de-travail/atlas-decors-et-ornements.webp
+- references/planches-de-travail/atlas-neuf-etoffes.webp
+- references/planches-de-travail/atlas-neuf-visages-face.webp
+- references/planches-de-travail/atlas-pierre-tuiles-bois-papier.webp
+- references/planches-de-travail/erable-champetre.webp
+- references/planches-de-travail/facade-renaissance-portail.webp
+- references/planches-de-travail/mur-lierres-et-blason.webp
+- references/planches-de-travail/portraits-alienor-anselme-maelle.webp
+- references/planches-de-travail/portraits-charretier-percepteur-vigneron.webp
+- references/planches-de-travail/portraits-garin-ysabeau-garde.webp
+- references/planches-de-travail/portraits-secondaires-etude-01.webp
+- references/planches-de-travail/portraits-secondaires-etude-02.webp
+- references/planches-de-travail/portraits-secondaires-etude-03.webp
+- references/planches-de-travail/portraits-secondaires-etude-04.webp
+- references/portraits-originaux/alienor-neutre.webp
+- references/portraits-originaux/alienor-sourire.webp
+- references/portraits-originaux/anselme.webp
+- references/portraits-originaux/garde.webp
+- references/portraits-originaux/garin.webp
+- references/portraits-originaux/maelle.webp
+- references/portraits-originaux/mathurin.webp
+- references/portraits-originaux/percepteur.webp
+- references/portraits-originaux/thibaut.webp
+- references/portraits-originaux/ysabeau.webp
