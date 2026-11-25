@@ -52,6 +52,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 #arrowLab{position:absolute;left:50%;top:150px;transform:translateX(-50%);font-family:var(--hand);font-weight:700;font-size:19px;color:var(--ink);background:rgba(247,241,227,.86);padding:0 10px;border-radius:12px;white-space:nowrap;pointer-events:none;transition:opacity .3s;opacity:0}
 #daze{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:92px;height:57px;opacity:0;transition:opacity .25s;pointer-events:none}
 #seen{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:84px;height:52px;opacity:0;transition:opacity .25s;pointer-events:none}
+#course{position:absolute;right:24px;bottom:calc(166px + env(safe-area-inset-bottom));min-width:72px;min-height:44px;border:1px solid var(--ink);border-radius:22px;background:var(--page);color:var(--ink);font:inherit}
+#course[aria-pressed="true"]{background:var(--ink);color:var(--page)}
+.grille-clos{display:grid;grid-template-columns:repeat(var(--colonnes),minmax(44px,1fr));gap:4px;margin:10px 0}
+.grille-clos button{min-height:48px;padding:3px;border:1px solid var(--muted);border-radius:4px;background:var(--page);color:var(--ink);font:inherit;font-size:14px;overflow-wrap:anywhere}
+.grille-clos button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
 #joy{position:absolute;width:124px;height:124px;display:none;pointer-events:none}
 #joy svg{position:absolute;inset:0;width:100%;height:100%}
 #joy i{position:absolute;left:38px;top:38px;width:48px;height:48px;border-radius:46% 54% 52% 48%/55% 45% 55% 45%;background:var(--ink);opacity:.82}
@@ -187,6 +192,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
   <svg id="daze" viewBox="0 0 84 52" aria-hidden="true"><path d="M8 20 C8 8 30 6 42 14 C54 6 76 8 76 20 C76 36 62 44 52 38 C48 36 44 32 42 32 C40 32 36 36 32 38 C22 44 8 36 8 20 Z" fill="#f7f1e3" stroke="#221f2b" stroke-width="2.4" stroke-linejoin="round"/><path id="dazeP" d="M14 21 C14 12 28 11 40 17 C36 26 26 33 18 30 C15 28 14 25 14 21 M70 21 C70 12 56 11 44 17 C48 26 58 33 66 30 C69 28 70 25 70 21" fill="none" stroke="#e07f2a" stroke-width="5" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
   <div id="say"></div>
   <div id="hint"></div>
+  <button id="course" aria-pressed="false" hidden>Courir</button>
   <div id="joy"><svg viewBox="0 0 124 124"><path d="M62 5 C96 4 120 30 119 62 C118 96 94 120 61 119 C28 118 4 94 5 61 C6 30 30 6 62 5 Z" fill="rgba(247,241,227,.4)" stroke="#221f2b" stroke-width="2.2"/></svg><i></i></div>
   <button id="act"></button>
   <div id="dlg" class="cart"></div>
@@ -2443,7 +2449,7 @@ function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="
   dlg.innerHTML=portraitForLine(l)+(l[0]?`<div class="who">${esc(l[0])}</div>`:"")+`<p class="txt${l[0]?"":" narr"}">${esc(l[1])}</p><div class="more">Touchez pour continuer</div>`; }
 dlg.addEventListener("click",e=>{ if(waitingChoice){ const b=e.target.closest("[data-c]"); if(!b)return; const c=dlg._choices[+b.dataset.c]; waitingChoice=false; c[1](); return; } nextLine(); });
 
-function refreshHud(){ const playing=mode==="play"; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
+function refreshHud(){ const playing=mode==="play"; $("course").hidden=!playing||!matchMedia("(any-pointer: coarse)").matches; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
   $("carnetBtn").setAttribute("aria-label",`Ouvrir le carnet, ${S.f.length} feuillet${S.f.length>1?"s":""} sur ${NF}`);
   $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg aria-hidden="true" viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
   $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez à gauche pour marcher, à droite pour tourner la caméra":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
@@ -2889,7 +2895,14 @@ function startCine(){
 const joy={on:false,id:null,bx:0,by:0,x:0,y:0}; const joyEl=$("joy");
 const joyKnob=joyEl.querySelector("i");
 const cameraDrag={id:null,x:0};
-let cameraYaw=0;
+let cameraYaw=0,running=false;
+const runButton=$("course");
+runButton.addEventListener("click",()=>{
+  if(mode!=="play")return;
+  running=!running;
+  runButton.setAttribute("aria-pressed",running);
+  runButton.textContent=running?"Marcher":"Courir";
+});
 function cameraDragEnd(){
   const id=cameraDrag.id;
   cameraDrag.id=null;
@@ -2923,6 +2936,9 @@ const keys={};
 function clearControls(){
   joyEnd();
   cameraDragEnd();
+  running=false;
+  runButton.setAttribute("aria-pressed",false);
+  runButton.textContent="Courir";
   for(const key of Object.keys(keys)) delete keys[key];
 }
 window.addEventListener("blur",clearControls);
@@ -3149,7 +3165,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
     mz=mz*c-x*s;
   }
   const ml=Math.hypot(mx,mz); let moving=false;
-  if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
+  if(mode==="play"&&ml>0.12){ const sp=(running||keys["shift"]?3.65:2.45)*Math.min(ml,1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
     let a=Math.atan2(mx,mz), d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*Math.min(1,dt*12); moving=true; }
   player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); updateAlienorModel(dt); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
