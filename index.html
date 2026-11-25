@@ -2545,7 +2545,7 @@ ov.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(!b)ret
   else if(a==="carnet"){ showCarnet(); }
   else if(a==="bilan"&&S.act===2&&S.stage===16){ showEnd2(); ov.scrollTop=0; }
   else if(a==="act2"){ startAct2(); }
-  else if(a==="cls"){ const id=b.dataset.t, c=b.dataset.c, w=WIT.find(x=>x.id===id); S.cls=S.cls||{}; S.clsMiss=S.clsMiss||{}; if(w&&w.cause===c){ S.cls[id]=true; delete S.clsMiss[id]; sfx("feuillet"); } else S.clsMiss[id]=true; save(); const sc=ov.scrollTop; showCarnet(); ov.scrollTop=sc; }
+  else if(a==="cls"){ classerTemoignage(b); }
   else if(a==="pl"){ closePanel(); turnPage("_"+b.dataset.k,()=>{ snapCam(); if(plBack==="title") showPlates(); else showCarnet(); }); }
   else if(a==="plates"){ showPlates(); }
   else if(a==="home"){ showTitle(); }
@@ -3433,8 +3433,30 @@ function showEnd2(){ mode="panel"; refreshHud(); const n=S.oubli||0, t=S.toasts|
   L.push(S.flags.incline?"Quand la litière est passée, vous vous êtes inclinée.":"Quand la litière est passée, vous êtes restée debout.");
   if(S.flags.tribut==="denonce") L.push(S.flags.aveu?"Vous avez avoué à Garin que vous l’aviez dénoncé.":"Garin ne sait toujours pas qui l’a dénoncé.");
   panel(`<img src="img/lieux/aube.webp" alt="" style="width:100%;height:clamp(110px,22vh,200px);object-fit:cover;object-position:50% 42%"><span class="kick">Fin de l’acte II</span><h2>Cent feuilles avant l’aube</h2><p class="lede">Pendant que la ville dansait, une presse a tourné. Ce matin, une page parle sur la fontaine.</p>${L.map(l=>`<p>${esc(l)}</p>`).join("")}<p><b>${w} témoignages sur ${WIT.length}</b> recueillis, ${c} reliés à leur cause. <b>${S.f.length} feuillets sur ${NF}</b>.</p><div class="row"><button class="pri" data-a="back">Rester sur la place</button><button class="sec" data-a="carnet">Ouvrir le carnet</button></div><p class="small">À suivre : acte III, « Celui qu’on ne voit jamais ». L’hiver.</p>`,true); }
+const indiceClassement="Pas tout à fait. Relisez ce qu’on vous a dit.";
+function explicationCause(w){ return CAUSES[w.cause]+". "+CAUSE_TXT[w.cause]; }
+function classerTemoignage(b){
+  const w=WIT.find(w=>w.id===b.dataset.t);
+  if(!w) return;
+  S.cls=S.cls||{}; S.clsMiss=S.clsMiss||{};
+  const fiche=b.closest(".temo"), retour=fiche.querySelector('[role="status"]');
+  if(b.dataset.c!==w.cause){
+    S.clsMiss[w.id]=true;
+    retour.textContent=indiceClassement;
+  } else {
+    S.cls[w.id]=true; delete S.clsMiss[w.id]; sfx("feuillet");
+    const explication=document.createElement("p");
+    explication.className="cause"; explication.tabIndex=-1;
+    explication.textContent=explicationCause(w);
+    fiche.querySelector(".causes").replaceWith(explication);
+    retour.remove();
+    explication.focus({preventScroll:true});
+    explication.scrollIntoView({block:"nearest"});
+  }
+  save();
+}
 function temoHTML(){ const got=S.temo||[]; if(S.act!==2&&!got.length) return ""; return `<div class="feuil"><span class="kick">Témoignages de la fête · ${got.length} sur ${WIT.length}</span><p class="small">Pour chaque habitant écouté, retrouvez dans le Discours ce qui le tient en servitude.</p>${WIT.map(w=>{ if(!got.includes(w.id)) return `<div class="temo lock">Un habitant de la fête que vous n’avez pas encore écouté.</div>`; const ok=S.cls&&S.cls[w.id];
-  return `<div class="temo"><b>${esc(w.nom)}</b><p>${esc(w.resume)}</p>${ok?`<p class="cause">${esc(CAUSES[w.cause])}. ${esc(CAUSE_TXT[w.cause])}</p>`:`<div class="causes">${Object.keys(CAUSES).map(c=>`<button data-a="cls" data-t="${w.id}" data-c="${c}">${esc(CAUSES[c])}</button>`).join("")}</div>${(S.clsMiss||{})[w.id]?`<p class="small">Pas tout à fait. Relisez ce qu’on vous a dit.</p>`:""}`}</div>`; }).join("")}</div>`; }
+  return `<div class="temo"><b>${esc(w.nom)}</b><p>${esc(w.resume)}</p>${ok?`<p class="cause" tabindex="-1">${esc(explicationCause(w))}</p>`:`<div class="causes">${Object.keys(CAUSES).map(c=>`<button data-a="cls" data-t="${w.id}" data-c="${c}">${esc(CAUSES[c])}</button>`).join("")}</div><p class="small" role="status">${(S.clsMiss||{})[w.id]?indiceClassement:""}</p>`}</div>`; }).join("")}</div>`; }
 
 /* ---------- les répliques ---------- */
 function jouteGarinSoir(){ talk([[GA,"« Tu as vu ça ? »"],[AL,"« Anselme t’attend à la presse. »"]],()=>jouerJoute("garin")); }
