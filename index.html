@@ -2503,15 +2503,18 @@ function startPlay(newGame=false){
       if(S.renvoiCour===true) reconduirePoterne();
       else if(S.stage===1) suiteTribut();
       else if(S.stage===4&&S.pierreEnAttente===true) startCine();
+      else reprendreJoute();
     } else if(S.act===2){
       if(S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
       else if(S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION) startToast(true,S.toastEcoule);
       else if(S.stage===14) reprendreImpression();
+      else reprendreJoute();
     }
   }
 }
 function showCarnet(){ if(mode==="play") save(); mode="panel"; plBack="carnet"; refreshHud();
   panel(`<span class="kick">Carnet d’Aliénor</span><h2>${S.f.length} feuillets sur ${NF}</h2><p class="small">Pour chaque feuillet, retrouvez le passage dans votre édition et notez la page. Ce carnet vous servira pour réviser.</p>`+
+  (S.act===2&&S.stage===16?'<button class="sec" data-a="bilan">Relire le bilan de l’acte II</button>':"")+
   Object.keys(FEU).map(id=>S.f.includes(id)?`<div class="feuil"><div class="cit">${esc(FEU[id].cit)}</div><p>${esc(FEU[id].idee)}</p><label for="n-${id}">Ma note, la page dans mon édition</label><textarea id="n-${id}" data-n="${id}">${esc(S.notes[id]||"")}</textarea></div>`:`<div class="feuil lock">Feuillet encore caché dans Sarlande.</div>`).join("")+billetHTML()+temoHTML()+
   mapSVG()+`<div class="feuil"><span class="kick">Le livre des planches</span><p class="small">${plateCount} vues de Sarlande et de ses alentours. Touchez-en une pour l’ouvrir.</p>${platesList()}</div><div class="row"><button class="pri" data-a="back">Retour au jeu</button><button class="sec" data-a="lite">${S.lite?"Affichage normal":"Affichage allégé"}</button></div><p class="small">L’affichage allégé rend le jeu plus fluide sur les petits appareils.</p>`,true); }
 function mapSVG(){ const X=x=>((x+34)*3.4+4).toFixed(1), Y=z=>((z+48)*2.9+4).toFixed(1); const t=targetNow(); const P=player.position;
@@ -2540,6 +2543,7 @@ ov.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(!b)ret
   else if(a==="lite-intro"){S.lite=!S.lite;resize();save();showTitle();}
   else if(a==="back"){ closePanel(); mode="play"; refreshHud(); }
   else if(a==="carnet"){ showCarnet(); }
+  else if(a==="bilan"&&S.act===2&&S.stage===16){ showEnd2(); ov.scrollTop=0; }
   else if(a==="act2"){ startAct2(); }
   else if(a==="cls"){ const id=b.dataset.t, c=b.dataset.c, w=WIT.find(x=>x.id===id); S.cls=S.cls||{}; S.clsMiss=S.clsMiss||{}; if(w&&w.cause===c){ S.cls[id]=true; delete S.clsMiss[id]; sfx("feuillet"); } else S.clsMiss[id]=true; save(); const sc=ov.scrollTop; showCarnet(); ov.scrollTop=sc; }
   else if(a==="pl"){ closePanel(); turnPage("_"+b.dataset.k,()=>{ snapCam(); if(plBack==="title") showPlates(); else showCarnet(); }); }
@@ -2632,7 +2636,7 @@ const INTER=[
      if(S.talk&&S.talk.ga) return talk([[GA,vary("ga",["","« Mon père était tanneur. Il payait. Je suis tanneur. »","« Laisse-moi, petite. J’ai des peaux à gratter et un sac à remplir. »"])||"« On s’y fait. »"]]);
      vary("ga",[""]);
      return talk([[GA,"« Trente ans que je porte mon sac. Mon dos s’y est fait. »"],branch([["« Et vous, vous vous y êtes fait ? »",[[GA,"« On s’y fait, petite. C’est bien ça le pire : on s’y fait. »"]]],["« Il est lourd ? »",[[GA,"« Moins que le premier. Le premier, j’avais ton âge, et j’ai pleuré. »"]]]])]); }
-   talk([[GA,S.flags.tribut==="denonce"?"« C’est toi qui m’as désigné au percepteur. J’ai payé double. Qu’est-ce que tu veux encore ? »":"« Encore toi ? J’ai mon sac à porter. »"],[AL,"« Écoute seulement trois phrases. Elles ne sont pas de moi. »"],[GA,"« Trois. Pas une de plus. »"]],()=>joute(0)); }},
+   talk([[GA,S.flags.tribut==="denonce"?"« C’est toi qui m’as désigné au percepteur. J’ai payé double. Qu’est-ce que tu veux encore ? »":"« Encore toi ? J’ai mon sac à porter. »"],[AL,"« Écoute seulement trois phrases. Elles ne sont pas de moi. »"],[GA,"« Trois. Pas une de plus. »"]],()=>jouerJoute("matin")); }},
  {p:()=>sheet3.position,r:2.6,label:"Fouiller la chapelle",can:()=>S.stage===3,act(){ talk([["","Devant la porte de la chapelle, sous la troisième dalle, une page pliée en quatre."],{feu:"F3"},["","Il faut que quelqu’un entende cela. Garin, sur la place, répète depuis trente ans qu’on s’y fait."]],()=>setStage(4)); }},
  {p:()=>sheet5.position,r:2.0,label:"Ramasser le feuillet",can:()=>!S.f.includes("F5"),act(){ talk([["","Glissée derrière une caisse, sous l’arcade, une page que les gardes piétinent sans la voir."],{feu:"F5"}],()=>{ applyStage(); refreshHud(); }); }},
  {p:()=>sheet4.position,r:2.4,label:"Ramasser le feuillet",can:()=>!S.f.includes("F4"),act(){ talk([["","Coincée entre deux pierres du quai, une page que le vent n’a pas emportée."],{feu:"F4"}],()=>applyStage()); }}
@@ -2642,12 +2646,6 @@ const ROUNDS=[
  {obj:"« Alors c’est que nous sommes des lâches. Voilà tout. »",ok:"F2",rep:"« Non. Un lâche fuit devant plus fort que lui. Mais mille qui n’osent rien devant un seul… ce n’est pas de la peur. C’est autre chose. »"},
  {obj:"« C’est l’ordre des choses. Mon père payait, et son père avant lui. »",ok:"F3",rep:"« Nourris comme tels… On m’a appris à porter ce sac avant de m’apprendre à compter. »"}
 ];
-let jMiss=0;
-function joute(i,miss){ if(i===0&&!miss) jMiss=0; if(i>=ROUNDS.length) return talk([["","Garin regarde son sac un long moment. Puis il le pose par terre."],["Garin, tanneur","« Qu’ils viennent le chercher. »"]],startCine);
-  const r=ROUNDS[i]; const pips=`<div class="pips">${ROUNDS.map((_,k)=>`<i class="${k<i?"on":""}"></i>`).join("")}</div>`;
-  const head=portraitForLine([GA,r.obj])+`<div class="who">Joute · Garin, tanneur</div>${pips}<p class="txt">${esc(r.obj)}</p>${miss?`<p class="more">Garin hausse les épaules : cette phrase ne répond pas à ce qu’il vient de dire. Essayez-en une autre.</p>`:`<p class="more">Quelle page lui lire ?</p>`}`;
-  talk([{head,choices:S.f.map(id=>[FEU[id].cit,()=>{ if(id===r.ok) talk([["Garin, tanneur",r.rep]],()=>joute(i+1)); else if(++jMiss>=2){ jMiss=0; talk([["Garin, tanneur","« Tu parles sans savoir. Reviens quand tu auras quelque chose à me dire. »"]]); } else joute(i,true); }])}]); }
-
 /* cinématique : une pierre du socle tombe */
 let cineT=0, fallT=-1;
 function startCine(){
@@ -3359,13 +3357,43 @@ const J2={
     {obj:"« Laisse-moi cette nuit. Demain je reprendrai… je ne sais plus ce que je voulais reprendre. »",ok:"F8",rep:"« Aveugles à votre bien. Ce matin j’ai posé mon sac, et ce soir je bois à la santé de celui qui le remplit. »"}],
     end:[["","Garin pose son gobelet sur le bord des tréteaux, sans le finir."],[GA,"« Où est-elle, ta presse ? »"],[AL,"« Maëlle nous attend à la fontaine. »"]],hint:{F6:"C’est la page que maître Anselme vous a donnée.",F7:"On dit qu’Anselme a caché une page derrière les tréteaux.",F8:"La vieille Ysabeau garde quelque chose depuis quarante ans, devant sa porte."}}
 };
-let j2Miss=0;
-function joute2(k,i,miss){ const J=J2[k]; if(i===0&&!miss) j2Miss=0;
-  if(i>=J.rounds.length) return talk(J.end,()=>{ S.allies[k]=true; if(k==="maelle"){ setStage(12); startFarce(); } else { setStage(13); } save(); });
-  const r=J.rounds[i]; if(!S.f.includes(r.ok)) return talk([[J.who,r.obj],["","Aucune de vos pages ne répond à cela. "+J.hint[r.ok]]]);
-  const own=["F6","F7","F8"].filter(id=>S.f.includes(id)).concat(["F3","F2"].filter(id=>S.f.includes(id)).slice(0,2));
-  const head=portraitForLine([J.who,r.obj])+`<div class="who">Joute · ${esc(J.who)}</div><div class="pips">${J.rounds.map((_,n)=>`<i class="${n<i?"on":""}"></i>`).join("")}</div><p class="txt">${esc(r.obj)}</p><p class="more">${miss?"Cette page ne répond pas à ce qui vient d’être dit. Essayez-en une autre.":"Quelle page lire ?"}</p>`;
-  talk([{head,choices:own.map(id=>[FEU[id].cit,()=>{ if(id===r.ok) talk([[J.who,r.rep]],()=>joute2(k,i+1)); else if(++j2Miss>=2){ j2Miss=0; talk([[J.who,"« Tu m’ennuies, Aliénor. Reviens quand tu sauras quoi dire. »"]]); } else joute2(k,i,true); }])}]); }
+const JOUTES={matin:{who:GA,rounds:ROUNDS,end:[["","Garin regarde son sac un long moment. Puis il le pose par terre."],["Garin, tanneur","« Qu’ils viennent le chercher. »"]]},...J2};
+
+function reprendreJoute(){
+  const partie=S.joute;
+  const k=S.act===1&&S.stage===4?"matin":S.act===2&&S.stage===11?"maelle":S.act===2&&S.stage===12?"garin":null;
+  if(!k||!partie||partie.k!==k) return;
+  const {i,erreurs,phase}=partie, fin=JOUTES[k].rounds.length;
+  if(!Number.isInteger(i)||i<0||i>fin||(erreurs!==0&&erreurs!==1)) return;
+  if(!["question","erreur","replique"].includes(phase)||(phase==="erreur"&&erreurs!==1)||(i===fin&&phase!=="question")) return;
+  jouerJoute(k,i,erreurs,phase);
+}
+function jouerJoute(k,i=0,erreurs=0,phase="question"){
+  const J=JOUTES[k], matin=k==="matin";
+  S.joute={k,i,erreurs,phase}; save();
+  if(i===J.rounds.length) return talk(J.end,()=>{
+    delete S.joute;
+    if(matin) return startCine();
+    S.allies[k]=true;
+    if(k==="maelle"){ setStage(12); startFarce(); } else setStage(13);
+  });
+  const r=J.rounds[i];
+  if(phase==="replique") return talk([[J.who,r.rep]],()=>jouerJoute(k,i+1,erreurs));
+  if(!matin&&!S.f.includes(r.ok)){
+    delete S.joute; save();
+    return talk([[J.who,r.obj],["","Aucune de vos pages ne répond à cela. "+J.hint[r.ok]]]);
+  }
+  const own=matin?S.f:["F6","F7","F8"].filter(id=>S.f.includes(id)).concat(["F3","F2"].filter(id=>S.f.includes(id)).slice(0,2));
+  const pips=J.rounds.map((_,n)=>`<i class="${n<i?"on":""}"></i>`).join("");
+  const aide=matin?(phase==="erreur"?"Garin hausse les épaules : cette phrase ne répond pas à ce qu’il vient de dire. Essayez-en une autre.":"Quelle page lui lire ?"):(phase==="erreur"?"Cette page ne répond pas à ce qui vient d’être dit. Essayez-en une autre.":"Quelle page lire ?");
+  const head=portraitForLine([J.who,r.obj])+`<div class="who">Joute · ${esc(J.who)}</div><div class="pips">${pips}</div><p class="txt">${esc(r.obj)}</p><p class="more">${aide}</p>`;
+  talk([{head,choices:own.map(id=>[FEU[id].cit,()=>{
+    if(id===r.ok) return jouerJoute(k,i,erreurs,"replique");
+    if(erreurs===0) return jouerJoute(k,i,1,"erreur");
+    delete S.joute; save();
+    talk([[J.who,matin?"« Tu parles sans savoir. Reviens quand tu auras quelque chose à me dire. »":"« Tu m’ennuies, Aliénor. Reviens quand tu sauras quoi dire. »"]]);
+  }])}]);
+}
 
 /* ---------- la presse ---------- */
 const LINE=["« Pauvres","et misérables","peuples insensés,","nations opiniâtres","en votre mal","et aveugles","à votre bien ! »"], LINE_ORD=[3,0,5,1,6,2,4];
@@ -3409,7 +3437,7 @@ function temoHTML(){ const got=S.temo||[]; if(S.act!==2&&!got.length) return "";
   return `<div class="temo"><b>${esc(w.nom)}</b><p>${esc(w.resume)}</p>${ok?`<p class="cause">${esc(CAUSES[w.cause])}. ${esc(CAUSE_TXT[w.cause])}</p>`:`<div class="causes">${Object.keys(CAUSES).map(c=>`<button data-a="cls" data-t="${w.id}" data-c="${c}">${esc(CAUSES[c])}</button>`).join("")}</div>${(S.clsMiss||{})[w.id]?`<p class="small">Pas tout à fait. Relisez ce qu’on vous a dit.</p>`:""}`}</div>`; }).join("")}</div>`; }
 
 /* ---------- les répliques ---------- */
-function jouteGarinSoir(){ talk([[GA,"« Tu as vu ça ? »"],[AL,"« Anselme t’attend à la presse. »"]],()=>joute2("garin",0)); }
+function jouteGarinSoir(){ talk([[GA,"« Tu as vu ça ? »"],[AL,"« Anselme t’attend à la presse. »"]],()=>jouerJoute("garin")); }
 function reponseGarin(aveu){
   S.flags.aveu=aveu; S.aveuEnCours=true; save();
   talk([[GA,aveu?"« … Au moins, tu me regardes en face. »":"« Hm. »"]],()=>{
@@ -3444,7 +3472,7 @@ const A2={
   sergent(){ talk([["Un sergent","« Le percepteur me sert à boire, je sers le percepteur. Mes gardes me servent. Et toi, petite, tu sers qui ? »"],branch([["« Personne. »",[["Un sergent","« Ça ne durera pas. Tout le monde sert quelqu’un. C’est ce qui tient la table debout. »"]]],["« Et l’Un, il sert qui ? »",[["Un sergent","« … Bois, et va danser. »"]]]])]); },
   maelle(){ const s=S.stage; if(dawn) return talk([[MA,"« Mes mains sont noires jusqu’aux poignets. Je n’ai jamais été aussi fière d’être sale. »"]]);
     if(s===10) return talk([[MA,"« Chut. Ils vont tirer le gros lot. »"]]);
-    if(s===11) return talk([[MA,"« Chut. Ils vont tirer le gros lot : une boutique rendue à son maître. Si c’était la nôtre… »"],[AL,"« Maëlle, Anselme a besoin de toi. Ce soir. »"]],()=>joute2("maelle",0));
+    if(s===11) return talk([[MA,"« Chut. Ils vont tirer le gros lot : une boutique rendue à son maître. Si c’était la nôtre… »"],[AL,"« Maëlle, Anselme a besoin de toi. Ce soir. »"]],()=>jouerJoute("maelle"));
     if((s===12||s===13)&&bstate().danse&&!S.talk.madanse){ S.talk.madanse=1; return talk([[MA,"« Tu as dansé avec un garde ? Tu es folle. Il était beau, au moins ? »"]]); }
     if(s===12) return talk([[MA,"« Garin est devant les tréteaux. Je t’attends ici. »"]]);
     if(s===13) return talk([[MA,vary("ma13",["« Près de la fontaine, on attend le grand toast. »","« Regarde-les. Ils lèvent tous la tête au même moment. Ça me fait peur, et ça va nous sauver. »"])]]);
