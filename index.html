@@ -2499,12 +2499,14 @@ function startPlay(newGame=false){
   if(newGame){firstExchange=false;player.rotation.y=-Math.PI/2;startMovie("matin",enterPlay);}
   else{
     inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
-    if(S.act===1&&S.stage===1) suiteTribut();
-    if(S.act===1&&S.stage===4&&S.pierreEnAttente===true) startCine();
-    if(S.act===2&&S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
-    if(S.act===2&&S.stage===14) reprendreImpression();
-    if(S.act===2&&S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION){
-      startToast(true,S.toastEcoule);
+    if(S.act===1){
+      if(S.renvoiCour===true) reconduirePoterne();
+      else if(S.stage===1) suiteTribut();
+      else if(S.stage===4&&S.pierreEnAttente===true) startCine();
+    } else if(S.act===2){
+      if(S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
+      else if(S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION) startToast(true,S.toastEcoule);
+      else if(S.stage===14) reprendreImpression();
     }
   }
 }
@@ -2845,6 +2847,23 @@ const camPos=new THREE.Vector3(0,20,40), camLook=new THREE.Vector3(0,8,-20), tmp
 let reveal=0, revealDir=1, revealFn=null;
 function wash(fn){ revealFn=fn; revealDir=-1; }
 const fgEl=$("fg");
+function reconduirePoterne(){
+  const b=bstate(), rencontre=!b.b3&&!b.refus;
+  const lignes=[["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."]];
+  if(!rencontre) lignes.push(["","On vous reconduit à la poterne. Ils n’ont pas regardé votre visage."]);
+  S.renvoiCour=true; save();
+  let arrivee=false;
+  function revenir(){
+    if(arrivee) return;
+    arrivee=true; player.position.set(26,0,-2); camPos.set(26,7.6,9.5); save();
+  }
+  talk(lignes,()=>{
+    // Même si les répliques sont passées avant la fin du fondu, le renvoi est terminé.
+    revenir(); delete S.renvoiCour;
+    if(rencontre) bastienPoterne(true);
+  });
+  wash(revenir);
+}
 function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if(document.hidden) return; const dt=Math.min(elapsed,0.05); time+=dt;rockBoats(time); postMat.uniforms.uTime.value=time*0.004;
   /* file du tribut */
   for(let i=0;i<file.length;i++){
@@ -2885,7 +2904,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
       if(d<CONE_R&&d>0.01){ const fx=Math.sin(g.rotation.y),fz=Math.cos(g.rotation.y); if((dx*fx+dz*fz)/d>Math.cos(CONE_A)&&rayHit(g.position.x,g.position.z,dx/d,dz/d,d)>=d-0.02) danger=true; }
       if(d<1.1) danger=true; if(d<2.5&&pSpeed>3.3) danger=true; } }
   if(mode==="play"){ seen=Math.max(0,Math.min(1,seen+(danger?dt*2.3:-dt*1.6))); $("seen").style.opacity=seen>0.02?1:0; $("pupil").setAttribute("r",(3+seen*13).toFixed(1));
-    if(seen>=1){ seen=0; sfx("halte"); if(S.act===2) act2Caught("rue"); else { const bb=bstate(); if(!bb.b3&&!bb.refus) talk([["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."]],()=>bastienPoterne(true)); else talk([["Un garde","« Halte ! Rien à faire ici. Dehors ! »"],["","Ils vous ont vue, ou entendue courir."],["","On vous reconduit à la poterne. Ils n’ont pas regardé votre visage."]]); wash(()=>{ player.position.set(26,0,-2); camPos.set(26,7.6,9.5); }); } } }
+    if(seen>=1){ seen=0; sfx("halte"); if(S.act===2) act2Caught("rue"); else reconduirePoterne(); } }
   else { $("seen").style.opacity=0; }
   /* interaction la plus proche */
   if(mode==="play"){ let best=act2Special(),bd=best?-1:1e9; if(!best) for(const it of INTER){ if(it.can&&!it.can())continue; const p=it.p(); const d=Math.hypot(p.x-player.position.x,p.z-player.position.z); if(d<(it.r||2.3)&&d<bd){bd=d;best=it;} } if(best!==current){ current=best; act.style.display=best?"block":"none"; if(best)act.textContent=best.label; }
