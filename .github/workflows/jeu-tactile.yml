@@ -1,0 +1,40 @@
+name: Reprise des actes sur tablette
+on:
+  pull_request:
+    paths:
+      - index.html
+      - outils/tests/reprise_ipad.js
+      - outils/tests/parcours_recit.js
+      - .github/workflows/jeu-tactile.yml
+concurrency:
+  group: reprise-tablette-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  reprise:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+        groupe: [parcours, rencontres]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer Playwright pour le test
+        run: npm install --prefix "$RUNNER_TEMP/test-jeu" --no-save playwright@1.56.1
+      - name: Installer WebKit et ses dépendances
+        if: matrix.browser == 'webkit'
+        run: '"$RUNNER_TEMP/test-jeu/node_modules/.bin/playwright" install --with-deps webkit'
+      - name: Tester la reprise et les commandes
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+          TEST_BROWSER: ${{ matrix.browser }}
+          TEST_GROUP: ${{ matrix.groupe }}
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/sarlande-http.log" 2>&1 &
+          trap 'kill $!' EXIT
+          curl --retry 10 --retry-connrefused --retry-delay 1 --fail --silent --output /dev/null http://127.0.0.1:8765/index.html
+          NODE_PATH="$RUNNER_TEMP/test-jeu/node_modules" xvfb-run -a node outils/tests/reprise_ipad.js
