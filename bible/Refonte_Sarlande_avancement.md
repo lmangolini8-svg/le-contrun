@@ -55,7 +55,13 @@ Source : branche `codex/planches-vie-2026-11-25`, dossier `references/planches-v
 - Le carnet de l’acte I (« Le matin du tribut ») repère l’imprimerie, le fournil, la fontaine, la Caisse des métiers et la poterne : ce sont les lieux de la première journée.
 - Les commerces du clos (menuisier, tapissière, pépiniériste) sont ceux du décor.
 
-**Écarts à corriger**
+**Corrections faites le 25 novembre 2026 au soir**
+- Le clos suit l’atlas (rempart à l’est, rivière au sud, voisins et commerces à leurs places) et une rue praticable mène à pied de la maison à l’imprimerie, par la poterne des gardes, la Caisse des métiers, les halles et les Drapiers.
+- Sur la place, Maëlle et son fournil passent entre l’imprimerie et la fontaine, Garin prend l’étal de l’est, les étals tournants (boucher, Jeanne, chasseur) sont au sud-est de la fontaine, la Caisse des métiers est bâtie au nord-est.
+- À l’acte I, la lumière de la place suit l’horloge : matin, après-midi ambré, soir.
+- Reste : l’échelle de la place (trois fois trop resserrée), à reprendre avec la réécriture des scènes.
+
+**Écarts relevés avant correction**
 1. **Orientation du clos.** Dans l’atlas, le clos est au sud-est, contre l’enceinte est, au-dessus de la rivière. La maison d’Aliénor est à la cote 6,2 m, le puits des voisins à 14 m au nord-ouest, le menuisier à 30 m au nord-ouest, la tapissière à 30 m au nord, le pépiniériste à 20 m au nord-est ; le terrain monte vers le nord. Le décor actuel met la muraille au nord et la pépinière près d’une poterne : à refaire sur ce plan. La poterne de l’atlas est celle de la cour des gardes, à une centaine de mètres à l’ouest.
 2. **Échelle de la place.** La scène 3D existante est environ trois fois plus resserrée que l’atlas (de l’imprimerie à la chapelle des gardes : 75 m en jeu, 228 m sur le plan). Les positions relatives sont justes (imprimerie à l’ouest, cour des gardes à l’est, palais au nord, quai au sud) ; le fournil et les halles sont à replacer : fournil entre l’imprimerie et la fontaine, halles au sud-est de la fontaine, Caisse des métiers au nord-est.
 3. **Trajet du matin.** De la maison à l’imprimerie, environ 270 m à vol d’oiseau, par les rues du clos et le sud de la place, puis la rue de l’imprimerie (le parcours court place–quai monte jusqu’à 11 %). Le trajet à pied du cahier des charges doit suivre ce tracé, raccourci pour le jeu.

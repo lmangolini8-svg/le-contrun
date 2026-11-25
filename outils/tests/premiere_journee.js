@@ -45,10 +45,11 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".webp": "image/
   await agir("Les volets"); await p.waitForTimeout(500);
   await agir("Lire la lettre"); await cap("02_lettre"); await p.click('[data-v="lettre-garder"]');
   await agir("Le miroir"); await p.click('[data-v="essayer"][data-r="indigo"]'); await cap("03_miroir"); await p.click('[data-v="choisir-robe"]');
-  await agir("Le puits commun"); await finir();
+  await agir("Le puits des voisins"); await finir();
   await agir("Frapper chez Ysabeau"); await choisir("Repasser"); await finir();
-  await agir("Partir"); await choisir("Partir pour l’atelier");
-  await page(); await p.click("#cutSkip").catch(() => {}); await attendre(() => mode === "play", 40000); await etat("atelier");
+  await agir("Le tailleur"); await cap("02b_vitrine"); await p.click('[data-v="fermer"]');
+  await agir("Entrer à l’atelier"); await choisir("Entrer à l’atelier");
+  await attendre(() => mode === "sequence" || mode === "play", 40000); await p.click("#cutSkip").catch(() => {}); await attendre(() => mode === "play", 40000); await etat("atelier");
   await agir("Parler à Anselme"); await choisir("J’y vais"); await finir(); await finir(); await etat("après Anselme"); await cap("04_place");
   await agir("Parler à Maëlle");
   if (VOIE === "A") { await choisir("devant les clientes"); await finir(); }
@@ -60,7 +61,7 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".webp": "image/
   await p.evaluate(() => { setStage(6); closePanel(); mode = "play"; refreshHud(); });
   await agir("Parler à Anselme"); await choisir("Rentrer au clos"); await page(); await finir(); await etat("soir"); await cap("06_soir");
   await agir("Préparer un repas"); await choisir(""); await finir();
-  await agir("Partir"); await choisir("Aller à la fête");
+  await agir("Rejoindre la fête"); await choisir("Aller à la fête");
   await page(); await finir(); await etat("fête");
   await p.evaluate(() => { setStage(16); showEnd2(); });
   await p.click('[data-v="rentrer-nuit"]'); await page(); await finir();
