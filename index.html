@@ -170,6 +170,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 #cutPlace{position:fixed;bottom:max(9%,36px);left:6%;color:#fff1cf;text-shadow:0 1px 4px #272331,0 0 12px #272331;font:italic clamp(23px,4vw,44px) var(--display);pointer-events:none}
 #cutPlace small{display:block;font:normal .48em var(--display);letter-spacing:.07em}
 #cutSkip[hidden],#cutPlace[hidden]{display:none}
+#ov .modelChoice select{font:inherit;color:#221f2b;background:#f3e6c9;min-height:36px}
 #ov .qualityStart{font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px;min-height:36px}
 @media(max-height:580px){#ov.home .small{display:block;font-size:13px;margin:0}#ov.home .qualityStart{min-height:26px}#ov.home .pitch{font-size:15px;margin:4px 0}#ov.home .bot{gap:4px}}
 </style>
@@ -403,6 +404,12 @@ function aimSun(x,z){ sun.target.position.set(x,0,z); sun.position.set(x+SUN.x*9
 // dans toutes les scènes. ?glb=statue : version modelée dans Blender (v2) ; ?glb=ancien : ancien colosse ;
 // ?glb=colosse : GLB de test de la chaîne.
 const GLB_TEST=new URLSearchParams(location.search).get("glb")||"meshy";
+const GLB_CHOICES=[
+  ["meshy","Statue Meshy"],
+  ["statue","Statue Blender"],
+  ["colosse","Colosse de test"],
+  ["ancien","Colosse d’origine"]
+];
 const GLB_SWAP={colosse:"modeles/test/colosse_blender_test.glb",statue:"modeles/statue/statue_sarlande.glb",meshy:"modeles/statue/statue_sarlande_meshy.glb"};
 let gltfReady=null;
 function gltfLoader(){ if(!gltfReady) gltfReady=new Promise((ok,ko)=>{ const t=document.createElement("script"); t.src="vendor/GLTFLoader.r128.js"; t.onload=()=>ok(new THREE.GLTFLoader()); t.onerror=ko; document.head.appendChild(t); }); return gltfReady; }
@@ -2577,8 +2584,18 @@ function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refres
   ov.innerHTML=`<div class="top">${EMBLEME_UN}<div class="le">Le</div><h1>Contr’un</h1>${FLEURON}<div class="sub">Discours de la servitude volontaire</div><div class="by">d’après Étienne de La Boétie</div><div class="act">${actTitle()}</div></div>
   <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un libelle interdit.</p>
   ${S.started?`<button class="pri" data-a="resume">Reprendre le chemin</button><div class="row"><button class="sec" data-a="restart">Recommencer</button><button class="sec" data-a="plates">Le livre des planches</button></div>`:`<button class="pri" data-a="new">Entrer dans la ville</button><div class="row"><button class="sec" data-a="plates">Le livre des planches</button></div>`}
+  <label class="modelChoice">Statue de l’Un
+    <select id="statue-model">${GLB_CHOICES.map(([id,label])=>`<option value="${id}"${(GLB_SWAP[GLB_TEST]?GLB_TEST:"ancien")===id?" selected":""}>${label}</option>`).join("")}</select>
+  </label>
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
-  <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`; }
+  <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`;
+  ov.querySelector("#statue-model").addEventListener("change",event=>{
+    const url=new URL(location.href);
+    if(event.target.value==="meshy")url.searchParams.delete("glb");
+    else url.searchParams.set("glb",event.target.value);
+    location.assign(url.href);
+  });
+}
 function platesList(){ return `<div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n||"✦"}</i> ${esc(PLATES[k].dest||"Page de citation")}</button>`).join("")}</div>`; }
 function showPlates(){ mode="title"; plBack="title"; refreshHud(); panel(`<span class="kick">Le livre des planches</span><h2>${plateCount} vues de Sarlande</h2><p class="small">Touchez une planche pour l’ouvrir.</p>${platesList()}<div class="row"><button class="pri" data-a="home">Retour à la page de titre</button></div>`,true); }
 function startPlay(newGame=false){
