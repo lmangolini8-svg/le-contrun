@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const { chromium, webkit } = require('playwright');
 
 const url = process.argv[2] || 'http://127.0.0.1:8765/index.html';
+const playStory = require('./parcours_recit');
 const storageKey = 'sarlande-acte1-v1';
 
 async function withSession(browser, checkpoint, viewport, test) {
@@ -193,6 +194,29 @@ async function testToast(browser) {
   console.log('Acte II : le carnet suspend le grand toast, la reprise conserve le temps et les alliés.');
 }
 
+async function testStory(browser) {
+  for (const tribute of ['paye', 'denonce', 'refus']) {
+    await withSession(browser, null, {width: 810, height: 1080}, async page => {
+      // Une vraie interruption au premier dialogue de l’aube, avec la sauvegarde produite en jeu.
+      const interruptDawn = tribute === 'denonce';
+      let result = await page.evaluate(playStory, {tribute, interruptDawn});
+      if (interruptDawn) {
+        assert.equal(result, 'aube');
+        await page.reload({waitUntil: 'domcontentloaded'});
+        await page.getByRole('button', {name: 'Reprendre le chemin'}).waitFor();
+        result = await page.evaluate(playStory, {tribute, resumeDawn: true});
+      }
+      assert.equal(result.stage, 16);
+      assert.equal(result.tribute, tribute);
+      assert.equal(result.bow, tribute === 'paye');
+      assert.equal(result.confession, tribute === 'denonce' ? true : undefined);
+      assert.deepEqual(result.sheets, ['F1','F2','F3','F6','F7','F8']);
+    });
+    console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
+      + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : ''));
+  }
+}
+
 (async () => {
   const engine = process.env.TEST_BROWSER || 'chromium';
   assert.ok(['chromium', 'webkit'].includes(engine), 'Navigateur de test inconnu');
@@ -206,6 +230,7 @@ async function testToast(browser) {
     await testGate(browser);
     await testNotebook(browser);
     await testToast(browser);
+    await testStory(browser);
   } finally {
     await browser.close();
   }
