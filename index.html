@@ -2500,7 +2500,8 @@ function startPlay(newGame=false){
   else{
     inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
     if(S.act===1){
-      if(S.renvoiCour===true) reconduirePoterne();
+      if(S.renvoiCour==="bastien") bastienPoterne(true);
+      else if(S.renvoiCour===true) reconduirePoterne();
       else if(S.stage===1) suiteTribut();
       else if(S.stage===4&&S.pierreEnAttente===true) startCine();
       else reprendreJoute();
@@ -2857,8 +2858,9 @@ function reconduirePoterne(){
   }
   talk(lignes,()=>{
     // Même si les répliques sont passées avant la fin du fondu, le renvoi est terminé.
-    revenir(); delete S.renvoiCour;
-    if(rencontre) bastienPoterne(true);
+    revenir();
+    if(rencontre){ S.renvoiCour="bastien"; save(); bastienPoterne(true); }
+    else delete S.renvoiCour;
   });
   wash(revenir);
 }
@@ -3553,41 +3555,49 @@ function placeExtras(){ const b=bstate(), m=mstate(), show=(g,v)=>{ g.visible=v;
   // Quand Bastien est ailleurs (poterne, fête, fontaine), un autre garde tient la porte à sa place.
   const away=BAS_ARM.visible||BAS_OFF.visible; GATE_L.visible=!away; GATE_L2.visible=away;
   show(CLERC,!(S.act===2&&night)); }
+function choixBastien(etape, options){
+  save();
+  return {choices:options.map(([texte,repondre])=>[texte,()=>{
+    bstate()[etape]=true;
+    if(etape==="b3") delete S.renvoiCour;
+    repondre();
+    save();
+  }])};
+}
 // B-2 · à la porte du palais
 function bastienPorte(){ const b=bstate(), t=S.flags.tribut, atPoterne=S.act===1&&S.stage===4&&!b.b3&&!b.refus;
   const base=()=>talk([[atPoterne?GD:bsp(),vary("gd",["« Circule. On ne regarde pas la porte. On regarde ses pieds. »","« Moi aussi, je paie le tribut. On me le retient sur la solde. »","« Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »"])]]);
   if(S.stage<2||b.refus||b.b2||atPoterne||(t!=="refus"&&t!=="denonce")) return base();
-  b.b2=true; save();
-  if(t==="refus") return talk([[bsp(),"« Toi, la question. Tu sais ce qu’il a écrit, sous ton nom ? Moi non plus. Je ne sais pas ce qu’on écrit sur les gens. »"],{choices:[
+  if(t==="refus") return talk([[bsp(),"« Toi, la question. Tu sais ce qu’il a écrit, sous ton nom ? Moi non plus. Je ne sais pas ce qu’on écrit sur les gens. »"],choixBastien("b2",[
     ["« Comment tu t’appelles ? »",()=>{ b.nom=true; bz(1,0); talk([[BAS,"« Ici, on m’appelle « le garde ». Chez moi, Bastien. »"]]); }],
     ["« Et toi, tu ne demandes jamais ? »",()=>{ bz(1,0); talk([[bsp(),"« Moi aussi, je paie le tribut. On me le retient sur la solde. »"],[bsp(),"« Demander, c’est un luxe. »"]]); }],
-    ["« Laisse-moi passer. »",()=>talk([[bsp(),"« Circule. On ne regarde pas la porte. On regarde ses pieds. »"]])]]}]);
-  talk([[bsp(),"« Tu regardes le sac des autres. Moi, je regarde mes pieds. Chacun son métier. »"],{choices:[
+    ["« Laisse-moi passer. »",()=>talk([[bsp(),"« Circule. On ne regarde pas la porte. On regarde ses pieds. »"]])]])]);
+  talk([[bsp(),"« Tu regardes le sac des autres. Moi, je regarde mes pieds. Chacun son métier. »"],choixBastien("b2",[
     ["« J’ai eu peur. »",()=>{ bz(1,0); talk([[bsp(),"« Tout le monde a peur. Tout le monde ne donne pas un nom. »"]]); }],
-    ["Passer votre chemin",()=>talk([["","Vous passez. Il regarde de nouveau ses pieds."]])]]}]); }
+    ["Passer votre chemin",()=>talk([["","Vous passez. Il regarde de nouveau ses pieds."]])]])]); }
 // B-3 · la poterne
-function bastienPoterne(caught){ const b=bstate(); b.b3=true; save();
+function bastienPoterne(caught){ const b=bstate();
   const open=caught?[["","Le garde qui vous raccompagne, c’est celui de la porte du palais."],[bsp(),"« Ne cours pas. Ceux qui courent, on les rattrape. »"]]
     :[["","Contre le battant ouvert de la poterne, un garde est assis, un morceau de pain à la main. Son casque est posé à côté de lui."],[bsp(),"« Je n’ai rien vu. Comme toujours. »"]];
-  talk(open.concat([{choices:[
+  talk(open.concat([choixBastien("b3",[
     ["« Je cherchais un chat. »",()=>talk([[bsp(),"« Ça marche une fois. »"],["","Il sourit."]],placeExtras)],
     ["« Je cherchais quelque chose qu’on m’a pris. »",()=>{ bz(1,1); talk([[bsp(),"« Ici, on a tous quelque chose qu’on nous a pris. »"]],placeExtras); }],
     ["« Pourquoi tu me laisses partir ? »",()=>{ bz(1,0); const had=b.nom; b.nom=true; save(); talk([[BAS,"« Parce que ma mère passe par là, le matin. Si je ferme, elle ne passe plus. »"]].concat(had?[]:[[BAS,"« Bastien. Pour toi. »"]]),placeExtras); }],
     ["« Laisse-moi tranquille. »",()=>{ b.refus=true; save(); talk([[bsp(),"« D’accord. »"],["","Il remet son casque."]],placeExtras); }],
-    ["Partir sans répondre",()=>talk([["","Vous repartez sans un mot."]],placeExtras)]]}])); }
+    ["Partir sans répondre",()=>talk([["","Vous repartez sans un mot."]],placeExtras)]])])); }
 // B-4 · le branle
-function bastienBranle(){ const b=bstate(); b.b4=true; save();
-  talk([[bsp(),"« Ce soir, je n’ai pas de hallebarde. Tu danses ? »"],{choices:[
+function bastienBranle(){ const b=bstate();
+  talk([[bsp(),"« Ce soir, je n’ai pas de hallebarde. Tu danses ? »"],choixBastien("b4",[
     ["Danser",()=>{ b.danse=true; bz(1,0); daze=Math.min(0.92,daze+0.25); talk([["","Le branle vous prend. Les mains se prennent et se lâchent, la ronde tourne, les lanternes aussi."],["","Au dernier tour, il ne lâche pas votre main tout de suite."],["","La tête vous tourne un peu. La fête vous prend plus vite."]],placeExtras); }],
     ["« Pas ce soir. J’ai quelque chose à faire. »",()=>talk([[bsp(),"« Alors fais-le bien. »"]],placeExtras)],
-    ["« Je ne danse pas avec la garde. »",()=>{ bz(-1,0); talk([[bsp(),"« Je comprends. »"]],placeExtras); }]]}]); }
+    ["« Je ne danse pas avec la garde. »",()=>{ bz(-1,0); talk([[bsp(),"« Je comprends. »"]],placeExtras); }]])]); }
 // B-6 · l'affiche
-function bastienAube(){ const b=bstate(); b.b6=true; save();
-  talk([["",b.nom?"Près de la fontaine, Bastien lit l’affiche, lentement, en suivant les lignes du doigt.":"Près de la fontaine, un garde lit l’affiche, lentement, en suivant les lignes du doigt."],{choices:[
+function bastienAube(){ const b=bstate();
+  talk([["",b.nom?"Près de la fontaine, Bastien lit l’affiche, lentement, en suivant les lignes du doigt.":"Près de la fontaine, un garde lit l’affiche, lentement, en suivant les lignes du doigt."],choixBastien("b6",[
     ["« Tu sais lire ? »",()=>{ b.lit=true; bz(1,0); talk([[bsp(),"« Un peu. J’ai appris sur les édits de la porte. Ne le dis à personne : un garde qui lit, ça se remarque. »"]]); }],
     ["« Merci, pour cette nuit. »",()=>{ bz(1,1); talk([[bsp(),"« Je n’ai rien vu. »"],["","Un temps."],[bsp(),"« Fais attention. Les lendemains de fête, ils comptent ceux qui manquent. »"]]); }],
     ["« Tu vas l’arracher ? »",()=>talk([[bsp(),"« On ne m’a rien ordonné. »"],["","Il ne l’arrache pas."]])],
-    ["Passer sans rien dire",()=>talk([["","Vous passez. Derrière vous, il reprend sa lecture au début."]])]]}]); }
+    ["Passer sans rien dire",()=>talk([["","Vous passez. Derrière vous, il reprend sa lecture au début."]])]])]); }
 // M-2 · la femme masquée
 function mahautBillet(){ const m=mstate(); m.billet=true; save();
   talk([["","La femme masquée vous regarde approcher. Puis elle se détourne et se perd dans la foule, avec le vieil homme."],["","Sur la margelle, elle a laissé un billet plié."],["","Ce n’est pas imprimé. C’est écrit à la main, d’une écriture penchée, à l’encre brune :"],["","« Soyez résolus de ne plus servir et vous voilà libres. »"],["","Vous rangez le billet dans votre carnet."]],placeExtras); }
