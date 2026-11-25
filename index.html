@@ -2446,7 +2446,7 @@ dlg.addEventListener("click",e=>{ if(waitingChoice){ const b=e.target.closest("[
 function refreshHud(){ const playing=mode==="play"; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
   $("carnetBtn").setAttribute("aria-label",`Ouvrir le carnet, ${S.f.length} feuillet${S.f.length>1?"s":""} sur ${NF}`);
   $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg aria-hidden="true" viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
-  $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez le doigt pour marcher":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
+  $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez à gauche pour marcher, à droite pour tourner la caméra":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
 function panel(html,full){ ov.className=full?"full":""; ov.innerHTML=`<div class="box cart">${html}</div>`; ov.style.display="flex"; }
 function closePanel(){ ov.style.display="none"; ov.innerHTML=""; }
 
@@ -2888,17 +2888,41 @@ function startCine(){
 /* ================= Commandes ================= */
 const joy={on:false,id:null,bx:0,by:0,x:0,y:0}; const joyEl=$("joy");
 const joyKnob=joyEl.querySelector("i");
+const cameraDrag={id:null,x:0};
+let cameraYaw=0;
+function cameraDragEnd(){
+  const id=cameraDrag.id;
+  cameraDrag.id=null;
+  if(id!==null&&canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);
+}
+canvas.addEventListener("contextmenu",e=>{if(mode==="play")e.preventDefault();});
 function joyEnd(){
   const id=joy.id;
   joy.on=false; joy.id=null; joy.x=joy.y=0; joyEl.style.display="none";
   if(id!==null&&canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
 }
-canvas.addEventListener("pointerdown",e=>{ if(mode!=="play"||joy.on)return; joy.on=true; joy.id=e.pointerId; joy.bx=e.clientX; joy.by=e.clientY; joyEl.style.display="block"; joyEl.style.left=(e.clientX-60)+"px"; joyEl.style.top=(e.clientY-60)+"px"; joyKnob.style.transform="translate(0,0)"; try{canvas.setPointerCapture(e.pointerId);}catch(_){} });
-canvas.addEventListener("pointermove",e=>{ if(!joy.on||e.pointerId!==joy.id)return; let dx=e.clientX-joy.bx,dy=e.clientY-joy.by; const d=Math.hypot(dx,dy),m=48; if(d>m){dx*=m/d;dy*=m/d;} joy.x=dx/m; joy.y=dy/m; joyKnob.style.transform=`translate(${dx}px,${dy}px)`; });
-for(const ev of ["pointerup","pointercancel","lostpointercapture"]) canvas.addEventListener(ev,e=>{ if(e.pointerId===joy.id) joyEnd(); });
+canvas.addEventListener("pointerdown",e=>{ if(mode!=="play")return;
+  const rotate=e.button===2||(e.pointerType!=="mouse"&&e.clientX>=canvas.getBoundingClientRect().left+canvas.clientWidth/2);
+  if(rotate){
+    if(cameraDrag.id!==null)return;
+    cameraDrag.id=e.pointerId;
+    cameraDrag.x=e.clientX;
+    try{canvas.setPointerCapture(e.pointerId);}catch(_){}
+    return;
+  }
+  if(joy.on||e.button!==0)return; joy.on=true; joy.id=e.pointerId; joy.bx=e.clientX; joy.by=e.clientY; joyEl.style.display="block"; joyEl.style.left=(e.clientX-60)+"px"; joyEl.style.top=(e.clientY-60)+"px"; joyKnob.style.transform="translate(0,0)"; try{canvas.setPointerCapture(e.pointerId);}catch(_){} });
+canvas.addEventListener("pointermove",e=>{ if(e.pointerId===cameraDrag.id){
+    if(mode!=="play"){cameraDragEnd();return;}
+    cameraYaw=(cameraYaw-(e.clientX-cameraDrag.x)*.008)%(Math.PI*2);
+    cameraDrag.x=e.clientX;
+    return;
+  }
+  if(!joy.on||e.pointerId!==joy.id)return; let dx=e.clientX-joy.bx,dy=e.clientY-joy.by; const d=Math.hypot(dx,dy),m=48; if(d>m){dx*=m/d;dy*=m/d;} joy.x=dx/m; joy.y=dy/m; joyKnob.style.transform=`translate(${dx}px,${dy}px)`; });
+for(const ev of ["pointerup","pointercancel","lostpointercapture"]) canvas.addEventListener(ev,e=>{ if(e.pointerId===joy.id) joyEnd(); if(e.pointerId===cameraDrag.id)cameraDragEnd(); });
 const keys={};
 function clearControls(){
   joyEnd();
+  cameraDragEnd();
   for(const key of Object.keys(keys)) delete keys[key];
 }
 window.addEventListener("blur",clearControls);
@@ -2969,7 +2993,17 @@ function frame(x,y,z,tx,ty,tz,f){camPos.set(x,y,z);camLook.set(tx,ty,tz);setLens
 function freeView(){
   const P=player.position,o=camOff();
   const interest=S.act===1&&S.stage===0?Math.max(0,1-Math.hypot(P.x+20,P.z-7)/9):0;
-  return [P.x+.84*interest,o[0]+.15*interest,P.z+o[1]+(portrait?3.1*interest:0),P.x-(portrait?4.1:5.3)*interest,o[2],P.z-7,portrait?60:46];
+  const x=.84*interest,z=o[1]+(portrait?3.1*interest:0);
+  const tx=-(portrait?4.1:5.3)*interest,tz=-7;
+  const c=Math.cos(cameraYaw),s=Math.sin(cameraYaw);
+  let cx=x*c+z*s,cz=z*c-x*s;
+  if(cameraYaw!==0){
+    for(let scale=.85;scale>=.24&&!camClear(P.x+cx,P.z+cz,P.x,P.z);scale-=.15){
+      cx=(x*c+z*s)*scale;
+      cz=(z*c-x*s)*scale;
+    }
+  }
+  return [P.x+cx,o[0]+.15*interest,P.z+cz,P.x+tx*c+tz*s,o[2],P.z+tz*c-tx*s,portrait?60:46];
 }
 function stoneJoint(){frame(-5.7,2.05,-25.3,-1.68,1.56,-33.12,portrait?57:41);aimSun(0,-34);}
 function startMovie(name,done){
@@ -3109,6 +3143,11 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
   fgEl.style.transform=`translate(${(-player.position.x*0.45).toFixed(1)}px,${(player.position.z*0.2).toFixed(1)}px)`; sheet3.position.y=0.3+Math.sin(time*2)*0.05; sheet5.rotation.y=time*0.5; sheet4.rotation.y=time*0.6;
   /* joueur */
   let pSpeed=0; let mx=joy.x,mz=joy.y; if(keys["arrowleft"]||keys["q"]||keys["a"])mx-=1; if(keys["arrowright"]||keys["d"])mx+=1; if(keys["arrowup"]||keys["z"]||keys["w"])mz-=1; if(keys["arrowdown"]||keys["s"])mz+=1;
+  if(cameraYaw!==0){
+    const c=Math.cos(cameraYaw),s=Math.sin(cameraYaw),x=mx;
+    mx=x*c+mz*s;
+    mz=mz*c-x*s;
+  }
   const ml=Math.hypot(mx,mz); let moving=false;
   if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
