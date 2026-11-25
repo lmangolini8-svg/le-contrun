@@ -2501,6 +2501,7 @@ function startPlay(newGame=false){
     inkSpread=S.stage>0?1:0;toolDown=inkSpread;atelierActorProps(toolDown,inkSpread);enterPlay();
     if(S.act===1&&S.stage===1) suiteTribut();
     if(S.act===1&&S.stage===4&&S.pierreEnAttente===true) startCine();
+    if(S.act===2&&S.stage===12&&S.aveuEnCours===true&&typeof S.flags.aveu==="boolean") reponseGarin(S.flags.aveu);
     if(S.act===2&&S.stage===14) reprendreImpression();
     if(S.act===2&&S.stage===13&&Number.isFinite(S.toastEcoule)&&S.toastEcoule>=0&&S.toastEcoule<=TOAST_DURATION){
       startToast(true,S.toastEcoule);
@@ -3389,6 +3390,14 @@ function temoHTML(){ const got=S.temo||[]; if(S.act!==2&&!got.length) return "";
   return `<div class="temo"><b>${esc(w.nom)}</b><p>${esc(w.resume)}</p>${ok?`<p class="cause">${esc(CAUSES[w.cause])}. ${esc(CAUSE_TXT[w.cause])}</p>`:`<div class="causes">${Object.keys(CAUSES).map(c=>`<button data-a="cls" data-t="${w.id}" data-c="${c}">${esc(CAUSES[c])}</button>`).join("")}</div>${(S.clsMiss||{})[w.id]?`<p class="small">Pas tout à fait. Relisez ce qu’on vous a dit.</p>`:""}`}</div>`; }).join("")}</div>`; }
 
 /* ---------- les répliques ---------- */
+function jouteGarinSoir(){ talk([[GA,"« Tu as vu ça ? »"],[AL,"« Anselme t’attend à la presse. »"]],()=>joute2("garin",0)); }
+function reponseGarin(aveu){
+  S.flags.aveu=aveu; S.aveuEnCours=true; save();
+  talk([[GA,aveu?"« … Au moins, tu me regardes en face. »":"« Hm. »"]],()=>{
+    delete S.aveuEnCours;
+    jouteGarinSoir();
+  });
+}
 const A2={
   anselme(){ const s=S.stage;
     if(s===10) return talk([[AN,"« Tu entends ? Les tambours. Toute la ville est sur la place. »"],[AN,"« C’est ce soir ou jamais : pendant qu’ils dansent, personne ne surveille une presse. Je veux tirer cent feuilles avant l’aube. »"],
@@ -3423,9 +3432,11 @@ const A2={
     talk([[MA,vary("ma14",["« L’encre est prête. »","« J’ai failli jouer notre four à la roue. Notre propre four. »"])]]); },
   garin(){ const s=S.stage; if(dawn) return talk([[GA,"« J’ai la barre de la presse imprimée dans les mains. C’est moins lourd qu’un sac. »"]]);
     if(s<=11) return talk([[GA,vary("ga11",["« Viens boire, petite ! C’est offert ! »","« Le percepteur m’a servi lui-même. Il m’a dit : Garin, ton sac, on n’en parle plus. »"])]]);
-    if(s===12){ const go=()=>talk([[GA,"« Tu as vu ça ? »"],[AL,"« Anselme t’attend à la presse. »"]],()=>joute2("garin",0));
-      if(S.flags.tribut==="denonce"&&S.flags.aveu===undefined) return talk([[GA,"« Toi. On m’a dit que quelqu’un m’avait désigné ce matin. Tu ne saurais pas qui ? »"],branch([["« C’était moi. J’ai eu peur. »",[[GA,"« … Au moins, tu me regardes en face. »"]],()=>{ S.flags.aveu=true; }],["« Non. »",[[GA,"« Hm. »"]],()=>{ S.flags.aveu=false; }]],[],go)]);
-      return go(); }
+    if(s===12){
+      if(S.flags.tribut==="denonce"&&S.flags.aveu===undefined) return talk([[GA,"« Toi. On m’a dit que quelqu’un m’avait désigné ce matin. Tu ne saurais pas qui ? »"],{choices:[
+        ["« C’était moi. J’ai eu peur. »",()=>reponseGarin(true)],["« Non. »",()=>reponseGarin(false)]
+      ]}]);
+      return jouteGarinSoir(); }
     if(s===13) return talk([[GA,vary("ga13",["« Je te suis. Pour une fois, ce n’est pas un sac que je porte. »","« Si un garde nous arrête, laisse-moi parler. Je suis le fou du jour, ils me laisseront passer. »"])]]);
     talk([[GA,vary("ga14",["« Cette barre est plus lourde qu’un sac. Mais celle-là, je la tire pour moi. »","« Le percepteur m’a servi à boire lui-même. J’aurais dû me méfier d’un homme qui pèse tout. »"])]]); }
 };
