@@ -43,8 +43,26 @@ async function testGate(browser) {
       assert.deepEqual(rotated.textures, textures, 'La rotation doit réutiliser les textures');
       assert.equal(rotated.depthWidth, rotated.width);
       assert.equal(rotated.depthHeight, rotated.height);
+
+      await page.locator('#carnetBtn').tap();
+      const citation = page.getByRole('button', {name: /Page de citation/});
+      await citation.tap();
+      await page.locator('#plate .quote .go').tap();
+      await citation.waitFor();
+      const archives = page.getByRole('button', {name: /Les archives du palais/});
+      for (const visit of ['première visite', 'deuxième visite']) {
+        await archives.tap();
+        const next = page.locator('#plate .go');
+        await next.waitFor();
+        assert.equal(await next.textContent(), 'Touchez pour tourner la page', visit);
+        assert.equal(await page.evaluate(() => dioBuilt.archives), true);
+        await next.tap();
+        await archives.waitFor();
+      }
+      await page.getByRole('button', {name: 'Retour au jeu'}).tap();
+      assert.match(await page.locator('#obj').textContent(), /fouillez la chapelle/i);
     });
-  console.log('Acte I : reprise dans la poterne ouverte en portrait.');
+  console.log('Acte I : poterne, rotation, page de citation et deux visites aux archives depuis le carnet.');
 }
 
 async function testNotebook(browser) {
