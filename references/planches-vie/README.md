@@ -31,20 +31,19 @@ Ces dix PNG sont des références de production. Leur intégration au jeu est à
 | U6 | [La maison d’Hugues](facade_hugues.png) | Version corrigée validée par Lucas, avec les proportions et les ouvertures de la maison dans U4. |
 | U7 | [Les six échoppes d’artisans](quartier_echoppes.png) | Validé par Lucas. |
 
-## Prochains lots à générer ensemble
+## Lot de 50 planches validées
 
-Chaque lot partage ses références et fait l’objet d’un seul retour. Les scènes d’un même lieu reprennent un cadrage de référence commun. Une retouche se demande par code. Les versions validées peuvent être déposées ensemble.
+| Ensemble | Planches déposées | PNG |
+|---|---|---:|
+| Poterne et cathédrale | [G1](poterne_elevation.png) · [G2](cour_elements.png) · [G3](cour_nuit.png) · [G4](chapelle_interieur.png) · [G5](poste_de_garde.png) · [D17](cathedrale_cloches.png) · [D18](cathedrale_matieres.png) · [D19](cathedrale_vue_place.png) · [D20](planche_cathedrale.png) | 9 |
+| Intérieurs du palais | [V1](palais_escalier.png) · [V2](palais_couloir.png) · [V3](palais_cuisines.png) · [V4](archives_elements.png) · [V5](oubliettes_elements.png) · [V6](chambre_un_meubles.png) · [V7](palais_porte.png) | 7 |
+| Remparts et abords | [H1](portes_cite_elevation.png) · [H2](remparts_ronde.png) · [H3](horizon_ete.png) · [H4](horizon_hiver.png) · [H5](horizon_printemps.png) · [H6](horizon_nuit.png) · [H7](foret_elements.png) · [H8](cabane_details.png) · [H9](foret_chemin.png) | 9 |
+| Danse et fontaine | [N2-4](../actes-I-II/tableau_branle.png) · [N2-5](../actes-I-II/tableau_femme_masquee.png) | 2 |
+| Témoins de la fête | [N4-1](../actes-I-II/temoin_mathurin.png) · [N4-2](../actes-I-II/temoin_jeanne.png) · [N4-3](../actes-I-II/temoin_thibaut.png) · [N4-4](../actes-I-II/temoin_hugues.png) · [N4-5](../actes-I-II/temoin_perrine.png) · [N4-6](../actes-I-II/temoin_enfants.png) · [N4-7](../actes-I-II/temoin_margot.png) · [N4-8](../actes-I-II/temoin_mendiants.png) | 8 |
+| Imprimerie et litière | [N5-1](../actes-I-II/tableau_presse_arrivee.png) · [N5-2](../actes-I-II/gros_composteur.png) · [N5-3](../actes-I-II/gros_barre_garin.png) · [N5-4](../actes-I-II/gros_balles_maelle.png) · [N5-5](../actes-I-II/tableau_tirage.png) · [N5-6](../actes-I-II/gros_besicles.png) · [N6-1](../actes-I-II/tableau_litiere_1.png) · [N6-2](../actes-I-II/tableau_litiere_2.png) · [N6-3](../actes-I-II/tableau_debout.png) | 9 |
+| Affichage et aube | [N7-1](../actes-I-II/gros_colle.png) · [N7-2](../actes-I-II/tableau_jeanne_lit.png) · [N7-3](../actes-I-II/tableau_bastien_lit.png) · [N7-4](../actes-I-II/tableau_mains_fieres.png) · [N7-5](../actes-I-II/tableau_aube_place.png) · [N7-6](../actes-I-II/fin_acte2.png) | 6 |
 
-| Ordre | Lot | Codes | PNG |
-|---|---|---|---:|
-| 1 | Poterne, cour des gardes et cathédrale | G1 à G5 et D17 à D20 | 9 |
-| 2 | Intérieurs du palais, archives et oubliettes | V1 à V7 du cahier Vie de Sarlande | 7 |
-| 3 | Portes, horizons et chemins hors les murs | H1 à H9 | 9 |
-| 4 | Témoins de la fête de l’acte II | N4-1 à N4-8 | 8 |
-| 5 | Tirage clandestin et passage de la litière | N5-1 à N5-6 et N6-1 à N6-3 | 9 |
-| 6 | Affichage, lectures et fin à l’aube | N7-1 à N7-6 | 6 |
-
-Les références à joindre pour la poterne, la cour des gardes et la cathédrale figurent dans le [cahier de la vie de Sarlande](../../bible/Consignes_images_vie.md). L’[atlas topographique](Sarlande_Atlas_topographique.pdf) fixe les raccords entre quartiers.
+Contrôle du colosse d’après la [référence officielle](../../modeles/statue/README.md). Les apparitions de D19, H2 et N7-6 reprennent le colosse dans la cour du palais, tel qu’on l’aperçoit depuis la ville.
 
 ## Atlas topographique du 25 novembre 2026
 
@@ -63,7 +62,7 @@ Le quai se tient à environ 4 m au-dessus du zéro local, le marché à 10,4 m, 
 | Vérifications en 3D | Parcourir sur iPad le raccord cloître–cimetière et les deux routes du quai. Vérifier le gabarit d’une charrette dans la cour de l’écurie, le tablier du pont et la montée des eaux au lavoir et à la grue. |
 | Carnet d’Aliénor | Distribuer une seule planche à la fois. Le refuge et sa branche de sentier apparaissent à l’acte IV après la rencontre. Le carnet de l’acte V suppose cette découverte préalable. |
 
-Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 193 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
+Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 143 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
 
 
 ## Priorité 1 · Cartographier Sarlande et ses abords
@@ -94,15 +93,15 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 
 Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**25 novembre 2026 · 348 des 541 planches sont produites ou consignées comme produites. Il en reste 193 à réaliser.** Ce pointage comprend les dix dépôts du lot du quai et les sept du lot des ruelles et quartiers populaires. Q1 figurait déjà parmi les planches produites.
+**25 novembre 2026 · 398 des 541 planches sont produites ou consignées comme produites. Il en reste 143 à réaliser.** Ce pointage comprend les 50 nouvelles planches validées, réparties à parts égales entre Vie de Sarlande et Actes I et II.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
-| Actes I et II | 196 | 55 | 55 | 141 |
-| Vie de Sarlande | 282 | 257 | 252 | 25 |
+| Actes I et II | 196 | 80 | 80 | 116 |
+| Vie de Sarlande | 282 | 282 | 277 | 0 |
 | Vues aériennes et palais | 55 | 28 | 25 | 27 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **348** | **340** | **193** |
+| **Total** | **541** | **398** | **390** | **143** |
 
 ## Générations retrouvées et dépôts à terminer
 
@@ -117,31 +116,18 @@ Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Ga
 | Vues sud | V26, V27, V28 | vue_sud_nuit_hiver.png, vue_sud_printemps.png, vue_sud_aube.png — neige de nuit, crue printanière, aube rose |
 | Colosse | C1, C2, C3 | colosse_socle_etats.png, colosse_details.png, colosse_chute.png — retrouver les originaux consignés |
 
-## Les 193 planches à réaliser
+## Les 143 planches à réaliser
 
 Les codes reprennent ceux des commandes originales. Une plage comprend ses deux bornes. Chaque expression de portrait correspond à un PNG. Le préfixe P ou V se lit dans la famille indiquée.
 
-### Actes I et II · 141
+### Actes I et II · 116
 
 | Série | Codes restant à réaliser | PNG |
 |---|---|---:|
-| Acte II, farce et toast | N2-4, la danse d’Aliénor et Bastien · N2-5, Mahaut et Gervais à la fontaine · N3-3, Bastien détourne le regard | 3 |
-| Témoins de la fête | N4-1 à N4-8 | 8 |
-| Tirage clandestin à l’imprimerie | N5-1 à N5-6 | 6 |
-| Passage de la litière | N6-1 à N6-3 | 3 |
-| Affichage, lectures et fin à l’aube | N7-1 à N7-6 | 6 |
+| Acte II, farce et toast | N3-3, Bastien détourne le regard | 1 |
 | Portraits de dialogue | X10, Mahaut masquée (neutre, inquiète) · X11 à X15, quatre expressions chacun · X16 et X17, trois expressions chacun (sourire, inquiétude, colère) · X18 à X23, quatre expressions chacun | 52 |
 | Carnet, ciels et récit illustré | X30 à X38, neuf vignettes · X40 à X46, sept ciels · X50 à X61, douze illustrations pour la classe | 28 |
 | Le peuple qui paie | Y1 à Y6, percepteur et peuple · Y7, quatre expressions du clerc · Y8, file · Y10 à Y20, tribut, porteurs et gestes · Y30 à Y42, costumes et matières | 35 |
-
-### Vie de Sarlande · 25
-
-| Série | Codes restant à réaliser | PNG |
-|---|---|---:|
-| Cathédrale | D17 cloches, D18 matières, D19 vue depuis la place, D20 planche de livre | 4 |
-| Poterne et gardes | G1 à G5 — élévation, cour, nuit, chapelle, poste de garde | 5 |
-| Palais, archives, oubliettes | V1 à V7 — escalier, couloir, cuisines, archives, cellule, mobilier de l’Un, porte | 7 |
-| Hors les murs | H1 à H9 — portes, remparts, quatre horizons, forêt, cabane et chemin | 9 |
 
 ### Vues aériennes et palais · 27
 
