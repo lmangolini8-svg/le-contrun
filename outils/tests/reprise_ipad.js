@@ -203,6 +203,38 @@ async function testToast(browser) {
   console.log('Acte II : le carnet suspend le grand toast, la reprise conserve le temps et les alliés.');
 }
 
+async function testGuardCapture(browser) {
+  // Le point injecté est sur la première patrouille. L’alerte et le renvoi se déclenchent en jeu.
+  const checkpoint = {stage: 3, pos: [38,-7.25], f: ['F1','F2'], flags: {tribut: 'refus'}};
+  await withSession(browser, checkpoint, {width: 1080, height: 810}, async page => {
+    const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+    const dialogue = page.locator('#dlg');
+    await resume();
+    await dialogue.getByText(/Halte ! Rien à faire ici/).waitFor();
+    await page.waitForFunction(() => player.position.x === 26 && player.position.z === -2);
+    await page.reload({waitUntil: 'domcontentloaded'});
+    await resume();
+    await dialogue.getByText(/Halte ! Rien à faire ici/).waitFor();
+    assert.deepEqual(await page.evaluate(() => player.position.toArray()), [26,0,-2]);
+    await dialogue.tap();
+    await dialogue.tap();
+    await dialogue.getByText(/Le garde qui vous raccompagne/).waitFor();
+    await dialogue.tap();
+    await dialogue.tap();
+    await dialogue.getByRole('button', {name: /Je cherchais un chat/}).tap();
+    await dialogue.tap();
+    await dialogue.tap();
+    await page.waitForFunction(() => mode === 'play');
+    const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
+    assert.deepEqual(saved.pos, [26,-2]);
+    assert.deepEqual(saved.f, ['F1','F2']);
+    assert.equal(saved.stage, 3);
+    assert.equal(saved.bastien.b3, true);
+    assert.equal(saved.renvoiCour, undefined);
+  });
+  console.log('Sauvegarde injectée devant la patrouille : alerte, renvoi, rechargement à la poterne et dialogue de Bastien.');
+}
+
 async function testStoneInterruption(browser) {
   // Sauvegarde injectée avant Garin. Aucune victoire ni cinématique dans cet état.
   await withSession(browser, {stage: 4, f: ['F1','F2','F3'], flags: {tribut: 'paye'}, pos: [-10,-1.4]},
@@ -366,6 +398,7 @@ async function testStory(browser) {
     await testToast(browser);
     await testStory(browser);
     await testPrintInterruption(browser);
+    await testGuardCapture(browser);
     await testStoneInterruption(browser);
     await testDeniedConfession(browser);
   } finally {
