@@ -8,10 +8,16 @@ const storageKey = 'sarlande-acte1-v1';
 
 async function withSession(browser, checkpoint, viewport, test) {
   const context = await browser.newContext({viewport, hasTouch: true, isMobile: true});
-  const page = await context.newPage();
-  page.setDefaultTimeout(45000);
+  context.setDefaultTimeout(45000);
   const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
+  context.on('page', p=>p.on('pageerror', error=>errors.push(error.message)));
+  let page = await context.newPage();
+  async function reopenTab() {
+    await page.close();
+    page = await context.newPage();
+    await page.goto(url, {waitUntil:'domcontentloaded'});
+    return page;
+  }
   try {
     if (checkpoint) {
       await page.goto(new URL('README.md', url).href);
@@ -21,7 +27,7 @@ async function withSession(browser, checkpoint, viewport, test) {
     await page.goto(url, {waitUntil: 'domcontentloaded'});
     const entry = checkpoint ? 'Reprendre le chemin' : 'Entrer dans la ville';
     await page.getByRole('button', {name: entry}).waitFor();
-    await test(page, context);
+    await test(page, context, reopenTab);
     assert.deepEqual(errors, [], 'Erreurs JavaScript dans le jeu');
   } catch (error) {
     console.error('Écran au moment de l’échec', await page.evaluate(() => ({
@@ -335,6 +341,40 @@ async function testDeniedConfession(browser) {
   console.log('Sauvegarde injectée avant la joute du soir : mensonge, fermeture, réponse de Garin et ralliement.');
 }
 
+async function testPublicReading(browser) {
+  const checkpoint = {act:2,stage:12,pos:[-3.4,-3.7],flags:{tribut:'refus'},f:['F1','F2','F3','F6','F7','F8']};
+  await withSession(browser, checkpoint, {width:810,height:1080}, async (page,context,reopenTab) => {
+    const resume = () => page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+    let dialogue = page.locator('#dlg');
+    async function reopen() {
+      page = await reopenTab();
+      dialogue = page.locator('#dlg');
+      await resume();
+    }
+    await resume();
+    await page.getByRole('button',{name:'Monter sur les tréteaux'}).tap();
+    await dialogue.tap();
+    await dialogue.getByRole('button',{name:'Lire la page d’Ysabeau'}).tap();
+    const citation = await dialogue.locator('.txt').innerText();
+    await reopen();
+    assert.equal(await dialogue.locator('.txt').innerText(),citation);
+    assert.deepEqual(await page.evaluate(()=>player.position.toArray()),[-1.2,1,-7]);
+    await dialogue.tap();
+    const foule = await dialogue.locator('.txt').innerText();
+    assert.match(foule,/applaudissements/);
+    await reopen();
+    assert.equal(await dialogue.locator('.txt').innerText(),foule);
+    await page.evaluate(()=>{ for(let n=0;n<8 && mode==='dialog';n++) dlg.click(); });
+    const saved = await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+    assert.equal(saved.flags.scene,true);
+    assert.equal(saved.discrets,2);
+    assert.equal(saved.lecturePublique,undefined);
+    assert.deepEqual(saved.pos,[-3.3,-4.3]);
+    assert.equal(saved.stage,12);
+  });
+  console.log('Lecture publique : sauvegarde injectée avant les tréteaux, citation choisie puis deux fermetures jouées jusqu’au retour sur la place.');
+}
+
 async function testPrintInterruption(browser) {
   // Sauvegarde injectée de l’ancien format. Tous les mots et tirages sont ensuite joués.
   await withSession(browser, {act: 2, stage: 14, pos: [-20, 6.6]},
@@ -395,12 +435,15 @@ async function testJoustReload(browser) {
   ];
   for (const {act,stage,pos,first,second} of cases) {
     const checkpoint = {act,stage,pos,flags:{tribut:'paye'},f:['F1','F2','F3','F6','F7','F8']};
-    await withSession(browser, checkpoint, {width: 720,height: 540}, async page => {
-      async function resume(reload) {
-        if (reload) await page.reload({waitUntil:'domcontentloaded'});
+    await withSession(browser, checkpoint, {width: 720,height: 540}, async (page,context,reopenTab) => {
+      let dialogue = page.locator('#dlg');
+      async function resume(reopen) {
+        if (reopen) {
+          page = await reopenTab();
+          dialogue = page.locator('#dlg');
+        }
         await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
       }
-      const dialogue = page.locator('#dlg');
       async function begin() {
         await page.getByRole('button',{name: stage===11?'Parler à Maëlle':'Parler à Garin'}).tap();
         await page.evaluate(() => {
@@ -432,8 +475,35 @@ async function testJoustReload(browser) {
       await choose(first);
       await dialogue.tap();
       await choose(second);
-      assert.equal(await page.evaluate(()=>S.joute.phase),'replique');
-      console.log('Joute à l’étape '+stage+' : réplique, première erreur, deuxième erreur et nouvel essai joués depuis une sauvegarde injectée.');
+      await dialogue.tap();
+      if (stage!==11) {
+        await choose(stage===4?'F3':'F8');
+        await dialogue.tap();
+      }
+      // Lire les dernières répliques, puis vérifier l’effet de la victoire dans la sauvegarde.
+      await page.evaluate(()=>{ for(let n=0;n<4 && mode==='dialog';n++) dlg.click(); });
+      const saved = await page.evaluate(key=>JSON.parse(localStorage.getItem(key)),storageKey);
+      assert.equal(saved.joute,undefined);
+      if (stage===4) assert.equal(saved.pierreEnAttente,true);
+      else {
+        assert.equal(saved.stage,stage+1);
+        assert.equal(saved.allies[stage===11?'maelle':'garin'],true);
+      }
+      if (stage===11) {
+        await resume(true);
+        await page.getByRole('button',{name:'Passer la scène'}).tap();
+        const publicRit = dialogue.getByText(/Toute la place a ri/);
+        await publicRit.waitFor();
+        await resume(true);
+        await dialogue.getByText(/Toute la place a ri/).waitFor();
+        await dialogue.tap();
+        await dialogue.getByText(/Le rire de Garin s’est arrêté net/).waitFor();
+        await dialogue.tap();
+        await dialogue.tap();
+        assert.equal(await page.evaluate(()=>S.farce),undefined);
+        assert.equal(await page.evaluate(()=>S.allies.maelle),true);
+      }
+      console.log('Joute à l’étape '+stage+' : réplique et première erreur rechargées, deux erreurs puis nouvelle tentative gagnée depuis une sauvegarde injectée.');
     });
   }
 }
@@ -482,7 +552,7 @@ async function reviseWitnesses(page) {
 async function testStory(browser) {
   for (const tribute of ['paye', 'denonce', 'refus']) {
     const joystick = tribute === 'paye' && browser.browserType() === chromium;
-    await withSession(browser, null, {width: 810, height: 1080}, async (page, context) => {
+    await withSession(browser, null, {width: 810, height: 1080}, async (page, context, reopenTab) => {
       if (joystick) await page.exposeFunction('testJoystick', await touchJoystick(context, page));
       // Une vraie interruption au premier dialogue de l’aube, avec la sauvegarde produite en jeu.
       const interruptDawn = tribute === 'denonce';
@@ -510,14 +580,17 @@ async function testStory(browser) {
       if (tribute === 'refus') await reviseWitnesses(page);
       if (tribute === 'paye') {
         const bilan = await page.locator('#ov .box').innerText();
-        await page.reload({waitUntil:'domcontentloaded'});
+        page = await reopenTab();
         await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
-        await page.locator('#carnetBtn').tap();
-        await page.locator('#n-F1').fill('Révision en classe');
+        await page.getByRole('button',{name:'Ouvrir le carnet, 8 feuillets sur 8'}).tap();
+        const note = page.getByRole('textbox',{name:'Feuillet 1 · Ma note, la page dans mon édition'});
+        const citationId = await note.getAttribute('aria-describedby');
+        assert.equal(await page.locator('#'+citationId).innerText(),await page.evaluate(()=>FEU.F1.cit));
+        await note.fill('Révision en classe');
         await page.getByRole('button',{name:'Relire le bilan de l’acte II'}).tap();
         assert.equal(await page.locator('#ov .box').innerText(),bilan);
         await page.getByRole('button',{name:'Ouvrir le carnet'}).tap();
-        assert.equal(await page.locator('#n-F1').inputValue(),'Révision en classe');
+        assert.equal(await note.inputValue(),'Révision en classe');
       }
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
@@ -536,17 +609,14 @@ async function testStory(browser) {
   });
   console.log(engine, browser.version());
   try {
-    await testOpening(browser);
-    await testGate(browser);
-    await testNotebook(browser);
-    await testToast(browser);
-    await testStory(browser);
-    await testPrintInterruption(browser);
-    await testGuardCapture(browser);
-    await testBastienReload(browser);
-    await testStoneInterruption(browser);
-    await testDeniedConfession(browser);
-    await testJoustReload(browser);
+    const groupes = {
+      parcours: [testOpening, testGate, testNotebook, testToast, testStory, testPrintInterruption],
+      rencontres: [testPublicReading, testGuardCapture, testBastienReload, testStoneInterruption, testDeniedConfession, testJoustReload]
+    };
+    const groupe = process.env.TEST_GROUP;
+    const tests = groupe ? groupes[groupe] : Object.values(groupes).flat();
+    assert.ok(Array.isArray(tests), 'Groupe de tests inconnu : '+groupe);
+    for (const test of tests) await test(browser);
   } finally {
     await browser.close();
   }

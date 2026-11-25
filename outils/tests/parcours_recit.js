@@ -258,6 +258,11 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
       if (!dlg.textContent.includes('Ysabeau')) fail('Indice de Garin absent pour F8');
       await person('Ysabeau','ysabeau');
     }
+    if (tribute !== 'paye') {
+      const choix = tribute === 'refus' ? 'Lire la page d’Ysabeau' : 'Redescendre sans rien dire';
+      await interact('Monter sur les tréteaux',-3.3,-4.8,1.65,[choix]);
+      if ((S.discrets || 0) !== (tribute === 'refus' ? 2 : 0)) fail('Conséquence de la lecture publique incorrecte');
+    }
     const replies = quotes('F6','F7','F8');
     if (tribute === 'denonce') replies.unshift('C’était moi');
     await person('Garin','garin',replies);
@@ -287,6 +292,8 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
   expectStage(16);
   if (!fete.poster.visible || !ov.textContent.includes('Cent feuilles avant l’aube'))
     fail('Affiche ou bilan absent');
+  if (ov.textContent.includes('Vous êtes montée sur les tréteaux') !== (tribute === 'refus'))
+    fail('Lecture publique mal restituée dans le bilan');
   if (tribute === 'denonce') {
     click('[data-a="back"]');
     await interact('Parler à Bastien',-2.6,7.9,2,['Tu sais lire']);
