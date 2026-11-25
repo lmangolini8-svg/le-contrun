@@ -19,6 +19,14 @@ async function savedSession(browser, checkpoint, viewport, test) {
     await page.getByRole('button', {name: 'Reprendre le chemin'}).waitFor();
     await test(page, context);
     assert.deepEqual(errors, [], 'Erreurs JavaScript dans le jeu');
+  } catch (error) {
+    console.error('Écran au moment de l’échec', await page.evaluate(() => ({
+      objectif: document.querySelector('#obj')?.textContent,
+      dialogue: document.querySelector('#dlg .txt')?.textContent,
+      mode: typeof mode === 'string' ? mode : null,
+      toast: typeof T2 === 'object' ? {actif: T2.on, attente: T2.bwait, temps: T2.t} : null
+    })).catch(() => null), errors);
+    throw error;
   } finally {
     await context.close();
   }
@@ -45,11 +53,11 @@ async function testGate(browser) {
       assert.equal(rotated.depthHeight, rotated.height);
 
       await page.locator('#carnetBtn').tap();
-      const citation = page.getByRole('button', {name: /Page de citation/});
+      const citation = page.locator('#ov').getByRole('button', {name: /Page de citation/});
       await citation.tap();
       await page.locator('#plate .quote .go').tap();
       await citation.waitFor();
-      const archives = page.getByRole('button', {name: /Les archives du palais/});
+      const archives = page.locator('#ov').getByRole('button', {name: /Les archives du palais/});
       for (const visit of ['première visite', 'deuxième visite']) {
         await archives.tap();
         const next = page.locator('#plate .go');
@@ -132,7 +140,8 @@ async function testToast(browser) {
       await dialogue.tap();
       await dialogue.getByText(/Le crieur monte/).waitFor();
       await dialogue.tap();
-      await page.waitForFunction(() => T2.on && T2.big && T2.t > 0);
+      // Le rendu logiciel de la fête peut demander plusieurs secondes par trame.
+      await page.waitForFunction(() => T2.on && T2.big && T2.t > 0, null, {timeout: 120000});
       await page.locator('#carnetBtn').tap();
       const paused = await page.evaluate(() => ({clock: time, toast: T2.t}));
       await page.waitForFunction(t => time > t + .1, paused.clock);
