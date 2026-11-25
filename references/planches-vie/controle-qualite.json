@@ -2,16 +2,24 @@
   "user_validation": "pending",
   "fixes": [
     {
-      "code": "R3",
-      "issue": "Fermer porte principale de l'imprimerie et tous les volets sauf une unique fenêtre atelier éclairée."
+      "code": "P1",
+      "issue": "Vue de plan trop oblique et place trop étirée ; orthographie et quatre étals à rétablir."
     },
     {
-      "code": "R6",
-      "issue": "Supprimer tous les parapluies modernes ; robe de la passante en brun/ocre, orange réservé à Aliénor."
+      "code": "P2",
+      "issue": "Femme en orange ajoutée à l’étal de boulangerie ; supprimer le personnage du premier plan et harmoniser le palais au fond."
     },
     {
-      "code": "R9",
-      "issue": "Passage couvert à l'opposé de la place, sortie vers une ruelle descendante, pas de statue visible ni place au bout."
+      "code": "P10",
+      "issue": "Fontaine à deux vasques différente de P5 ; harmoniser avec la colonne et les mascarons."
+    },
+    {
+      "code": "P11",
+      "issue": "Colosse miniaturisé dans l’arche ; rétablir son échelle au-dessus des toits et l’occultation par le mur."
+    },
+    {
+      "code": "P12",
+      "issue": "Colosse miniaturisé et nappe rouge ; rétablir grande statue et nappe bleu nuit."
     }
   ],
   "resolved": [
@@ -38,6 +46,121 @@
     {
       "code": "R28",
       "technical_review": "retouche contrôlée visuellement ; validation artistique de Lucas en attente"
+    },
+    {
+      "code": "R3",
+      "technical_review": "Contrôle visuel dans la conversation : volets fermés / tenue brune sans parapluie moderne. Validation artistique finale en attente."
+    },
+    {
+      "code": "R6",
+      "technical_review": "Contrôle visuel dans la conversation : volets fermés / tenue brune sans parapluie moderne. Validation artistique finale en attente."
+    },
+    {
+      "code": "R9",
+      "technical_review": "Dernière retouche contrôlée visuellement : escalier descendant, sortie vers les ruelles, statue absente. Validation artistique finale en attente."
+    },
+    {
+      "code": "A7",
+      "technical_review": "Vue arrière retouchée et contrôlée : ridelle et roues au premier plan, cheval masqué par le chargement."
+    },
+    {
+      "code": "A5",
+      "technical_review": "Retouche contrôlée : trois poses au sol, décollage et quatre phases de vol pour A5 ; feuilles de tilleul en cœur pour N3. Validation artistique finale en attente."
+    },
+    {
+      "code": "N3",
+      "technical_review": "Retouche contrôlée : trois poses au sol, décollage et quatre phases de vol pour A5 ; feuilles de tilleul en cœur pour N3. Validation artistique finale en attente."
+    },
+    {
+      "code": "O4",
+      "technical_review": "Contrôle visuel : rat-de-cave remplacé par une mèche de cire en spirale allumée ; huit autres luminaires conservés. Validation artistique finale en attente."
+    },
+    {
+      "code": "I6",
+      "technical_review": "Attache de laiton corrigée en fil plié retenant deux papiers ; huit autres éléments conservés. Validation artistique finale en attente."
+    },
+    {
+      "code": "T4",
+      "technical_review": "Visage de la statue corrigé selon le modèle canonique jeune et rasé ; architecture conservée. Validation artistique finale en attente."
+    },
+    {
+      "code": "T10",
+      "technical_review": "Toits blancs, fumées et colosse enneigé rétablis ; statue jeune et rasée dans la cour, marges de vignette conservées. Validation artistique finale en attente."
+    },
+    {
+      "code": "T2",
+      "technical_review": "Colosse replacé dans la cour devant le grand logis ; visage rasé, emblème du portail corrigé à trois degrés en v3. Validation artistique finale en attente."
+    },
+    {
+      "code": "F19",
+      "technical_review": "Six paires conservées, marges latérales élargies et silhouettes entières. Validation artistique finale en attente."
+    },
+    {
+      "code": "K7",
+      "technical_review": "Broderies à fleurs de lys remplacées par losanges, chevrons et points ; chaîne à cabochons simples. Identité et trois vues conservées. Validation artistique finale en attente."
     }
+  ],
+  "other_families_review": [],
+  "other_families_resolved": [
+    {
+      "key": "model_M01",
+      "technical_review": "Élévation arrière avec escalier, auvent et lucarne harmonisée avec R16."
+    },
+    {
+      "key": "model_M02",
+      "technical_review": "Balcon/loggia supprimé au dos ; arrière sobre contrôlé."
+    },
+    {
+      "key": "model_M04",
+      "technical_review": "Fronton avec emblème et quatre lucarnes rétablis sur la façade de cour."
+    },
+    {
+      "key": "act_A0-2",
+      "technical_review": "Retouche contrôlée visuellement : robe anonyme brune ; portail et colosse derrière mur pour A0-2 ; bannières bleues sans lys pour A0-3. Validation finale en attente."
+    },
+    {
+      "key": "act_A0-3",
+      "technical_review": "Retouche contrôlée visuellement : robe anonyme brune ; portail et colosse derrière mur pour A0-2 ; bannières bleues sans lys pour A0-3. Validation finale en attente."
+    },
+    {
+      "key": "act_A3-3",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A3-6",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A6-4",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A3-2",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A4-3",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A6-3",
+      "technical_review": "Retouche contrôlée visuellement : identité, composition, nombre d’objets ou géographie corrigé selon le journal. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A3-5",
+      "technical_review": "Dernière retouche contrôlée visuellement : marques abstraites du registre, trois degrés des bannières, ou absence d’emblème sur le feuillet. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A3-7",
+      "technical_review": "Dernière retouche contrôlée visuellement : marques abstraites du registre, trois degrés des bannières, ou absence d’emblème sur le feuillet. Validation artistique finale en attente."
+    },
+    {
+      "key": "act_A8-1",
+      "technical_review": "Dernière retouche contrôlée visuellement : marques abstraites du registre, trois degrés des bannières, ou absence d’emblème sur le feuillet. Validation artistique finale en attente."
+    }
+  ],
+  "pending_checks": [
+    "Cohérence visuelle de l’ensemble avant validation artistique finale.",
+    "Raccords des quatre textures répétables B17–B20."
   ]
 }
