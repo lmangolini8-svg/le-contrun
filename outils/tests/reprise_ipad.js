@@ -500,7 +500,7 @@ async function testBastienReload(browser) {
 
 async function testStoneInterruption(browser) {
   // Sauvegarde injectée avant Garin. Aucune victoire ni cinématique dans cet état.
-  await withSession(browser, {stage: 4, f: ['F1','F2','F3'], flags: {tribut: 'paye'}, pos: [-10,-1.4]},
+  await withSession(browser, {stage: 4, f: ['F1','F2','F3'], flags: {tribut: 'paye'}, pos: [10,-2.6]},
     {width: 1080, height: 810}, async page => {
       const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
       await resume();
