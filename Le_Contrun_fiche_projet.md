@@ -118,7 +118,7 @@ Les citations viennent de l'Atelier La Boétie. Les phrases d'explication sont �
 - **Progression** : la constante `OBJ` donne les objectifs de l'acte I, `act2Obj()` ceux de l'acte II, et `S.stage` l'étape en cours (0 à 6 pour l'acte I, 10 à 16 pour l'acte II).
 - **Sauvegarde** : dans le localStorage, sous la clé `sarlande-acte1-v1`.
 - **Son** : de vrais enregistrements, générés avec ElevenLabs (offre Starter) et rangés dans `son/` en MP3, 16 Mo en tout.
-  - **Neuf musiques Renaissance** (`mus-*.mp3`) : titre et planches, jour, cour des gardes, branle de la fête, farce, nuit, aube, fanfare du toast, litière. `musicNow()` choisit le morceau selon le moment du récit. Les morceaux s'enchaînent en fondu ; ceux de la fête s'étouffent avec la distance.
+  - **Neuf musiques Renaissance** (`mus-*.mp3`) : titre et planches, jour, cour des gardes, gaillarde de la fête (luth, cistre, flûte, cornemuse ; fichier `mus-branle.mp3`), farce, nuit, aube, fanfare du toast, litière. `musicNow()` choisit le morceau selon le moment du récit. Les morceaux s'enchaînent en fondu ; ceux de la fête s'étouffent avec la distance.
   - **Treize ambiances en boucle** (`amb-*.mp3`) : marché, fontaine, quai, cour, chapelle, imprimerie, fête, nuit, aube, ruelle, feu, vent, pluie. `ambient()` les mêle selon la place d'Aliénor.
   - **Une trentaine de bruitages** : pas sur les pavés, pas en armure, page, feuillet, pièces, sac, plume, presse, colle, pierre, cloche, rires, applaudissements, acclamation, gobelets, chouette.
   - **Mémoire** : musiques et ambiances ne sont décodées qu'au moment où on les entend, puis libérées, pour ménager l'iPad.

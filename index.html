@@ -3289,7 +3289,7 @@ INTER.push({p:()=>MAHAUT.position,r:2.6,label:"S’approcher de la femme masqué
 const Snd={ctx:null,buf:{},loading:{},last:{},amb:{},mus:[],musKey:"",want:"",lastPh:0,laughT:9,clinkT:4,owlT:16,bellT:40,gcT:0,stepI:0};
 const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4"];
 /* gap : silence entre deux passages du morceau (négatif : fondu enchaîné, pour la musique jouée sur la place) */
-const MUSIC={titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8},farce:{gap:-3,vol:.8},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85},litiere:{gap:-4,vol:.8}};
+const MUSIC={titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8} /* la gaillarde de la fête */,farce:{gap:-3,vol:.8},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85},litiere:{gap:-4,vol:.8}};
 const AMBS=["marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
 
 function sndLoad(name){ const c=Snd.ctx; if(!c) return null; Snd.last[name]=c.currentTime; if(Snd.buf[name]) return Snd.buf[name]; if(Snd.loading[name]) return null;
