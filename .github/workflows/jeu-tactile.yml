@@ -19,6 +19,7 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chromium, webkit]
+        groupe: [parcours, rencontres]
     steps:
       - uses: actions/checkout@v4
       - name: Installer Playwright pour le test
@@ -30,6 +31,7 @@ jobs:
         env:
           CHROME_BIN: /usr/bin/google-chrome
           TEST_BROWSER: ${{ matrix.browser }}
+          TEST_GROUP: ${{ matrix.groupe }}
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           python3 -m http.server 8765 --bind 127.0.0.1 > "$RUNNER_TEMP/sarlande-http.log" 2>&1 &
