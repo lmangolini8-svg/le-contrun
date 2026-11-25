@@ -1,5 +1,33 @@
 # Sarlande — cahier de suivi des planches
 
+## Priorité 1 · Cartographier Sarlande et ses abords
+
+Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les quartiers, les deux portes et les chemins. Le nord est en haut. La rivière coule vers l’est, au sud de la place. Elle sépare le quai de la rive habitée. Le pont à trois arches se trouve à l’ouest du quai, la porte du pont au-delà des maisons de la rive sud.
+
+| Secteurs | Limites et parcours |
+|---|---|
+| 1–2 · Marché et imprimerie | Place centrale entre palais et quai. À l’angle nord-ouest part la rue de l’imprimerie. Relier la boutique, l’atelier, la cour arrière et le logement d’Aliénor. |
+| 3–4 · Palais et jardins | Au nord de la place, tracer portail, cour d’honneur et colosse ; jardins clos contre la courtine nord. Superposer étages, archives et oubliettes au plan du sol. |
+| 5–6 · Gardes et chapitre | Poterne à l’est de la place, chapelle au fond de la cour. La cathédrale et son parvis commerçant se trouvent au nord-est. Tracer le chemin public vers la rue du chapitre. |
+| 7–8 · Notables et tanneurs | Hôtels en pierre au nord-ouest du palais ; cuves, galeries et habitat populaire à l’ouest près du bras de rivière. Maintenir la circulation vers la porte de la forêt. |
+| 9–11 · Quai et quartiers habités | Quai, grue, entrepôt et lavoir sous la première arche ; maisons et cours communes de la rive sud. Réserver les îlots résidentiels à l’est de la cour des gardes. |
+| 12 · Cimetière | Créer l’emprise en terrasses au chevet, à l’intérieur du rempart. Relier le cloître et la rue du chapitre par deux accès. Situer enfeus, dalles, poiriers, tilleul, lanterne des morts et chapelle sépulcrale. Placer le parcours d’enquête de Guillemette, Colombe et du tailleur de pierre. |
+| 13 · Bois | À la sortie nord-ouest, délimiter prés, lisière, bois parcourable et collines d’horizon. À la bifurcation, le chemin des vergers dessert le couvent ; un sentier sous couvert gagne la source. |
+| 14 · Couvent | Proposition au nord-est hors les murs. Borner portail, parvis, parloir, église, cloître conventuel, simples, potager, verger et bassin. Relier la porte de ville aux livraisons et aux trajets des religieuses vers le marché et le cimetière. |
+| 15 · Exil de Mahaut | Cabane dans la forêt près d’une source, établie par le récit. Proposition au nord-ouest, à l’écart du chemin conventuel. Placer clairière, seuil, table, cahiers et bougie. Le carnet du joueur révèle le refuge à la rencontre de l’acte IV. |
+| 16 · Campagne sud | Au sortir de la porte du pont, délimiter faubourg, route, champs, vignes et coteaux. |
+
+**Ordre de production**
+
+1. Plan directeur annoté, quartiers et emprise des abords, dérivé de V1–V4.
+2. Plan des rues, seuils, ponts, accès gardés, parcelles privées et étages, avec accès par acte.
+3. Plan rapproché cathédrale–cloître–cimetière : dénivelés, accès et parcours de l’enquête.
+4. Plan des chemins extérieurs, du clos conventuel et des jardins par parcelle.
+5. Plan de la forêt, de la clairière et de la source ; version du carnet adaptée aux découvertes d’Aliénor.
+6. Vues de quartier et carte du carnet dérivées de ce même fond. Réemployer V33 et les références D et H déjà commandées.
+
+Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D. Les 209 planches recensées ci-dessous gardent leur périmètre initial.
+
 **25 novembre 2026 · 332 des 541 planches sont produites ou consignées comme produites. Il en reste 209 à réaliser.** Le pointage porte sur les chemins de la branche de production au commit d9be0a3. Lucas fera la validation artistique de l’ensemble à la fin.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
