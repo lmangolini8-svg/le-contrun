@@ -32,6 +32,17 @@ async function testGate(browser) {
       const actual = await page.evaluate(() => [player.position.x, player.position.z]);
       assert.deepEqual(actual, pos, 'La poterne ouverte doit accepter la position sauvegardée');
       assert.match(await page.locator('#obj').textContent(), /fouillez la chapelle/i);
+      const textures = await page.evaluate(() => [rt.texture.uuid, rt.depthTexture.uuid, sun.shadow.map.uuid]);
+      await page.setViewportSize({width: 1080, height: 810});
+      await page.waitForFunction(() => !portrait && rt.width === canvas.width && rt.height === canvas.height && rt.depthTexture.image.width === rt.width);
+      const rotated = await page.evaluate(() => ({
+        textures: [rt.texture.uuid, rt.depthTexture.uuid, sun.shadow.map.uuid],
+        depthWidth: rt.depthTexture.image.width, depthHeight: rt.depthTexture.image.height,
+        width: rt.width, height: rt.height
+      }));
+      assert.deepEqual(rotated.textures, textures, 'La rotation doit réutiliser les textures');
+      assert.equal(rotated.depthWidth, rotated.width);
+      assert.equal(rotated.depthHeight, rotated.height);
     });
   console.log('Acte I : reprise dans la poterne ouverte en portrait.');
 }
