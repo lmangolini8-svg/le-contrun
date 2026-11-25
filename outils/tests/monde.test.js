@@ -160,6 +160,9 @@ test("migration : une partie de l'acte I avancée ne rejoue pas l'ouverture", ()
   assert.equal(S.vie.recit.ancienne, true);
   assert.equal(S.vie.recit.tribut, true);
   assert.deepEqual(S.f, ["F1", "F2"]);
+  const debut = M.migrer({ stage: 0, act: 1, started: true, f: ["F1"] });
+  assert.equal(debut.vie.recit.ancienne, true, "une partie commencée à l’atelier n’est pas renvoyée au clos");
+  assert.equal(debut.vie.recit.poste, true);
   const neuf = M.migrer({ stage: 0, act: 1, started: false });
   assert.equal(neuf.vie.recit.etape, "reveil");
   const deux = M.migrer(JSON.parse(JSON.stringify(S)));

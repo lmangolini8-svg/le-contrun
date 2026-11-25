@@ -199,7 +199,7 @@ const ACTIONS = {};
 function versClos(etape, pos, ensuite) {
   V().recit.etape = etape; save();
   turnPage("_clos", () => { enterPlay(); majClos(); setScene(true); refreshHud(); if (ensuite) ensuite(); }, null,
-    () => { player.position.set(pos.x, 0, pos.z); player.rotation.y = Math.PI; });
+    () => { batirClos(); player.position.set(pos.x, 0, pos.z); player.rotation.y = Math.PI; });
 }
 const _startPlay = startPlay;
 startPlay = function (newGame) {
@@ -305,7 +305,7 @@ function sortir() {
 function partirAtelier() {
   fermerDlg(); const v = V(); if (!v.tenue) v.tenue = "ocre";
   v.recit.etape = "ville"; zoneShown.place = 1; save();
-  turnPage("_drapiers", () => { setScene(true); firstExchange = false; player.rotation.y = -Math.PI / 2; startMovie("matin", enterPlay); }, null, () => { player.position.set(-19, 0, 7); });
+  turnPage("_drapiers", () => { setScene(true); firstExchange = false; player.rotation.y = -Math.PI / 2; startMovie("matin", enterPlay); }, null, () => { if (!dioBuilt.ruelles) { DIO.ruelles(O.ruelles[0], O.ruelles[1]); flushWin(); dioBuilt.ruelles = true; } player.position.set(-19, 0, 7); });
 }
 
 /* ================= Prise de poste, cloche et tableau des commandes ================= */
@@ -429,9 +429,16 @@ const HALLES = [
   { b: "boucher", lab: "L’étal du boucher", x: -5.4, z: 11.6, look: { top: BLANC, apron: 0xd8c8b8, legs: SEPIA, hat: "cap", hatc: SIENNE, beard: 0x5a4130 } },
   { b: "chasseur", lab: "Le banc du chasseur", x: -12.6, z: 11.6, look: { top: FORET, legs: SEPIA, hat: "hood", hatc: 0x4f6f4e, pouch: SEPIA } }
 ];
-dio(0, () => { stall(-5.4, 10, SIENNE, BLANC); put(G.box, WOOD, -12.6, 0.45, 10.4, 1.8, 0.9, 0.6); solid(-13.5, -11.7, 10.1, 10.7); });
+// Les étals ne sont là qu'à l'acte I : le soir de la fête, cette partie de la place appartient aux tréteaux.
+const hallesSolides = [];
+const hallesMesh = (() => {
+  B.p = []; B.n = []; B.c = []; B.t = []; B.pop();
+  const n = boxes.length; stall(-5.4, 10, SIENNE, BLANC); put(G.box, WOOD, -12.6, 0.45, 10.4, 1.8, 0.9, 0.6); solid(-13.5, -11.7, 10.1, 10.7);
+  hallesSolides.push(...boxes.slice(n)); B.pop();
+  const m = wobble(B.mesh(cityPaint), 0.32); B.p = []; B.n = []; B.c = []; B.t = []; scene.add(m); return m;
+})();
 for (const h of HALLES) { h.g = human(Object.assign({ noOutline: true, x: h.x, z: h.z, ry: 0 }, h.look)); h.c = [h.x, h.z, 0.55, false]; circles.push(h.c); }
-function majHalles() { if (!HALLES[0].g) return; const jour = S.act === 1 && !enClos(); for (const h of HALLES) h.c[3] = h.g.visible = jour && M.ouvert(V(), h.b); }
+function majHalles() { if (!HALLES[0].g) return; const jour = S.act === 1 && !enClos(); hallesMesh.visible = S.act === 1; for (const x of hallesSolides) x.on = S.act === 1; for (const h of HALLES) h.c[3] = h.g.visible = jour && M.ouvert(V(), h.b); }
 for (const h of HALLES) INTER.push({ p: () => ({ x: h.x, z: h.z + 1.2 }), r: 1.8, label: h.lab, can: () => S.act === 1, act() { halle(h); } });
 function halle(h) {
   const v = V(), B = M.BOUTIQUES[h.b], art = B.articles[0], A = M.ARTICLES[art];

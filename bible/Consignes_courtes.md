@@ -26,7 +26,7 @@
 
 - Mahaut enfant sauve une page du bûcher dans `seq_bucher_2.png`.
 - Pierrot porte une couronne de papier plié. Sa cape porte l’emblème de l’Un.
-- L’emblème C est un disque d’or au-dessus de trois degrés, de largeur croissante vers le bas. La référence est `objet_emblème_un.png`. Les fleurs de lys sont exclues de Sarlande.
+- L’emblème C est un disque d’or au-dessus de trois degrés, de largeur croissante vers le bas. La référence est `objet_emblème_un.png`. La fleur de lys peut apparaître dans la ville (ornements, vitraux, tissus), mais jamais comme marque du pouvoir de l’Un (décision du 25 novembre 2026).
 - Les archives, le pommeau de la statue, les trois textures du jeu, l’écran-titre et les pages de citation ont été harmonisés. Le remplacement du colosse procédural relève de l’étape 3D.
 - [Référence carrée pour Meshy](../modeles/statue/meshy/entree_essai1_statue_reference_carre.png) · [Suivi des essais 3D](../modeles/statue/README.md).
 

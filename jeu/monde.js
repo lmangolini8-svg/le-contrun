@@ -127,7 +127,7 @@
     if (!S.vie || typeof S.vie !== "object" || S.vie.v !== VERSION) {
       const ancien = S.vie && typeof S.vie === "object" ? S.vie : null;
       S.vie = Object.assign(creer(), ancien || {}, { v: VERSION });
-      if (!ancien && S.started && ((S.stage || 0) > 0 || (S.act || 1) > 1)) {
+      if (!ancien && S.started) { // la partie a commencé avec l’ancienne ouverture, à l’atelier
         const r = S.vie.recit;
         Object.assign(r, { etape: "ville", ancienne: true, lettre: "lue", poste: true, cloche: true, tribut: (S.stage || 0) >= 2 || (S.act || 1) > 1 });
         S.vie.journal["perrine:pesee"] = 0;
