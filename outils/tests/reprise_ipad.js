@@ -159,10 +159,12 @@ async function testOpening(browser) {
     await page.keyboard.down('ArrowLeft');
     try { await speak.waitFor(); } finally { await page.keyboard.up('ArrowLeft'); }
     await speak.tap();
-    await skip.tap();
+    // Les deux gestes d’Anselme durent quelques secondes : la scène peut s’achever seule avant le toucher.
+    const passerSiEnCours = () => skip.tap({timeout: 4000}).catch(() => {});
+    await passerSiEnCours();
     const dialogue = page.locator('#dlg');
     await dialogue.getByText(/Te voilà, Aliénor/).tap();
-    await skip.tap();
+    await passerSiEnCours();
     await dialogue.getByText(/C’est le matin du tribut/).tap();
     await dialogue.getByRole('button', {name: /Un tiers/}).tap();
     await dialogue.getByText(/Rien que tu verras/).tap();
