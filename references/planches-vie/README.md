@@ -19,21 +19,32 @@
 
 Ces dix PNG sont des références de production. Leur intégration au jeu est à suivre séparément.
 
+## Ruelles et quartiers populaires · 7 planches validées et déposées
+
+| Code | Planche | Validation |
+|---|---|---|
+| U1 | [La ruelle en escalier](ruelle_escalier.png) | Validé par Lucas. |
+| U2 | [La ruelle de nuit](ruelle_nuit.png) | Validé par Lucas. |
+| U3 | [La cour du quartier populaire](quartier_populaire.png) | Validé par Lucas. |
+| U4 | [La rue des Tanneurs](tanneurs_rue.png) | Validé par Lucas. |
+| U5 | [Les douze éléments de tannerie](tanneurs_elements.png) | Validé par Lucas. |
+| U6 | [La maison d’Hugues](facade_hugues.png) | Version corrigée validée par Lucas, avec les proportions et les ouvertures de la maison dans U4. |
+| U7 | [Les six échoppes d’artisans](quartier_echoppes.png) | Validé par Lucas. |
+
 ## Prochains lots à générer ensemble
 
 Chaque lot partage ses références et fait l’objet d’un seul retour. Les scènes d’un même lieu reprennent un cadrage de référence commun. Une retouche se demande par code. Les versions validées peuvent être déposées ensemble.
 
 | Ordre | Lot | Codes | PNG |
 |---|---|---|---:|
-| 1 | Ruelles et quartiers populaires | U1 à U7 | 7 |
-| 2 | Poterne, cour des gardes et cathédrale | G1 à G5 et D17 à D20 | 9 |
-| 3 | Intérieurs du palais, archives et oubliettes | V1 à V7 du cahier Vie de Sarlande | 7 |
-| 4 | Portes, horizons et chemins hors les murs | H1 à H9 | 9 |
-| 5 | Témoins de la fête de l’acte II | N4-1 à N4-8 | 8 |
-| 6 | Tirage clandestin et passage de la litière | N5-1 à N5-6 et N6-1 à N6-3 | 9 |
-| 7 | Affichage, lectures et fin à l’aube | N7-1 à N7-6 | 6 |
+| 1 | Poterne, cour des gardes et cathédrale | G1 à G5 et D17 à D20 | 9 |
+| 2 | Intérieurs du palais, archives et oubliettes | V1 à V7 du cahier Vie de Sarlande | 7 |
+| 3 | Portes, horizons et chemins hors les murs | H1 à H9 | 9 |
+| 4 | Témoins de la fête de l’acte II | N4-1 à N4-8 | 8 |
+| 5 | Tirage clandestin et passage de la litière | N5-1 à N5-6 et N6-1 à N6-3 | 9 |
+| 6 | Affichage, lectures et fin à l’aube | N7-1 à N7-6 | 6 |
 
-Pour le prochain lot, joindre la [rue de l’imprimerie](../planches-3d/lieu_rue_imprimerie.png) et la [place du marché et du tribut](../lieux-originaux/place-du-marche-et-tribut.webp) selon le [cahier de la vie de Sarlande](../../bible/Consignes_images_vie.md). L’[atlas topographique](Sarlande_Atlas_topographique.pdf) fixe les raccords entre quartiers.
+Les références à joindre pour la poterne, la cour des gardes et la cathédrale figurent dans le [cahier de la vie de Sarlande](../../bible/Consignes_images_vie.md). L’[atlas topographique](Sarlande_Atlas_topographique.pdf) fixe les raccords entre quartiers.
 
 ## Atlas topographique du 25 novembre 2026
 
@@ -52,7 +63,7 @@ Le quai se tient à environ 4 m au-dessus du zéro local, le marché à 10,4 m, 
 | Vérifications en 3D | Parcourir sur iPad le raccord cloître–cimetière et les deux routes du quai. Vérifier le gabarit d’une charrette dans la cour de l’écurie, le tablier du pont et la montée des eaux au lavoir et à la grue. |
 | Carnet d’Aliénor | Distribuer une seule planche à la fois. Le refuge et sa branche de sentier apparaissent à l’acte IV après la rencontre. Le carnet de l’acte V suppose cette découverte préalable. |
 
-Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 200 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
+Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 193 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
 
 
 ## Priorité 1 · Cartographier Sarlande et ses abords
@@ -83,15 +94,15 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 
 Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**25 novembre 2026 · 341 des 541 planches sont produites ou consignées comme produites. Il en reste 200 à réaliser.** Ce pointage comprend les dix dépôts du lot du quai. Q1 figurait déjà parmi les planches produites.
+**25 novembre 2026 · 348 des 541 planches sont produites ou consignées comme produites. Il en reste 193 à réaliser.** Ce pointage comprend les dix dépôts du lot du quai et les sept du lot des ruelles et quartiers populaires. Q1 figurait déjà parmi les planches produites.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
 | Actes I et II | 196 | 55 | 55 | 141 |
-| Vie de Sarlande | 282 | 250 | 245 | 32 |
+| Vie de Sarlande | 282 | 257 | 252 | 25 |
 | Vues aériennes et palais | 55 | 28 | 25 | 27 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **341** | **333** | **200** |
+| **Total** | **541** | **348** | **340** | **193** |
 
 ## Générations retrouvées et dépôts à terminer
 
@@ -106,7 +117,7 @@ Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Ga
 | Vues sud | V26, V27, V28 | vue_sud_nuit_hiver.png, vue_sud_printemps.png, vue_sud_aube.png — neige de nuit, crue printanière, aube rose |
 | Colosse | C1, C2, C3 | colosse_socle_etats.png, colosse_details.png, colosse_chute.png — retrouver les originaux consignés |
 
-## Les 200 planches à réaliser
+## Les 193 planches à réaliser
 
 Les codes reprennent ceux des commandes originales. Une plage comprend ses deux bornes. Chaque expression de portrait correspond à un PNG. Le préfixe P ou V se lit dans la famille indiquée.
 
@@ -123,12 +134,11 @@ Les codes reprennent ceux des commandes originales. Une plage comprend ses deux 
 | Carnet, ciels et récit illustré | X30 à X38, neuf vignettes · X40 à X46, sept ciels · X50 à X61, douze illustrations pour la classe | 28 |
 | Le peuple qui paie | Y1 à Y6, percepteur et peuple · Y7, quatre expressions du clerc · Y8, file · Y10 à Y20, tribut, porteurs et gestes · Y30 à Y42, costumes et matières | 35 |
 
-### Vie de Sarlande · 32
+### Vie de Sarlande · 25
 
 | Série | Codes restant à réaliser | PNG |
 |---|---|---:|
 | Cathédrale | D17 cloches, D18 matières, D19 vue depuis la place, D20 planche de livre | 4 |
-| Ruelles et quartiers | U1 à U7 — escalier, nuit, quartier populaire, tanneurs, éléments de métier, maison d’Hugues, échoppes | 7 |
 | Poterne et gardes | G1 à G5 — élévation, cour, nuit, chapelle, poste de garde | 5 |
 | Palais, archives, oubliettes | V1 à V7 — escalier, couloir, cuisines, archives, cellule, mobilier de l’Un, porte | 7 |
 | Hors les murs | H1 à H9 — portes, remparts, quatre horizons, forêt, cabane et chemin | 9 |
