@@ -347,6 +347,57 @@ async function testPrintInterruption(browser) {
   console.log('Sauvegarde injectée à l’atelier : reprise après trois mots, un puis trois tirages et le choix devant la litière.');
 }
 
+async function testJoustReload(browser) {
+  const cases = [
+    {act:1, stage:4, pos:[-10,-1.4], first:'F1', second:'F2'},
+    {act:2, stage:11, pos:[12.6,2.4], first:'F6', second:'F7'},
+    {act:2, stage:12, pos:[2.6,-1.5], first:'F6', second:'F7'}
+  ];
+  for (const {act,stage,pos,first,second} of cases) {
+    const checkpoint = {act,stage,pos,flags:{tribut:'paye'},f:['F1','F2','F3','F6','F7','F8']};
+    await withSession(browser, checkpoint, {width: 720,height: 540}, async page => {
+      async function resume(reload) {
+        if (reload) await page.reload({waitUntil:'domcontentloaded'});
+        await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+      }
+      const dialogue = page.locator('#dlg');
+      async function begin() {
+        await page.getByRole('button',{name: stage===11?'Parler à Maëlle':'Parler à Garin'}).tap();
+        await page.evaluate(() => {
+          for (let n=0; n<8 && mode==='dialog' && !waitingChoice; n++) dlg.click();
+        });
+      }
+      const choose = async id => {
+        const name = await page.evaluate(id=>FEU[id].cit,id);
+        await dialogue.getByRole('button',{name,exact:true}).tap();
+      };
+      await resume(false);
+      await begin();
+      await choose(first);
+      const reply = await dialogue.locator('.txt').textContent();
+      await resume(true);
+      assert.equal(await dialogue.locator('.txt').textContent(),reply);
+      await dialogue.tap();
+      assert.equal(await dialogue.locator('.pips .on').count(),1);
+      await choose(first); // Page du premier tour, incorrecte au deuxième.
+      const hint = await dialogue.locator('.more').textContent();
+      await resume(true);
+      assert.equal(await dialogue.locator('.more').textContent(),hint);
+      assert.equal(await dialogue.locator('.pips .on').count(),1);
+      await choose(first);
+      await dialogue.getByText(/Reviens quand/).waitFor();
+      await resume(true);
+      await begin();
+      assert.equal(await dialogue.locator('.pips .on').count(),0);
+      await choose(first);
+      await dialogue.tap();
+      await choose(second);
+      assert.equal(await page.evaluate(()=>S.joute.phase),'replique');
+      console.log('Joute à l’étape '+stage+' : réplique, première erreur, deuxième erreur et nouvel essai joués depuis une sauvegarde injectée.');
+    });
+  }
+}
+
 async function testStory(browser) {
   for (const tribute of ['paye', 'denonce', 'refus']) {
     const joystick = tribute === 'paye' && browser.browserType() === chromium;
@@ -375,6 +426,17 @@ async function testStory(browser) {
       assert.equal(result.confession, tribute === 'denonce' ? true : undefined);
       const expectedSheets = tribute === 'paye' ? ['F1','F2','F3','F4','F5','F6','F7','F8'] : ['F1','F2','F3','F6','F7','F8'];
       assert.deepEqual(result.sheets, expectedSheets);
+      if (tribute === 'paye') {
+        const bilan = await page.locator('#ov .box').innerText();
+        await page.reload({waitUntil:'domcontentloaded'});
+        await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+        await page.locator('#carnetBtn').tap();
+        await page.locator('#n-F1').fill('Révision en classe');
+        await page.getByRole('button',{name:'Relire le bilan de l’acte II'}).tap();
+        assert.equal(await page.locator('#ov .box').innerText(),bilan);
+        await page.getByRole('button',{name:'Ouvrir le carnet'}).tap();
+        assert.equal(await page.locator('#n-F1').inputValue(),'Révision en classe');
+      }
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
       + (joystick ? ' Déplacements au joystick avec gestes tactiles Chromium.' : '')
@@ -401,6 +463,7 @@ async function testStory(browser) {
     await testGuardCapture(browser);
     await testStoneInterruption(browser);
     await testDeniedConfession(browser);
+    await testJoustReload(browser);
   } finally {
     await browser.close();
   }
