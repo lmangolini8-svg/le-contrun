@@ -2261,7 +2261,7 @@ dlg.addEventListener("click",e=>{ if(waitingChoice){ const b=e.target.closest("[
 
 function refreshHud(){ const playing=mode==="play"; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
   $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
-  $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez le doigt pour marcher":"")); if(!playing){act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
+  $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez le doigt pour marcher":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
 function panel(html,full){ ov.className=full?"full":""; ov.innerHTML=`<div class="box cart">${html}</div>`; ov.style.display="flex"; }
 function closePanel(){ ov.style.display="none"; ov.innerHTML=""; }
 
@@ -2436,7 +2436,7 @@ let plBack="carnet";
 function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refreshHud(); ov.className="home"; ov.style.display="flex";
   ov.innerHTML=`<div class="top">${EMBLEME_UN}<div class="le">Le</div><h1>Contr’un</h1>${FLEURON}<div class="sub">Discours de la servitude volontaire</div><div class="by">d’après Étienne de La Boétie</div><div class="act">${actTitle()}</div></div>
   <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un livre interdit.</p>
-  ${S.started?`<button class="pri" data-a="resume">Reprendre le chemin</button><div class="row"><button class="sec" data-a="new">Recommencer</button><button class="sec" data-a="plates">Le livre des planches</button></div>`:`<button class="pri" data-a="new">Entrer dans la ville</button><div class="row"><button class="sec" data-a="plates">Le livre des planches</button></div>`}
+  ${S.started?`<button class="pri" data-a="resume">Reprendre le chemin</button><div class="row"><button class="sec" data-a="restart">Recommencer</button><button class="sec" data-a="plates">Le livre des planches</button></div>`:`<button class="pri" data-a="new">Entrer dans la ville</button><div class="row"><button class="sec" data-a="plates">Le livre des planches</button></div>`}
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
   <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`; }
 function platesList(){ return `<div class="pl">${Object.keys(PLATES).map(k=>`<button data-a="pl" data-k="${k}"><i>${PLATES[k].n||"✦"}</i> ${esc(PLATES[k].dest||"Page de citation")}</button>`).join("")}</div>`; }
@@ -2466,7 +2466,11 @@ function mapSVG(){ const X=x=>((x+34)*3.4+4).toFixed(1), Y=z=>((z+48)*2.9+4).toF
 function showEnd(){ mode="panel"; refreshHud(); const t={paye:"Vous avez payé sans rien dire, comme tout le monde. Puis vous avez parlé.",denonce:"Vous avez livré le nom de Garin au percepteur. Il a posé son sac malgré tout. Il n’a pas oublié.",refus:"Vous avez demandé à quoi sert le tribut. Votre nom est dans le registre du palais."}[S.flags.tribut]||"";
   panel(`<span class="kick">Fin de l’acte I</span><h2>Une pierre s’est descellée</h2><p class="lede">Garin a posé son sac. Ce n’est qu’un homme, et le colosse tient encore. Mais Sarlande vient d’apprendre que ce qu’elle appelait l’ordre des choses n’était qu’une habitude.</p><p>${esc(t)} La ville s’en souviendra à l’acte II.</p><p><b>${S.f.length} feuillets sur ${NF}</b> dans votre carnet.${(S.f.includes("F4")&&S.f.includes("F5"))?"":" Il en reste à trouver, le long du quai et au fond de la cour des gardes : la poterne ferme le soir."}</p><div class="row"><button class="pri" data-a="act2">Commencer l’acte II</button><button class="sec" data-a="back">Explorer encore</button><button class="sec" data-a="carnet">Ouvrir le carnet</button></div><p class="small">Acte II : « Le soir de la fête ».</p>`,true); }
 ov.addEventListener("click",e=>{ const b=e.target.closest("[data-a]"); if(!b)return; const a=b.dataset.a;
-  if(a==="new"){ const lite=S.lite, mute=S.mute; S=fresh(); S.lite=lite; S.mute=mute; player.position.set(S.pos[0],0,S.pos[1]); startPlay(true); }
+  if(a==="restart"){
+    panel(`<h2>Recommencer le voyage ?</h2><p>Une nouvelle partie remplacera votre progression, les feuillets recueillis et vos notes dans le carnet.</p><div class="row"><button class="pri" data-a="home">Garder ma partie</button><button class="sec" data-a="new">Recommencer depuis le début</button></div>`,true);
+    ov.querySelector('[data-a="home"]').focus();
+  }
+  else if(a==="new"){ const lite=S.lite, mute=S.mute; S=fresh(); S.lite=lite; S.mute=mute; player.position.set(S.pos[0],0,S.pos[1]); startPlay(true); }
   else if(a==="stone-preview"){previewStone();}
   else if(a==="resume"){ startPlay(); }
   else if(a==="lite-intro"){S.lite=!S.lite;resize();save();showTitle();}
@@ -2570,11 +2574,35 @@ function startCine(){turnPage("chateau",()=>startMovie("pierre",()=>{
 
 /* ================= Commandes ================= */
 const joy={on:false,id:null,bx:0,by:0,x:0,y:0}; const joyEl=$("joy");
-function joyEnd(){ joy.on=false; joy.x=joy.y=0; joyEl.style.display="none"; }
-canvas.addEventListener("pointerdown",e=>{ if(mode!=="play"||joy.on)return; joy.on=true; joy.id=e.pointerId; joy.bx=e.clientX; joy.by=e.clientY; joyEl.style.display="block"; joyEl.style.left=(e.clientX-60)+"px"; joyEl.style.top=(e.clientY-60)+"px"; joyEl.firstChild.style.transform="translate(0,0)"; try{canvas.setPointerCapture(e.pointerId);}catch(_){} });
-canvas.addEventListener("pointermove",e=>{ if(!joy.on||e.pointerId!==joy.id)return; let dx=e.clientX-joy.bx,dy=e.clientY-joy.by; const d=Math.hypot(dx,dy),m=48; if(d>m){dx*=m/d;dy*=m/d;} joy.x=dx/m; joy.y=dy/m; joyEl.firstChild.style.transform=`translate(${dx}px,${dy}px)`; });
-for(const ev of ["pointerup","pointercancel"]) canvas.addEventListener(ev,e=>{ if(e.pointerId===joy.id) joyEnd(); });
-const keys={}; window.addEventListener("keydown",e=>{ if(e.target.tagName==="TEXTAREA")return; keys[e.key.toLowerCase()]=true; if((e.key===" "||e.key==="Enter"||e.key.toLowerCase()==="e")){ if(mode==="plate") leavePlate(); else if(mode==="dialog"&&!waitingChoice) nextLine(); else if(mode==="play"&&current) current.act(); e.preventDefault(); } });
+const joyKnob=joyEl.querySelector("i");
+function joyEnd(){
+  const id=joy.id;
+  joy.on=false; joy.id=null; joy.x=joy.y=0; joyEl.style.display="none";
+  if(id!==null&&canvas.hasPointerCapture(id)) canvas.releasePointerCapture(id);
+}
+canvas.addEventListener("pointerdown",e=>{ if(mode!=="play"||joy.on)return; joy.on=true; joy.id=e.pointerId; joy.bx=e.clientX; joy.by=e.clientY; joyEl.style.display="block"; joyEl.style.left=(e.clientX-60)+"px"; joyEl.style.top=(e.clientY-60)+"px"; joyKnob.style.transform="translate(0,0)"; try{canvas.setPointerCapture(e.pointerId);}catch(_){} });
+canvas.addEventListener("pointermove",e=>{ if(!joy.on||e.pointerId!==joy.id)return; let dx=e.clientX-joy.bx,dy=e.clientY-joy.by; const d=Math.hypot(dx,dy),m=48; if(d>m){dx*=m/d;dy*=m/d;} joy.x=dx/m; joy.y=dy/m; joyKnob.style.transform=`translate(${dx}px,${dy}px)`; });
+for(const ev of ["pointerup","pointercancel","lostpointercapture"]) canvas.addEventListener(ev,e=>{ if(e.pointerId===joy.id) joyEnd(); });
+const keys={};
+function clearControls(){
+  joyEnd();
+  for(const key of Object.keys(keys)) delete keys[key];
+}
+window.addEventListener("blur",clearControls);
+window.addEventListener("keydown",e=>{
+  if(e.target.isContentEditable||e.target.tagName==="TEXTAREA"||e.ctrlKey||e.metaKey||e.altKey) return;
+  const key=e.key.toLowerCase();
+  if(mode==="play") keys[key]=true;
+  if(![" ","enter","e"].includes(key)) return;
+  if(key!=="e"&&e.target.closest?.("button")) return;
+  if(mode==="plate"||mode==="dialog"&&!waitingChoice||mode==="play"&&current){
+    e.preventDefault();
+    if(e.repeat) return;
+    if(mode==="plate") leavePlate();
+    else if(mode==="dialog") nextLine();
+    else current.act();
+  }
+});
 window.addEventListener("keyup",e=>{ keys[e.key.toLowerCase()]=false; });
 let current=null; act.addEventListener("click",()=>{ if(mode==="play"&&current) current.act(); });
 
@@ -2632,7 +2660,7 @@ function freeView(){
 }
 function stoneJoint(){frame(-5.7,2.05,-25.3,-1.68,1.56,-33.12,portrait?57:41);aimSun(0,-34);}
 function startMovie(name,done){
-  joyEnd();Object.keys(keys).forEach(k=>keys[k]=false);current=null;
+  clearControls();current=null;
   sceneRun={name,t:0,done,fired:new Set(),cones:conesOn};mode="sequence";setCones(false);dlg.style.display="none";
   refreshHud();$("cutSkip").hidden=false;marker.visible=false;reveal=1.3;revealDir=1;
   if(name==="matin"){toolDown=0;inkSpread=0;stallFlap.rotation.x=0;}
@@ -2734,7 +2762,7 @@ const camPos=new THREE.Vector3(0,20,40), camLook=new THREE.Vector3(0,8,-20), tmp
 let reveal=0, revealDir=1, revealFn=null;
 function wash(fn){ revealFn=fn; revealDir=-1; }
 const fgEl=$("fg");
-function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(), dt=Math.min(elapsed,0.05); time+=dt;rockBoats(time); postMat.uniforms.uTime.value=time*0.004;
+function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if(document.hidden) return; const dt=Math.min(elapsed,0.05); time+=dt;rockBoats(time); postMat.uniforms.uTime.value=time*0.004;
   /* file du tribut */
   for(let i=0;i<file.length;i++){
     const p=file[i],inOpening=sceneRun&&sceneRun.name==="matin";
@@ -3521,7 +3549,20 @@ function soundTick(dt){ if(!Snd.ctx||Snd.ctx.state!=="running") return; ambient(
 
 function unlock(){ try{ initAudio(); if(Snd.ctx&&Snd.ctx.state==="suspended"&&!document.hidden) Snd.ctx.resume(); }catch(e){} }
 for(const ev of ["pointerup","click","keydown","touchend"]) window.addEventListener(ev,unlock,{passive:true});
-document.addEventListener("visibilitychange",()=>{ if(!Snd.ctx) return; try{ if(document.hidden) Snd.ctx.suspend(); else Snd.ctx.resume(); }catch(e){} });
+function pauseSession(){
+  clearControls();
+  // Les dialogues et les cinématiques ont leurs propres points de sauvegarde.
+  if(S.started&&mode==="play") save();
+}
+window.addEventListener("pagehide",pauseSession);
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden) pauseSession();
+  else clock.getDelta();
+  if(Snd.ctx){
+    const change=document.hidden?Snd.ctx.suspend():Snd.ctx.resume();
+    change.catch(()=>{});
+  }
+});
 const sndBtn=$("snd");
 function sndIcon(){ sndBtn.innerHTML=`<svg viewBox="0 0 30 30" fill="none" stroke="#221f2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22 L11 7 L23 4.5 L23 19.5"/><ellipse cx="8" cy="22.4" rx="3.3" ry="2.5" fill="#221f2b"/><ellipse cx="20" cy="19.9" rx="3.3" ry="2.5" fill="#221f2b"/>${S.mute?`<path d="M4 4 L26 27" stroke="#a9583a" stroke-width="2.6"/>`:""}</svg>`; sndBtn.setAttribute("aria-label",S.mute?"Remettre la musique":"Couper la musique"); }
 sndBtn.addEventListener("click",()=>{ S.mute=!S.mute; save(); unlock(); if(Snd.ctx) Snd.master.gain.setTargetAtTime(S.mute?0:0.9,Snd.ctx.currentTime,0.06); sndIcon(); });
@@ -3540,8 +3581,11 @@ sndBtn.addEventListener("click",()=>{ S.mute=!S.mute; save(); unlock(); if(Snd.c
 
 /* ================= Démarrage ================= */
 function start(d){ if(d&&d.started!==undefined) S=Object.assign(fresh(),d); else load();
-  player.position.set(S.pos[0],0,S.pos[1]); if(blocked(S.pos[0],S.pos[1])) player.position.set(-19,0,7);
-  resize(); applyStage(); sndIcon(); showTitle(); tick(); }
+  const pos=Array.isArray(S.pos)&&S.pos.length===2&&S.pos.every(Number.isFinite)?S.pos:fresh().pos;
+  player.position.set(pos[0],0,pos[1]);
+  applyStage();
+  if(blocked(pos[0],pos[1])){ player.position.set(-19,0,7); placeAllies(); }
+  resize(); sndIcon(); showTitle(); tick(); }
 const hot=window.claude&&window.claude.hot;
 if(hot&&hot.snapshot)hot.snapshot(()=>{save();return S;});
 if(hot&&hot.ready)hot.ready(start);else start((hot&&hot.data)||{});
