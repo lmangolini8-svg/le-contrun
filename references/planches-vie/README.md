@@ -110,15 +110,15 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 
 Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**541 planches produites ou consignées sur 541**, dont **538 PNG déposés**. Les 43 dernières expressions de dialogue sont validées et déposées. Trois PNG originaux du colosse restent à retrouver.
+**541 planches déposées sur 541.** Les trois planches du colosse régénérées et validées par Lucas complètent la commande initiale.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
 | Actes I et II | 196 | 196 | 196 | 0 |
-| Vie de Sarlande | 282 | 282 | 279 | 0 |
+| Vie de Sarlande | 282 | 282 | 282 | 0 |
 | Vues aériennes et palais | 55 | 55 | 55 | 0 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **541** | **538** | **0** |
+| **Total** | **541** | **541** | **541** | **0** |
 
 ## Cinq originaux retrouvés et déposés
 
@@ -130,15 +130,15 @@ Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, co
 | V27 | [Vue sud lors de la crue de printemps](../vues-aeriennes/vue_sud_printemps.png) |
 | V28 | [Vue sud à l’aube](../vues-aeriennes/vue_sud_aube.png) |
 
-## Trois originaux du colosse à retrouver
+## C1 à C3 · Planches du colosse régénérées et déposées
 
-Le [manifeste initial](PRODUCTION_CHATGPT.json) consigne les empreintes de ces trois planches. Leurs PNG originaux restent à retrouver.
+Lucas a validé les trois nouvelles versions. Le [manifeste initial](PRODUCTION_CHATGPT.json) conserve les empreintes des fichiers historiques, distinctes de celles des versions régénérées déposées ici.
 
 | Code | Fichier | Sujet |
 |---|---|---|
-| C1 | `colosse_socle_etats.png` | États du socle |
-| C2 | `colosse_details.png` | Détails du colosse |
-| C3 | `colosse_chute.png` | Chute du colosse |
+| C1 | [colosse_socle_etats.png](colosse_socle_etats.png) | États du socle |
+| C2 | [colosse_details.png](colosse_details.png) | Détails du colosse |
+| C3 | [colosse_chute.png](colosse_chute.png) | Chute du colosse |
 
 ## Les 43 expressions de dialogue validées et déposées
 
