@@ -398,6 +398,43 @@ async function testJoustReload(browser) {
   }
 }
 
+async function reviseWitnesses(page) {
+  const panel = page.locator('#ov');
+  await panel.getByText('8 témoignages sur 8', {exact:true}).waitFor();
+  await panel.getByRole('button',{name:'Ouvrir le carnet'}).tap();
+  const card = name => panel.locator('.temo').filter({has:page.getByText(name,{exact:true})});
+  const jeanne = card('Jeanne, aux trois pièces');
+  await jeanne.getByRole('button',{name:'La coutume'}).tap();
+  await jeanne.getByText('Pas tout à fait.',{exact:false}).waitFor();
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+  await page.locator('#carnetBtn').tap();
+  await jeanne.getByText('Pas tout à fait.',{exact:false}).waitFor();
+  const answers = [
+    ['Mathurin, vieux vigneron','La coutume'],
+    ['Jeanne, aux trois pièces','Les jeux et les largesses'],
+    ['Thibaut, charretier','Le mystère du pouvoir'],
+    ['Hugues, chef de la rue des Tanneurs','L’intérêt des complices'],
+    ['Perrine, la mère qui crie','La peur d’être remarqué'],
+    ['Les enfants de la fontaine','La coutume'],
+    ['Margot, la veuve','La mémoire de la liberté'],
+    ['Les mendiants du quai','Les jeux et les largesses']
+  ];
+  for (const [name,answer] of answers) {
+    const witness = card(name);
+    await witness.getByRole('button',{name:answer,exact:true}).tap();
+    assert.ok((await witness.locator('.cause').innerText()).startsWith(answer+'.'));
+  }
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
+  await page.locator('#carnetBtn').tap();
+  assert.equal(await panel.locator('.temo .cause').count(),8);
+  assert.equal(await panel.locator('.temo button').count(),0);
+  await panel.getByRole('button',{name:'Relire le bilan de l’acte II'}).tap();
+  await panel.getByText('recueillis, 8 reliés à leur cause.',{exact:false}).waitFor();
+  console.log('Partie neuve, refus : huit habitants écoutés le soir, erreur de classement retrouvée, huit causes classées après la fin et bilan relu après rechargement.');
+}
+
 async function testStory(browser) {
   for (const tribute of ['paye', 'denonce', 'refus']) {
     const joystick = tribute === 'paye' && browser.browserType() === chromium;
@@ -426,6 +463,7 @@ async function testStory(browser) {
       assert.equal(result.confession, tribute === 'denonce' ? true : undefined);
       const expectedSheets = tribute === 'paye' ? ['F1','F2','F3','F4','F5','F6','F7','F8'] : ['F1','F2','F3','F6','F7','F8'];
       assert.deepEqual(result.sheets, expectedSheets);
+      if (tribute === 'refus') await reviseWitnesses(page);
       if (tribute === 'paye') {
         const bilan = await page.locator('#ov .box').innerText();
         await page.reload({waitUntil:'domcontentloaded'});

@@ -226,6 +226,10 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     await person('Anselme','anselme');
     expectStage(11);
     if (tribute === 'refus') {
+      for (const witness of WIT) {
+        await interact(witness.label,witness.night[0],witness.night[1],2);
+        if (!state().temo?.includes(witness.id)) fail('Témoignage absent : '+witness.nom);
+      }
       await person('Maëlle','maelle',quotes('F6'));
       expectStage(11);
       if (!dlg.textContent.includes('derrière les tréteaux')) fail('Indice de Maëlle absent pour F7');
