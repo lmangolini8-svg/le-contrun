@@ -1,6 +1,6 @@
 /* Serve the repository over HTTP, then run: node outils/tests/reprise_ipad.js [URL]. */
 const assert = require('node:assert/strict');
-const { chromium } = require('playwright');
+const { chromium, webkit } = require('playwright');
 
 const url = process.argv[2] || 'http://127.0.0.1:8765/index.html';
 const storageKey = 'sarlande-acte1-v1';
@@ -83,15 +83,25 @@ async function testNotebook(browser) {
     await page.getByRole('button', {name: 'Retour au jeu'}).tap();
     await action.waitFor();
 
-    const cdp = await context.newCDPSession(page);
-    await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: 400, y: 400}]});
-    await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: 448, y: 400}]});
+    let releasePointer;
+    if (browser.browserType() === chromium) {
+      const cdp = await context.newCDPSession(page);
+      await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: 400, y: 400}]});
+      await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: 448, y: 400}]});
+      releasePointer = () => cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+    } else {
+      // Playwright's WebKit driver supports taps; use a mouse pointer for the held drag.
+      await page.mouse.move(400, 400);
+      await page.mouse.down();
+      await page.mouse.move(448, 400);
+      releasePointer = () => page.mouse.up();
+    }
     await page.waitForFunction(() => joy.on && joy.x > .8 && player.position.x > -19.95);
     assert.equal(await page.locator('#joy i').evaluate(el => el.style.transform), 'translate(48px, 0px)');
     await page.keyboard.down('ArrowRight');
     await page.evaluate(() => window.dispatchEvent(new Event('blur')));
     await page.waitForFunction(() => !joy.on && !keys.arrowright);
-    await cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+    await releasePointer();
     await page.keyboard.up('ArrowRight');
     const pos = await page.evaluate(() =>
       [player.position.x, player.position.z].map(value => Number(value.toFixed(2))));
@@ -143,10 +153,13 @@ async function testToast(browser) {
 }
 
 (async () => {
-  const browser = await chromium.launch({
+  const engine = process.env.TEST_BROWSER || 'chromium';
+  assert.ok(['chromium', 'webkit'].includes(engine), 'Navigateur de test inconnu');
+  const browser = engine === 'webkit' ? await webkit.launch() : await chromium.launch({
     executablePath: process.env.CHROME_BIN || undefined,
     args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader']
   });
+  console.log(engine, browser.version());
   try {
     await testGate(browser);
     await testNotebook(browser);
