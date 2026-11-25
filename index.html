@@ -826,18 +826,93 @@ for(const sx of [-1,1]){ put(G.box,WS,sx*18.5,3,-18,25,6,2); put(G.box,ST2,sx*18
   put(G.box,0x2a2c33,sx*4.7,6.2,-15.72,0.2,1.3,0.1); put(G.box,0x2a2c33,sx*4.7,2.6,-15.72,0.2,1.3,0.1);
   put(G.box,POURPRE,sx*8.2,3.3,-16.9,1.25,3.8,0.06); put(G.c16,ORANGE,sx*8.2,3.9,-16.84,0.34,0.05,0.34,0,Math.PI/2); }
 put(G.box,WS,0,7.6,-18,5.2,3.6,2); for(let i=0;i<4;i++) put(G.box,WS,-1.95+i*1.3,9.9,-17.25,0.85,1.0,0.5);
+/* le balcon de la fête : c'est de là qu'on jette les pièces et qu'on porte les toasts ; le rideau reste tiré */
+{ const keep=_seed;
+  put(G.box,ST2,0,7.55,-16.45,4.6,.28,1.3);                                        // dalle en saillie
+  for(const sx of [-1,1]) put(G.box,ST2,sx*1.9,7.05,-16.05,.32,.7,.32);            // consoles
+  for(let i=0;i<9;i++) put(G.c8,ST,-1.95+i*.49,8.05,-15.88,.09,.72,.09);          // balustres
+  put(G.box,ST2,0,8.47,-15.88,4.6,.14,.3);                                         // main courante
+  put(G.box,0xc0281c,0,7.95,-15.74,3.6,1.0,.03);                                   // tenture rouge
+  put(G.c16,0xe0b450,0,8.0,-15.71,.26,.02,.26,0,Math.PI/2,0,0);
+  put(G.box,0x23252c,0,8.55,-16.98,1.5,1.9,.05); put(G.box,0x8a1f1a,0,8.55,-16.95,1.3,1.7,.03); // porte-fenêtre, rideau tiré
+  _seed=keep; }
 put(G.box,0x23252c,0,2.1,-17.3,4.4,4.2,0.7); put(G.c16,0x23252c,0,4.2,-17.3,2.2,0.7,2.2,0,Math.PI/2);
 for(let i=0;i<8;i++) put(G.box,0x6a5e52,-1.92+i*0.55,3.0,-16.92,0.09,6,0.09); for(let i=0;i<5;i++) put(G.box,0x6a5e52,0,0.7+i*1.1,-16.9,4.3,0.09,0.09);
 solid(-31,31,-19,-16.6);
 /* palais */
 B.jit=0.03;
 for(const [x,z,w,h] of [[-19,-33,10,14],[19,-33,10,14]]){ put(G.box,0xe3dcc8,x,h/2,z,w,h,w); for(let r=0;r<3;r++)for(let c=0;c<3;c++) put(G.box,WIN,x-2.8+c*2.8,4+r*3.6,z+w/2+0.02,0.9,1.7,0.06); put(G.k4,SLATE,x,h+3.2,z,w*0.78,6.4,w*0.78,Math.PI/4); }
-for(const [x,z,r,h] of [[-29,-44,3.6,22],[29,-44,3.6,22],[-11,-52,3,26],[11,-52,3,26]]){ put(G.c16,0xe0d8c4,x,h/2,z,r,h,r); put(G.k16,SLATE,x,h+4,z,r*1.15,8,r*1.15); }
-put(G.box,0xe3dcc8,0,9,-56,34,18,8); put(G.prism,SLATE,0,18,-56,9,7,35,Math.PI/2);
+/* Le palais de l'Un, d'après la fiche d'identité (bible/Consignes_vues_aeriennes_palais.md, 6.4) :
+   un front qui écrase la place, une cour d'honneur et son colosse, deux pavillons, le grand logis au fond,
+   un vieux donjon, des cuisines, quatre tours d'angle, des côtés nus, des jardins clos et le rempart nord. */
+{ const keep=_seed, GRIS=0xcfc6b4, VIEUX=0xbfc4d4, RED=0xc0281c, GOLD=0xe0b450, CURT=0x8a1f1a;
+  // la cour d'honneur, pavée
+  put(G.box,0xd9cfb8,0,.02,-37,27,.04,19.5);
+  // les côtés nus, de pierre grise, percés de rares fenêtres grillagées
+  for(const sx of [-1,1]){
+    put(G.box,GRIS,sx*30.3,4.6,-37.5,1.6,9.2,37);
+    for(let i=0;i<9;i++) put(G.box,GRIS,sx*30.3,9.6,-20.5-i*4.1,1.7,.9,.9);
+    for(const z of [-26,-36,-46]){ put(G.box,0x2a2c33,sx*31.12,5.2,z,.06,1.1,.7); for(let k=0;k<3;k++) put(G.box,0x4a4a52,sx*31.16,5.2,z-.25+k*.25,.04,1.1,.05); }
+    // l'aile basse qui relie le front aux pavillons
+    put(G.box,GRIS,sx*26.5,3.2,-25,6.5,6.4,10); put(G.prism,SLATE,sx*26.5,6.4,-25,6.9,2.4,10.4);
+  }
+  // le grand logis de l'Un, au fond : plus haut, plus sévère
+  { const Z=-50, W=32, D=9, H=17;
+    put(G.box,0xe3dcc8,0,H/2,Z,W,H,D);
+    put(G.prism,SLATE,0,H,Z,D+1,7.5,W+1.2,Math.PI/2);
+    for(let i=0;i<7;i++){ const x=-13.5+i*4.5;
+      put(G.box,ST2,x,1.9,Z+D/2+.55,.7,3.8,.7);                                   // piliers de la galerie
+      put(G.box,0x2f2a30,x+2.25,1.6,Z+D/2+.05,3.2,3.2,.1);                         // ombre de la galerie
+      for(const y of [7.6,12.4]){ put(G.box,WIN,x+2.25,y,Z+D/2+.03,1.3,2.9,.06); put(G.box,CURT,x+2.25,y,Z+D/2+.06,1.1,2.6,.03); put(G.box,ST2,x+2.25,y+1.6,Z+D/2+.1,1.6,.22,.2); } // hautes fenêtres aux rideaux tirés
+      put(G.box,ST2,x+2.25,H+2.2,Z+D/2-.6,1.3,1.8,1.3); put(G.prism,SLATE,x+2.25,H+3.1,Z+D/2-.6,1.6,1.1,1.5); } // lucarnes
+    put(G.box,ST2,0,3.95,Z+D/2+.55,W,.5,1.3);                                      // entablement de la galerie
+    put(G.box,ST2,0,H+.4,Z+D/2+.2,W+.4,.5,.6);                                     // corniche
+    put(G.prism,0xe3dcc8,0,H+.6,Z+D/2+.25,7,3.4,.5);                               // fronton
+    put(G.c16,GOLD,0,H+2.1,Z+D/2+.55,.75,.08,.75,0,Math.PI/2,0,0);                 // l'emblème au fronton
+    [[.95,1.05],[1.4,.8],[1.85,.55]].forEach(([w,y])=>put(G.box,GOLD,0,H+y,Z+D/2+.52,w,.2,.08,0,0,0,0));
+    for(const sx of [-1,1]){ put(G.box,ST2,sx*9,H+5.2,Z-1,1.3,5,1.3); put(G.box,ST2,sx*9,H+7.8,Z-1,1.6,.35,1.6); } // cheminées
+  }
+  // le vieux donjon, au nord-est : plus sombre, plus ancien que tout le reste
+  { const X=22.5, Z=-50.5;
+    put(G.box,VIEUX,X,10.5,Z,7.5,21,7.5);
+    put(G.box,VIEUX,X,21.4,Z,8.4,1.2,8.4);
+    for(let i=0;i<8;i++){ const t=-3.6+i*1.03; for(const [dx,dz] of [[t,4.05],[t,-4.05],[4.05,t],[-4.05,t]]) put(G.box,VIEUX,X+dx,22.5,Z+dz,.55,1,.55); }
+    put(G.k4,SLATE,X,26.5,Z,5.2,7,5.2,Math.PI/4);
+    for(const y of [6,12,17]) put(G.box,0x23252c,X,y,Z+3.78,.22,1.5,.06);           // archères
+    put(G.box,0x23252c,X-1.6,7.4,Z+3.78,1,1.7,.06);                                // la porte haute
+    put(G.box,0x23252c,X+1.5,.45,Z+3.78,1.2,.5,.06);                               // soupirail des oubliettes
+    for(let k=0;k<4;k++) put(G.box,0x4a4a52,X+1.05+k*.3,.45,Z+3.82,.04,.5,.04);
+  }
+  // les cuisines, au nord-ouest : basses, avec de grosses cheminées
+  { const X=-22.5, Z=-50.5;
+    put(G.box,GRIS,X,4,Z,8,8,7); put(G.prism,LAUZE,X,8,Z,8.4,3.2,7.4);
+    for(const dx of [-2.2,2.2]){ put(G.box,ST2,X+dx,11.6,Z-1,1.4,4,1.4); }
+    put(G.box,0x23252c,X,1.5,Z+3.53,2.4,3,.06);                                   // porte charretière
+  }
+  // les quatre tours d'angle, plus hautes que les toits
+  for(const [x,z] of [[-31,-18],[31,-18],[-30.3,-56],[30.3,-56]]){
+    const h=z>-20?13:17;
+    put(G.c16,WS,x,h/2,z,2.8,h,2.8);
+    put(G.c16,ST2,x,h+.4,z,3.25,.8,3.25);                                          // mâchicoulis
+    for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; put(G.box,WS,x+Math.cos(a)*3.0,h+1.25,z+Math.sin(a)*3.0,.7,.9,.45,-a+Math.PI/2); }
+    put(G.k16,SLATE,x,h+4.3,z,3.2,6.2,3.2); put(G.s,GOLD,x,h+7.6,z,.22,.3,.22,0,0,0,0);
+    for(const y of [h*.4,h*.7]) put(G.box,0x23252c,x,y,z+2.78,.2,1.1,.06);
+  }
+  // le mur du fond, entre les tours du nord, et le rempart au-delà des jardins
+  put(G.box,GRIS,0,4,-56.5,60,8,1.4);
+  for(let i=0;i<19;i++) put(G.box,GRIS,-27+i*3,8.5,-56.5,1.3,1,1.5);
+  // les jardins de l'Un, clos et vides
+  put(G.box,0x8fa07a,0,.03,-63,56,.06,11);
+  for(const sx of [-1,1]) for(const dz of [-2.2,2.2]) put(G.box,0x5f7a52,sx*12,.35,-63+dz,14,.7,1.4);
+  put(G.c16,ST2,0,.45,-63,1.6,.9,1.6); put(G.c16,0x5e8fa0,0,.92,-63,1.35,.06,1.35);
+  put(G.box,WS,0,3.5,-69,72,7,1.6); for(let i=0;i<24;i++) put(G.box,WS,-34.5+i*3,7.5,-69,1.3,1,1.7);
+  _seed=keep; }
 /* cathédrale et flèches dans la brume */
 function spire(x,z,r,h,sh){ put(G.box,0xd8d0c0,x,h/2,z,r*2,h,r*2); put(G.k4,SLATE,x,h+sh/2,z,r*1.25,sh,r*1.25,Math.PI/4); for(const [dx,dz] of [[-1,-1],[1,-1],[-1,1],[1,1]]) put(G.k4,SLATE,x+dx*r*0.95,h+sh*0.14,z+dz*r*0.95,r*0.28,sh*0.3,r*0.28,Math.PI/4); for(let k=0;k<3;k++) put(G.box,0x23252c,x,h*(0.45+k*0.17),z+r+0.03,r*0.5,h*0.09,0.08); }
-put(G.box,0xd8d0c0,-52,11,-46,16,22,40); put(G.prism,SLATE,-52,22,-46,17,10,41); spire(-47,-24,3.2,34,30); spire(-57,-24,3.2,30,26); put(G.k4,SLATE,-52,39,-50,1.6,22,1.6,Math.PI/4); for(let i=0;i<6;i++){ put(G.box,0xcfc6b4,-43.4,8,-30-i*6,1.2,16,1.6); put(G.k4,SLATE,-43.4,18.5,-30-i*6,0.9,5,0.9,Math.PI/4); }
-spire(48,-52,2.6,30,24); spire(62,-40,2.2,22,20); spire(-78,-58,2.4,26,22); spire(38,-72,3,40,30); spire(-24,-74,2.6,34,26); spire(74,-70,2.4,28,24);
+// La cathédrale se tient au nord-est, derrière la cour des gardes (fiche d'identité de Sarlande) ;
+// les autres clochers restent loin, pour ne pas se confondre avec les tours du palais.
+put(G.box,0xd8d0c0,58,11,-50,16,22,40); put(G.prism,SLATE,58,22,-50,17,10,41); spire(53,-28,3.2,34,30); spire(63,-28,3.2,30,26); put(G.k4,SLATE,58,39,-54,1.6,22,1.6,Math.PI/4); for(let i=0;i<6;i++){ put(G.box,0xcfc6b4,49.4,8,-34-i*6,1.2,16,1.6); put(G.k4,SLATE,49.4,18.5,-34-i*6,0.9,5,0.9,Math.PI/4); }
+spire(-70,-62,2.6,30,24); spire(92,-30,2.2,22,20); spire(-88,-70,2.4,26,22); spire(30,-92,3,40,30); spire(-34,-96,2.6,34,26); spire(84,-84,2.4,28,24);
 /* collines */
 for(const [x,z,r,h,c] of [[-150,-240,150,52,0x7f8cba],[80,-270,180,70,0x6f7cae],[250,-200,120,44,0x8794c0],[-260,-170,110,38,0x8794c0],[-90,170,150,34,0x8fa08a],[150,190,170,42,0x7f9480]]) put(G.s,c,x,-6,z,r,h,r);
 B.jit=0.05;

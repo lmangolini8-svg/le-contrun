@@ -4,7 +4,7 @@
 
 Ce document a deux buts :
 1. **Zoner la ville** : fixer une fois pour toutes où se trouve chaque lieu, puis en tirer des vues aériennes qui se ressemblent d’une image à l’autre.
-2. **Concevoir le palais pour de bon**, avec les blocs qui l’entourent. Aujourd’hui, dans le jeu, il mélange un châtelet médiéval, deux pavillons Renaissance et de hautes tours lisses qui ne servent que de décor ; son côté nord n’existe pas.
+2. **Concevoir le palais pour de bon**, avec les blocs qui l’entourent. Le 25 novembre, le palais du jeu a été reconstruit d’après la fiche du palais (6.4) : front et balcon, cour d’honneur, deux pavillons, grand logis, donjon, cuisines, quatre tours d’angle, côtés nus, jardins et rempart. Les images du lot P serviront à l’affiner et à le peindre.
 
 Il y a **55 images**, en codes **V** (la ville vue du ciel) et **P** (le palais et ses abords).
 
@@ -47,7 +47,7 @@ Les points marqués **[jeu]** existent déjà dans le jeu et ne bougent plus. Le
 > - **[jeu] Le palais de l’Un** ferme tout le côté nord de la place. Son front est un **mur crénelé de pierre blonde** ; au milieu, un **portail entre deux tours rondes** coiffées d’ardoise bleue, avec l’estrade du percepteur sous un dais rouge. Derrière le portail, la **cour d’honneur** ; au centre de la cour, sur un haut socle, le **colosse**, statue géante de l’Un, couronnée, une main tendue tenant une sphère, l’épée au côté, plus haute que tous les toits : on la voit de partout. De part et d’autre de la cour, **deux pavillons Renaissance** de pierre ocre sculptée, à toits d’ardoise bleue en pavillon.
 > - **[jeu] À l’ouest de la place** : des maisons à colombages serrées, et, au bout, **l’imprimerie de maître Anselme**, avec son enseigne en livre ouvert. La rue de l’imprimerie part de l’angle nord-ouest de la place.
 > - **[jeu] À l’est de la place** : des maisons, puis la **poterne**, une porte basse dans un mur, qui ouvre sur la **cour des gardes** : une longue cour rectangulaire, des arcades au nord, des caisses et des tonneaux ; au fond, à l’est, une **petite chapelle** à rosace.
-> - **[à valider] La cathédrale** : au nord-est, derrière la cour des gardes, sur une petite place à elle, avec son clocher-porche roman et sa coupole en lanterne. Son clocher est le deuxième repère de la ville, après le colosse.
+> - **[jeu, en volume simple ; à valider] La cathédrale** : au nord-est, derrière la cour des gardes, sur une petite place à elle, avec son clocher-porche roman et sa coupole en lanterne. Son clocher est le deuxième repère de la ville, après le colosse.
 > - **[à valider] Le pont et le lavoir** : un pont de pierre à trois arches franchit la rivière à l’ouest du quai ; le lavoir est sous la première arche.
 > - **[à valider] La rue des Tanneurs** : à l’ouest, le long d’un bras de la rivière qui se détache vers le nord ; maisons à galeries de bois où sèchent les peaux.
 > - **[à valider] Les quartiers populaires** : au sud-ouest et sur la rive sud, maisons de bois plus pauvres et penchées, cours communes.
@@ -146,15 +146,15 @@ Le palais est le cœur du *Discours* : c’est là que va tout ce que le peuple 
 | Partie | Où | À quoi elle sert dans l’histoire | Acte | Jeu |
 |---|---|---|---|---|
 | **Le front et le portail** | au sud, sur la place | le tribut, l’estrade du percepteur, les gardes de la porte | I | oui |
-| **Le balcon** | au-dessus du portail, entre les deux tours | les pièces jetées et les toasts de la fête ; le rideau tiré | II | à créer |
+| **Le balcon** | au-dessus du portail, entre les deux tours | les pièces jetées et les toasts de la fête ; le rideau tiré | II | oui |
 | **La cour d’honneur et le colosse** | derrière le portail | le colosse sur son socle ; la pierre qui tombe | I à V | oui |
 | **Le pavillon ouest : la Chambre du tribut** | à l’ouest de la cour | les bureaux du percepteur, les registres, la salle des pesées | I, III | volume seul |
 | **Le pavillon est : les archives** | à l’est de la cour | les registres anciens, la fiche de la mère d’Aliénor | III | volume seul |
-| **Le grand logis de l’Un** | au nord de la cour, en fond | la galerie, la chambre surchauffée, le fauteuil de fourrures | III | à créer |
-| **Les cuisines et les celliers** | au nord-ouest, côté service | les pains blancs et les tonneaux des largesses : on y voit arriver le tribut du matin | II | à créer |
-| **Le donjon et les oubliettes** | au nord-est, plus ancien que le reste | les prisonniers, les traits gravés, le mari de Margot | III | à créer |
-| **Les tours d’enceinte** | aux quatre angles | le guet, les cônes de vision la nuit | III, IV | décor lisse |
-| **Les jardins de l’Un** | au nord, contre le rempart | des jardins clos que personne ne voit ; l’espalier | III, V | espaliers |
+| **Le grand logis de l’Un** | au nord de la cour, en fond | la galerie, la chambre surchauffée, le fauteuil de fourrures | III | volume, galerie, rideaux |
+| **Les cuisines et les celliers** | au nord-ouest, côté service | les pains blancs et les tonneaux des largesses : on y voit arriver le tribut du matin | II | volume |
+| **Le donjon et les oubliettes** | au nord-est, plus ancien que le reste | les prisonniers, les traits gravés, le mari de Margot | III | volume, soupirail |
+| **Les tours d’enceinte** | aux quatre angles | le guet, les cônes de vision la nuit | III, IV | oui |
+| **Les jardins de l’Un** | au nord, contre le rempart | des jardins clos que personne ne voit ; l’espalier | III, V | volume |
 | **La chapelle palatine** | contre le logis | la messe privée de l’Un ; des vitraux à son emblème | III | à créer |
 
 ### 6.3 Les blocs qui entourent le palais
@@ -268,5 +268,5 @@ Rien ne doit partir avant la validation de V2 : c’est lui qui garantit la coh�
 **Ce que Claude fera des images**
 - Le **plan directeur** et le **plan de zones** fixeront l’emplacement de chaque quartier du jeu, actes III à V compris. La carte du carnet sera redessinée d’après eux.
 - Les **vues obliques** remplaceront l’anneau de volumes lisses qui entoure aujourd’hui la zone jouable : la ville peinte au loin correspondra enfin à la ville jouée.
-- Le **palais** sera reconstruit en 3D d’après P1, P2 et les élévations : un front, une cour, deux pavillons, un logis, un donjon, quatre tours, des côtés nus. Les grandes tours lisses actuelles disparaîtront.
+- Le **palais**, déjà reconstruit en volumes d’après la fiche, sera affiné et peint d’après P1, P2 et les élévations : sculptures, matières, intérieurs.
 - Les calques se refont à tout moment avec `node outils/tests/vues_aeriennes.js <dossier>`, pour comparer le jeu aux images.
