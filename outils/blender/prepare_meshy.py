@@ -1,6 +1,6 @@
 """Prépare un GLB brut de Meshy (bâtiment, objet) pour le jeu.
 
-Usage : python prepare_meshy.py <brut.glb> <sortie.glb> <dossier_apercus> <triangles_max> <hauteur_m>
+Usage : python prepare_meshy.py <brut.glb> <sortie.glb> <dossier_apercus> <triangles_max> <hauteur_m | Llargeur_m>
             [texture_px=1024] [rotation_z_deg=0] [teinte=1,1,1]
 
 - fusionne les objets, applique la rotation demandée (la façade doit regarder -Y dans Blender,
@@ -17,7 +17,7 @@ from mathutils import Vector, Matrix
 
 args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else sys.argv[1:]
 src, dst, out = args[:3]
-MAX_TRIS = int(args[3]); HAUTEUR = float(args[4])
+MAX_TRIS = int(args[3]); PAR_LARGEUR = args[4].startswith('L'); HAUTEUR = float(args[4].lstrip('L'))
 TEX = int(args[5]) if len(args) > 5 else 1024
 ROT = float(args[6]) if len(args) > 6 else 0.0
 TEINTE = [float(x) for x in args[7].split(",")] if len(args) > 7 else [1.0, 1.0, 1.0]
@@ -43,7 +43,7 @@ def bornes():
     return Vector(co.min(0)), Vector(co.max(0))
 
 mn, mx = bornes()
-k = HAUTEUR / (mx.z - mn.z)
+k = HAUTEUR / ((mx.x - mn.x) if PAR_LARGEUR else (mx.z - mn.z))
 ob.data.transform(Matrix.Scale(k, 4) @ Matrix.Translation(Vector((-(mn.x + mx.x) / 2, -(mn.y + mx.y) / 2, -mn.z))))
 tris0 = sum(len(p.vertices) - 2 for p in ob.data.polygons)
 if tris0 > MAX_TRIS:

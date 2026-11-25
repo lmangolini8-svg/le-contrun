@@ -1,0 +1,339 @@
+{
+  "schema_version": 2,
+  "project_name": "ville",
+  "folder": "20261125_013803_ville_01a2105a",
+  "root_task_id": "01a2105a-457f-74c5-96d3-642a30f21ad3",
+  "created_at": "2026-11-25T01:38:03.092Z",
+  "updated_at": "2026-11-25T02:06:16.674Z",
+  "tasks": [
+    {
+      "task_id": "01a2105a-5186-71e4-b6d7-36bbbe890180",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_maison_2",
+      "parent_task_id": null,
+      "status": null,
+      "files": [],
+      "task_json": null,
+      "operation_id": "d50c9f20-006b-4384-b046-376064a9fbae",
+      "created_at": "2026-11-25T01:38:05.820Z",
+      "updated_at": "2026-11-25T01:38:05.820Z"
+    },
+    {
+      "task_id": "01a2105a-5bef-7288-9566-36ea61b70f9f",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_imprimerie",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/imprimerie.glb",
+        "bruts/imprimerie_apercu.png"
+      ],
+      "task_json": "task_01a2105a-5bef-7288-9566-36ea61b70f9f.json",
+      "operation_id": "d916c82d-da3e-4f99-b119-073c8b6010be",
+      "created_at": "2026-11-25T01:38:08.773Z",
+      "updated_at": "2026-11-25T01:45:19.450Z"
+    },
+    {
+      "task_id": "01a2105a-93ce-7489-9137-2c3c007f6340",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_fontaine",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "fontaine/image_0.png"
+      ],
+      "task_json": "task_01a2105a-93ce-7489-9137-2c3c007f6340.json",
+      "operation_id": "3c891bac-e1f8-49d5-ad1c-6130963a0925",
+      "created_at": "2026-11-25T01:38:21.524Z",
+      "updated_at": "2026-11-25T01:38:55.057Z"
+    },
+    {
+      "task_id": "01a2105a-9855-73ce-ab79-d750687b87da",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_etal_bleu",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "etal_bleu/image_0.png"
+      ],
+      "task_json": "task_01a2105a-9855-73ce-ab79-d750687b87da.json",
+      "operation_id": "75880c94-6582-4d61-8c6d-64244a4d0afc",
+      "created_at": "2026-11-25T01:38:22.739Z",
+      "updated_at": "2026-11-25T01:38:57.248Z"
+    },
+    {
+      "task_id": "01a2105a-9d27-70d2-a9cb-32a987c888a0",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_etal_rouge",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "etal_rouge/image_0.png"
+      ],
+      "task_json": "task_01a2105a-9d27-70d2-a9cb-32a987c888a0.json",
+      "operation_id": "fb8c07fe-2592-4527-b3cc-b53b2a191622",
+      "created_at": "2026-11-25T01:38:23.949Z",
+      "updated_at": "2026-11-25T01:39:02.718Z"
+    },
+    {
+      "task_id": "01a2105a-a214-76c6-998a-4e75e48e4175",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_maison_pierre",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "maison_pierre/image_0.png"
+      ],
+      "task_json": "task_01a2105a-a214-76c6-998a-4e75e48e4175.json",
+      "operation_id": "dc6a1e0c-0af7-43e6-89af-373ea327a6d8",
+      "created_at": "2026-11-25T01:38:25.203Z",
+      "updated_at": "2026-11-25T01:39:04.955Z"
+    },
+    {
+      "task_id": "01a2105a-a69a-7103-ba80-49c6fc0e2a2b",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_chapelle",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "chapelle/image_0.png"
+      ],
+      "task_json": "task_01a2105a-a69a-7103-ba80-49c6fc0e2a2b.json",
+      "operation_id": "e58970c7-4877-44a4-8fa1-6dcae2d1761a",
+      "created_at": "2026-11-25T01:38:26.407Z",
+      "updated_at": "2026-11-25T01:39:32.834Z"
+    },
+    {
+      "task_id": "01a2105a-ab22-76b1-8e78-a95611a04c5c",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_cathedrale",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "cathedrale/image_0.png"
+      ],
+      "task_json": "task_01a2105a-ab22-76b1-8e78-a95611a04c5c.json",
+      "operation_id": "729fee97-c3f3-43d6-a6d4-74bd5630b8c1",
+      "created_at": "2026-11-25T01:38:27.639Z",
+      "updated_at": "2026-11-25T01:39:35.164Z"
+    },
+    {
+      "task_id": "01a2105a-b063-750d-8a26-2e9df11505ab",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_corps_de_garde",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "corps_de_garde/image_0.png"
+      ],
+      "task_json": "task_01a2105a-b063-750d-8a26-2e9df11505ab.json",
+      "operation_id": "c908f9f1-9030-4fe7-a94e-d2c60cdac87b",
+      "created_at": "2026-11-25T01:38:28.992Z",
+      "updated_at": "2026-11-25T01:39:37.358Z"
+    },
+    {
+      "task_id": "01a2105a-d845-74d2-98d3-39c83045044e",
+      "task_type": "text-to-image",
+      "resource": "text-to-image",
+      "endpoint": "/openapi/v1/text-to-image",
+      "stage": "concept_arbre",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "arbre/image_0.png"
+      ],
+      "task_json": "task_01a2105a-d845-74d2-98d3-39c83045044e.json",
+      "operation_id": "a15b9876-39e1-4cca-bd5f-7767b6107f01",
+      "created_at": "2026-11-25T01:38:39.073Z",
+      "updated_at": "2026-11-25T01:39:39.565Z"
+    },
+    {
+      "task_id": "01a2105b-f2ef-76c6-9a75-87a0877afbc2",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_fontaine",
+      "parent_task_id": "01a2105a-93ce-7489-9137-2c3c007f6340",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/fontaine.glb",
+        "bruts/fontaine_apercu.png"
+      ],
+      "task_json": "task_01a2105b-f2ef-76c6-9a75-87a0877afbc2.json",
+      "operation_id": "955b06d8-115a-475d-b398-a7165fdbb925",
+      "created_at": "2026-11-25T01:39:52.351Z",
+      "updated_at": "2026-11-25T01:45:06.298Z"
+    },
+    {
+      "task_id": "01a2105b-ff15-769a-aa37-f032fd2c4e58",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_etal_bleu",
+      "parent_task_id": "01a2105a-9855-73ce-ab79-d750687b87da",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/etal_bleu.glb",
+        "bruts/etal_bleu_apercu.png"
+      ],
+      "task_json": "task_01a2105b-ff15-769a-aa37-f032fd2c4e58.json",
+      "operation_id": "04199e7d-a78f-4552-b579-b9252856e310",
+      "created_at": "2026-11-25T01:39:55.345Z",
+      "updated_at": "2026-11-25T01:44:49.573Z"
+    },
+    {
+      "task_id": "01a2105c-06b7-7023-8e4a-1819c10fce15",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_etal_rouge",
+      "parent_task_id": "01a2105a-9d27-70d2-a9cb-32a987c888a0",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/etal_rouge.glb",
+        "bruts/etal_rouge_apercu.png"
+      ],
+      "task_json": "task_01a2105c-06b7-7023-8e4a-1819c10fce15.json",
+      "operation_id": "ec4b9960-4742-4f05-a45d-73825dc8a64a",
+      "created_at": "2026-11-25T01:39:57.634Z",
+      "updated_at": "2026-11-25T01:45:00.388Z"
+    },
+    {
+      "task_id": "01a2105c-0f90-70b2-af03-5326f8c4163c",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_maison_pierre",
+      "parent_task_id": "01a2105a-a214-76c6-998a-4e75e48e4175",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/maison_pierre.glb",
+        "bruts/maison_pierre_apercu.png"
+      ],
+      "task_json": "task_01a2105c-0f90-70b2-af03-5326f8c4163c.json",
+      "operation_id": "c299434f-cbe5-4363-b402-75480c363587",
+      "created_at": "2026-11-25T01:39:59.511Z",
+      "updated_at": "2026-11-25T01:45:44.818Z"
+    },
+    {
+      "task_id": "01a2105c-1714-7104-86ee-f2cf77af31c6",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_chapelle",
+      "parent_task_id": "01a2105a-a69a-7103-ba80-49c6fc0e2a2b",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/chapelle.glb",
+        "bruts/chapelle_apercu.png"
+      ],
+      "task_json": "task_01a2105c-1714-7104-86ee-f2cf77af31c6.json",
+      "operation_id": "eb01fd5c-d046-4850-9cb0-079aa4b94d98",
+      "created_at": "2026-11-25T01:40:01.795Z",
+      "updated_at": "2026-11-25T01:44:36.807Z"
+    },
+    {
+      "task_id": "01a2105c-200a-7675-a53b-14c1038f25b4",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_cathedrale",
+      "parent_task_id": "01a2105a-ab22-76b1-8e78-a95611a04c5c",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/cathedrale.glb",
+        "bruts/cathedrale_apercu.png"
+      ],
+      "task_json": "task_01a2105c-200a-7675-a53b-14c1038f25b4.json",
+      "operation_id": "959b9bec-40d7-4893-b129-1062364fe63d",
+      "created_at": "2026-11-25T01:40:03.757Z",
+      "updated_at": "2026-11-25T01:44:31.523Z"
+    },
+    {
+      "task_id": "01a2105c-27b1-71f5-9cf5-d39a594d55f0",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_corps_de_garde",
+      "parent_task_id": "01a2105a-b063-750d-8a26-2e9df11505ab",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/corps_de_garde.glb",
+        "bruts/corps_de_garde_apercu.png"
+      ],
+      "task_json": "task_01a2105c-27b1-71f5-9cf5-d39a594d55f0.json",
+      "operation_id": "d132fd61-adad-4ff0-b8c8-818011eeb3c1",
+      "created_at": "2026-11-25T01:40:05.713Z",
+      "updated_at": "2026-11-25T01:44:43.192Z"
+    },
+    {
+      "task_id": "01a2105a-457f-74c5-96d3-642a30f21ad3",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_maison1",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/maison1.glb",
+        "bruts/maison1_apercu.png"
+      ],
+      "task_json": "task_01a2105a-457f-74c5-96d3-642a30f21ad3.json",
+      "operation_id": null,
+      "created_at": "2026-11-25T01:44:09.792Z",
+      "updated_at": "2026-11-25T01:45:28.084Z"
+    },
+    {
+      "task_id": "01a2105a-5186-71e4-b6d7-36bbbe890180",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_maison2",
+      "parent_task_id": null,
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/maison2.glb",
+        "bruts/maison2_apercu.png"
+      ],
+      "task_json": "task_01a2105a-5186-71e4-b6d7-36bbbe890180.json",
+      "operation_id": null,
+      "created_at": "2026-11-25T01:44:10.771Z",
+      "updated_at": "2026-11-25T01:45:39.127Z"
+    },
+    {
+      "task_id": "01a21060-14e1-7653-bea9-0f08bd2beb21",
+      "task_type": "image-to-3d",
+      "resource": "image-to-3d",
+      "endpoint": "/openapi/v1/image-to-3d",
+      "stage": "modele_arbre",
+      "parent_task_id": "01a2105a-d845-74d2-98d3-39c83045044e",
+      "status": "SUCCEEDED",
+      "files": [
+        "bruts/arbre.glb",
+        "bruts/arbre_apercu.png"
+      ],
+      "task_json": "task_01a21060-14e1-7653-bea9-0f08bd2beb21.json",
+      "operation_id": "4d9585f2-73d9-42cf-a450-d3ea05605b6e",
+      "created_at": "2026-11-25T01:44:24.076Z",
+      "updated_at": "2026-11-25T02:06:16.674Z"
+    }
+  ]
+}
