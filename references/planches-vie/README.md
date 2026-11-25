@@ -1,5 +1,17 @@
 # Sarlande — cahier de suivi des planches
 
+[Plan de production des planches](Plan_de_production.md)
+
+## Premier lot · Trois planches validées et déposées
+
+| Code | Planche | Validation |
+|---|---|---|
+| Q1 | [Le quai au petit matin](quai_matin.png) | Version régénérée validée par Lucas, avec le lavoir sous la première arche et l’ouvrier dans la roue de marche. |
+| Q7 | [Le lavoir depuis le chemin](quai_lavoir.png) | Validé par Lucas. La vue reprend l’abri de Q1 et montre la fente du billet. |
+| Q4 | [La grue à roue de marche](quai_grue.png) | Version corrigée validée par Lucas. Les deux vues d’extrémité montrent la tranche de la roue. |
+
+Ces trois PNG sont des références de production. Leur intégration au jeu est à suivre séparément.
+
 ## Atlas topographique du 25 novembre 2026
 
 [Feuilleter les 32 planches de l’atlas](Sarlande_Atlas_topographique.pdf) · [Télécharger les cartes, le carnet par acte et les données de terrain](Sarlande_Cartes_et_terrain.zip)
@@ -17,7 +29,7 @@ Le quai se tient à environ 4 m au-dessus du zéro local, le marché à 10,4 m, 
 | Vérifications en 3D | Parcourir sur iPad le raccord cloître–cimetière et les deux routes du quai. Vérifier le gabarit d’une charrette dans la cour de l’écurie, le tablier du pont et la montée des eaux au lavoir et à la grue. |
 | Carnet d’Aliénor | Distribuer une seule planche à la fois. Le refuge et sa branche de sentier apparaissent à l’acte IV après la rencontre. Le carnet de l’acte V suppose cette découverte préalable. |
 
-Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 209 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
+Ces plans techniques complètent les commandes picturales. Le pointage des 541 illustrations et la liste des 207 pièces à réaliser figurent ci-dessous. Les cotes et les limites de parcelles sont des propositions à vérifier dans la scène jouable.
 
 
 ## Priorité 1 · Cartographier Sarlande et ses abords
@@ -46,23 +58,23 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 5. Plan de la forêt, de la clairière et de la source ; version du carnet adaptée aux découvertes d’Aliénor.
 6. Vues de quartier et carte du carnet dérivées de ce même fond. Réemployer V33 et les références D et H déjà commandées.
 
-Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D. Les 209 planches recensées ci-dessous gardent leur périmètre initial.
+Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**25 novembre 2026 · 332 des 541 planches sont produites ou consignées comme produites. Il en reste 209 à réaliser.** Le pointage porte sur les chemins de la branche de production au commit d9be0a3. Lucas fera la validation artistique de l’ensemble à la fin.
+**25 novembre 2026 · 334 des 541 planches sont produites ou consignées comme produites. Il en reste 207 à réaliser.** Ce pointage reprend le relevé précédent et le dépôt de Q1, Q7 et Q4. Q1 était déjà comptée parmi les planches produites. Q7 et Q4 s’ajoutent à ce total.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
 | Actes I et II | 196 | 55 | 55 | 141 |
-| Vie de Sarlande | 282 | 241 | 235 | 41 |
+| Vie de Sarlande | 282 | 243 | 238 | 39 |
 | Vues aériennes et palais | 55 | 28 | 25 | 27 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **332** | **323** | **209** |
+| **Total** | **541** | **334** | **326** | **207** |
 
 ## Générations retrouvées et dépôts à terminer
 
 Le pointage de 13 h 27 comptait 261 dépôts. Les PNG de la place et de la fête (P1 à P21), les vues D1 à D14 de la cathédrale, le billet de Mahaut (N2-6) et les premières scènes de l’acte II ont été rapprochés des chemins prévus. Les archives de 89, 10 et 3 PNG recoupent ces lots. Chaque chemin compte une seule fois, retouches comprises.
 
-Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Garin (N3-2) sont maintenant déposés. Cinq autres PNG ont été retrouvés et identifiés par leur sujet. Les quatre dernières références du tableau ci-dessous étaient déjà consignées avec une empreinte dans le manifeste précédent.
+Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Garin (N3-2) sont maintenant déposés. Cinq autres PNG ont été retrouvés et identifiés par leur sujet. Les trois références du colosse étaient déjà consignées avec une empreinte dans le manifeste précédent.
 
 | Lot | Code | PNG produit à déposer ou à retrouver |
 |---|---|---|
@@ -70,9 +82,8 @@ Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Ga
 | Cathédrale | D16 | cathedrale_cloitre.png — cloître cathédral au printemps |
 | Vues sud | V26, V27, V28 | vue_sud_nuit_hiver.png, vue_sud_printemps.png, vue_sud_aube.png — neige de nuit, crue printanière, aube rose |
 | Colosse | C1, C2, C3 | colosse_socle_etats.png, colosse_details.png, colosse_chute.png — retrouver les originaux consignés |
-| Quai | Q1 | quai_matin.png — retrouver l’original consigné |
 
-## Les 209 planches à réaliser
+## Les 207 planches à réaliser
 
 Les codes reprennent ceux des commandes originales. Une plage comprend ses deux bornes. Chaque expression de portrait correspond à un PNG. Le préfixe P ou V se lit dans la famille indiquée.
 
@@ -89,12 +100,12 @@ Les codes reprennent ceux des commandes originales. Une plage comprend ses deux 
 | Carnet, ciels et récit illustré | X30 à X38, neuf vignettes · X40 à X46, sept ciels · X50 à X61, douze illustrations pour la classe | 28 |
 | Le peuple qui paie | Y1 à Y6, percepteur et peuple · Y7, quatre expressions du clerc · Y8, file · Y10 à Y20, tribut, porteurs et gestes · Y30 à Y42, costumes et matières | 35 |
 
-### Vie de Sarlande · 41
+### Vie de Sarlande · 39
 
 | Série | Codes restant à réaliser | PNG |
 |---|---|---:|
 | Cathédrale | D17 cloches, D18 matières, D19 vue depuis la place, D20 planche de livre | 4 |
-| Quai et lavoir | Q2 à Q10 — barques, éléments du quai, grue, entrepôt, mendiants, lavoir et élévation, hiver, crue | 9 |
+| Quai et lavoir | Q2 barques, Q3 éléments du quai, Q5 entrepôt, Q6 mendiants, Q8 élévation du lavoir, Q9 hiver et Q10 crue | 7 |
 | Ruelles et quartiers | U1 à U7 — escalier, nuit, quartier populaire, tanneurs, éléments de métier, maison d’Hugues, échoppes | 7 |
 | Poterne et gardes | G1 à G5 — élévation, cour, nuit, chapelle, poste de garde | 5 |
 | Palais, archives, oubliettes | V1 à V7 — escalier, couloir, cuisines, archives, cellule, mobilier de l’Un, porte | 7 |
