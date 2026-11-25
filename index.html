@@ -1170,6 +1170,33 @@ for(let i=0;i<4;i++) put(G.s,0xb9a27c,6.5+i*0.5,0.28,-12.6+(i%2)*0.4,0.36,0.28,0
 /* table du percepteur */
 put(G.box,0x5b4331,0,0.92,-13.2,2.6,0.1,1.1); for(const [dx,dz] of [[-1.2,-.45],[1.2,-.45],[-1.2,.45],[1.2,.45]]) put(G.box,0x5b4331,dx,0.46,-13.2+dz,0.1,0.92,0.1); put(G.box,POURPRE,0,0.9,-12.64,2.6,0.6,0.04); put(G.box,0xe9e2d2,-0.5,1.0,-13.2,0.7,0.06,0.5,0.2); put(G.c8,ORANGE,0.7,1.2,-13.2,0.03,0.5,0.03); put(G.box,ORANGE,0.7,1.42,-13.2,0.6,0.03,0.03);
 solid(-1.3,1.3,-13.75,-12.65).low=true;
+/* l'estrade du percepteur : il domine, le peuple lève les yeux */
+const EST_H=.52;
+{ const keep=_seed, RED=0xc0281c, GOLD=0xe0b450, H=EST_H;
+  put(G.box,WOOD,0,H/2,-14.92,3.8,H,2.34,0,0,0,6);                       // estrade de chêne
+  put(G.box,NUIT,0,H+.012,-14.92,3.5,.025,2.06);                         // tapis bleu nuit
+  for(let i=0;i<15;i++) put(G.box,GOLD,-1.75+i*.25,H-.03,-13.74,.06,.07,.02,0,0,0,0); // frange d'or
+  for(const [w,h,x] of [[.5,H*.67,-2.15],[.5,H*.34,-2.6]]) put(G.box,WOOD,x,h/2,-14.5,w,h,1.0,0,0,0,6); // marches
+  put(G.box,NUIT,-2.38,H*.67+.012,-14.5,.95,.02,.8);
+  // le fauteuil à haut dossier, couronné de l'emblème
+  put(G.box,SEPIA,0,H+.48,-15.42,.84,.09,.7,0,0,0,6);
+  put(G.box,RED,0,H+.55,-15.42,.74,.06,.6);
+  put(G.box,SEPIA,0,H+1.2,-15.8,.9,2.0,.1,0,0,0,6);
+  put(G.box,RED,0,H+1.05,-15.74,.7,1.3,.03);
+  for(const sx of [-1,1]){ put(G.box,SEPIA,sx*.4,H+.75,-15.42,.07,.07,.7,0,0,0,6); put(G.box,SEPIA,sx*.4,H+.24,-15.12,.07,.48,.07,0,0,0,6); put(G.c8,SEPIA,sx*.4,H+1.25,-15.8,.06,2.1,.06,0,0,0,6); }
+  put(G.c16,GOLD,0,H+2.5,-15.8,.2,.05,.2,0,Math.PI/2,0,0);
+  [[.26,2.25],[.36,2.16],[.46,2.07]].forEach(([w,y])=>put(G.box,GOLD,0,H+y,-15.8,w,.07,.05,0,0,0,0));
+  // le dais de velours rouge, frangé d'or
+  for(const sx of [-1,1]) for(const z of [-13.85,-15.98]) put(G.c8,GOLD,sx*1.72,H+1.5,z,.045,3.0,.045,0,0,0,0);
+  put(G.box,RED,0,H+3.02,-14.92,3.62,.1,2.3);
+  put(G.box,RED,0,H+2.82,-13.79,3.62,.36,.04); put(G.box,GOLD,0,H+2.66,-13.77,3.62,.05,.03,0,0,0,0);
+  for(const sx of [-1,1]){ put(G.box,RED,sx*1.81,H+2.82,-14.92,.04,.36,2.3); }
+  put(G.c16,GOLD,0,H+2.86,-13.76,.12,.02,.12,0,Math.PI/2,0,0);
+  // la petite table nue du clerc, en contrebas
+  put(G.box,0x7a5a3a,-2.45,.7,-12.75,.9,.06,.6,0,0,0,6); for(const dx of [-.38,.38]) for(const dz of [-.24,.24]) put(G.box,SEPIA,-2.45+dx,.35,-12.75+dz,.05,.7,.05);
+  put(G.box,0xe9e2d2,-2.45,.74,-12.75,.32,.02,.42,.15); put(G.box,SEPIA,-2.45,.3,-13.38,.36,.06,.36);
+  _seed=keep; }
+solid(-2.85,1.95,-16.1,-13.75);
 
 /* cour des gardes, arcades, chapelle */
 put(G.box,WS,42.5,2.6,-10.8,23,5.2,1.2); for(let i=0;i<9;i++){ put(G.c8,ST,32.6+i*2.5,1.3,-9.3,0.17,2.6,0.17); put(G.box,ST2,32.6+i*2.5,2.65,-9.3,0.5,0.2,0.5); put(G.box,ST2,32.6+i*2.5,0.1,-9.3,0.5,0.2,0.5); }
@@ -1544,7 +1571,19 @@ function human(o){ const g=new THREE.Group(), body=new THREE.Group(); g.add(body
   if(h==="morion"){ H(G.s,STEEL,0,1.68,0,0.125,0.11,0.14); H(G.c16,STEEL,0,1.655,0,0.165,0.02,0.2); H(G.box,STEEL,0,1.775,0,0.02,0.06,0.22); H(G.k16,0xe23a26,0,1.9,-0.03,0.055,0.26,0.055,0,-0.45,0);
     b.put(G.c8,0x5b4331,0.33,1.3,0.16,0.018,2.6,0.018); b.put(G.box,STEEL,0.33,2.4,0.24,0.02,0.34,0.2); b.put(G.k4,STEEL,0.33,2.72,0.16,0.035,0.3,0.035); b.put(G.box,STEEL,0,1.22,0.1,0.3,0.36,0.06); }
   if(!h) H(G.s,hair,0,1.665,-0.02,0.112,0.1,0.12);
-  if(o.sack){
+  if(o.patch){ b.put(G.box,o.patch,-.09,1.12,.12,.09,.1,.02,0,0,.2); b.put(G.box,o.patch,.07,1.32,-.13,.08,.08,.02,0,0,-.3); } // pièces rapiécées
+  if(o.burden&&o.burden!=="sac"){ const B=o.burden;
+    if(B==="sacPetit"){ b.put(G.s,0xa89878,.2,1.36,-.12,.14,.18,.14,0,-.2,-.15); }
+    else if(B==="bourse"){ b.put(G.s,o.rank==="bourgeois"?0x5a2433:0x7a6248,.07,1.16,.16,.07,.09,.06); b.put(G.c8,0xd6a94e,.07,1.25,.16,.035,.03,.035); }
+    else if(B==="panier"){ b.put(G.c16,0xb08d5c,.27,1.02,.06,.15,.2,.13); b.put(G.c16,0x8a6a40,.27,1.13,.06,.155,.02,.135);
+      for(let k=0;k<5;k++) b.put(G.s,[0xc94a3a,0xd9b84a,0xf2ece0,0x9cae8c][k%4],.22+(k%3)*.05,1.15,.02+(k>2?.07:0),.045); b.put(G.box,0x8a6a40,.27,1.28,.06,.02,.28,.02); }
+    else if(B==="fagot"){ for(let k=0;k<7;k++) b.put(G.c8,[0x6e5338,0x8a6a48,0x5a4130][k%3],(k%3-1)*.035,1.32+(k>>1)*.035,-.24+(k%2)*.03,.025,.95,.025,0,0,Math.PI/2+.08); b.put(G.c8,0xb9a27c,.3,1.38,-.23,.07,.03,.07,0,0,Math.PI/2); b.put(G.c8,0xb9a27c,-.3,1.38,-.23,.07,.03,.07,0,0,Math.PI/2); }
+    else if(B==="tonnelet"){ b.put(G.c16,WOOD,.2,1.56,-.04,.12,.3,.12,0,0,Math.PI/2); for(const dx of [-.09,.09]) b.put(G.c16,0x3a3a40,.2+dx,1.56,-.04,.125,.02,.125,0,0,Math.PI/2); }
+    else if(B==="etoffe"){ const c=[PETROLE,0x6b4a5a,SAUGE,0xb88a3e,FORET][Math.floor((o.top||0)%5)]; b.put(G.c16,c,.2,1.54,0,.075,.9,.075,0,Math.PI/2,0); b.put(G.c16,0xe2d6bc,.2,1.54,.45,.076,.02,.076,0,Math.PI/2,0); }
+    else if(B==="cage"){ b.put(G.box,0xb08d5c,0,1.3,-.26,.34,.3,.22); for(let k=0;k<4;k++) b.put(G.box,0x8a6a40,-.15+k*.1,1.3,-.14,.015,.3,.015); b.put(G.s,0xf2ece0,-.05,1.27,-.26,.08,.07,.07); b.put(G.s,0xb8604a,.08,1.26,-.27,.07,.065,.065); }
+    else if(B==="peaux"){ for(const dy of [0,.1]) b.put(G.c16,[0x8a5a34,0x6e4a30][dy?1:0],0,1.36+dy,-.22,.08,.6,.08,0,0,Math.PI/2); b.put(G.c8,0x3a2a20,0,1.41,-.22,.02,.2,.02); }
+  }
+  if(o.sack||o.burden==="sac"){
     b.put(G.s,0x9d845f,.216,1.38,-.125,.209,.286,.214,0,-.26,-.19);
     b.put(G.s,0xb99a6c,.205,1.534,-.047,.156,.132,.179);
     b.put(G.s,0xb59969,.219,1.54,.11,.079,.131,.072,0,.53,-.11);
@@ -1641,24 +1680,31 @@ function npc(o){ const g=human(o); const c=[o.x,o.z,0.55]; circles.push(c); g.us
 /* ================= Figurants : chacun son costume, sa taille, son teint ================= */
 // Tirage déterministe : le même figurant garde la même allure d'une partie à l'autre.
 function seeded(i,k){ const x=Math.sin(i*127.1+k*311.7)*43758.5453; return x-Math.floor(x); }
-const FIG={ tops:[0xd9c79c,SAUGE,0xc9a070,0x9aa6b8,PETROLE,FORET,OCRE,SIENNE,0x8a6a48,0x7a5a3a,0x6b4a5a,0xb8604a,0xa39a7c,0x5d6f7e,0xe2d6bc,0x8f8a5a],
-  bottoms:[0xb9a47c,0x8c7a66,0x5d4a3a,0x6f7f6a,0x3f4a5f,0x9a6a4a,0x7a5f7a,0xa08a62],
-  legs:[SEPIA,0x7a5a3a,0x4a4038,0x5d6f7e,0x6b5340,0x8a7a62],
-  hatc:[SIENNE,FORET,SEPIA,PETROLE,0x6b4a5a,0x8a6a48,0x3f4a5f,OCRE,0x5a5550],
+// Chaque rang a ses couleurs et ses matières (bible/Consignes_images_actes_I_II.md, lot Y) :
+// le rouge vif et l'or restent au pouvoir, l'orange à Aliénor.
+const RANKS={
+  pauvre:  {w:.14, tops:[0xd8ccb0,0x9a948a,0x8a7a66,0xb5a98f,0x7d7468], bottoms:[0x8a7a66,0x6f675c,0x9a8e78], hats:["hood",null,null,"cap"], hatc:[0x8a8070,0x6a6456,0x7d6d58], burden:["sacPetit","sacPetit","bourse","fagot"], apron:.2, aprons:[0x9a948a], patch:true },
+  paysan:  {w:.34, tops:[0xd9c79c,0xc9a070,0xa39a7c,0x9cae8c,0xb8a070,0x8f8a5a], bottoms:[0xb9a47c,0x8c7a66,0xa08a62,0x6f7f6a], hats:["wide","wide","hood","cap",null], hatc:[0xd8b860,0x8a6a48,0x7a5a3a], burden:["sac","panier","fagot","cage","sac","panier"], apron:.35, aprons:[0xe2d6bc,0xcdb98c] },
+  artisan: {w:.30, tops:[0xa9583a,0x8a6a48,0x7a5a3a,0xc9a070,0x5d6f7e,0x9a6a4a], bottoms:[0x5d4a3a,0x6b5340,0x8c7a66,0x4a4038], hats:["cap","beret","cap",null], hatc:[SEPIA,0x6b4a3a,0x5d6f7e,SIENNE], burden:["peaux","tonnelet","sac","etoffe","sac"], apron:.7, aprons:[SIENNE,0x8a7a62,0x6e5338,0xcdb98c] },
+  marchand:{w:.14, tops:[PETROLE,FORET,0x6b4a5a,0xb88a3e,0x3f5a6f], bottoms:[0x3f4a5f,0x4a3a4f,0x5d4a3a], hats:["beret","coif","beret","wide"], hatc:[0x3f4a5f,FORET,0x6b4a5a], burden:["etoffe","tonnelet","bourse","panier"], apron:.15, aprons:[BLANC], pouch:true },
+  bourgeois:{w:.08, tops:[NUIT,0x2f4a3a,0x5a2433,0x2a2a30,0x3a3050], bottoms:[0x1d2440,0x2a2a30,0x3a2028], hats:["beret","coif","beret"], hatc:[0x1d2440,0x2a2a30,0x5a2433], burden:["bourse","bourse","etoffe"], apron:0, aprons:[BLANC], cape:true, pouch:true } };
+const RANK_KEYS=Object.keys(RANKS);
+const FIG={ legs:[SEPIA,0x7a5a3a,0x4a4038,0x5d6f7e,0x6b5340,0x8a7a62],
   hair:[0x3a2a20,0x5a4030,0x6a3f28,0x8a5a34,0xb08a50,0x2a2420,0x9a9488,0xd8d2c4,0x7a3a22],
-  skin:[0xecc9a4,0xe8bf95,0xf0d2b2,0xdcae86,0xd09a72,0xe4b896,0xc98f66,0xf2d8bc],
-  aprons:[BLANC,0xe2d6bc,SIENNE,0x8a7a62,0xcdb98c,0x9aa6b8] };
+  skin:[0xecc9a4,0xe8bf95,0xf0d2b2,0xdcae86,0xd09a72,0xe4b896,0xc98f66,0xf2d8bc] };
+function rankOf(i){ let x=seeded(i,0); for(const k of RANK_KEYS){ x-=RANKS[k].w; if(x<0) return k; } return "paysan"; }
 function crowdLook(i,o={}){ const r=k=>seeded(i,k), pick=(a,k)=>a[Math.floor(r(k)*a.length)%a.length];
-  const woman=o.skirt!==undefined?o.skirt:r(1)<0.45, old=r(2)<0.22;
-  const hat=woman?pick(["coif","coif","hood","wide",null,null],3):pick(["hood","cap","beret","wide",null,"cap","beret"],3);
-  const look={ noOutline:true, skirt:woman, top:pick(FIG.tops,4), bottom:pick(FIG.bottoms,5), legs:pick(FIG.legs,6),
-    hat:hat||undefined, hatc:pick(FIG.hatc,7), hair:old?pick([0x9a9488,0xd8d2c4,0xb5ab9c],8):pick(FIG.hair,8), skin:pick(FIG.skin,9) };
-  if(r(10)<0.45) look.sleeve=pick(FIG.tops,11);
-  if(r(12)<(woman?0.55:0.3)) look.apron=pick(FIG.aprons,13);
+  const rank=o.rank||rankOf(i), R=RANKS[rank], woman=o.skirt!==undefined?o.skirt:r(1)<0.45, old=r(2)<0.22;
+  let hat=pick(R.hats,3); if(woman&&(hat==="cap"||hat==="beret")) hat=r(23)<.6?"coif":null;
+  const look={ noOutline:true, rank, skirt:woman, top:pick(R.tops,4), bottom:pick(R.bottoms,5), legs:rank==="pauvre"&&r(24)<.4?pick(FIG.skin,9):pick(FIG.legs,6),
+    hat:hat||undefined, hatc:pick(R.hatc,7), hair:old?pick([0x9a9488,0xd8d2c4,0xb5ab9c],8):pick(FIG.hair,8), skin:pick(FIG.skin,9), burden:pick(R.burden,25) };
+  if(r(10)<0.45) look.sleeve=pick(R.tops,11);
+  if(r(12)<R.apron) look.apron=pick(R.aprons,13);
   if(!woman&&r(14)<0.5) look.beard=old?pick([0xd8d2c4,0x9a9488],15):pick(FIG.hair,15);
-  if(r(16)<0.2) look.cape=pick(FIG.hatc,17);
-  if(woman&&hat==="coif") look.shawl=pick(FIG.tops,18);
-  if(r(19)<0.3) look.pouch=pick([SEPIA,0x6e5338,0x8a6a48],20);
+  if(R.cape&&r(16)<.6) look.cape=pick(R.tops,17); else if(r(16)<.12) look.cape=pick(R.hatc,17);
+  if(woman&&hat==="coif") look.shawl=pick(R.tops,18);
+  if(R.pouch||r(19)<0.25) look.pouch=rank==="bourgeois"?0x5a2433:pick([SEPIA,0x6e5338,0x8a6a48],20);
+  if(R.patch) look.patch=pick([0xb5a98f,0x6f675c,0xc9b896],26);
   return Object.assign(look,o); }
 // Taille et corpulence : on élargit le corps sans élargir la tête.
 function figureSize(g,i,base=1){ const r=k=>seeded(i,k); const s=base*(0.91+0.15*r(21)), w=0.9+0.28*r(22);
@@ -2118,9 +2164,9 @@ function guardAs(face,o){ return Object.assign({},guardLook,{likeness:face},o); 
 function guardBuild(g,k){ g.userData.body.scale.x=[1,1.12,0.94,1.06][k%4]; g.userData.head.scale.x=1/g.userData.body.scale.x; return g; }
 const _red={}; function redcoat(g){ g.traverse(m=>{ if(m.isMesh&&m.material&&m.material.isMeshToonMaterial){ const k=m.material.uuid; if(!_red[k]){ _red[k]=m.material.clone(); _red[k].emissive=new THREE.Color(0x5a160c); } m.material=_red[k]; } }); return g; }
 const GATE_L=redcoat(npc(guardAs("bastien",{x:-3.2,z:-15.4}))), GATE_L2=guardBuild(redcoat(npc(guardAs("garde2",{x:-3.2,z:-15.4}))),1); GATE_L2.visible=false; guardBuild(redcoat(npc(guardAs("garde",{x:3.2,z:-15.4}))),3);
-const file=[]; for(let i=0;i<9;i++){ const at={x:5.2+((i*37)%5)*0.08,z:16-i*3.1,ry:Math.PI,sack:true};
+const file=[]; for(let i=0;i<9;i++){ const at={x:5.2+((i*37)%5)*0.08,z:16-i*3.1,ry:Math.PI};
   // Le quatrième de la file est Joris, le frère de Bastien : « Mon frère est dans la file. »
-  const o=i===3?Object.assign({likeness:"joris",noOutline:true,top:0x7a5a3a,sleeve:0xd9c79c,legs:SEPIA,hair:0x8a5a34},at):crowdLook(40+i,at);
+  const o=i===3?Object.assign({likeness:"joris",noOutline:true,top:0x7a5a3a,sleeve:0xd9c79c,legs:SEPIA,hair:0x8a5a34,sack:true},at):crowdLook(40+i,at);
   file.push(figureSize(human(o),40+i,i===3?1.04:1)); }
 const guards=[];
 const CONE_N=26, CONE_R=7.2, CONE_A=0.52;
@@ -2994,8 +3040,8 @@ function buildFete(){ if(fete) return; fete={grp:new THREE.Group(),circ:[],boxes
     d.put(G.box,WOOD,-6.8,0.22,-9.6,2.6,0.08,0.42,0.3,0,1.2); for(let i=0;i<8;i++) d.put(G.box,BLANC,-9+((i*13)%17),0.03,2+((i*7)%9),0.25,0.02,0.2,i);
     const m=d.mesh(); scene.add(m); fete.dawnOnly.push(m);
     fete.poster=new THREE.Mesh(G.box,LM(0xfff6dc)); fete.poster.scale.set(0.62,0.85,0.02); fete.poster.position.set(0,1.75,3.5); fete.poster.rotation.y=0; scene.add(fete.poster);
-    const s1=lowShadow(human(crowdLook(130,{skirt:false}))); s1.position.set(3.4,0.32,7.2); s1.rotation.set(0,0.6,1.5); fete.dawnOnly.push(s1);
-    const s2=lowShadow(human(crowdLook(131,{skirt:false}))); s2.position.set(-6.8,0.3,0.8); s2.rotation.set(0,-0.9,-1.5); fete.dawnOnly.push(s2); }
+    const s1=lowShadow(human(crowdLook(130,{skirt:false,burden:null}))); s1.position.set(3.4,0.32,7.2); s1.rotation.set(0,0.6,1.5); fete.dawnOnly.push(s1);
+    const s2=lowShadow(human(crowdLook(131,{skirt:false,burden:null}))); s2.position.set(-6.8,0.3,0.8); s2.rotation.set(0,-0.9,-1.5); fete.dawnOnly.push(s2); }
   /* roue de la loterie */
   fete.wheel=new THREE.Group(); { const dd=new THREE.Mesh(G.c16,LM(BLANC)); dd.scale.set(1.45,0.1,1.45); dd.rotation.x=Math.PI/2; fete.wheel.add(dd); for(let i=0;i<8;i++){ const w=new THREE.Mesh(G.box,LM([SIENNE,OCRE,PETROLE,INDIGO][i%4])); w.scale.set(0.5,1.25,0.04); w.position.set(Math.sin(i*Math.PI/4)*0.7,Math.cos(i*Math.PI/4)*0.7,0.07); w.rotation.z=-i*Math.PI/4; fete.wheel.add(w); } } fete.wheel.position.set(13.5,3.1,-1.9); fete.grp.add(fete.wheel);
   /* guirlandes de lanternes et lumières */
@@ -3023,7 +3069,7 @@ const centers=[],corners=[],cords=[];
   /* la foule */
   const cols=[0xd9c79c,SAUGE,0xc9a070,0x9aa6b8,OCRE,PETROLE,SIENNE,0xe2d6bc];
   const spots=[[-3.6,-2.7,3.14],[-1.6,-3.3,3.14],[0.4,-2.6,3.14],[3.8,-2.9,3.14],[5.2,-3.6,-2.6],[-5.9,-4.1,2.5],[6.2,-4.9,-2.5],[-15.4,3.3,2.4],[-12.0,3.4,-2.6],[-16.4,-1.3,1.3],[15.4,-0.1,-2.2],[10.2,-0.6,2.2],[15.7,-3.3,-1.4],[-12.6,-10.4,3.14],[-9.4,-10.3,3.14],[-0.6,-1.2,3.14]];
-  spots.forEach((q,i)=>{ const g=figureSize(lowShadow(human(crowdLook(100+i,{x:q[0],z:q[1],ry:q[2]}))),100+i); g.userData.cheer=i%2===0; g.userData.base=q[2]; bindCrowdFigure(g); fete.crowd.push(g); fete.nightOnly.push(g); nightCircle(q[0],q[1],0.42); });
+  spots.forEach((q,i)=>{ const g=figureSize(lowShadow(human(crowdLook(100+i,{x:q[0],z:q[1],ry:q[2],burden:null}))),100+i); g.userData.cheer=i%2===0; g.userData.base=q[2]; bindCrowdFigure(g); fete.crowd.push(g); fete.nightOnly.push(g); nightCircle(q[0],q[1],0.42); });
   /* les comédiens */
   fete.com1=lowShadow(human({top:0x8a6a48,apron:SIENNE,legs:SEPIA,hat:"cap",hatc:SEPIA})); fete.sack=new THREE.Mesh(G.s,LM(0xb9a27c)); fete.sack.scale.set(0.22,0.28,0.19); fete.sack.position.set(0,1.18,-0.22); fete.com1.userData.body.add(fete.sack);
   fete.com2=lowShadow(human({top:0xcc3322,legs:0x9c2a1c,hat:"morion",hold:true})); for(const c of [fete.com1,fete.com2]){ c.position.y=1.0; fete.nightOnly.push(c); }
@@ -3062,7 +3108,7 @@ function setNight(on){ setScene(true,on?"night":"day"); }
 function placeWits(){ if(!fete) return; for(const w of WIT){ const p=dawn?w.dawn:(night?w.night:null), vis=S.act===2&&!!p; w.circ[3]=vis; if(p){ w.circ[0]=p[0]; w.circ[1]=p[1]; }
   w.objs.forEach(({g,f},i)=>{ g.visible=vis; if(!vis) return; g.position.set(p[0]+(f.dx||0),0,p[1]+(f.dz||0)); g.rotation.set(0,p[2]+(f.ry||0),0); g.userData.sit=f.sit===true||(f.sit==="night"&&night); g.userData.pose=dawn?null:f.pose; if(p[3]==="lie"&&i===0){ g.rotation.set(0,p[2],1.45); g.position.y=0.3; g.userData.sit=false; } }); } }
 const ORIG={}; for(const k in N) ORIG[k]=[N[k].position.x,N[k].position.z,N[k].rotation.y];
-function mvN(k,x,z,ry){ const g=N[k]; g.position.set(x,0,z); g.rotation.set(0,ry,0); const c=g.userData.circle; c[0]=x; c[1]=z; c[3]=true; g.userData.sit=false; g.userData.walking=false; }
+function mvN(k,x,z,ry){ const g=N[k]; g.position.set(x,(k==="percepteur"&&Math.abs(x-ORIG.percepteur[0])<.01&&Math.abs(z-ORIG.percepteur[1])<.01)?EST_H:0,z); g.rotation.set(0,ry,0); const c=g.userData.circle; c[0]=x; c[1]=z; c[3]=true; g.userData.sit=false; g.userData.walking=false; }
 const maskM=new THREE.Group(); { const m=new THREE.Mesh(G.box,LM(BLANC)); m.scale.set(0.21,0.09,0.04); m.position.set(0,0.145,0.105); maskM.add(m); for(const sx of [-1,1]){ const e=new THREE.Mesh(G.box,LM(NUIT)); e.scale.set(0.045,0.026,0.01); e.position.set(sx*0.046,0.152,0.127); maskM.add(e); } const r=new THREE.Mesh(G.box,LM(ORANGE)); r.scale.set(0.012,0.012,0.16); r.position.set(0.1,0.2,0.04); maskM.add(r); player.userData.head.add(maskM); maskM.visible=false; }
 function placeCast(){ for(const k in ORIG) mvN(k,ORIG[k][0],ORIG[k][1],ORIG[k][2]); maskM.visible=S.act===2&&night&&!!S.mask;
   if(S.act!==2) return; const st=S.stage, p=player.position;
@@ -3283,6 +3329,8 @@ function bsp(){ return bstate().nom?BAS:"Le jeune garde"; }
 function bz(dc,de){ const b=bstate(); b.conf=Math.max(-1,Math.min(5,b.conf+dc)); b.expo=Math.max(0,Math.min(5,b.expo+de)); save(); }
 const BAS_ARM=redcoat(npc(guardAs("bastien",{x:24.5,z:1.2,ry:-Math.PI/2})));
 const BAS_OFF=redcoat(npc({likeness:"bastien",top:0xcc3322,sleeve:0xcc3322,legs:0x9c2a1c,hat:"cap",hatc:0x5b2b20,x:-7.4,z:-1.6,ry:Math.PI/2}));
+const CLERC=npc({top:0x2c2a30,bottom:0x2c2a30,skirt:true,hat:"cap",hatc:0x2c2a30,skin:0xf0d8c0,hair:0x4a3a2c,x:-2.45,z:-13.38,ry:0});
+{ const U=CLERC.userData; U.sit=true; U.body.position.y=-.44; U.head.rotation.x=.35; CLERC.scale.setScalar(.95); }
 const MAHAUT=npc({top:0x6b4a32,bottom:0x5a3f2b,skirt:true,hat:"hood",hatc:0x4e3a2a,cape:0x4e3a2a,x:-6.6,z:10.4,ry:2.6});
 const GERVAIS=npc({top:0x7a7466,legs:SEPIA,hat:"cap",hatc:0x4b3829,beard:0xd8d2c4,x:-7.4,z:10.9,ry:2.5});
 { const m=new THREE.Mesh(G.box,LM(BLANC)); m.scale.set(0.2,0.085,0.04); m.position.set(0,0.135,0.112); MAHAUT.userData.head.add(m);
@@ -3297,7 +3345,8 @@ function placeExtras(){ const b=bstate(), m=mstate(), show=(g,v)=>{ g.visible=v;
   show(BAS_OFF,S.act===2&&night&&S.stage>=11&&S.stage<=12&&b.vu&&!b.refus);
   const mv=S.act===2&&night&&S.stage>=11&&S.stage<=13&&!m.billet; show(MAHAUT,mv); show(GERVAIS,mv);
   // Quand Bastien est ailleurs (poterne, fête, fontaine), un autre garde tient la porte à sa place.
-  const away=BAS_ARM.visible||BAS_OFF.visible; GATE_L.visible=!away; GATE_L2.visible=away; }
+  const away=BAS_ARM.visible||BAS_OFF.visible; GATE_L.visible=!away; GATE_L2.visible=away;
+  show(CLERC,!(S.act===2&&night)); }
 // B-2 · à la porte du palais
 function bastienPorte(){ const b=bstate(), t=S.flags.tribut, atPoterne=S.act===1&&S.stage===4&&!b.b3&&!b.refus;
   const base=()=>talk([[atPoterne?GD:bsp(),vary("gd",["« Circule. On ne regarde pas la porte. On regarde ses pieds. »","« Moi aussi, je paie le tribut. On me le retient sur la solde. »","« Mon frère est dans la file. Je fais semblant de ne pas le voir. Lui aussi. »"])]]);
