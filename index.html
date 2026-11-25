@@ -341,10 +341,39 @@ const postScene=new THREE.Scene(), postCam=new THREE.OrthographicCamera(-1,1,1,-
 const postMat=new THREE.ShaderMaterial({uniforms:{uMatin:{value:0},tMatin:{value:new THREE.TextureLoader().load("img/lieux/couverture.webp")},tHorizon:{value:new THREE.TextureLoader().load("img/horizon.webp")},worldCamera:{value:camera.matrixWorld},inverseProjection:{value:camera.projectionMatrixInverse},lite:{value:0},tColor:{value:null},tDepth:{value:null},uRes:{value:new THREE.Vector2(1,1)},uPx:{value:1},uNear:{value:0.5},uFar:{value:420},uTime:{value:0},uReveal:{value:0},uPlate:{value:0},uMist:{value:0.22},uWeather:{value:0},uSec:{value:0},uAer:{value:new THREE.Vector2(16,125)},uNight:{value:0},uDaze:{value:0}},vertexShader:"varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.0,1.0); }",fragmentShader:POST,depthTest:false,depthWrite:false});
 postScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),postMat));
 let rt=null, portrait=false;
-function resize(){ const w=window.innerWidth,h=window.innerHeight; portrait=h>w; const pr=S.lite?Math.min(1,850/Math.max(w,h)):Math.min(window.devicePixelRatio||1,1.5);
-  postMat.uniforms.lite.value=S.lite?1:0; renderer.setPixelRatio(pr); renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=portrait?60:46; camera.updateProjectionMatrix();
-  if(canPost){ if(rt)rt.dispose(); const W=Math.floor(w*pr),H=Math.floor(h*pr); rt=new THREE.WebGLRenderTarget(W,H,{minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat}); rt.depthTexture=new THREE.DepthTexture(W,H); rt.depthTexture.type=THREE.UnsignedIntType; postMat.uniforms.tColor.value=rt.texture; postMat.uniforms.tDepth.value=rt.depthTexture; postMat.uniforms.uRes.value.set(W,H); postMat.uniforms.uPx.value=pr; }
-  sun.shadow.mapSize.set(S.lite?1024:2048,S.lite?1024:2048); if(sun.shadow.map){ sun.shadow.map.dispose(); sun.shadow.map=null; } }
+const renderSize=new THREE.Vector2();
+function resize(){
+  const w=Math.max(1,window.innerWidth), h=Math.max(1,window.innerHeight);
+  const ratio=S.lite?Math.min(1,850/Math.max(w,h)):Math.min(window.devicePixelRatio||1,1.5);
+  renderer.getSize(renderSize);
+  if(renderSize.x!==w||renderSize.y!==h||renderer.getPixelRatio()!==ratio){
+    renderer.setDrawingBufferSize(w,h,ratio);
+  }
+  if(portrait!==(h>w)){
+    portrait=h>w;
+    camera.fov=portrait?60:46;
+  }
+  camera.aspect=w/h;
+  camera.updateProjectionMatrix();
+  postMat.uniforms.lite.value=S.lite?1:0;
+  if(canPost){
+    const width=Math.max(1,canvas.width), height=Math.max(1,canvas.height);
+    if(!rt){
+      rt=new THREE.WebGLRenderTarget(width,height,{minFilter:THREE.LinearFilter,magFilter:THREE.LinearFilter,format:THREE.RGBAFormat});
+      rt.depthTexture=new THREE.DepthTexture(width,height);
+      rt.depthTexture.type=THREE.UnsignedIntType;
+      postMat.uniforms.tColor.value=rt.texture;
+      postMat.uniforms.tDepth.value=rt.depthTexture;
+    } else rt.setSize(width,height);
+    postMat.uniforms.uRes.value.set(width,height);
+    postMat.uniforms.uPx.value=ratio;
+  }
+  const shadowSize=S.lite?1024:2048;
+  if(sun.shadow.mapSize.x!==shadowSize){
+    sun.shadow.mapSize.set(shadowSize,shadowSize);
+    if(sun.shadow.map){sun.shadow.map.dispose();sun.shadow.map=null;}
+  }
+}
 window.addEventListener("resize",resize);
 function renderFrame(){ prepareDraws(); if(canPost&&rt){ renderer.setRenderTarget(rt); renderer.render(scene,camera); renderer.setRenderTarget(null); renderer.render(postScene,postCam); } else renderer.render(scene,camera); }
 
