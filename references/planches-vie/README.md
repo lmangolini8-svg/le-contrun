@@ -110,46 +110,53 @@ Partir des [quatre plans peints V1 à V4](../vues-aeriennes/) pour fixer les qua
 
 Vérifier sur iPad les trajets atelier–quai, parvis–chapelle sépulcrale, couvent–marché et porte de la forêt–cabane. Les contours proposés et les distances restent à recaler sur la scène 3D.
 
-**541 planches produites ou consignées sur 541**, dont **490 PNG déposés**. Les 43 dernières expressions attendent une validation. Huit autres planches produites ou consignées restent à retrouver ou à déposer.
+**541 planches produites ou consignées sur 541**, dont **538 PNG déposés**. Les 43 dernières expressions de dialogue sont validées et déposées. Trois PNG originaux du colosse restent à retrouver.
 
 | Commande | Attendues | Produites | PNG sur la branche | À réaliser |
 |---|---:|---:|---:|---:|
-| Actes I et II | 196 | 196 | 153 | 0 |
-| Vie de Sarlande | 282 | 282 | 277 | 0 |
-| Vues aériennes et palais | 55 | 55 | 52 | 0 |
+| Actes I et II | 196 | 196 | 196 | 0 |
+| Vie de Sarlande | 282 | 282 | 279 | 0 |
+| Vues aériennes et palais | 55 | 55 | 55 | 0 |
 | Compléments pour la 3D | 8 | 8 | 8 | 0 |
-| **Total** | **541** | **541** | **490** | **0** |
+| **Total** | **541** | **541** | **538** | **0** |
 
-## Générations retrouvées et dépôts à terminer
+## Cinq originaux retrouvés et déposés
 
-Le pointage de 13 h 27 comptait 261 dépôts. Les PNG de la place et de la fête (P1 à P21), les vues D1 à D14 de la cathédrale, le billet de Mahaut (N2-6) et les premières scènes de l’acte II ont été rapprochés des chemins prévus. Les archives de 89, 10 et 3 PNG recoupent ces lots. Chaque chemin compte une seule fois, retouches comprises.
+| Code | Planche |
+|---|---|
+| D15 | [Mobilier et objets liturgiques](cathedrale_interieur_objets.png) |
+| D16 | [Cloître cathédral au printemps](cathedrale_cloitre.png) |
+| V26 | [Vue sud de nuit sous la neige](../vues-aeriennes/vue_sud_nuit_hiver.png) |
+| V27 | [Vue sud lors de la crue de printemps](../vues-aeriennes/vue_sud_printemps.png) |
+| V28 | [Vue sud à l’aube](../vues-aeriennes/vue_sud_aube.png) |
 
-Les tableaux du toast collectif (N3-1) et du départ d’Aliénor, Maëlle et Garin (N3-2) sont maintenant déposés. Cinq autres PNG ont été retrouvés et identifiés par leur sujet. Les trois références du colosse étaient déjà consignées avec une empreinte dans le manifeste précédent.
+## Trois originaux du colosse à retrouver
 
-| Lot | Code | PNG produit à déposer ou à retrouver |
+Le [manifeste initial](PRODUCTION_CHATGPT.json) consigne les empreintes de ces trois planches. Leurs PNG originaux restent à retrouver.
+
+| Code | Fichier | Sujet |
 |---|---|---|
-| Cathédrale | D15 | cathedrale_interieur_objets.png — mobilier et objets liturgiques |
-| Cathédrale | D16 | cathedrale_cloitre.png — cloître cathédral au printemps |
-| Vues sud | V26, V27, V28 | vue_sud_nuit_hiver.png, vue_sud_printemps.png, vue_sud_aube.png — neige de nuit, crue printanière, aube rose |
-| Colosse | C1, C2, C3 | colosse_socle_etats.png, colosse_details.png, colosse_chute.png — retrouver les originaux consignés |
+| C1 | `colosse_socle_etats.png` | États du socle |
+| C2 | `colosse_details.png` | Détails du colosse |
+| C3 | `colosse_chute.png` | Chute du colosse |
 
-## Les 43 expressions de dialogue à valider
+## Les 43 expressions de dialogue validées et déposées
 
-Le lot de portraits est prêt pour la validation artistique. Chaque expression reprend le visage et le cadrage de référence.
+Chaque expression reprend le visage et le cadrage de référence.
 
 | Code | Personnage | Expressions | PNG |
 |---|---|---|---:|
-| X12 | Le bonimenteur | neutre, sourire, inquiétude, colère | 4 |
-| X13 | Le valet | neutre, sourire, inquiétude, colère | 4 |
-| X14 | Le crieur | neutre, sourire, inquiétude, colère | 4 |
-| X15 | Colin | neutre, sourire, inquiétude, colère | 4 |
-| X17 | Martin | sourire, inquiétude, colère | 3 |
-| X18 | La vieille femme de la foule | neutre, sourire, inquiétude, colère | 4 |
-| X19 | L’artisan de la foule | neutre, sourire, inquiétude, colère | 4 |
-| X20 | Le jeune homme de la foule | neutre, sourire, inquiétude, colère | 4 |
-| X21 | La marchande de la foule | neutre, sourire, inquiétude, colère | 4 |
-| X22 | Le jeune garde | neutre, sourire, inquiétude, colère | 4 |
-| X23 | Le vieux garde | neutre, sourire, inquiétude, colère | 4 |
+| X12 | Le bonimenteur | [neutre](../actes-I-II/bonimenteur_neutre.png), [sourire](../actes-I-II/bonimenteur_sourire.png), [inquiétude](../actes-I-II/bonimenteur_inquietude.png), [colère](../actes-I-II/bonimenteur_colere.png) | 4 |
+| X13 | Le valet | [neutre](../actes-I-II/valet_neutre.png), [sourire](../actes-I-II/valet_sourire.png), [inquiétude](../actes-I-II/valet_inquietude.png), [colère](../actes-I-II/valet_colere.png) | 4 |
+| X14 | Le crieur | [neutre](../actes-I-II/crieur_neutre.png), [sourire](../actes-I-II/crieur_sourire.png), [inquiétude](../actes-I-II/crieur_inquietude.png), [colère](../actes-I-II/crieur_colere.png) | 4 |
+| X15 | Colin | [neutre](../actes-I-II/colin_neutre.png), [sourire](../actes-I-II/colin_sourire.png), [inquiétude](../actes-I-II/colin_inquietude.png), [colère](../actes-I-II/colin_colere.png) | 4 |
+| X17 | Martin | [sourire](../actes-I-II/martin_sourire.png), [inquiétude](../actes-I-II/martin_inquietude.png), [colère](../actes-I-II/martin_colere.png) | 3 |
+| X18 | La vieille femme de la foule | [neutre](../actes-I-II/foule_vieille_neutre.png), [sourire](../actes-I-II/foule_vieille_sourire.png), [inquiétude](../actes-I-II/foule_vieille_inquietude.png), [colère](../actes-I-II/foule_vieille_colere.png) | 4 |
+| X19 | L’artisan de la foule | [neutre](../actes-I-II/foule_artisan_neutre.png), [sourire](../actes-I-II/foule_artisan_sourire.png), [inquiétude](../actes-I-II/foule_artisan_inquietude.png), [colère](../actes-I-II/foule_artisan_colere.png) | 4 |
+| X20 | Le jeune homme de la foule | [neutre](../actes-I-II/foule_jeune_neutre.png), [sourire](../actes-I-II/foule_jeune_sourire.png), [inquiétude](../actes-I-II/foule_jeune_inquietude.png), [colère](../actes-I-II/foule_jeune_colere.png) | 4 |
+| X21 | La marchande de la foule | [neutre](../actes-I-II/foule_marchande_neutre.png), [sourire](../actes-I-II/foule_marchande_sourire.png), [inquiétude](../actes-I-II/foule_marchande_inquietude.png), [colère](../actes-I-II/foule_marchande_colere.png) | 4 |
+| X22 | Le jeune garde | [neutre](../actes-I-II/garde_jeune_neutre.png), [sourire](../actes-I-II/garde_jeune_sourire.png), [inquiétude](../actes-I-II/garde_jeune_inquietude.png), [colère](../actes-I-II/garde_jeune_colere.png) | 4 |
+| X23 | Le vieux garde | [neutre](../actes-I-II/garde_vieux_neutre.png), [sourire](../actes-I-II/garde_vieux_sourire.png), [inquiétude](../actes-I-II/garde_vieux_inquietude.png), [colère](../actes-I-II/garde_vieux_colere.png) | 4 |
 | **Total** | | | **43** |
 
 ### Extension de la cathédrale · hors des 541
