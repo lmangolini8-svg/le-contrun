@@ -1,9 +1,10 @@
 // Exécuté dans la page par Playwright. Le temps du jeu avance par pas de 50 ms.
 // Les dialogues, transitions, patrouilles et collisions tournent normalement.
 // Seul le dessin des images est omis pour accélérer ces longues traversées en CI.
-function playStory({tribute, resumeDawn = false, interruptDawn = false, interruptTribute = false, tributeReply}) {
+async function playStory({tribute, joystick = false, resumeDawn = false, interruptDawn = false, interruptTribute = false, tributeReply}) {
   const dt = .05;
-  window.requestAnimationFrame = () => 0;
+  const requestFrame = window.requestAnimationFrame.bind(window);
+  window.requestAnimationFrame = callback => callback === tick ? 0 : requestFrame(callback);
   clock.getDelta = () => dt;
   renderFrame = () => {};
   let sawStoneFall = false;
@@ -73,10 +74,21 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
   }
 
   const arrows = [[1,0,'ArrowRight'], [-1,0,'ArrowLeft'], [0,1,'ArrowDown'], [0,-1,'ArrowUp']];
-  function pressArrow(key, frames) {
-    window.dispatchEvent(new KeyboardEvent('keydown', {key}));
+  let gestures = 0;
+  async function move(key, frames) {
+    if (joystick) {
+      const [dx,dz] = arrows.find(dir => dir[2] === key);
+      const x = Math.floor(innerWidth*.28), y = Math.floor(innerHeight*.5);
+      if (document.elementFromPoint(x,y) !== canvas) fail('Le point de départ du joystick est couvert');
+      await window.testJoystick({x,y,dx:48*dx,dy:48*dz});
+      if (!joy.on || Math.abs(joy.x-dx) > .01 || Math.abs(joy.y-dz) > .01) fail('Glissement non reconnu');
+    } else window.dispatchEvent(new KeyboardEvent('keydown', {key}));
     for (let i = 0; i < frames && mode === 'play'; i++) tick();
-    window.dispatchEvent(new KeyboardEvent('keyup', {key}));
+    if (joystick) {
+      await window.testJoystick(null);
+      gestures++;
+      if (joy.on) fail('Joystick actif après le lever du doigt');
+    } else window.dispatchEvent(new KeyboardEvent('keyup', {key}));
   }
 
   // Recherche en largeur sur une grille dont le pas correspond à deux images de marche.
@@ -117,7 +129,7 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
     return null;
   }
 
-  function walk(tx, tz, radius, label, untilStage) {
+  async function walk(tx, tz, radius, label, untilStage) {
     const p = player.position;
     for (let attempt = 0; attempt < 700; attempt++) {
       if (untilStage && S.stage === untilStage) return;
@@ -132,8 +144,12 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
         for (let t = 0; t < 8 && mode === 'play'; t++) tick();
         continue;
       }
-      for (const key of inCourt ? path.slice(0,4) : path) {
-        pressArrow(key,2);
+      const directions = inCourt ? path.slice(0,4) : path;
+      for (let i = 0; i < directions.length;) {
+        const key = directions[i];
+        const start = i++;
+        while (i < directions.length && directions[i] === key) i++;
+        await move(key, 2*(i-start));
         if (mode !== 'play') break;
       }
       if (mode === 'play' && label && current?.label !== label && Math.hypot(p.x-tx,p.z-tz) < radius) {
@@ -143,14 +159,14 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
     fail('Trajet interrompu vers ' + [tx,tz,label]);
   }
 
-  function interact(label, x, z, radius, choices, pause) {
-    walk(x,z,radius,label);
+  async function interact(label, x, z, radius, choices, pause) {
+    await walk(x,z,radius,label);
     click('#act');
     advance(choices,pause);
   }
-  function person(name, key, choices) {
+  async function person(name, key, choices) {
     const {x,z} = N[key].position;
-    interact('Parler à '+name,x,z,2,choices);
+    await interact('Parler à '+name,x,z,2,choices);
   }
   const quotes = (...ids) => ids.map(id => FEU[id].cit);
   const state = () => JSON.parse(localStorage.getItem('sarlande-acte1-v1'));
@@ -169,10 +185,10 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
     } else {
       click('[data-a="new"]');
       advance();
-      person('Anselme','anselme');
+      await person('Anselme','anselme');
       expectStage(1);
       const responses = {paye:'Payer la mesure', denonce:'Dire que le sac', refus:'Demander à quoi sert'};
-      interact('Parler au percepteur',0,-14.6,3.2,[responses[tribute]], () => interruptTribute && S.flags.tribut === tribute);
+      await interact('Parler au percepteur',0,-14.6,3.2,[responses[tribute]], () => interruptTribute && S.flags.tribut === tribute);
       if (interruptTribute) {
         expectStage(1);
         if (state().flags.tribut !== tribute) fail('Choix perdu dès la réponse du percepteur');
@@ -181,42 +197,42 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
     }
     expectStage(2);
     if (S.flags.tribut !== tribute) fail('Choix du tribut perdu');
-    person('Maëlle','maelle');
+    await person('Maëlle','maelle');
     expectStage(3);
-    interact('Fouiller la chapelle',52.7,-2,2.4);
+    await interact('Fouiller la chapelle',52.7,-2,2.4);
     expectStage(4);
     if (tribute === 'paye') {
-      interact('Ramasser le feuillet',51.9,-8.5,1.8);
+      await interact('Ramasser le feuillet',51.9,-8.5,1.8);
       if (!S.f.includes('F5')) fail('Feuillet de la cour absent');
-      interact('Ramasser le feuillet',17.5,17.6,2.15);
+      await interact('Ramasser le feuillet',17.5,17.6,2.15);
       if (!S.f.includes('F4')) fail('Feuillet du quai absent');
     }
     if (tribute === 'refus') {
-      person('Garin','garin',quotes('F2','F2'));
+      await person('Garin','garin',quotes('F2','F2'));
       expectStage(4);
     }
-    person('Garin','garin',quotes('F1','F2','F3'));
+    await person('Garin','garin',quotes('F1','F2','F3'));
     expectStage(5);
     if (!sawStoneFall) fail('Chute de la pierre absente pendant la scène');
-    person('Anselme','anselme');
+    await person('Anselme','anselme');
     expectStage(6);
     click('[data-a="act2"]');
     advance();
     expectStage(10);
-    person('Anselme','anselme');
+    await person('Anselme','anselme');
     expectStage(11);
-    person('Ysabeau','ysabeau');
-    interact('Ramasser le feuillet',5.7,-11.7,1.8);
-    person('Maëlle','maelle',quotes('F6','F7'));
+    await person('Ysabeau','ysabeau');
+    await interact('Ramasser le feuillet',5.7,-11.7,1.8);
+    await person('Maëlle','maelle',quotes('F6','F7'));
     expectStage(12);
     const replies = quotes('F6','F7','F8');
     if (tribute === 'denonce') replies.unshift('C’était moi');
-    person('Garin','garin',replies);
+    await person('Garin','garin',replies);
     expectStage(13);
-    walk(0,7.3,1);
+    await walk(0,7.3,1);
     for (let n = 0; n < 1200 && !(T2.on && T2.big); n++) { advance(); tick(); }
     if (!T2.big || !S.maelleSuit || !S.allies.garin) fail('Escorte absente au grand toast');
-    walk(ATELIER.x,ATELIER.z,3,undefined,14);
+    await walk(ATELIER.x,ATELIER.z,3,undefined,14);
     expectStage(14);
     const press = ['Tirer la barre','Tirer la barre','Tirer la barre'];
     const litter = tribute === 'paye' ? 'S’incliner' : 'Rester debout';
@@ -229,12 +245,12 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false, interrup
     if (interruptDawn) return 'aube';
     advance();
   }
-  interact('Coller l’affiche',0,6.1,2.1);
+  await interact('Coller l’affiche',0,6.1,2.1);
   expectStage(16);
   if (!fete.poster.visible || !ov.textContent.includes('Cent feuilles avant l’aube'))
     fail('Affiche ou bilan absent');
   const saved = state();
-  return {stage:saved.stage, tribute:saved.flags.tribut, bow:saved.flags.incline,
+  return {gestures, stage:saved.stage, tribute:saved.flags.tribut, bow:saved.flags.incline,
     confession:saved.flags.aveu, sheets:saved.f.slice().sort()};
 }
 module.exports = playStory;

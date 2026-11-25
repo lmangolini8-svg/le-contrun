@@ -106,6 +106,16 @@ async function testGate(browser) {
   console.log('Acte I : poterne, rotation, page de citation et deux visites aux archives depuis le carnet.');
 }
 
+async function touchJoystick(context, page) {
+  const cdp = await context.newCDPSession(page);
+  return async gesture => {
+    if (!gesture) return cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+    const {x,y,dx,dy} = gesture;
+    await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x,y}]});
+    await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x:x+dx,y:y+dy}]});
+  };
+}
+
 async function testNotebook(browser) {
   const checkpoint = {act: 2, stage: 14, pos: [-20, 6.6], flags: {tribut: 'refus'},
     f: ['F1', 'F2', 'F3', 'F6'], notes: {F1: 'Page 12'}};
@@ -126,10 +136,9 @@ async function testNotebook(browser) {
 
     let releasePointer;
     if (browser.browserType() === chromium) {
-      const cdp = await context.newCDPSession(page);
-      await cdp.send('Input.dispatchTouchEvent', {type: 'touchStart', touchPoints: [{x: 400, y: 400}]});
-      await cdp.send('Input.dispatchTouchEvent', {type: 'touchMove', touchPoints: [{x: 448, y: 400}]});
-      releasePointer = () => cdp.send('Input.dispatchTouchEvent', {type: 'touchEnd', touchPoints: []});
+      const touch = await touchJoystick(context, page);
+      await touch({x:400,y:400,dx:48,dy:0});
+      releasePointer = () => touch(null);
     } else {
       // Playwright's WebKit driver supports taps; use a mouse pointer for the held drag.
       await page.mouse.move(400, 400);
@@ -308,11 +317,13 @@ async function testPrintInterruption(browser) {
 
 async function testStory(browser) {
   for (const tribute of ['paye', 'denonce', 'refus']) {
-    await withSession(browser, null, {width: 810, height: 1080}, async page => {
+    const joystick = tribute === 'paye' && browser.browserType() === chromium;
+    await withSession(browser, null, {width: 810, height: 1080}, async (page, context) => {
+      if (joystick) await page.exposeFunction('testJoystick', await touchJoystick(context, page));
       // Une vraie interruption au premier dialogue de l’aube, avec la sauvegarde produite en jeu.
       const interruptDawn = tribute === 'denonce';
       const interruptTribute = tribute === 'refus';
-      let result = await page.evaluate(playStory, {tribute, interruptDawn, interruptTribute});
+      let result = await page.evaluate(playStory, {tribute, joystick, interruptDawn, interruptTribute});
       if (interruptTribute) {
         assert.ok(result.reply);
         await page.reload({waitUntil: 'domcontentloaded'});
@@ -325,6 +336,7 @@ async function testStory(browser) {
         await page.getByRole('button', {name: 'Reprendre le chemin'}).waitFor();
         result = await page.evaluate(playStory, {tribute, resumeDawn: true});
       }
+      if (joystick) assert.ok(result.gestures > 0, 'Parcours avec le joystick tactile');
       assert.equal(result.stage, 16);
       assert.equal(result.tribute, tribute);
       assert.equal(result.bow, tribute === 'paye');
@@ -333,6 +345,7 @@ async function testStory(browser) {
       assert.deepEqual(result.sheets, expectedSheets);
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
+      + (joystick ? ' Déplacements au joystick avec gestes tactiles Chromium.' : '')
       + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : '')
       + (tribute === 'refus' ? ' Partie rechargée à la réponse du percepteur.' : ''));
   }
