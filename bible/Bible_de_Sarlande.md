@@ -66,7 +66,7 @@ Chaque grande idée du *Discours* est d’abord **vécue** par l’élève, sous
 
 **[Établi] La Fête de l’Un.** Le soir même du tribut, le palais offre une fête : vin, tréteaux, loterie, pièces jetées du balcon, toasts collectifs au cri de « Vive l’Un ! », passage d’une litière aux rideaux tirés à minuit.
 
-**[Établi] Le livre brûlé.** L’Un a fait brûler un livre. Anselme l’a défait feuille à feuille et en a caché les pages dans toute la ville. Ces pages sont les feuillets que collectionne l’élève.
+**[Établi, révisé le 25 novembre 2026] Le libelle brûlé.** L’Un a fait brûler un libelle clandestin propre à Sarlande. Anselme en a sauvé un exemplaire, l’a défait feuille à feuille et en a caché les pages dans toute la ville. Ces pages sont les feuillets que collectionne l’élève. En 1550, le *Discours* de La Boétie n’est pas imprimé : il circule en manuscrit. Le libelle ne doit donc pas être présenté comme une édition du *Discours*. Sa pensée peut l’irriguer, par exemple par des passages recopiés d’un manuscrit venu du Périgord ; ce cadre reste à valider (voir la partie 10).
 
 ### 3.2 La chaîne du pouvoir
 
@@ -475,6 +475,12 @@ Les questions sont classées par ordre d’urgence. Rien de ce qui en dépend ne
 **Pour l’œuvre**
 10. Les citations proposées dans `bible/Citations_Belin.md` vous conviennent-elles ? Faut-il en ajouter, en particulier parmi les passages étudiés en explication linéaire ?
 11. Faut-il appliquer tout de suite au jeu les corrections de citations listées dans `bible/Citations_Belin.md`, partie 1 ?
+
+**Pour la refonte (cahier des charges du 25 novembre 2026)**
+12. Le libelle brûlé. La chronologie actuelle (`Personnages.md`, partie 8) place un premier bûcher il y a quarante ans et l’édition clandestine d’Anselme et de Mahaut il y a douze ans, soit vers 1510 et 1538. Le *Discours* est écrit vers 1546-1548 et circule en manuscrit. Proposition : le libelle de Sarlande est un texte local ; les feuillets qu’Anselme a cachés portent, recopiés dans leurs marges, des passages d’un manuscrit récent venu du Périgord. Faut-il retenir ce cadre, ou déplacer les dates ?
+13. L’auteur de la lettre glissée sous la porte et son motif. Le jeu le laisse indéterminé.
+14. La date exacte du réveil et le jour annuel du tribut. Le jeu utilise provisoirement le lundi 29 septembre 1550, la Saint-Michel (`jeu/calendrier.js`).
+15. Le déclenchement de la cloche, les seuils des barres et les montants. Valeurs provisoires dans `jeu/monde.js`.
 
 ---
 

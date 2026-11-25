@@ -343,6 +343,7 @@
       savoir(vie, "maelle", "pesee_publique", 1, "vu", true);
       lier(vie, "maelle", "alienor", -1, -2);
       reputer(vie, "place", 1);
+      vie.fournisseurs.perrine = "drapiers";
       conviction(vie, 4, "Elle a dit tout haut ce que la balance montrait. Elle ne sait pas encore ce que cela a coûté à Maëlle.");
     } else {
       savoir(vie, "alienor", "miche_legere", 2, "maelle", false);

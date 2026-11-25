@@ -2334,7 +2334,7 @@ const FLEURON=`<svg class="fleuron" viewBox="0 0 240 26" fill="none" stroke="#22
 let plBack="carnet";
 function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refreshHud(); ov.className="home"; ov.style.display="flex";
   ov.innerHTML=`<div class="top">${EMBLEME_UN}<div class="le">Le</div><h1>Contr’un</h1>${FLEURON}<div class="sub">Discours de la servitude volontaire</div><div class="by">d’après Étienne de La Boétie</div><div class="act">${actTitle()}</div></div>
-  <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un livre interdit.</p>
+  <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un libelle interdit.</p>
   ${S.started?`<button class="pri" data-a="resume">Reprendre le chemin</button><div class="row"><button class="sec" data-a="new">Recommencer</button><button class="sec" data-a="plates">Le livre des planches</button></div>`:`<button class="pri" data-a="new">Entrer dans la ville</button><div class="row"><button class="sec" data-a="plates">Le livre des planches</button></div>`}
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
   <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`; }
@@ -2398,7 +2398,7 @@ const INTER=[
  {p:()=>N.anselme.position,label:"Parler à Anselme",act(){ if(S.act===2) return A2.anselme();
    if(S.stage===0) return beginMeeting([[AN,"« Te voilà, Aliénor. De l’encre jusqu’aux coudes, comme d’habitude. »"],[AN,"« C’est le matin du tribut. Le tiers de ce que l’atelier a gagné part au palais. Porte ce sac au percepteur, au nord de la place. »"],
      branch([["« Un tiers ? Pour en faire quoi ? »",[[AN,"« Rien que tu verras jamais. Mais ne le demande pas trop fort. »"]]],["« J’y vais, maître. »",[[AN,"« Tu apprends vite à te taire. Ce n’est pas un compliment. »"]]]],
-       [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un livre que l’Un a fait brûler. »"],{feu:"F1"},[AN,"« J’ai défait ce livre feuille à feuille et je les ai cachées dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],()=>setStage(1))]);
+       [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un libelle que l’Un a fait brûler. »"],{feu:"F1"},[AN,"« J’en ai sauvé un exemplaire. Je l’ai défait feuille à feuille et j’ai caché les pages dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],()=>setStage(1))]);
    if(S.stage===5) return talk([[AN,"« Garin a posé son sac ? Devant tout le monde ? »"],
      branch([["« Il a dit : qu’ils viennent le chercher. »",[[AN,"« Trente ans qu’il se tait, et voilà sa première phrase. Elle est bonne. »"]]],["« J’ai eu peur pour lui. »",[[AN,"« Tu as raison d’avoir peur. Mais regarde : la peur n’a pas suffi à le retenir. »"]]]],
        [[AN,"« Une pierre, ce n’est rien. Mais il n’en fallait pas plus pour savoir de quoi le socle est fait : de nous. »"],[AN,"« Méfie-toi. Ce soir, c’est la Fête de l’Un : du vin, des jongleurs, des pièces jetées du balcon. Ils feront tout pour qu’on oublie ce matin. »"]],()=>{ setStage(6); showEnd(); })]);
@@ -3438,5 +3438,8 @@ const hot=window.claude&&window.claude.hot;
 if(hot&&hot.snapshot)hot.snapshot(()=>{save();return S;});
 if(hot&&hot.ready)hot.ready(start);else start((hot&&hot.data)||{});
 </script>
+<script src="jeu/calendrier.js"></script>
+<script src="jeu/monde.js"></script>
+<script src="jeu/vie.js"></script>
 </body>
 </html>
