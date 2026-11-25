@@ -22,7 +22,7 @@ let errs = [];
   const p = await ctx.newPage(); errs = [];
   p.on("pageerror", e => errs.push(e.message)); p.on("console", m => { if (m.type() === "error") errs.push(m.text()); });
   const ok = (c, msg) => { if (!c) throw new Error("ÉCHEC : " + msg); console.log("ok ·", msg); };
-  const attendre = async (cond, ms = 40000) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await p.evaluate(cond)) return; await p.waitForTimeout(250); } throw new Error("attente : " + cond); };
+  const attendre = async (cond, ms = 40000, arg) => { const t0 = Date.now(); while (Date.now() - t0 < ms) { if (await p.evaluate(cond, arg)) return; await p.waitForTimeout(250); } throw new Error("attente : " + cond); };
   const page = async () => { await attendre(() => mode === "plate" && plateReady); await p.click("#plate"); await attendre(() => mode !== "plate" && mode !== "turn"); await p.waitForTimeout(600); };
   const finir = async () => { for (let i = 0; i < 40 && await p.evaluate(() => document.getElementById("dlg").style.display === "block" && !document.querySelector("#dlg [data-c]")); i++) { await p.click("#dlg"); await p.waitForTimeout(150); } };
   const agir = async lab => { await p.evaluate(l => { const it = INTER.find(x => x.label === l && (!x.can || x.can())); if (!it) throw new Error("pas d’interaction " + l); const q = it.p(); player.position.set(q.x, player.position.y, q.z); it.act(); }, lab); await p.waitForTimeout(300); };
@@ -72,6 +72,36 @@ let errs = [];
   await p.waitForTimeout(1200); await cap("03_place");
   await p.evaluate(() => { const q = Ville.versScene(330, 466); player.position.set(q.x, q.y, q.z); player.rotation.y = Math.PI / 2; snapCam(); });
   await p.waitForTimeout(1200); await cap("04_quai");
+
+  // Les habitants : là où leur agenda les met (jour du tribut, matin), à moins de 8 m de leur poste.
+  const presences = await p.evaluate(() => Object.keys(Monde.HABITANTS).map(h => {
+    const lieu = Monde.lieuDe(Vie.V(), h), pr = Habitants.present(h), P = Habitants.POSTES[lieu];
+    const d = pr && P ? Math.min(...P.map(([X, Y]) => Math.hypot(pr.X - X, pr.Y - Y))) : null;
+    return { h, lieu, visible: !!pr, d, attendu: !!P };
+  }));
+  for (const x of presences) ok(x.visible === x.attendu && (!x.visible || x.d < 8), `${x.h} : ${x.lieu}${x.visible ? ` (à ${x.d.toFixed(1)} m de son poste)` : " (hors de la ville à l’échelle)"}`);
+  const passants0 = await p.evaluate(() => Habitants.marcheurs.filter(m => m.passant && m.g.visible).map(m => [m.X, m.Y]));
+  await p.waitForTimeout(6000);
+  const bouge = await p.evaluate(a => Habitants.marcheurs.filter(m => m.passant && m.g.visible).filter((m, i) => Math.hypot(m.X - a[i][0], m.Y - a[i][1]) > 1).length, passants0);
+  ok(passants0.length >= 12 && bouge >= 4, `${passants0.length} passants le matin, ${bouge} en marche après 6 s`);
+  const ms = await p.evaluate(() => { const t0 = performance.now(); const c = Ville.chemin(Ville.dehorsAtlas("maison"), Ville.dehorsAtlas("presse")); return { ms: performance.now() - t0, n: c && c.length }; });
+  ok(ms.n > 1 && ms.ms < 400, `chemin maison → imprimerie calculé en ${Math.round(ms.ms)} ms (${ms.n} points)`);
+  // Changement de plage : Ysabeau quitte la place pour rentrer au clos, à pied.
+  const ys0 = await p.evaluate(() => { Monde.avancer(Vie.V(), 1); return Habitants.present("ysabeau"); });
+  // Chromium sans processeur graphique tourne à quelques images par seconde : le pas de jeu, plafonné à 0,05 s, y avance lentement.
+  await attendre(() => { const y = Habitants.present("ysabeau"); return y && y.vers; }, 20000);
+  await attendre(a => { const y = Habitants.present("ysabeau"); return Math.hypot(y.X - a.X, y.Y - a.Y) > 1.5; }, 40000, ys0).catch(() => {});
+  const ys1 = await p.evaluate(() => Habitants.present("ysabeau"));
+  const chezElle = q => Math.hypot(q[0] - 497, q[1] - 432);
+  ok(ys1 && ys1.lieu === "maison_ysabeau" && ys1.enRoute && chezElle(ys1.vers) < 4 && Math.hypot(ys1.X - ys0.X, ys1.Y - ys0.Y) > 1.5,
+    `l’après-midi, Ysabeau rentre au clos à pied (chemin vers sa porte, ${Math.hypot(ys1.X - ys0.X, ys1.Y - ys0.Y).toFixed(1)} m déjà parcourus)`);
+  // Saluer Maëlle devant son fournil.
+  await p.evaluate(() => { const m = Habitants.marcheurs.find(x => x.hab === "maelle"); const q = Ville.versScene(m.X, m.Y + 1.2); player.position.set(q.x, q.y, q.z); snapCam(); });
+  await p.waitForTimeout(400);
+  await p.evaluate(() => { const it = INTER.find(x => x.label === "Saluer Maëlle" && x.can()); if (!it) throw new Error("pas de « Saluer Maëlle »"); it.act(); });
+  await p.waitForTimeout(600); await cap("05_maelle");
+  ok(await p.evaluate(() => document.getElementById("dlg").style.display === "block" && /fournée|four|cours/.test(document.getElementById("dlg").textContent)), "Maëlle répond devant le fournil");
+  await finir();
 
   // Recharger dans la ville : on reprend au même endroit.
   await p.evaluate(() => { const q = Ville.versScene(300, 418); player.position.set(q.x, q.y, q.z); save(); });

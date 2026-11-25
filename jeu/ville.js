@@ -48,13 +48,13 @@ function profilRuelle(pts) {
 }
 const VOIES = [...Object.values(A.CHEMINS), ...Object.values(A.RUELLES).map(profilRuelle)];
 const RUES = VOIES.map(v => v.map(p => [p[0], p[1]]));
-const LARGE = 3.2, COEUR = 2.4, PRES = 8, NCH = Object.keys(A.CHEMINS).length, fixe = new Uint8Array(GW * GH), chemin = new Int8Array(GW * GH).fill(-1), croise = new Uint8Array(GW * GH);
+const LARGE = 3.2, COEUR = 2.4, PRES = 8, NCH = Object.keys(A.CHEMINS).length, fixe = new Uint8Array(GW * GH), cheminDe = new Int8Array(GW * GH).fill(-1), croise = new Uint8Array(GW * GH);
 for (const [n, pts] of VOIES.entries()) for (let j = 1; j < pts.length; j++) {
   const [ax, ay, az] = pts[j - 1], [bx, by, bz] = pts[j];
   const P = n < NCH ? PRES : LARGE; // près d'un autre chemin nivelé, les deux profils ne s'accordent pas toujours
   cellules(Math.min(ax, bx) - P, Math.max(ax, bx) + P, Math.min(ay, by) - P, Math.max(ay, by) + P, (i, x, y) => {
     const { t, d } = proj(x, y, ax, ay, bx, by);
-    if (n < NCH && d <= PRES) { if (chemin[i] >= 0 && chemin[i] !== n) croise[i] = 1; chemin[i] = n; }
+    if (n < NCH && d <= PRES) { if (cheminDe[i] >= 0 && cheminDe[i] !== n) croise[i] = 1; cheminDe[i] = n; }
     if (d > LARGE || d >= dRue[i]) return;
     dRue[i] = d; grille[i] = RUE; const z = az + t * (bz - az), w = d <= COEUR ? 0 : (d - COEUR) / (LARGE - COEUR);
     haut[i] = z * (1 - w) + lisse[i] * w;
@@ -106,6 +106,40 @@ const relie = new Uint8Array(GW * GH);
     for (const [dx, dy] of [[R, 0], [-R, 0], [0, R], [0, -R]]) { const j = cel(X + dx, Y + dy); if (j < 0 || relie[j]) continue; const [nX, nY] = centre(j);
       if (!praticable(nX, nY) || Math.abs(sol(nX, nY) - sol(X, Y)) > PAS_MAX * R) continue; relie[j] = 1; pile.push(j); } } }
 const estRelie = (X, Y) => { const i = cel(X, Y); return i >= 0 && relie[i] === 1; };
+
+/* Chemin à pied entre deux points de l'atlas (A* sur la grille, huit voisins, mêmes pas qu'Aliénor),
+   puis raccourci en lignes droites quand la vue est libre. Rend une suite de points [X, Y], ou null. */
+const VOISINS = [[1, 0, 1], [-1, 0, 1], [0, 1, 1], [0, -1, 1], [1, 1, 1.414], [1, -1, 1.414], [-1, 1, 1.414], [-1, -1, 1.414]];
+function passe(i, j) { const [X, Y] = centre(i), [x, y] = centre(j); return relie[j] === 1 && Math.abs(sol(x, y) - sol(X, Y)) <= PAS_MAX * Math.hypot(x - X, y - Y); }
+function accroche(X, Y, rayon = 8) {
+  const i0 = cel(X, Y); if (i0 >= 0 && relie[i0]) return i0;
+  let best = -1, bd = Infinity;
+  cellules(X - rayon, X + rayon, Y - rayon, Y + rayon, (i, x, y) => { if (!relie[i]) return; const d = Math.hypot(x - X, y - Y); if (d < bd) { bd = d; best = i; } });
+  return best;
+}
+const gCout = new Float32Array(GW * GH), vient = new Int32Array(GW * GH), marque = new Uint32Array(GW * GH); let tour = 0;
+function chemin(a, b) {
+  const s = accroche(a.X, a.Y), t = accroche(b.X, b.Y); if (s < 0 || t < 0) return null;
+  tour++; const [tx, ty] = centre(t), h = i => { const [x, y] = centre(i); return Math.hypot(x - tx, y - ty) / R; };
+  const tas = [[h(s), s]]; gCout[s] = 0; vient[s] = -1; marque[s] = tour;
+  const pousser = e => { tas.push(e); let k = tas.length - 1; while (k) { const p = (k - 1) >> 1; if (tas[p][0] <= tas[k][0]) break; [tas[p], tas[k]] = [tas[k], tas[p]]; k = p; } };
+  const tirer = () => { const top = tas[0], last = tas.pop(); if (tas.length) { tas[0] = last; let k = 0; for (;;) { const l = 2 * k + 1, r = l + 1; let m = k; if (l < tas.length && tas[l][0] < tas[m][0]) m = l; if (r < tas.length && tas[r][0] < tas[m][0]) m = r; if (m === k) break; [tas[m], tas[k]] = [tas[k], tas[m]]; k = m; } } return top; };
+  let n = 0;
+  while (tas.length && n++ < 200000) {
+    const [f, i] = tirer(); if (i === t) break; if (f - h(i) > gCout[i] + 1e-6) continue;
+    const c = i % GW, r = (i - c) / GW;
+    for (const [dc, dr, w] of VOISINS) { const cc = c + dc, rr = r + dr; if (cc < 0 || rr < 0 || cc >= GW || rr >= GH) continue; const j = rr * GW + cc;
+      const g = gCout[i] + w; if (marque[j] === tour && g >= gCout[j]) continue; if (!passe(i, j)) continue;
+      marque[j] = tour; gCout[j] = g; vient[j] = i; pousser([g + h(j), j]); }
+  }
+  if (marque[t] !== tour) return null;
+  const pts = []; for (let i = t; i >= 0; i = vient[i]) pts.push(centre(i)); pts.reverse();
+  const libre = (p, q) => { const L = Math.hypot(q[0] - p[0], q[1] - p[1]), n = Math.ceil(L / 0.25); let prev = p;
+    for (let k = 1; k <= n; k++) { const x = p[0] + (q[0] - p[0]) * k / n, y = p[1] + (q[1] - p[1]) * k / n, i = cel(x, y); if (i < 0 || !relie[i] || Math.abs(sol(x, y) - sol(...prev)) > PAS_MAX * (L / n) + 0.02) return false; prev = [x, y]; } return true; };
+  const out = [pts[0]]; let k = 0;
+  while (k < pts.length - 1) { let m = Math.min(pts.length - 1, k + 60); while (m > k + 1 && !libre(pts[k], pts[m])) m--; out.push(pts[m]); k = m; }
+  return out;
+}
 
 /* ================= Portes : sur le côté du bâtiment qui regarde la rue ================= */
 function porte(s) {
@@ -240,7 +274,7 @@ startPlay = function (newGame) {
 };
 
 console.info("Ville à l’échelle : grille prête en", Math.round(performance.now() - T0), "ms");
-window.Ville = { VILLE, enVille, praticable, estRelie, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
+window.Ville = { VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
 // start() ramène sur la place toute position hors de la carte : on rend à la ville la sienne.
 if (S.started && S.pos && S.pos[0] > 2500 && !blocked(S.pos[0], S.pos[1])) { batirVille(); player.position.set(S.pos[0], solV(S.pos[0], S.pos[1]), S.pos[1]); }
 })();
