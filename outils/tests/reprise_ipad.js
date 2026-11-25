@@ -224,6 +224,36 @@ async function testStoneInterruption(browser) {
   console.log('Sauvegarde injectée avant Garin : trois réponses jouées, reprise sur la pierre après la joute.');
 }
 
+async function testDeniedConfession(browser) {
+  // La partie complète avec dénonciation couvre l’aveu. Cette sauvegarde permet de jouer le mensonge.
+  const checkpoint = {act: 2, stage: 12, pos: [2.6,-1.5], flags: {tribut: 'denonce'},
+    f: ['F1','F2','F3','F6','F7','F8'], allies: {maelle: true}};
+  await withSession(browser, checkpoint, {width: 810, height: 1080}, async page => {
+    const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
+    await resume();
+    await page.getByRole('button', {name: 'Parler à Garin'}).tap();
+    const dialogue = page.locator('#dlg');
+    await dialogue.tap();
+    await dialogue.getByRole('button', {name: '« Non. »', exact: true}).tap();
+    await page.reload({waitUntil: 'domcontentloaded'});
+    await resume();
+    await dialogue.getByText('« Hm. »', {exact: true}).waitFor();
+    const answers = await page.evaluate(() => ['F6','F7','F8'].map(id => FEU[id].cit));
+    for (let line = 0; line < 3; line++) await dialogue.tap();
+    for (const answer of answers) {
+      await dialogue.getByRole('button', {name: answer, exact: true}).tap();
+      await dialogue.tap();
+    }
+    for (let line = 0; line < 3; line++) await dialogue.tap();
+    const saved = await page.evaluate(key => JSON.parse(localStorage.getItem(key)), storageKey);
+    assert.equal(saved.stage, 13);
+    assert.equal(saved.flags.aveu, false);
+    assert.equal(saved.aveuEnCours, undefined);
+    assert.equal(saved.allies.garin, true);
+  });
+  console.log('Sauvegarde injectée avant la joute du soir : mensonge, fermeture, réponse de Garin et ralliement.');
+}
+
 async function testPrintInterruption(browser) {
   // Sauvegarde injectée de l’ancien format. Tous les mots et tirages sont ensuite joués.
   await withSession(browser, {act: 2, stage: 14, pos: [-20, 6.6]},
@@ -324,6 +354,7 @@ async function testStory(browser) {
     await testStory(browser);
     await testPrintInterruption(browser);
     await testStoneInterruption(browser);
+    await testDeniedConfession(browser);
   } finally {
     await browser.close();
   }
