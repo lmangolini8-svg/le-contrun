@@ -227,7 +227,7 @@ async function testStoneInterruption(browser) {
 async function testPrintInterruption(browser) {
   // Sauvegarde injectée de l’ancien format. Tous les mots et tirages sont ensuite joués.
   await withSession(browser, {act: 2, stage: 14, pos: [-20, 6.6]},
-    {width: 810, height: 1080}, async page => {
+    {width: 844, height: 390}, async page => {
       const resume = () => page.getByRole('button', {name: 'Reprendre le chemin'}).tap();
       async function reload() {
         await page.reload({waitUntil: 'domcontentloaded'});
@@ -240,6 +240,14 @@ async function testPrintInterruption(browser) {
       await dialogue.tap();
       await dialogue.tap();
       await pick('Composer la page');
+      // Sur téléphone en paysage, cette dernière option demande de faire défiler les mots.
+      await pick('en votre mal');
+      const hint = dialogue.getByText(/La page commence par/);
+      assert.ok(await hint.evaluate(el => {
+        const box = document.getElementById('dlg').getBoundingClientRect();
+        const text = el.getBoundingClientRect();
+        return text.top >= box.top && text.bottom <= box.bottom;
+      }), 'L’indice de composition est lisible après un choix en bas de liste');
       for (const word of ['« Pauvres','et misérables','peuples insensés,']) await pick(word);
       await pick('et aveugles');
       await dialogue.getByText(/Ce mot ne vient pas là/).waitFor();
@@ -253,8 +261,19 @@ async function testPrintInterruption(browser) {
       await pick('Tirer la barre');
       await reload();
       await dialogue.getByText('Cent feuilles sèchent au-dessus de vos têtes.', {exact: true}).waitFor();
+      await dialogue.tap();
+      await dialogue.tap();
+      await pick('« Et s’ils ne veulent pas lire ? »');
+      await dialogue.tap();
+      await dialogue.tap();
+      await page.getByRole('button', {name: 'Passer la scène'}).tap();
+      await dialogue.tap();
+      await dialogue.tap();
+      await pick('Rester debout, dans l’ombre');
+      await reload();
+      await dialogue.getByText('Vous restez debout. Personne ne le saura. Sauf vous.', {exact: true}).waitFor();
     });
-  console.log('Sauvegarde injectée à l’atelier : reprise après trois mots, un tirage puis trois tirages.');
+  console.log('Sauvegarde injectée à l’atelier : reprise après trois mots, un puis trois tirages et le choix devant la litière.');
 }
 
 async function testStory(browser) {
@@ -262,7 +281,14 @@ async function testStory(browser) {
     await withSession(browser, null, {width: 810, height: 1080}, async page => {
       // Une vraie interruption au premier dialogue de l’aube, avec la sauvegarde produite en jeu.
       const interruptDawn = tribute === 'denonce';
-      let result = await page.evaluate(playStory, {tribute, interruptDawn});
+      const interruptTribute = tribute === 'refus';
+      let result = await page.evaluate(playStory, {tribute, interruptDawn, interruptTribute});
+      if (interruptTribute) {
+        assert.ok(result.reply);
+        await page.reload({waitUntil: 'domcontentloaded'});
+        await page.getByRole('button', {name: 'Reprendre le chemin'}).waitFor();
+        result = await page.evaluate(playStory, {tribute, tributeReply: result.reply});
+      }
       if (interruptDawn) {
         assert.equal(result, 'aube');
         await page.reload({waitUntil: 'domcontentloaded'});
@@ -277,7 +303,8 @@ async function testStory(browser) {
       assert.deepEqual(result.sheets, expectedSheets);
     });
     console.log('Partie neuve, tribut ' + tribute + ' : chapelle, pierre, acte II, presse et affiche.'
-      + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : ''));
+      + (tribute === 'denonce' ? ' Partie rechargée à l’aube.' : '')
+      + (tribute === 'refus' ? ' Partie rechargée à la réponse du percepteur.' : ''));
   }
 }
 

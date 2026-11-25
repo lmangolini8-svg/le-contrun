@@ -1,7 +1,7 @@
 // Exécuté dans la page par Playwright. Le temps du jeu avance par pas de 50 ms.
 // Les dialogues, transitions, patrouilles et collisions tournent normalement.
 // Seul le dessin des images est omis pour accélérer ces longues traversées en CI.
-function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
+function playStory({tribute, resumeDawn = false, interruptDawn = false, interruptTribute = false, tributeReply}) {
   const dt = .05;
   window.requestAnimationFrame = () => 0;
   clock.getDelta = () => dt;
@@ -25,13 +25,13 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     button.click();
   }
 
-  function advance(choices = [], stopAtDawn = false) {
+  function advance(choices = [], pause) {
     const remaining = [...choices];
     for (let count = 0; count < 260; count++) {
       switch (mode) {
         case 'dialog': {
-          if (stopAtDawn && S.stage === 15) {
-            if (remaining.length) fail('Choix manquants avant l’aube');
+          if (pause?.()) {
+            if (remaining.length) fail('Choix manquants avant l’interruption');
             return;
           }
           if (!waitingChoice) {
@@ -143,10 +143,10 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     fail('Trajet interrompu vers ' + [tx,tz,label]);
   }
 
-  function interact(label, x, z, radius, choices) {
+  function interact(label, x, z, radius, choices, pause) {
     walk(x,z,radius,label);
     click('#act');
-    advance(choices);
+    advance(choices,pause);
   }
   function person(name, key, choices) {
     const {x,z} = N[key].position;
@@ -161,12 +161,24 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     if (!dawn || player.position.x !== -19.4 || player.position.z !== 7.6)
       fail('Reprise hors de la sortie de l’atelier');
   } else {
-    click('[data-a="new"]');
-    advance();
-    person('Anselme','anselme');
-    expectStage(1);
-    const responses = {paye:'Payer la mesure', denonce:'Dire que le sac', refus:'Demander à quoi sert'};
-    interact('Parler au percepteur',0,-14.6,3.2,[responses[tribute]]);
+    if (tributeReply) {
+      click('[data-a="resume"]');
+      if (mode !== 'dialog' || waitingChoice || dlg.querySelector('.txt')?.textContent !== tributeReply)
+        fail('La réponse du percepteur n’a pas repris');
+      advance();
+    } else {
+      click('[data-a="new"]');
+      advance();
+      person('Anselme','anselme');
+      expectStage(1);
+      const responses = {paye:'Payer la mesure', denonce:'Dire que le sac', refus:'Demander à quoi sert'};
+      interact('Parler au percepteur',0,-14.6,3.2,[responses[tribute]], () => interruptTribute && S.flags.tribut === tribute);
+      if (interruptTribute) {
+        expectStage(1);
+        if (state().flags.tribut !== tribute) fail('Choix perdu dès la réponse du percepteur');
+        return {reply:dlg.querySelector('.txt').textContent};
+      }
+    }
     expectStage(2);
     if (S.flags.tribut !== tribute) fail('Choix du tribut perdu');
     person('Maëlle','maelle');
@@ -208,7 +220,7 @@ function playStory({tribute, resumeDawn = false, interruptDawn = false}) {
     expectStage(14);
     const press = ['Tirer la barre','Tirer la barre','Tirer la barre'];
     const litter = tribute === 'paye' ? 'S’incliner' : 'Rester debout';
-    advance(['Composer la page',...LINE,...press,'Et s’ils',litter], true);
+    advance(['Composer la page',...LINE,...press,'Et s’ils',litter], () => S.stage === 15);
     expectStage(15);
     const dawnSave = state();
     if (dawnSave.impression !== undefined) fail('Travail d’imprimerie encore actif à l’aube');
