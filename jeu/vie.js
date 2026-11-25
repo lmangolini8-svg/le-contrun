@@ -632,6 +632,8 @@ function recevoir(vi) {
 
 /* Reprise au milieu d'une journée au clos : le décor est rebâti avant de rendre la main. */
 // start() ramène sur la place toute position hors des limites de la carte : on rend au clos la sienne.
+// Ce dont la ville à l’échelle (jeu/ville.js) a besoin pour se raccorder au clos et à l’atelier.
+window.Vie = { V, CL, enClos, sortir, versClos, vitrine, batirClos, majClos, apres };
 if (S.started && S.pos && S.pos[1] > 1300) { player.position.set(S.pos[0], 0, S.pos[1]); batirClos(); }
 refreshHud();
 })();
