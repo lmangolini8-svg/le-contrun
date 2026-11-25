@@ -1182,7 +1182,30 @@ put(G.box,WS,54.8,14.6,-2,1.0,2.6,2.2); put(G.box,0x23252c,54.6,14.5,-2,1.2,1.5,
 solid(53.7,56,-11,7);
 for(const [x,z,w,h] of [[33.6,-4.6,2,1.9],[40,0.6,2.4,2.1],[44.2,-3,2,1.8],[48.2,2.4,2.2,2],[36.2,4,2,1.7],[49.5,-7.6,2,1.9]]) crate(x,z,w,h);
 barrel(41.7,0.9); barrel(46.4,3.2); circles.push([41.7,0.9,0.45],[46.4,3.2,0.45]); put(G.s,0xb9a27c,34.9,0.3,-4.2,0.4,0.3,0.34);
-paintedPanel(1,0,3.62,-16.40,5.15,7.24,0);
+// Porte du palais, bâtie avec les pierres et le bois de la ville (et non plus un tableau plaqué).
+// Au tympan, l'emblème de l'Un : un disque d'or sur trois degrés. Le tirage aléatoire du décor est préservé.
+{ const keep=_seed, IRON=0x34343c, OAK=0x6e4a30, GOLD=0xe0b450, z=-16.44;
+  put(G.box,ST,0,4.6,-16.66,5.4,9.2,.16);                                   // fond de la baie
+  put(G.c16,ST2,0,4.45,-16.52,2.38,.12,2.38,0,Math.PI/2,0);                  // tympan
+  put(G.box,ST2,0,4.45,-16.38,4.82,.34,.32);                                 // linteau
+  put(G.c16,GOLD,0,6.02,-16.44,.46,.07,.46,0,Math.PI/2,0,0);                 // emblème : le disque
+  [[.72,5.38],[1.06,5.17],[1.4,4.96]].forEach(([w,y])=>put(G.box,GOLD,0,y,-16.44,w,.17,.07,0,0,0,0)); // et ses trois degrés
+  for(const side of [-1,1]){
+    const cx=side*1.17;
+    put(G.box,OAK,cx,2.15,z,2.3,4.3,.14,0,0,0,6);                            // vantail de planches
+    for(let k=1;k<5;k++) put(G.box,0x4b3322,cx-1.15+k*.46,2.15,z+.075,.03,4.26,.02,0,0,0,0); // joints des planches
+    for(const y of [.62,2.15,3.68]){
+      put(G.box,IRON,cx,y,z+.09,2.18,.11,.03,0,0,0,0);                       // penture
+      for(let k=0;k<7;k++) put(G.s,0x23232a,cx-1.0+k*.333,y,z+.11,.032,.032,.022,0,0,0,0); // clous
+    }
+    put(G.s,IRON,side*.38,2.6,z+.11,.07,.07,.05,0,0,0,0);                    // bouton de l'anneau
+    put(G.c16,IRON,side*.38,2.37,z+.1,.17,.025,.17,0,Math.PI/2,0,0);          // anneau
+    put(G.c16,OAK,side*.38,2.37,z+.115,.12,.03,.12,0,Math.PI/2,0,6);
+  }
+  put(G.box,0x3e2a1c,0,2.15,z+.08,.07,4.3,.04,0,0,0,0);                      // battement central
+  for(const [x,y,w,h] of [[1.25,1.69,.99,.05],[.78,.88,.05,1.62],[1.72,.88,.05,1.62]]) put(G.box,0x3e2a1c,x,y,z+.1,w,h,.03,0,0,0,0); // cadre du guichet
+  put(G.box,ST2,0,.06,-16.05,5.0,.12,.72);                                   // seuil usé
+  _seed=keep; }
 for(const side of [-1,1]){
   for(const dx of [7.6,17.6,26.4]) paintedPanel(3,side*dx,3.78,-16.48,1.34,3.64,0,[[0,.12],[.5,0],[1,.12],[1,1],[0,1]]);
   for(let i=0;i<3;i++) for(let j=0;j<3;j++) paintedPanel(2,side*19-2.8+i*2.8,4+j*3.6,-27.83,1.32,2.02,0);
