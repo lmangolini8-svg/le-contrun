@@ -1,0 +1,662 @@
+[
+ {
+  "id": "acclamation",
+  "fichier": "son/acclamation.mp3",
+  "categorie": "effet",
+  "duree_s": 3.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-atelier",
+  "fichier": "son/amb-atelier.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Imprimerie ; nuit à la presse",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-aube",
+  "fichier": "son/amb-aube.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Aube, acte II",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-chapelle",
+  "fichier": "son/amb-chapelle.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Chapelle",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-clos",
+  "fichier": "son/amb-clos.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Cour du clos des murailles, de jour",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Small walled courtyard of old stone houses in the early morning, garden birds singing, a hen clucking, a distant wooden gate being unbolted, light wind along the town wall, very calm, no voices, no music"
+ },
+ {
+  "id": "amb-cour",
+  "fichier": "son/amb-cour.mp3",
+  "categorie": "ambiance",
+  "duree_s": 25.1,
+  "usage": "Cour des gardes",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-fete",
+  "fichier": "son/amb-fete.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Fête, acte II",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-feu",
+  "fichier": "son/amb-feu.mp3",
+  "categorie": "ambiance",
+  "duree_s": 12.0,
+  "usage": "Lanternes de la fête",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-fontaine",
+  "fichier": "son/amb-fontaine.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Près de la fontaine",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-fournil",
+  "fichier": "son/amb-fournil.mp3",
+  "categorie": "ambiance",
+  "duree_s": 25.1,
+  "usage": "Fournil de Maëlle, près de son étal, aux heures d'ouverture",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Inside an old bakery with a wood-fired bread oven roaring, dough being kneaded and slapped on a wooden trough, a wooden peel scraping the oven floor, warm close interior, no voices, no music"
+ },
+ {
+  "id": "amb-maison",
+  "fichier": "son/amb-maison.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Intérieur de la maison du clos",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Inside a small old timber and stone house, quiet room tone, a low hearth fire crackling softly, an old wooden floor creaking now and then, muffled birds outside the shutters, no voices, no music"
+ },
+ {
+  "id": "amb-marche",
+  "fichier": "son/amb-marche.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Place, acte I",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-nuit",
+  "fichier": "son/amb-nuit.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Nuit ; soir au clos",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-pluie",
+  "fichier": "son/amb-pluie.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Ciel couvert, acte I",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-quai",
+  "fichier": "son/amb-quai.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Vers la rivière",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-ruelle",
+  "fichier": "son/amb-ruelle.mp3",
+  "categorie": "ambiance",
+  "duree_s": 25.1,
+  "usage": "Fond de jour sur la place",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-vent",
+  "fichier": "son/amb-vent.mp3",
+  "categorie": "ambiance",
+  "duree_s": 20.0,
+  "usage": "Partout",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "applaudissements",
+  "fichier": "son/applaudissements.mp3",
+  "categorie": "effet",
+  "duree_s": 4.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "armure-0",
+  "fichier": "son/armure-0.mp3",
+  "categorie": "effet",
+  "duree_s": 0.7,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "armure-1",
+  "fichier": "son/armure-1.mp3",
+  "categorie": "effet",
+  "duree_s": 0.7,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "armure-2",
+  "fichier": "son/armure-2.mp3",
+  "categorie": "effet",
+  "duree_s": 0.7,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "armure-3",
+  "fichier": "son/armure-3.mp3",
+  "categorie": "effet",
+  "duree_s": 0.7,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "armure-4",
+  "fichier": "son/armure-4.mp3",
+  "categorie": "effet",
+  "duree_s": 0.7,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "balance",
+  "fichier": "son/balance.mp3",
+  "categorie": "effet",
+  "duree_s": 3.0,
+  "usage": "Pesée de la miche chez Maëlle et pesée du sac au tribut : même geste, deux scènes",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Weighing on an old brass balance scale: small brass weights set one by one into the pan with metallic clinks, the pans swinging and settling with a light rattle of chains"
+ },
+ {
+  "id": "bois",
+  "fichier": "son/bois.mp3",
+  "categorie": "effet",
+  "duree_s": 0.8,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "chouette",
+  "fichier": "son/chouette.mp3",
+  "categorie": "effet",
+  "duree_s": 3.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "cloche",
+  "fichier": "son/cloche.mp3",
+  "categorie": "effet",
+  "duree_s": 6.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "colle",
+  "fichier": "son/colle.mp3",
+  "categorie": "effet",
+  "duree_s": 2.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "cruche",
+  "fichier": "son/cruche.mp3",
+  "categorie": "effet",
+  "duree_s": 2.5,
+  "usage": "Remplir la cruche",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Water poured from a wooden bucket into an earthenware jug, rising pitch as it fills, close"
+ },
+ {
+  "id": "feuillet",
+  "fichier": "son/feuillet.mp3",
+  "categorie": "effet",
+  "duree_s": 2.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "frapper",
+  "fichier": "son/frapper.mp3",
+  "categorie": "effet",
+  "duree_s": 1.5,
+  "usage": "On frappe chez Ysabeau, on frappe chez Aliénor au lendemain",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Three firm knocks with knuckles on a thick old wooden house door, heard from inside"
+ },
+ {
+  "id": "halte",
+  "fichier": "son/halte.mp3",
+  "categorie": "effet",
+  "duree_s": 1.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "lettre",
+  "fichier": "son/lettre.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 10.6,
+  "usage": "Les trois premières notes du violon de Mahaut (mus-mahaut, 0,2 à 11 s), à la première lecture de la lettre",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Extrait de mus-mahaut"
+ },
+ {
+  "id": "murmure",
+  "fichier": "son/murmure.mp3",
+  "categorie": "effet",
+  "duree_s": 3.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "mus-aube",
+  "fichier": "son/mus-aube.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 85.4,
+  "usage": "Acte II, l'aube et l'affiche ; fin de l'acte I",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental dawn music, Renaissance recorder melody over lute and gentle viols, hopeful and luminous, slowly rising, sunrise over an old town after a long night, slow tempo, D major, no percussion, no vocals"
+ },
+ {
+  "id": "mus-branle",
+  "fichier": "son/mus-branle.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 88.3,
+  "usage": "Acte II, la fête (gaillarde), en alternance avec la ronde, filtrée par la distance",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "16th century French gaillarde and branle de Bourgogne for a night festival, early music consort: Renaissance lute and cittern strumming rhythmic chords, soprano recorder and fiddle (vielle) playing the melody in unison, bagpipe joining for the chorus, tabor pipe, tambourine and bells on the dancers. Spirited, bouncy triple meter, joyful folk dance energy, historically informed performance, real acoustic period instruments, intimate live outdoor recording with a crowd faintly audible, instrumental only, no vocals, no modern instruments, no synths"
+ },
+ {
+  "id": "mus-cour",
+  "fichier": "son/mus-cour.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 86.9,
+  "usage": "Acte I, cour des gardes ; volume lié au regard des gardes",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental tense stealth music with Renaissance instruments: low viola da gamba drone, sparse plucked lute notes, soft muffled frame drum like a slow heartbeat, suspense, sneaking past guards in a castle courtyard, quiet and dark, steady throughout, no vocals"
+ },
+ {
+  "id": "mus-fanfare",
+  "fichier": "son/mus-fanfare.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 36.6,
+  "usage": "Acte II, le grand toast",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental pompous ceremonial Renaissance fanfare for a tyrant's toast from a palace balcony: sackbuts and natural trumpets, kettle drums, grand and slightly hollow, G major, no vocals"
+ },
+ {
+  "id": "mus-farce",
+  "fichier": "son/mus-farce.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 59.7,
+  "usage": "Acte II, devant les tréteaux et pendant la farce",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental comic burlesque Renaissance music for a street farce on wooden trestles: crumhorns, bouncy tabor, rattling tambourine, playful and mocking, quick tempo, no vocals"
+ },
+ {
+  "id": "mus-jour",
+  "fichier": "son/mus-jour.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 120.0,
+  "usage": "Acte I, la place de jour",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental Renaissance consort for exploring a sunny old town market: lute, viola da gamba and recorder, light frame drum, warm and curious, moderate tempo, D dorian, acoustic period instruments, steady even mood throughout so it can loop, no vocals"
+ },
+ {
+  "id": "mus-lendemain",
+  "fichier": "son/mus-lendemain.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 184.3,
+  "usage": "Lendemain au clos. Album : 13. Le lendemain, les volets. Montage : la phrase de luth de mus-volets (0 à 28,6 s), la nappe ci-dessous à partir de 20 s, la même phrase à 138 s, la cadence finale du luth (132,4 à 149,5 s) à 167,2 s",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Nappe (13-lendemain-nappe) : Warm Renaissance consort bed in D dorian with no fixed beat: a viola da gamba drone on D, soft sustained recorders and a bowed fiddle holding long consonant chords that change slowly, distant small bells, an airy and hopeful morning colour. Very gentle swells rather than melody, leaving space for a solo instrument on top. It starts almost silent, opens out in the middle as more instruments join, then settles back to a single held D at the end. Historically informed early music, acoustic, no percussion, no lute, no vocals."
+ },
+ {
+  "id": "mus-litiere",
+  "fichier": "son/mus-litiere.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 59.3,
+  "usage": "Acte II, passage de la litière",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental solemn oppressive procession music, a covered litter carried through a silent crowd: slow deep processional drums, low sackbut drone, a distant tolling, dark and heavy, steady throughout, no vocals"
+ },
+ {
+  "id": "mus-mahaut",
+  "fichier": "son/mus-mahaut.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 107.2,
+  "usage": "Prévu : confession d'Anselme (acte III). Album : esquisse de 10. Ce qu'Anselme a tu",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Solo Renaissance violin played close with a restrained, intimate bow, a simple and memorable melancholic melody in A minor at a slow 60 BPM, supported by a very discreet lute playing sparse chords. It begins with the first three notes alone and a long pause, then states the full melody, develops it tenderly with a little more bow, and ends with the melody returning softly and fading on a held note. Historically informed early music, warm small room acoustic, no percussion, no other instruments, no vocals."
+ },
+ {
+  "id": "mus-nuit",
+  "fichier": "son/mus-nuit.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 85.1,
+  "usage": "Acte II, tombée du soir et nuit à la presse",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental night music, solo Renaissance lute arpeggios with a slow bowed viola da gamba line, intimate, quiet determination, secret work by candlelight, slow tempo, A minor, steady throughout, no vocals"
+ },
+ {
+  "id": "mus-ronde",
+  "fichier": "son/mus-ronde.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 88.1,
+  "usage": "Acte II, la fête (ronde), en alternance avec la gaillarde",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Renaissance dance music in the style of Tielman Susato's Danserye (1551), La Mourisque and the Ronde, played by an early music street band at a town festival: recorders and crumhorns in the melody, rauschpfeife and shawm, dulcian bass, hurdy-gurdy, frame drum, tambourine and clapping hands. Lively 4/4 round dance, catchy repeated tune, celebratory and a little drunken, historically informed performance, real acoustic period instruments, warm outdoor live recording, instrumental only, no vocals, no modern instruments, no synths"
+ },
+ {
+  "id": "mus-titre",
+  "fichier": "son/mus-titre.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 78.9,
+  "usage": "Écran titre, planches entre deux lieux, soir au clos",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental 16th century French Renaissance pavane, solo lute with a soft alto recorder, melancholic and intimate, slow tempo, D minor, recorded acoustically in a small stone room, gentle, no percussion, no vocals"
+ },
+ {
+  "id": "mus-tribut",
+  "fichier": "son/mus-tribut.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 145.1,
+  "usage": "Place, de la cloche jusqu'au paiement du tribut. Album : 5. La cloche du tribut",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Solemn Renaissance processional music built on a regular, insistent call: a large bronze bell tolls on every downbeat and shawms with a sackbut answer it with the same short four-note fanfare figure, measured and authoritative, slow steady 60 BPM in D minor. A frame drum marks the walk of a queue of people. The call repeats and grows heavier, the winds thicken in the middle, then the music thins until only the bell and one shawm remain and it ends on a final unresolved toll. Historically informed early music, real acoustic instruments, outdoor stone square, no vocals."
+ },
+ {
+  "id": "mus-volets",
+  "fichier": "son/mus-volets.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 147.7,
+  "usage": "Réveil au clos (thème d'Aliénor). Album : 1. Les volets du clos",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Solo Renaissance lute, intimate and unaccompanied, a simple singable melody in D dorian at a slow 66 BPM, played close in a small wooden room at dawn. It opens with the bare theme stated plainly, then develops it with gentle divisions and arpeggiated chords, grows a little warmer and more confident, and ends with the theme returning quietly to a held final chord. Historically informed early music, warm natural acoustic, no other instruments, no percussion, no vocals."
+ },
+ {
+  "id": "page",
+  "fichier": "son/page.mp3",
+  "categorie": "effet",
+  "duree_s": 1.6,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-0",
+  "fichier": "son/pas-0.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-1",
+  "fichier": "son/pas-1.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-2",
+  "fichier": "son/pas-2.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-3",
+  "fichier": "son/pas-3.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-4",
+  "fichier": "son/pas-4.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pas-5",
+  "fichier": "son/pas-5.mp3",
+  "categorie": "effet",
+  "duree_s": 0.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pieces",
+  "fichier": "son/pieces.mp3",
+  "categorie": "effet",
+  "duree_s": 2.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "pierre",
+  "fichier": "son/pierre.mp3",
+  "categorie": "effet",
+  "duree_s": 4.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "plume",
+  "fichier": "son/plume.mp3",
+  "categorie": "effet",
+  "duree_s": 2.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "porte",
+  "fichier": "son/porte.mp3",
+  "categorie": "effet",
+  "duree_s": 2.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "presse",
+  "fichier": "son/presse.mp3",
+  "categorie": "effet",
+  "duree_s": 2.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "puits",
+  "fichier": "son/puits.mp3",
+  "categorie": "effet",
+  "duree_s": 4.0,
+  "usage": "Puiser au puits commun (suivi de cruche)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Drawing water from an old stone well: a rope running through a creaking wooden pulley, a wooden bucket splashing deep below, then water sloshing as it is pulled up, outdoor"
+ },
+ {
+  "id": "rires",
+  "fichier": "son/rires.mp3",
+  "categorie": "effet",
+  "duree_s": 4.0,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "sac",
+  "fichier": "son/sac.mp3",
+  "categorie": "effet",
+  "duree_s": 1.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "trinquer",
+  "fichier": "son/trinquer.mp3",
+  "categorie": "effet",
+  "duree_s": 1.5,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "type",
+  "fichier": "son/type.mp3",
+  "categorie": "effet",
+  "duree_s": 1.2,
+  "usage": "bruitage de la banque de l'acte I et II",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "volets",
+  "fichier": "son/volets.mp3",
+  "categorie": "effet",
+  "duree_s": 2.0,
+  "usage": "Ouvrir ou fermer les volets de la maison",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Old wooden window shutters being unlatched and swung open, iron hinges creaking, a wooden thud against the stone wall"
+ }
+]

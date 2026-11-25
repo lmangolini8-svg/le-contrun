@@ -135,26 +135,44 @@ async function testActTransition(browser) {
   console.log('Sauvegarde injectée avant le bilan I : réponse à Anselme, bilan, planche puis deux répliques de la fête repris après fermeture.');
 }
 
+// Nouvelle partie : réveil au clos, puis chemin de l’atelier par la rue des Drapiers.
+async function traverserClos(page) {
+  await page.locator('#plate .go').tap();
+  const dialogue = page.locator('#dlg');
+  await dialogue.getByText(/Le jour passe par les fentes/).tap();
+  await dialogue.getByText(/Sous la porte/).tap();
+  await page.evaluate(() => player.position.set(O.clos[0]+8, 0, O.clos[1]+10.4));
+  await page.getByRole('button', {name: 'Partir'}).tap();
+  await dialogue.getByText(/Avant de partir/).tap();
+  await dialogue.getByRole('button', {name: 'Partir pour l’atelier'}).tap();
+  await page.locator('#plate .go').tap();
+}
+
 async function testOpening(browser) {
   await withSession(browser, null, {width: 1080, height: 810}, async (page,context,reopenTab) => {
     await page.getByRole('button', {name: /Affichage allégé/}).tap();
     await page.getByRole('button', {name: 'Entrer dans la ville'}).tap();
+    await traverserClos(page);
     const skip = page.getByRole('button', {name: 'Passer la scène'});
     await skip.tap();
     const speak = page.getByRole('button', {name: 'Parler à Anselme'});
     await page.keyboard.down('ArrowLeft');
     try { await speak.waitFor(); } finally { await page.keyboard.up('ArrowLeft'); }
     await speak.tap();
-    await skip.tap();
+    // Les deux gestes d’Anselme durent quelques secondes : la scène peut s’achever seule avant le toucher.
+    const passerSiEnCours = () => skip.tap({timeout: 4000}).catch(() => {});
+    await passerSiEnCours();
     const dialogue = page.locator('#dlg');
     await dialogue.getByText(/Te voilà, Aliénor/).tap();
-    await skip.tap();
+    await passerSiEnCours();
     await dialogue.getByText(/C’est le matin du tribut/).tap();
     await dialogue.getByRole('button', {name: /Un tiers/}).tap();
     await dialogue.getByText(/Rien que tu verras/).tap();
     await dialogue.getByText(/dans la doublure/).tap();
     page = await reprendreFeuillet(page,reopenTab,'F1',['F1']);
-    await page.locator('#dlg').getByText(/J’ai défait ce livre/).tap();
+    await page.locator('#dlg').getByText(/J’en ai sauvé un exemplaire/).tap();
+    await page.locator('#dlg').getByText(/Avant que la cloche sonne/).tap();
+    await page.locator('#dlg').getByText(/La cloche de la place sonne/).tap();
     assert.match(await page.locator('#obj').textContent(), /Portez le sac du tribut/);
     await page.locator('#carnetBtn').tap();
     assert.ok(await page.locator('#n-F1').isVisible());
@@ -262,7 +280,7 @@ async function testNotebook(browser) {
     await page.reload({waitUntil: 'domcontentloaded'});
     await page.getByRole('button', {name: 'Recommencer', exact: true}).tap();
     await page.getByRole('button', {name: 'Recommencer depuis le début'}).tap();
-    await page.locator('#cutSkip').tap();
+    await page.locator('#plate .go').tap();
     const fresh = await page.evaluate(() => ({stage: S.stage, f: S.f, notes: S.notes, mute: S.mute, lite: S.lite}));
     assert.deepEqual(fresh, {stage: 0, f: [], notes: {}, mute: true, lite: true});
   });
@@ -386,7 +404,7 @@ async function testOldSheetSave(browser) {
   // Avant les répliques mémorisées, le bouton de son pouvait enregistrer F1 à l’étape 0.
   await withSession(browser,{act:1,stage:0,f:['F1'],pos:[-20,6.6]}, {width:810,height:1080}, async page => {
     await page.getByRole('button',{name:'Reprendre le chemin'}).tap();
-    await page.locator('#dlg').getByText(/J’ai défait ce livre/).tap();
+    await page.locator('#dlg').getByText(/J’en ai sauvé un exemplaire/).tap();
     assert.deepEqual(await page.evaluate(()=>[S.stage,S.f]),[1,['F1']]);
     assert.match(await page.locator('#obj').innerText(),/Portez le sac du tribut/);
   });

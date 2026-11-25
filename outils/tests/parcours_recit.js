@@ -190,6 +190,10 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     } else {
       click('[data-a="new"]');
       advance();
+      // Réveil au clos des murailles : on traverse la maison et le clos jusqu’au chemin de l’atelier.
+      if (S.vie.recit.etape !== 'reveil' || player.position.z < 1300) fail('La partie ne commence pas au clos');
+      await interact('Partir', O.clos[0]+8, O.clos[1]+11, 2, ['Partir pour l’atelier']);
+      if (S.vie.recit.etape !== 'ville' || player.position.z > 1300) fail('Départ du clos manqué');
       await person('Anselme','anselme');
       expectStage(1);
       const responses = {paye:'Payer la mesure', denonce:'Dire que le sac', refus:'Demander à quoi sert'};

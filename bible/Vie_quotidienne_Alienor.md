@@ -2,6 +2,8 @@
 
 *Le Contr’un* · Supplément de conception à la [bible de Sarlande](Bible_de_Sarlande.md) · 25 novembre 2026
 
+**Pour la mise en œuvre de la refonte**, consulter le [cahier des charges de Sarlande](Refonte_Sarlande.md). Il fixe les décisions les plus récentes sur l’ouverture, les jauges, les habitants, le calendrier et la durée de la campagne.
+
 **[Établi]** Le développement des boutiques, de la maison et de la personnalisation accompagne la vie quotidienne d’Aliénor. Le joueur incarne une apprentie imprimeuse de la Renaissance. Le récit et le *Discours de la servitude volontaire* passent par les gestes de son métier, les liens qu’elle noue et les décisions qu’elle prend.
 
 **[Prévu]** Les propositions ci-dessous décrivent la progression et le confort de jeu à tester. La bible conserve ses cinq actes narratifs. Les classeurs indiquent les paliers de disponibilité des achats, de I à IV. La correspondance exacte entre les paliers de la maison et les scènes reste à préciser. Les activités après la fin de l’histoire feront l’objet d’un travail distinct.

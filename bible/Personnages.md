@@ -84,7 +84,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 
 - **Prénom proposé** : Mahaut.
 - **Ce qu’Aliénor croit** : sa mère est morte d’une fièvre quand elle avait cinq ans. C’est ce qu’Anselme et Ysabeau lui ont dit.
-- **Ce qui s’est passé** : il y a douze ans, Mahaut imprimait en secret avec Anselme. Les gardes sont venus. Anselme s’est tu ; il a gardé sa presse et continué d’imprimer les édits de l’Un. Mahaut a été emmenée, puis relâchée un an plus tard, sur promesse de silence, et bannie de la cité. Pour protéger sa fille, elle a accepté de passer pour morte.
+- **Ce qui s’est passé** : il y a douze ans, Mahaut imprimait en secret avec Anselme. Les gardes sont venus. Anselme s’est tu ; il a gardé sa presse et continué d’imprimer les édits de l’Un. Mahaut a été emmenée, puis relâchée un an plus tard, sur promesse de silence, et bannie de la cité. Au moment de son bannissement, Mahaut a imposé à Anselme de laisser Aliénor la croire morte, pour la protéger [décision du 25 novembre 2026, voir le cahier des charges de la refonte].
 - **Ce qui la tient** : **la peur**, puis **la mémoire**. Elle a cédé, et elle n’a jamais oublié. Dans la forêt, hors des murs (planche IX), elle recopie à la main les pages qu’elle connaît par cœur.
 - **Son lien avec l’œuvre** : elle incarne les deux visages du passage sur les « quelques-uns mieux nés que les autres, qui sentent le poids du joug et ne peuvent pas s’empêcher de le secouer » et qui, « quand la liberté serait entièrement perdue et toute hors du monde, l’imaginent et la sentent en leur esprit » (Belin, p. 46). Elle a été vaincue, et elle se souvient.
 - **Ce qu’elle donne à l’histoire** : une raison intime, pour Aliénor, de poursuivre ; une trahison ancienne, celle du silence d’Anselme ; et une réplique d’Ysabeau, « Ça lui a passé », qui devient fausse et poignante.
@@ -94,7 +94,7 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 | Acte | Ce qui se passe | Choix du joueur |
 |---|---|---|
 | I-II | Elle n’existe que dans les répliques déjà écrites : les questions, l’encre, la page confiée à Ysabeau. | Aucun |
-| III | Aux archives, Aliénor trouve sa fiche : « relâchée sur promesse de silence, bannie de la cité ». Sa mère est vivante. Elle comprend aussi qu’Anselme savait. | Accuser Anselme, lui demander pourquoi, ou garder le secret pour plus tard |
+| III | Aux archives, Aliénor trouve sa fiche : « relâchée sur promesse de silence, bannie de la cité ». Sa mère est vivante. Elle comprend aussi qu’Anselme savait. | Accuser Anselme, lui demander pourquoi, ou garder le secret pour plus tard. La grande cinématique de la confession suit, dans l’atelier démonté. |
 | IV | Aliénor sort de la ville et retrouve Mahaut dans la forêt. Elle refuse de revenir : « Ça passe toujours. » Mais elle lui montre ses cahiers recopiés à la main. | La convaincre, la laisser, ou lui laisser une feuille imprimée |
 | V | Le jour du tribut. Selon les choix, Mahaut revient et se tient dans la file sans sac ; ou elle reste dans la forêt, et une page recopiée de sa main est retrouvée sur la fontaine. | Aucun : c’est la conséquence des actes précédents |
 
@@ -182,21 +182,21 @@ Elle rejoint aussi l’explication linéaire 3 : l’amitié « ne se met jamais
 1. **Ce qu’il veut** : transmettre. Que le livre survive à sa mort, et qu’Aliénor sache lire ce qu’on imprime.
 2. **Ce dont il a besoin** : dire la vérité sur Mahaut, et cesser de racheter son silence par un autre silence.
 3. **Ce qu’il craint** : que l’histoire recommence, qu’Aliénor soit emmenée comme sa mère l’a été, par sa faute.
-4. **Son secret** : Mahaut est vivante. Il y a douze ans, quand les gardes sont venus, il s’est tu ; il a gardé sa presse et laissé emmener Mahaut. Depuis, il a laissé croire à Aliénor que sa mère était morte.
+4. **Son secret** : Mahaut est vivante. Il y a douze ans, quand les gardes sont venus, il s’est tu ; il a gardé sa presse et laissé emmener Mahaut. Depuis, il laisse croire à Aliénor que sa mère est morte : c’est Mahaut qui le lui a imposé au moment de son bannissement. Il a tenu parole, et ce silence-là s’ajoute au premier.
 5. **Ce qui le tient** : la peur, et une complicité ancienne : vingt ans d’édits imprimés pour l’Un, et un silence. Il connaît de l’intérieur la thèse du *Discours* : le pouvoir de l’Un passe par des mains comme les siennes.
 6. **Sa blessure** : la nuit d’il y a douze ans. Mahaut lui a fait un signe de tête en partant, qu’il n’a jamais su lire : pardon, ou reproche ?
 7. **Son lien avec Aliénor** : un père de substitution, protecteur jusqu’à l’étouffement, et rongé par la culpabilité. Il l’a prise en apprentissage à douze ans. Son « Ce n’est pas un compliment » est une adresse à lui-même autant qu’à elle.
 8. **Son arc** : du maître qui protège en se taisant à l’homme qui parle, quoi qu’il en coûte (tableau ci-dessous).
 9. **Ce qui le rend visible** : le béret rouge, couleur terre de Sienne ; le tablier ; des mains noires d’encre jusqu’aux poignets. **Geste signature** : il chausse des besicles pour lire, et les retire quand il ment. **Musique** : la cadence de la presse sert de pulsation ; le luth grave joue seul quand il se tait.
 
-**[Établi] Le livre brûlé, c’est le *Discours* lui-même.** Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
+**[Révisé le 25 novembre 2026] Le livre brûlé n’est plus le *Discours* : c’est un libelle clandestin de Sarlande, dont les feuillets portent dans leurs marges des passages recopiés du manuscrit de La Boétie. L’ancienne formulation suit, pour mémoire.** ~~Le livre brûlé, c’est le *Discours* lui-même.~~ Il y a douze ans, Anselme et Mahaut en ont imprimé une édition clandestine. L’Un a fait brûler le tirage. Anselme a sauvé un exemplaire et l’a défait feuille à feuille : ce sont les pages que l’élève collectionne. Le jeu raconte ainsi, à sa manière, l’histoire réelle du texte, d’abord manuscrit puis imprimé clandestinement, que les planches rappellent déjà.
 
 **Son arc**
 
 | Acte | Ce qui se passe | Choix du joueur et conséquences |
 |---|---|---|
 | I-II | Établi : il envoie Aliénor au tribut, lui confie la première page, prépare et dirige l’impression. | Aucun choix propre ; il juge Aliénor sur sa conduite au tribut. |
-| III | L’hiver. Les perquisitions commencent. Il démonte la presse et la cache pièce par pièce chez ses voisins. Aux archives, Aliénor apprend que Mahaut est vivante, et qu’Anselme le savait. **La confession** (tableau) : il reconnaît son silence. | **Pardonner**, **accuser**, ou **garder le secret pour plus tard**. Le choix modifie la confiance entre eux et l’issue de l’acte IV. |
+| III | L’hiver. Les perquisitions commencent. Il démonte la presse et la cache pièce par pièce chez ses voisins. Aux archives, Aliénor apprend que Mahaut est vivante, et qu’Anselme le savait. **La confession** (tableau) : il reconnaît son silence et dit que Mahaut lui a imposé de la faire passer pour morte. | **Lui pardonner**, **lui exprimer sa colère**, ou **différer sa réponse**. Le choix modifie la confiance entre eux et l’issue de l’acte IV. |
 | IV | Le traître livre son nom. Le sergent vient le chercher. | Si Aliénor a pardonné, Anselme **se livre lui-même** pour couvrir la troupe : « Cette fois, c’est moi qui parle. » Si elle l’a accusé, il est arrêté sans un mot, et la troupe perd la presse. Si elle a gardé le secret, il lui demande de parler à sa place quand le moment viendra. |
 | V | Selon l’acte IV : libéré par la foule qui cesse de servir, ou mort en prison, ou présent dans la file. | Dernière image possible : son béret posé sur la presse, et Aliénor qui imprime la dernière feuille. |
 
@@ -367,6 +367,7 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 *Statut : [Établi], validé par Lucas le 24 novembre 2026.*
 
 1. **Ce qu’elle veut** : que sa fille vive. C’est pour cela qu’elle a accepté de passer pour morte.
+- **[Décidé le 25 novembre 2026]** C’est elle qui glisse sous la porte d’Aliénor, le matin du tribut, la lettre demandant de faire peser la miche de Maëlle. Révélé à l’acte III.
 2. **Ce dont elle a besoin** : se pardonner d’avoir cédé.
 3. **Ce qu’elle craint** : que sa fille paie à son tour ; revoir les murs de la prison.
 4. **Ses secrets** :
@@ -603,8 +604,8 @@ Les deux montent souvent ensemble : aimer, c’est exposer. Tout l’art du joue
 | Il y a 20 ans | Anselme commence à imprimer les édits de l’Un. Bastien naît vers cette époque. |
 | Il y a 17 ans | Naissance d’Aliénor. |
 | Il y a 15 ans | Le père d’Aliénor, batelier, se noie. |
-| Il y a 12 ans | Anselme et Mahaut impriment une édition clandestine du livre. Les gardes viennent ; Anselme se tait ; Mahaut est emmenée. Le tirage est brûlé ; Anselme sauve un exemplaire et le défait feuille à feuille. |
-| Il y a 11 ans | Mahaut, relâchée sur promesse de silence, est bannie. On dit à Aliénor que sa mère est morte. Elle vit chez Ysabeau. |
+| Il y a 12 ans | Anselme et Mahaut impriment un libelle clandestin propre à Sarlande [révisé le 25 novembre 2026 : ce n’est pas le *Discours*, qui n’est pas encore écrit ; les feuillets cachés portent dans leurs marges des passages recopiés d’un manuscrit récent venu du Périgord]. Les gardes viennent ; Anselme se tait ; Mahaut est emmenée. Le tirage est brûlé ; Anselme sauve un exemplaire et le défait feuille à feuille. |
+| Il y a 11 ans | Mahaut, relâchée sur promesse de silence, est bannie. Mahaut impose à Anselme de laisser Aliénor la croire morte. On dit à Aliénor que sa mère est morte d’une fièvre. Elle vit chez Ysabeau. |
 | Il y a 10 ans | Jacquemin, le mari de Margot, refuse de payer et disparaît au palais. |
 | Il y a 5 ans | Aliénor entre en apprentissage chez Anselme. |
 | Il y a 4 ans | Bastien entre aux gardes. |

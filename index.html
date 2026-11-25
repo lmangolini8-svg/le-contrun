@@ -43,6 +43,10 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 #carnetBtn svg{width:30px;height:26px}
 #snd{position:fixed;right:22px;top:20px;width:50px;height:50px;padding:9px;z-index:6;transition:top .3s}
 #snd svg{width:100%;height:100%;display:block}
+#sndPanel{position:fixed;right:22px;top:78px;z-index:7;width:min(260px,calc(100vw - 44px));background:var(--page);color:var(--ink);border:1px solid #816e57;border-radius:4px;box-shadow:0 4px 16px #44341f33;padding:12px 14px;display:grid;gap:4px;font-family:var(--hand);font-size:18px}
+#sndPanel .t{margin:0 0 4px;font-size:20px}
+#sndPanel input{width:100%;accent-color:var(--indigo)}
+#sndPanel button{margin-top:8px;font:inherit;background:transparent;border:1px solid #816e57;border-radius:4px;padding:4px 10px;color:var(--ink);cursor:pointer}
 #arrow{position:absolute;left:50%;top:104px;width:44px;height:44px;margin-left:-22px;pointer-events:none;transition:opacity .3s}
 #arrowLab{position:absolute;left:50%;top:150px;transform:translateX(-50%);font-family:var(--hand);font-weight:700;font-size:19px;color:var(--ink);background:rgba(247,241,227,.86);padding:0 10px;border-radius:12px;white-space:nowrap;pointer-events:none;transition:opacity .3s;opacity:0}
 #daze{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:92px;height:57px;opacity:0;transition:opacity .25s;pointer-events:none}
@@ -2570,7 +2574,7 @@ const FLEURON=`<svg class="fleuron" viewBox="0 0 240 26" fill="none" stroke="#22
 let plBack="carnet";
 function showTitle(){ mode="title"; scene.fog.near=60; scene.fog.far=330; refreshHud(); ov.className="home"; ov.style.display="flex";
   ov.innerHTML=`<div class="top">${EMBLEME_UN}<div class="le">Le</div><h1>Contr’un</h1>${FLEURON}<div class="sub">Discours de la servitude volontaire</div><div class="by">d’après Étienne de La Boétie</div><div class="act">${actTitle()}</div></div>
-  <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un livre interdit.</p>
+  <div class="bot"><p class="pitch">Sarlande porte chaque année son tribut à un seul homme. Vous êtes Aliénor, apprentie imprimeuse. Dans la doublure de votre sac, une page d’un libelle interdit.</p>
   ${S.started?`<button class="pri" data-a="resume">Reprendre le chemin</button><div class="row"><button class="sec" data-a="restart">Recommencer</button><button class="sec" data-a="plates">Le livre des planches</button></div>`:`<button class="pri" data-a="new">Entrer dans la ville</button><div class="row"><button class="sec" data-a="plates">Le livre des planches</button></div>`}
   <button class="sec" data-a="stone-preview">Voir la scène de la pierre</button>
   <p class="small"><button data-a="lite-intro" aria-pressed="${S.lite}" class="qualityStart">Affichage allégé · ${S.lite?"activé":"désactivé"}</button></p></div>`; }
@@ -2665,7 +2669,7 @@ function branch(opts,rest,done){ return {choices:opts.map(o=>[o[0],()=>{ if(o[2]
 // Seuls le passage, la réplique visible et le choix éventuel vont dans la sauvegarde.
 const PASSAGES={
   F1:{lignes:[{feu:"F1"},
-      [AN,"« J’ai défait ce livre feuille à feuille et je les ai cachées dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],fin:()=>setStage(1)},
+      [AN,"« J’en ai sauvé un exemplaire. Je l’ai défait feuille à feuille et j’ai caché les pages dans toute la ville. Celle-ci est pour toi. Ne la montre à personne. »"]],fin:()=>setStage(1)},
   F2:{lignes:[{feu:"F2"},
       {options:[["« Pourquoi me la donner à moi ? »",[MA,"« Parce que tu sais lire. Et parce que seule, je n’en fais rien. »"]],["« Ton père sait que tu l’as prise ? »",[MA,"« Il la relisait chaque soir. Depuis qu’ils sont venus, il ne lit plus rien. »"]]]},
       [MA,"« Il y en a une autre dans la chapelle du vieux cloître, à l’est, derrière la cour des gardes. La poterne est ouverte le matin. »"],
@@ -2735,7 +2739,7 @@ const INTER=[
  {p:()=>N.anselme.position,label:"Parler à Anselme",act(){ if(S.act===2) return A2.anselme();
    if(S.stage===0) return beginMeeting([[AN,"« Te voilà, Aliénor. De l’encre jusqu’aux coudes, comme d’habitude. »"],[AN,"« C’est le matin du tribut. Le tiers de ce que l’atelier a gagné part au palais. Porte ce sac au percepteur, au nord de la place. »"],
      branch([["« Un tiers ? Pour en faire quoi ? »",[[AN,"« Rien que tu verras jamais. Mais ne le demande pas trop fort. »"]]],["« J’y vais, maître. »",[[AN,"« Tu apprends vite à te taire. Ce n’est pas un compliment. »"]]]],
-       [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un livre que l’Un a fait brûler. »"]],()=>lirePassage("F1"))]);
+       [[AN,"« Attends. J’ai cousu quelque chose dans la doublure. Une page d’un libelle que l’Un a fait brûler. »"]],()=>lirePassage("F1"))]);
    if(S.stage===5) return talk([[AN,"« Garin a posé son sac ? Devant tout le monde ? »"],
      branch([["« Il a dit : qu’ils viennent le chercher. »",[[AN,"« Trente ans qu’il se tait, et voilà sa première phrase. Elle est bonne. »"]]],["« J’ai eu peur pour lui. »",[[AN,"« Tu as raison d’avoir peur. Mais regarde : la peur n’a pas suffi à le retenir. »"]]]],
        [[AN,"« Une pierre, ce n’est rien. Mais il n’en fallait pas plus pour savoir de quoi le socle est fait : de nous. »"],[AN,"« Méfie-toi. Ce soir, c’est la Fête de l’Un : du vin, des jongleurs, des pièces jetées du balcon. Ils feront tout pour qu’on oublie ce matin. »"]],()=>{ setStage(6); showEnd(); })]);
@@ -2765,7 +2769,7 @@ const INTER=[
    talk([[MA,v],[MA,"« Ils ont pris la boulangerie de mon père le mois dernier, pour un tribut en retard. Ils n’ont pas trouvé ceci. »"]],()=>lirePassage("F2")); }},
  {p:()=>N.percepteur.position,get r(){ return S.act===1&&S.stage===1?3.4:2.4; },label:"Parler au percepteur",act(){ if(S.act===2) return A2.percepteur();
    if(S.stage!==1) return talk([[PE,vary("pe",["« Suivant. »","« L’Un te regarde, dit-on. Moi, je te pèse. C’est plus sûr. »","« Je ne prends rien, moi. Je compte. Ceux qui prennent sont plus haut. »"])]]);
-   sfx("sac"); talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],
+   sfx("sac"); setTimeout(()=>sfx("balance"),1400); talk([[PE,"« Suivant. Atelier d’Anselme, imprimeur. Voyons ce sac. »"],[PE,"« Il manque une mesure. »"],
      {choices:TRIBUT.map(option=>[option.choix,()=>choisirTribut(option.id)])}]); }},
  {p:()=>({x:-3.1,z:-14.5}),r:2.7,get label(){ return S.act===1&&GATE_L.visible?(bstate().nom?"Parler à Bastien":"Parler au jeune garde"):"Parler au garde"; },act(){ if(S.act===2) return A2.garde(); bastienPorte(); }},
  {p:()=>N.garin.position,label:"Parler à Garin",act(){ if(S.act===2) return A2.garin();
@@ -3824,10 +3828,10 @@ INTER.push({p:()=>MAHAUT.position,r:2.6,label:"S’approcher de la femme masqué
    Musiques, ambiances et bruitages générés avec ElevenLabs. Les musiques et les ambiances ne sont décodées
    qu’au moment où on les entend, puis libérées, pour ménager la mémoire de l’iPad. */
 const Snd={ctx:null,buf:{},loading:{},last:{},amb:{},mus:[],musKey:"",want:"",lastPh:0,alt:{},laughT:9,clinkT:4,owlT:16,bellT:40,gcT:0,stepI:0};
-const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4"];
+const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4","volets","puits","cruche","balance","frapper","lettre"];
 /* gap : silence entre deux passages du morceau (négatif : fondu enchaîné, pour la musique jouée sur la place) */
-const MUSIC={titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8,files:["mus-branle","mus-ronde"]} /* la fête : gaillarde et ronde en alternance */,farce:{gap:-3,vol:.8},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85},litiere:{gap:-4,vol:.8}};
-const AMBS=["marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
+const MUSIC={volets:{gap:25,vol:.75},tribut:{gap:6,vol:.6},lendemain:{gap:20,vol:.75},mahaut:{gap:30,vol:.7},titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8,monde:true,files:["mus-branle","mus-ronde"]} /* la fête : gaillarde et ronde en alternance */,farce:{gap:-3,vol:.8,monde:true},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85,monde:true},litiere:{gap:-4,vol:.8}};
+const AMBS=["clos","maison","fournil","marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
 
 function sndLoad(name){ const c=Snd.ctx; if(!c) return null; Snd.last[name]=c.currentTime; if(Snd.buf[name]) return Snd.buf[name]; if(Snd.loading[name]) return null;
   Snd.loading[name]=true;
@@ -3839,12 +3843,13 @@ function sndLoad(name){ const c=Snd.ctx; if(!c) return null; Snd.last[name]=c.cu
 
 function initAudio(){ if(Snd.ctx) return; const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return; const c=new AC(); Snd.ctx=c;
   Snd.master=c.createGain(); Snd.master.gain.value=S.mute?0:0.9; const comp=c.createDynamicsCompressor(); comp.threshold.value=-14; comp.ratio.value=3; Snd.master.connect(comp); comp.connect(c.destination);
-  Snd.bus=c.createGain(); Snd.bus.connect(Snd.master);
+  /* quatre familles, chacune avec son réglage : musique (récit et monde), ambiances, effets et voix */
+  Snd.gMus=c.createGain(); Snd.gAmb=c.createGain(); Snd.bus=c.createGain(); for(const g of [Snd.gMus,Snd.gAmb,Snd.bus]) g.connect(Snd.master); sndVolumes();
   /* la musique de la fête passe par un filtre : loin des lumières, elle s’étouffe comme derrière un mur */
-  Snd.mlp=c.createBiquadFilter(); Snd.mlp.type="lowpass"; Snd.mlp.frequency.value=16000; Snd.mlp.Q.value=0.5; Snd.mbus=c.createGain(); Snd.mbus.connect(Snd.mlp); Snd.mlp.connect(Snd.bus);
+  Snd.mlp=c.createBiquadFilter(); Snd.mlp.type="lowpass"; Snd.mlp.frequency.value=16000; Snd.mlp.Q.value=0.5; Snd.mwld=c.createGain(); Snd.mwld.connect(Snd.mlp); Snd.mbus=c.createGain(); Snd.mlp.connect(Snd.mbus); Snd.mrec=c.createGain(); Snd.mrec.connect(Snd.mbus); Snd.mbus.connect(Snd.gMus);
   /* la foule aussi */
   Snd.clp=c.createBiquadFilter(); Snd.clp.type="lowpass"; Snd.clp.frequency.value=16000; Snd.crowd=c.createGain(); Snd.crowd.connect(Snd.clp); Snd.clp.connect(Snd.bus);
-  Snd.abus=c.createGain(); Snd.abus.connect(Snd.bus);
+  Snd.abus=c.createGain(); Snd.abus.connect(Snd.gAmb);
   for(const n of SFX_FILES) sndLoad(n); }
 
 /* ---------- bruitages ---------- */
@@ -3877,23 +3882,37 @@ function sfx(k){ const c=Snd.ctx; if(!c||c.state!=="running") return;
   else if(k==="plume") playSfx("plume",0.7);
   else if(k==="porte") playSfx("porte",0.8);
   else if(k==="bois") playSfx("bois",0.7);
-  else if(k==="minuit"){ for(let i=0;i<12;i++) playSfx("cloche",0.75,0,1,Snd.bus,0.4+i*1.8); } }
+  else if(k==="volets") playSfx("volets",0.85,0,vary2(0.96,1.04));
+  else if(k==="puits"){ playSfx("puits",0.85); playSfx("cruche",0.6,0,1,Snd.bus,3.4); }
+  else if(k==="balance") playSfx("balance",0.85);
+  else if(k==="frapper") playSfx("frapper",0.9);
+  else if(k==="lettre") playSfx("lettre",0.7,0,1,Snd.gMus,0.9); /* trois notes du violon de Mahaut, sans la nommer */
+  else if(k==="minuit"){ for(let i=0;i<12;i++) playSfx("cloche",0.75,0,1,Snd.bus,0.4+i*1.8); signal("Minuit sonne au clocher."); } }
+/* Équivalent visuel d’un signal sonore indispensable, quand les effets sont coupés ou très bas. */
+function signal(t){ const v=sndVol(); if(S.mute||v.general<0.1||v.effets<0.15) try{ say(t,3); }catch(e){} }
 
 /* ---------- la musique : un morceau par moment du récit ---------- */
+const recit=()=>(S.vie&&S.vie.recit)||{};
+const auClos=()=>zoneOf()==="clos";
 function musicNow(){ if(mode==="plate"||mode==="turn"||mode==="title") return "titre";
+  if(auClos()){ const e=recit().etape; return e==="lendemain"?"lendemain":(e==="nuit"?"":(e==="soir"?"titre":"volets")); }
   if(S.act===2){ if(mode==="cine2") return "litiere"; if(mode==="farce") return "farce"; if(T2.on) return "fanfare"; const s=S.stage;
     if(s>=15) return "aube"; if(s===14||s===10) return "nuit";
     if(s===12&&Math.hypot(player.position.x,player.position.z+6)<10) return "farce"; return "branle"; }
-  if(mode==="cine") return "aube"; return zoneOf()==="cour"?"cour":"jour"; }
+  if(mode==="cine") return "aube"; if(zoneOf()==="cour") return "cour"; const r=recit(); return r.cloche&&!r.tribut?"tribut":"jour"; }
+/* Aux portes et aux seuils, la musique ne change qu’après quelques secondes de présence stable ; les scènes passent tout de suite. */
+const MUS_NOW=new Set(["titre","farce","fanfare","litiere","aube"]);
+function musicWanted(now){ const k=musicNow(); if(k===Snd.musKey||MUS_NOW.has(k)||MUS_NOW.has(Snd.musKey)||!Snd.musKey){ Snd.cand=null; return k; }
+  if(Snd.cand!==k){ Snd.cand=k; Snd.candT=now; } return now-Snd.candT>3?k:Snd.musKey; }
 function feteDist(){ return Math.hypot(player.position.x,player.position.z+2); }
 function muffleHz(){ if(!(S.act===2&&night&&S.stage>=11&&S.stage<=13)||mode==="farce"||mode==="plate"||mode==="turn"||mode==="title") return 16000; const d=feteDist(); return d<11?16000:Math.max(560,16000*Math.pow(0.82,d-11)); }
 const musName=(key,off)=>{ const f=MUSIC[key].files; return f?f[((Snd.alt[key]||0)+(off||0))%f.length]:"mus-"+key; };
-function musStart(key,at,fadeIn,name){ const c=Snd.ctx, b=Snd.buf[name]; const s=c.createBufferSource(); s.buffer=b; const g=c.createGain(); s.connect(g); g.connect(Snd.mbus);
+function musStart(key,at,fadeIn,name){ const c=Snd.ctx, b=Snd.buf[name]; const s=c.createBufferSource(); s.buffer=b; const g=c.createGain(); s.connect(g); g.connect(MUSIC[key].monde?Snd.mwld:Snd.mrec);
   const v=MUSIC[key].vol; g.gain.setValueAtTime(fadeIn?0.0001:v,at); if(fadeIn) g.gain.linearRampToValueAtTime(v,at+fadeIn);
   s.start(at); const m={key,name,s,g,at,end:at+b.duration}; s.onended=()=>{ s.disconnect(); g.disconnect(); Snd.mus=Snd.mus.filter(x=>x!==m); }; Snd.mus.push(m); return m; }
 /* le morceau suivant : pour la fête, on passe de la gaillarde à la ronde et inversement */
 function musNext(key){ const n=musName(key,1); if(n!==musName(key)&&Snd.buf[n]){ Snd.alt[key]=(Snd.alt[key]||0)+1; return n; } return musName(key); }
-function musTick(){ const c=Snd.ctx, now=c.currentTime, key=musicNow();
+function musTick(){ const c=Snd.ctx, now=c.currentTime, key=musicWanted(now);
   if(key!==Snd.musKey){ for(const m of Snd.mus){ if(m.key===Snd.musKey||m.key!==key){ m.g.gain.cancelScheduledValues(now); m.g.gain.setTargetAtTime(0.0001,now,0.8); try{ m.s.stop(now+4); }catch(e){} m.dead=true; } } Snd.musKey=key; Snd.musNext=0; }
   if(!key) return;
   if(!sndLoad(musName(key))) return; sndLoad(musName(key,1)); const cfg=MUSIC[key], live=Snd.mus.filter(m=>m.key===key&&!m.dead);
@@ -3918,10 +3937,16 @@ function ambient(dt){ const c=Snd.ctx, now=c.currentTime, P=player.position, inG
   const cour=cl((P.x-22)/4), chap=cl(1-dAt(52.7,-2)/9), act2Day=S.act===2&&!night;
   const lv={};
   if(!inGame){ lv.vent=0.35; lv.fontaine=0.3; lv.nuit=0.25; }
+  else if(auClos()){ /* le clos des murailles : la maison, la cour, le jardin et le puits */
+    const lx=P.x-O.clos[0], lz=P.z-O.clos[1], dedans=Math.abs(lx)<4.1&&Math.abs(lz)<3.1, e=recit().etape, soir=e==="soir"||e==="nuit";
+    const porte=cl(1-Math.hypot(lx-4,lz-0.6)/5);
+    lv.maison=dedans?0.85:0.35*porte; lv.vent=0.08+(dedans?0:0.1)+0.3*weather;
+    if(soir){ lv.nuit=dedans?0.22:0.6; } else { lv.clos=dedans?0.22+0.25*porte+(recit().volets?0.15:0):0.85; }
+  }
   else {
     lv.vent=0.12+0.35*weather+(night?0.08:0)+cour*0.08;
     lv.pluie=weather*0.9;
-    lv.quai=0.9*cl((P.z-4)/12)*(1-cour);
+    lv.quai=0.9*cl((P.z-8)/9)*(1-cour);
     lv.fontaine=0.85*cl(1-dAt(0,3)/12);
     lv.cour=cour*(night?0.55:0.85)*(1-chap*0.6);
     lv.chapelle=chap*0.9;
@@ -3932,6 +3957,8 @@ function ambient(dt){ const c=Snd.ctx, now=c.currentTime, P=player.position, inG
     if(fete2&&S.stage>=10&&S.stage<=14){ let f=S.stage===14?0.12:(S.stage===10?0.3:0.95*Math.max(0.15,cl(1-(feteDist()-5)/26))); if(mode==="cine2") f*=0.15; if(T2.on) f*=1.2; lv.fete=f;
       let dm=99, lx=0; for(const l of fete.lights){ const d=dAt(l.position.x,l.position.z); if(d<dm){ dm=d; lx=l.position.x; } } lv.feu=0.75*cl(1-dm/8); Snd.feuX=lx; }
     if(opening) lv.quai=Math.max(lv.quai,0.6*(1-ease01((sceneRun.t-2.2)/3.5)));
+    /* le fournil de Maëlle, sur la place, tant qu’il est ouvert */
+    if(S.act===1&&!night&&N.maelle){ let ouvert=true; try{ ouvert=Monde.ouvert(S.vie,"fournil"); }catch(e){} lv.fournil=ouvert?0.75*cl(1-dAt(N.maelle.position.x,N.maelle.position.z)/7):0; }
   }
   for(const n of AMBS) ambSet(n,lv[n]||0,n==="fontaine"?pan(0)*0.6:(n==="feu"?pan(Snd.feuX||0)*0.5:undefined));
   /* la vie qui passe : rires et gobelets à la fête, chouette la nuit, cloche le matin */
@@ -3948,8 +3975,12 @@ function soundTick(dt){ if(!Snd.ctx||Snd.ctx.state!=="running") return; ambient(
   const U=player.userData, k=Math.floor(U.ph/Math.PI); if(k!==Snd.lastPh){ Snd.lastPh=k; if(U.amp>0.35) stepSound(player.position.x,player.position.z,0.55); }
   for(const o of guards){ if(!o.g.visible) continue; const u=o.g.userData, kk=Math.floor(u.ph/Math.PI); if(kk!==u.lastStep){ u.lastStep=kk; if(u.amp>0.35) stepSound(o.g.position.x,o.g.position.z,0.5,true); } } }
 
-function unlock(){ try{ initAudio(); if(Snd.ctx&&Snd.ctx.state==="suspended"&&!document.hidden) Snd.ctx.resume(); }catch(e){} }
-for(const ev of ["pointerup","click","keydown","touchend"]) window.addEventListener(ev,unlock,{passive:true});
+function sndVol(){ const d={general:0.9,musique:1,ambiances:1,effets:1}; if(!S.vol||typeof S.vol!=="object") S.vol={}; for(const k in d) if(typeof S.vol[k]!=="number") S.vol[k]=d[k]; return S.vol; }
+function sndVolumes(){ if(!Snd.ctx) return; const v=sndVol(), t=Snd.ctx.currentTime;
+  Snd.master.gain.setTargetAtTime(S.mute?0:v.general,t,0.06); Snd.gMus.gain.setTargetAtTime(v.musique,t,0.06); Snd.gAmb.gain.setTargetAtTime(v.ambiances,t,0.06); Snd.bus.gain.setTargetAtTime(v.effets,t,0.06); }
+/* Le son démarre au premier geste. Sur iPad, il reprend au retour dans l’onglet ou après une interruption (appel, autre application). */
+function unlock(){ try{ initAudio(); if(Snd.ctx&&Snd.ctx.state!=="running"&&!document.hidden) Snd.ctx.resume(); }catch(e){} }
+for(const ev of ["pointerdown","pointerup","click","keydown","touchend"]) window.addEventListener(ev,unlock,{passive:true});
 function pauseSession(){
   clearControls();
   // Les dialogues et les cinématiques ont leurs propres points de sauvegarde.
@@ -3964,9 +3995,16 @@ document.addEventListener("visibilitychange",()=>{
     change.catch(()=>{});
   }
 });
+window.addEventListener("pageshow",()=>{ try{ if(Snd.ctx&&Snd.ctx.state!=="running") Snd.ctx.resume(); }catch(e){} });
 const sndBtn=$("snd");
-function sndIcon(){ sndBtn.innerHTML=`<svg viewBox="0 0 30 30" fill="none" stroke="#221f2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22 L11 7 L23 4.5 L23 19.5"/><ellipse cx="8" cy="22.4" rx="3.3" ry="2.5" fill="#221f2b"/><ellipse cx="20" cy="19.9" rx="3.3" ry="2.5" fill="#221f2b"/>${S.mute?`<path d="M4 4 L26 27" stroke="#a9583a" stroke-width="2.6"/>`:""}</svg>`; sndBtn.setAttribute("aria-label",S.mute?"Remettre la musique":"Couper la musique"); }
-sndBtn.addEventListener("click",()=>{ S.mute=!S.mute; save(); unlock(); if(Snd.ctx) Snd.master.gain.setTargetAtTime(S.mute?0:0.9,Snd.ctx.currentTime,0.06); sndIcon(); });
+function sndIcon(){ sndBtn.innerHTML=`<svg viewBox="0 0 30 30" fill="none" stroke="#221f2b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 22 L11 7 L23 4.5 L23 19.5"/><ellipse cx="8" cy="22.4" rx="3.3" ry="2.5" fill="#221f2b"/><ellipse cx="20" cy="19.9" rx="3.3" ry="2.5" fill="#221f2b"/>${S.mute?`<path d="M4 4 L26 27" stroke="#a9583a" stroke-width="2.6"/>`:""}</svg>`; sndBtn.setAttribute("aria-label",S.mute?"Réglages du son (son coupé)":"Réglages du son"); }
+const sndPanel=document.createElement("div"); sndPanel.id="sndPanel"; sndPanel.hidden=true; document.body.appendChild(sndPanel);
+function sndPanelHtml(){ const v=sndVol(), row=(k,n)=>`<label for="vol-${k}">${n}</label><input type="range" id="vol-${k}" data-k="${k}" min="0" max="1" step="0.05" value="${v[k]}">`;
+  sndPanel.innerHTML=`<p class="t">Le son</p>${row("general","Volume général")}${row("musique","Musique")}${row("ambiances","Ambiances")}${row("effets","Effets et voix")}<button type="button" id="sndMute" aria-pressed="${S.mute}">${S.mute?"Remettre le son":"Couper tout le son"}</button>`; }
+sndPanel.addEventListener("input",e=>{ const k=e.target.dataset&&e.target.dataset.k; if(!k) return; sndVol()[k]=+e.target.value; sndVolumes(); save(); });
+sndPanel.addEventListener("click",e=>{ if(e.target.id!=="sndMute") return; S.mute=!S.mute; save(); unlock(); sndVolumes(); sndIcon(); sndPanelHtml(); });
+sndBtn.addEventListener("click",()=>{ unlock(); sndVolumes(); sndPanel.hidden=!sndPanel.hidden; if(!sndPanel.hidden) sndPanelHtml(); });
+document.addEventListener("pointerdown",e=>{ if(!sndPanel.hidden&&!sndPanel.contains(e.target)&&!sndBtn.contains(e.target)) sndPanel.hidden=true; });
 
 /* ================= Premier plan : branche et roseaux à l'encre ================= */
 { let sd=5; const r=()=>{ sd=(sd*16807)%2147483647; return sd/2147483647; };
@@ -3991,5 +4029,8 @@ const hot=window.claude&&window.claude.hot;
 if(hot&&hot.snapshot)hot.snapshot(()=>{save();return S;});
 if(hot&&hot.ready)hot.ready(start);else start((hot&&hot.data)||{});
 </script>
+<script src="jeu/calendrier.js"></script>
+<script src="jeu/monde.js"></script>
+<script src="jeu/vie.js"></script>
 </body>
 </html>
