@@ -185,7 +185,7 @@ function carnetVie() {
 }
 
 /* ================= Petites aides ================= */
-function cloche(n) { const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
+function cloche(n) { signal("La cloche de la place sonne " + n + " coups."); const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
 function apres(t) { save(); refreshHud(); return t; }
 const PL = () => C.PLAGES[M.plage(V())];
 function choix(opts) { return { choices: opts.filter(Boolean) }; }
@@ -219,7 +219,7 @@ const LETTRE = "On pèse le pain du palais avec la balance du palais. Faites pes
 INTER.push(
   { p: () => CL(3.35, 0.6), r: 1.7, label: "Lire la lettre", can: () => enClos() && V().recit.lettre === "glissee", act() { lireLettre(); } },
   { p: () => CL(1.2, -2.3), r: 1.6, label: "Les volets", can: () => enClos(), act() {
-      const r = V().recit; r.volets = !r.volets; majClos(); sfx("bois");
+      const r = V().recit; r.volets = !r.volets; majClos(); sfx("volets");
       say(r.volets ? (M.plage(V()) === 2 ? "Le soir rougit la muraille." : "Le clos s’éveille : un seau au puits, une porte, la poterne qu’on déverrouille.") : "La pièce retombe dans la pénombre."); apres(); } },
   { p: () => CL(0.8, 1.0), r: 1.4, label: "Les provisions", can: () => enClos() && V().recit.etape !== "soir", act() { provisions(); } },
   { p: () => CL(-2.9, 1.9), r: 1.6, label: "Préparer un repas", can: () => enClos() && V().recit.etape === "soir", act() { repas(); } },
@@ -234,7 +234,7 @@ INTER.push(
 );
 
 function lireLettre() {
-  const r = V().recit; sfx("feuillet");
+  const r = V().recit; sfx("feuillet"); if (r.lettre === "glissee") sfx("lettre");
   mode = "panel"; refreshHud();
   panel(`<span class="kick">Glissée sous la porte</span><div class="lettre">${esc(LETTRE)}</div><p class="small">Pas de signature. L’écriture est soignée, l’encre fraîche.</p>
     <div class="row"><button class="pri" data-v="lettre-garder">La garder sur soi</button><button class="sec" data-v="lettre-ranger">La ranger dans le coffre</button></div>`);
@@ -254,7 +254,7 @@ function provisions() {
 function puits() {
   const v = V();
   if (v.inventaire.eau) return talk([["", "La cruche est déjà pleine."]]);
-  v.inventaire.eau = 1; sfx("bois");
+  v.inventaire.eau = 1; sfx("puits");
   const qui = M.presents(v, "maison_ysabeau").length ? "Chez Ysabeau, une fenêtre s’ouvre, puis se referme." : "Personne au puits : le clos est parti porter son sac.";
   talk([["", "La corde grince, le seau remonte. Vous remplissez la cruche."], ["", qui]], apres);
 }
@@ -265,7 +265,7 @@ function jardin() {
 }
 function chezYsabeau() {
   const v = V(), ici = M.lieuDe(v, "ysabeau") === "maison_ysabeau";
-  sfx("porte");
+  sfx("frapper"); if (ici) setTimeout(() => sfx("porte"), 1200);
   if (!ici) return talk([["", "Vous frappez. Personne. " + (M.estJourTribut(M.jour(v)) ? "Ysabeau est déjà partie pour la place, avec son sac." : "Ysabeau est au marché à cette heure-ci.")],
     choix([["Glisser un mot sous sa porte", () => { M.engager(v, { id: "mot:ysabeau:" + M.jour(v), de: "alienor", a: "ysabeau", quoi: "mot", t: v.t, etat: "tenu" }); M.lier(v, "ysabeau", "alienor", 0.5, 0); talk([["", "Trois lignes à la craie sur un bout d’épreuve : « Passée vous voir. Aliénor. »"]], apres); }], ["Repasser plus tard", rien]])]);
   talk([[YS, "« Entre, ma fille, il fait froid sur le seuil. »"], [YS, vary("ys-clos", ["« Tu as mangé ? Non. Évidemment. »", "« Ta mère avait la même façon de frapper. Trois coups, et elle entrait sans attendre. »"])]], apres);
@@ -401,7 +401,7 @@ function fournil(avantTribut) {
   talk(lignes.concat([choix(opts)]), apres);
 }
 function peseePublique() {
-  const v = V(); M.peserMiche(v, "public"); M.parler(v, "maelle:miche");
+  const v = V(); M.peserMiche(v, "public"); M.parler(v, "maelle:miche"); sfx("balance");
   talk([[AL, "« Maëlle, tu veux bien peser cette miche ? Là, devant nous. »"], ["", "Maëlle hésite, puis pose la miche sur sa balance. Les clientes se penchent. Il manque un bon quart de livre."],
     ["Perrine", "« Un quart ! Et on paie le plein. »"], [MA, "« Tu crois que je vole ? Devant tout le monde ? »"], ["", "Maëlle range la miche sans un mot de plus. Perrine s’éloigne vers la rue des Drapiers."]], apres);
 }
@@ -505,7 +505,7 @@ ACTIONS["rentrer-nuit"] = () => { closePanel(); versClos("nuit", CL(2.8, 0.6), (
 /* ================= Le lendemain : la visite ================= */
 function visite() {
   const v = V(), vi = M.visiteEnCours(v); if (!vi) return;
-  sfx("porte");
+  sfx("frapper"); setTimeout(() => sfx("porte"), 900);
   const qui = M.HABITANTS[vi.hab].nom;
   talk([["", `Sur le seuil : ${qui}.`], choix([["Ouvrir et la faire entrer", () => recevoir(vi)], ["Lui demander de repasser cet après-midi", () => { M.reporter(v, vi.id); talk([[qui === "Maëlle" ? MA : YS, "« Cet après-midi, alors. Au fournil. Tu as promis. »"]], apres); }], ["Ne pas répondre", () => { M.avancer(v, 1); talk([["", "Les pas s’éloignent. Plus tard, vous trouvez un mot glissé sous la porte."]], () => { setScene(true); apres(); }); }]])]);
 }
