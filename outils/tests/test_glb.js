@@ -27,4 +27,4 @@ async function run(b,q,tag){
   console.log(tag,'erreurs',JSON.stringify(errs)); await ctx.close();
 }
 (async()=>{ const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
-  await run(b,'','orig'); await run(b,'?glb=colosse','glb'); await b.close(); })();
+  await run(b,'?glb=ancien','orig'); await run(b,'?glb=colosse','glb'); await b.close(); })();

@@ -1,4 +1,4 @@
-"""Statue de Sarlande, modelée par script d'après references/planches-3d/statue_tour.png.
+"""Statue de Sarlande (v2), modelée par script d'après references/planches-3d/statue_tour.png.
 
 Usage : python statue_sarlande.py <sortie.glb> <dossier_apercus>
 
@@ -22,10 +22,11 @@ def hexrgb(h):
     return ((h >> 16 & 255) / 255, (h >> 8 & 255) / 255, (h & 255) / 255)
 
 # Palette : patine bleu sombre et liserés dorés (planche validée).
-PATINE = hexrgb(0x41607f)   # robe
-MANTEAU = hexrgb(0x36526f)  # cape, un ton plus sombre
-CHAIR = hexrgb(0x56728f)    # visage et mains, bronze patiné plus clair
-CHEVEUX = hexrgb(0x2f4560)
+# v2 : nettement plus sombre que la planche, car le rendu aquarelle du jeu éclaircit les bleus.
+PATINE = hexrgb(0x2b4560)   # robe
+MANTEAU = hexrgb(0x233a52)  # cape, un ton plus sombre
+CHAIR = hexrgb(0x3a5671)    # visage et mains, bronze patiné un peu plus clair
+CHEVEUX = hexrgb(0x1f3247)
 OR = hexrgb(0xcaa04a)
 OR_SOMBRE = hexrgb(0xa07a34)
 
@@ -109,33 +110,58 @@ def cone(name, c, r, depth, color, verts=4, rot=(0, 0, 0), r2=0.0, wash=0.04):
     return tag(ob, color, wash)
 
 # ================================================================ ROBE
+def crete(x, p=2.2):
+    """Pli sculpté : crête arrondie, creux étroit et profond (au lieu d'une simple sinusoïde)."""
+    return 1.0 - 2.0 * (0.5 - 0.5 * math.cos(x)) ** p
+
 def plis(nb, amp_bas, amp_haut, phase=0.0):
     def f(a, t, z):
         amp = amp_bas + (amp_haut - amp_bas) * t
-        return 1.0 + amp * (math.cos(nb * a + phase + 0.6 * math.sin(3 * a)) + 0.35 * math.cos(2.3 * nb * a + 1.7))
+        x = nb * a + phase + 0.7 * math.sin(3 * a) + 0.5 * math.sin(2.1 * a + 4 * z)
+        return 1.0 + amp * (crete(x) + 0.3 * math.cos(2.3 * nb * a + 1.7 + 3 * z))
     return f
 
-robe = lathe("robe", [(0.41, 0.0), (0.40, 0.03), (0.36, 0.22), (0.31, 0.50), (0.25, 0.80), (0.185, 1.00),
-                      (0.152, 1.08), (0.150, 1.13), (0.170, 1.22), (0.178, 1.28), (0.170, 1.36), (0.135, 1.44),
-                      (0.075, 1.50), (0.052, 1.53)], PATINE, seg=96, fold=plis(14, 0.055, 0.004))
+# Profil plus serré : 48 anneaux, pour que les plis et la taille se lisent.
+robe_prof = [(0.41, 0.0), (0.40, 0.03), (0.36, 0.22), (0.31, 0.50), (0.25, 0.80), (0.185, 1.00),
+             (0.152, 1.08), (0.150, 1.13), (0.170, 1.22), (0.178, 1.28), (0.170, 1.36), (0.135, 1.44),
+             (0.075, 1.50), (0.052, 1.53)]
+def affine(prof, n):
+    out = []
+    for i in range(len(prof) - 1):
+        (r0, z0), (r1, z1) = prof[i], prof[i + 1]
+        for k in range(n):
+            s = k / n
+            out.append((r0 + (r1 - r0) * s, z0 + (z1 - z0) * s))
+    out.append(prof[-1])
+    return out
+robe = lathe("robe", affine(robe_prof, 3), PATINE, seg=128, fold=plis(16, 0.085, 0.006), wash=0.16)
 # Pointes des pieds sous l'ourlet.
 for sx in (-1, 1):
-    sphere("pied", (sx * 0.08, -0.33, 0.035), 0.05, CHAIR, scale=(0.8, 1.5, 0.6))
+    sphere("pied", (sx * 0.075, -0.345, 0.03), 0.046, CHAIR, scale=(0.78, 1.45, 0.5))
+    for d in range(4):
+        sphere("orteil", (sx * (0.058 + 0.011 * d), -0.402 + 0.006 * d, 0.026), 0.0085 - 0.001 * d, CHAIR, seg=10, rings=6)
 
 # Surjupe à ourlet festonné, liseré d'or.
+# v2 : la surjupe passe AU-DESSUS de la robe (elle était cachée dedans) et tombe en pointes,
+# la plus basse au milieu devant, comme sur la planche.
+def rayon_robe(z):
+    for (r0, z0), (r1, z1) in zip(robe_prof, robe_prof[1:]):
+        if z0 <= z <= z1:
+            return r0 + (r1 - r0) * (z - z0) / (z1 - z0)
+    return robe_prof[-1][0]
 def surjupe_fold(a, t, z):
-    return 1.0 + 0.05 * (1 - t) * math.cos(10 * a + 0.4)
-hem = lambda a: 0.60 + 0.09 * (0.5 + 0.5 * math.cos(5 * a)) - 0.05 * math.cos(a)
+    return 1.0 + 0.08 * (1 - t) ** 1.3 * (0.5 + 0.5 * crete(11 * a + 0.4 + 0.4 * math.sin(2 * a)))
+hem = lambda a: 0.50 + 0.14 * (1 - abs(math.cos(2 * a))) ** 1.5 + 0.02 * math.cos(12 * a)
 prof = []
-seg = 96
+seg = 128
 verts, faces = [], []
-rows = 8
+rows = 14
 for i in range(rows):
     t = i / (rows - 1)
     for j in range(seg):
         a = TAU * j / seg
         zb = hem(a); z = zb + (1.10 - zb) * t
-        r = 0.285 + (0.158 - 0.285) * t ** 0.8
+        r = rayon_robe(z) * (1.11 - 0.06 * t) + 0.010
         k = surjupe_fold(a, t, z)
         verts.append(Vector((r * k * math.sin(a), -r * k * 0.84 * math.cos(a), z)))
 for i in range(rows - 1):
@@ -144,8 +170,8 @@ for i in range(rows - 1):
         faces.append((i * seg + j, i * seg + j2, (i + 1) * seg + j2, (i + 1) * seg + j))
 mesh_obj("surjupe", verts, faces, PATINE, 0.12)
 # Le liseré ne court que sur l'avant : derrière, la surjupe est sous le manteau.
-ourlet = [verts[j] * 1.012 for j in list(range(seg - 20, seg)) + list(range(0, 21))]
-sweep("ourlet_or", ourlet, 0.012, OR, seg=8, cap=False)
+ourlet = [verts[j] * 1.012 for j in list(range(seg - 21, seg)) + list(range(0, 22))]
+sweep("ourlet_or", ourlet, 0.011, OR, seg=8, cap=False)
 
 # Ceinture d'or et boucle.
 torus("ceinture", (0, 0, 1.10), 0.152, 0.016, OR, maj=64)
@@ -161,14 +187,19 @@ def cape_fold(a, t, z):
     return 1.0 + (0.02 + 0.075 * (1 - t)) * math.cos(9 * a + 0.8) + 0.02 * math.cos(17 * a)
 cape_prof = [(0.47, 0.0), (0.45, 0.08), (0.39, 0.42), (0.32, 0.82), (0.255, 1.12), (0.215, 1.30), (0.195, 1.40), (0.14, 1.47)]
 # Ouverture devant, plus large en bas qu'en haut : les bords tombent en biais comme sur la planche.
-seg = 72; ring = seg + 1; cverts, cfaces = [], []
+# v2 : plis creusés (crêtes), ourlet en cascades qui remonte entre les plis, 3 fois plus d'anneaux.
+cape_prof = affine(cape_prof, 3)
+seg = 112; ring = seg + 1; cverts, cfaces = [], []
 for i, (r, z) in enumerate(cape_prof):
     t = i / (len(cape_prof) - 1)
     a0 = 0.95 - 0.55 * t
     for j in range(ring):
         a = a0 + (TAU - 2 * a0) * j / seg
-        k = 1.0 + (0.03 + 0.09 * (1 - t)) * math.cos(9 * a + 0.8) + 0.025 * math.cos(17 * a)
-        cverts.append(Vector((r * k * math.sin(a), -r * k * 0.80 * math.cos(a), z)))
+        x = 9 * a + 0.8 + 0.6 * math.sin(2 * a) + 2.0 * z
+        # Plis vers l'extérieur seulement : le manteau ne rentre jamais dans la robe.
+        k = 1.02 + (0.03 + 0.13 * (1 - t) ** 1.2) * (0.5 + 0.5 * crete(x)) + 0.015 * math.cos(17 * a + 3 * z)
+        dz = (1 - t) ** 3 * 0.09 * (0.5 - 0.5 * crete(x))   # l'ourlet remonte dans les creux
+        cverts.append(Vector((r * k * math.sin(a), -r * k * 0.80 * math.cos(a), z + dz)))
 for i in range(len(cape_prof) - 1):
     for j in range(seg):
         cfaces.append((i * ring + j, i * ring + j + 1, (i + 1) * ring + j + 1, (i + 1) * ring + j))
@@ -189,17 +220,81 @@ sweep("liseré_pelerine", [pv[j].co * 1.012 for j in range(72)] + [pv[0].co * 1.
 
 # ================================================================ TÊTE
 sweep("cou", [(0, 0, 1.49), (0, -0.005, 1.60)], [0.050, 0.046], CHAIR, seg=16)
-tete = sphere("tete", (0, -0.012, 1.685), 0.098, CHAIR, scale=(0.86, 0.98, 1.16), seg=28, rings=18)
-cone("nez", (0, -0.093, 1.676), 0.011, 0.030, CHAIR, verts=6, rot=(math.radians(-80), 0, 0), wash=0.03)
-sphere("menton", (0, -0.068, 1.612), 0.026, CHAIR, scale=(1.0, 0.7, 0.6))
+# v2 : visage sculpté dans la sphère (orbites, arcades, nez droit, lèvres, menton, pommettes),
+# au lieu de petites pièces posées dessus. Les creux reçoivent une ombre de patine (OMBRE).
+OMBRE = {}
+def gauss(x, s):
+    return math.exp(-(x / s) ** 2)
+def relief(x, y, z):
+    """Point de la sphère unité, visage vers -Y. Renvoie le déplacement radial et l'ombre."""
+    f = max(0.0, -y)
+    if f <= 0.0:
+        return 0.0, 0.0
+    w = f ** 1.2
+    ax = abs(x)
+    d = 0.0
+    d -= 0.10 * gauss(ax - 0.33, 0.13) * gauss(z - 0.08, 0.10)               # orbites
+    d += 0.045 * gauss(z - 0.21, 0.06) * gauss(ax - 0.30, 0.28)               # arcades
+    nez = gauss(x, 0.075 + 0.05 * max(0.0, 0.1 - z)) * max(0.0, min(1.0, (0.20 - z) / 0.32))
+    d += 0.26 * nez * gauss(z + 0.02, 0.17)                                   # nez droit, pointe vers z = -0.1
+    d -= 0.05 * gauss(x, 0.22) * gauss(z + 0.22, 0.04)                        # sous le nez
+    d += 0.055 * gauss(x, 0.17) * gauss(z + 0.31, 0.035)                      # lèvre supérieure
+    d -= 0.035 * gauss(x, 0.20) * gauss(z + 0.365, 0.02)                      # fente des lèvres
+    d += 0.06 * gauss(x, 0.15) * gauss(z + 0.42, 0.04)                        # lèvre inférieure
+    d -= 0.03 * gauss(x, 0.20) * gauss(z + 0.50, 0.04)                        # creux du menton
+    d += 0.09 * gauss(x, 0.17) * gauss(z + 0.64, 0.10)                        # menton
+    d += 0.045 * gauss(ax - 0.45, 0.14) * gauss(z + 0.05, 0.12)               # pommettes
+    d -= 0.10 * max(0.0, -z - 0.15) * gauss(x, 0.9) * min(1.0, ax * 2.2)      # mâchoire plus étroite
+    ombre = 0.55 * gauss(ax - 0.33, 0.10) * gauss(z - 0.06, 0.08) + 0.35 * gauss(x, 0.2) * gauss(z + 0.365, 0.018) \
+        + 0.25 * gauss(x, 0.2) * gauss(z + 0.22, 0.035)
+    return d * w, ombre * w
+bm = bmesh.new()
+bmesh.ops.create_uvsphere(bm, u_segments=64, v_segments=48, radius=1.0)
+HC, HS, HR = Vector((0, -0.012, 1.685)), Vector((0.86, 0.98, 1.16)), 0.098
+ombres = []
+for v in bm.verts:
+    p = v.co.normalized()
+    d, o = relief(p.x, p.y, p.z)
+    q = p * (1.0 + d)
+    v.co = HC + HR * Vector((q.x * HS.x, q.y * HS.y, q.z * HS.z))
+me = bpy.data.meshes.new("tete"); bm.to_mesh(me); bm.free()
+tete = bpy.data.objects.new("tete", me); bpy.context.scene.collection.objects.link(tete)
+tag(tete, CHAIR, 0.06)
+OMBRE["tete"] = []
+for v in me.vertices:
+    q = v.co - HC
+    p = Vector((q.x / HS.x, q.y / HS.y, q.z / HS.z)).normalized()
+    OMBRE["tete"].append(relief(p.x, p.y, p.z)[1])
+# Yeux en amande, globes lisses au fond des orbites, paupière supérieure en léger bourrelet.
 for sx in (-1, 1):
-    sphere("arcade", (sx * 0.034, -0.083, 1.712), 0.018, CHAIR, scale=(1.3, 0.6, 0.5))
-# Chevelure bouclée relevée en chignon.
-sphere("cheveux", (0, 0.012, 1.71), 0.103, CHEVEUX, scale=(0.92, 0.96, 1.08), seg=24, rings=14, wash=0.18)
-for k in range(16):
-    a = math.pi * 0.25 + (math.pi * 1.5) * k / 15
-    sphere("boucle", (0.085 * math.sin(a), 0.01 - 0.075 * math.cos(a), 1.64 + 0.02 * math.sin(3 * k)), 0.03, CHEVEUX, wash=0.18)
-sphere("chignon", (0, 0.085, 1.66), 0.055, CHEVEUX, scale=(1.2, 0.9, 0.9), wash=0.18)
+    sphere("oeil", (sx * 0.028, -0.084, 1.693), 0.0145, CHAIR, scale=(1.35, 0.8, 0.75), seg=16, rings=10, wash=0.02)
+    sweep("paupiere", bezier((sx * 0.016, -0.090, 1.698), (sx * 0.029, -0.099, 1.708), (sx * 0.044, -0.085, 1.699), 7),
+          0.0045, CHAIR, seg=6, wash=0.02)
+# Chevelure bouclée : calotte, boucles qui encadrent le visage, deux rangs derrière, chignon.
+sphere("cheveux", (0, 0.016, 1.712), 0.103, CHEVEUX, scale=(0.92, 0.95, 1.06), seg=32, rings=18, wash=0.20)
+def boucle(c, r):
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=r, location=c)
+    ob = bpy.context.active_object; ob.name = "boucle"
+    ob.rotation_euler = (random.uniform(0, 3), random.uniform(0, 3), random.uniform(0, 3))
+    ob.scale = (1.0, random.uniform(0.75, 0.95), random.uniform(1.1, 1.35))
+    return tag(ob, CHEVEUX, 0.20)
+# Front : une rangée de petites boucles sur la ligne des cheveux, de tempe à tempe.
+for k in range(11):
+    a = math.radians(-58 + 116 * k / 10)
+    boucle((0.090 * math.sin(a), 0.012 - 0.090 * math.cos(a), 1.762 - 0.014 * abs(math.sin(a)) + 0.004 * (k % 2)), 0.019)
+# Tempes et joues : mèches qui descendent jusqu'à la mâchoire.
+for sx in (-1, 1):
+    for k, (y, z) in enumerate([(-0.045, 1.735), (-0.035, 1.705), (-0.025, 1.675), (-0.010, 1.645), (0.005, 1.618)]):
+        boucle((sx * (0.084 - 0.002 * k), y, z), 0.022 - 0.0012 * k)
+# Côtés et nuque, deux rangs.
+for rang, (zr, rr, n) in enumerate([(1.70, 0.094, 13), (1.645, 0.086, 11)]):
+    for k in range(n):
+        a = math.radians(60 + 240 * k / (n - 1))
+        boucle((rr * math.sin(a), 0.016 - rr * math.cos(a), zr + 0.008 * math.sin(2.7 * k)), 0.026 - 0.004 * rang)
+sphere("chignon", (0, 0.088, 1.665), 0.055, CHEVEUX, scale=(1.2, 0.9, 0.9), wash=0.20)
+for k in range(7):
+    a = TAU * k / 7
+    boucle((0.055 * math.cos(a), 0.11 + 0.012 * math.sin(a), 1.665 + 0.045 * math.sin(a)), 0.022)
 
 # ================================================================ COURONNE
 CZ = 1.775
@@ -284,7 +379,9 @@ for ob in parts:
         p = mw @ v.co
         nz = (mw.to_3x3() @ v.normal).normalized()
         w = noise.noise(p * 9.0) * 0.6 + noise.noise(p * 31.0) * 0.4
-        creux = max(0.0, -nz.z) * 0.12 + max(0.0, nz.y) * 0.05
+        creux = max(0.0, -nz.z) * 0.16 + max(0.0, nz.y) * 0.05
+        if ob.name in OMBRE:
+            creux += OMBRE[ob.name][v.index]
         k = 1.0 + wash * w - creux
         c = [min(1.0, max(0.0, base[i] * k)) for i in range(3)]
         if base in (PATINE, MANTEAU) and noise.noise(p * 40.0 + Vector((3, 1, 7))) > 0.62:

@@ -40,3 +40,23 @@ Pour transmettre le résultat à Lucas et à ChatGPT, compléter cette section a
   dans SA main gauche, couronne à fleurons à facettes, pommeau à facettes, sans fleur de lys.
 - Aperçus : `apercus/blender_v1_face_profil_dos.jpg`, `apercus/blender_v1_4_vues_en_jeu.jpg`.
 - En jeu : `index.html?glb=statue` (le colosse procédural reste le défaut tant que ce n'est pas validé).
+
+### Blender v2 (25 novembre 2026, 0 €), statue par défaut dans le jeu
+
+- **Patine** nettement plus sombre (robe `#2b4560`, manteau `#233a52`, chair `#3a5671`) : le rendu
+  aquarelle du jeu éclaircit les bleus, la statue se lit maintenant comme du bronze bleu sombre.
+- **Visage** sculpté dans le maillage : orbites et yeux en amande avec paupières, arcades, nez droit,
+  lèvres, menton, pommettes, mâchoire affinée ; ombre de patine dans les creux du visage.
+- **Chevelure** : rangée de boucles sur le front, mèches le long des joues, deux rangs sur la nuque,
+  chignon bouclé.
+- **Plis** : plis sculptés (crêtes arrondies, creux étroits) sur la robe, la surjupe et le manteau ;
+  ourlet du manteau en cascades. La surjupe, cachée dans la robe en v1, passe dessus et tombe en
+  pointes, la plus basse au milieu devant. Pieds nus avec orteils sous l'ourlet.
+- Corrigé : la robe traversait le manteau dans le dos.
+- 55 400 triangles, 1,6 Mo.
+- **En jeu** : la statue remplace l'ancien colosse **par défaut**, dans toutes les scènes (jour, acte II
+  de nuit). `index.html?glb=ancien` affiche l'ancien colosse pour comparer.
+- Aperçus : `apercus/blender_v2_face_profil_dos.jpg`, `apercus/blender_v2_4_vues_en_jeu.jpg`,
+  `apercus/nuit_ancien_vs_v2.jpg` (la nuit, ancien colosse à gauche, v2 à droite : dans les deux cas,
+  une silhouette sombre ; le globe et l'épée restent lisibles). Aucune erreur dans la console.
+- Reste à faire : le contrôle sur iPad.
