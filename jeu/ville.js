@@ -591,9 +591,13 @@ freeView = function () {
   let a = null;
   if (camVille.a !== null && libre(camVille.a)) a = camVille.a;
   else for (const c of [0, derriere, 0.5, -0.5, 1, -1, 1.6, -1.6, 2.2, -2.2, Math.PI]) if (libre(c)) { a = c; break; }
-  camVille.a = a;
+  camVille.a = null;
   if (a !== null) {
-    if (a) { const [x, z] = tourne(a, dx, dz), [x2, z2] = tourne(a, lx, lz); v[0] = P.x + x; v[2] = P.z + z; v[3] = P.x + x2; v[5] = P.z + z2; }
+    if (a) {
+      // la caméra tourne pour de bon : les commandes suivent (avancer va toujours vers le haut de l'écran)
+      cameraYaw = (cameraYaw + a) % (Math.PI * 2); if (cameraYaw === 0) cameraYaw = 1e-6;
+      const [x, z] = tourne(a, dx, dz), [x2, z2] = tourne(a, lx, lz); v[0] = P.x + x; v[2] = P.z + z; v[3] = P.x + x2; v[5] = P.z + z2;
+    }
     return v;
   }
   let k = 1;
