@@ -76,9 +76,49 @@ Les codes renvoient aux étapes actuelles (`S.stage`). Les lieux sont ceux de l�
 - **Le carnet** : onglet « Récit » (actes, chapitres, étapes faites et ouvertes), onglet « Ville » (services, événements connus, lieux découverts).
 - **Annonce** discrète quand un événement commence à portée : « La cloche du tribut sonne sur la place. »
 
-## 6. Le plan de travail
+## 7. Le roman graphique de Sarlande
 
-1. **Le registre des quêtes** (`jeu/quetes.js`) : données des actes, chapitres et étapes ; étape suivie ; état sauvegardé (migration des anciennes sauvegardes depuis `S.stage`). Suivi, flèche et carte lisent ce registre. *Sans changer le jeu : on rebranche l’aide sur le registre.*
+Chaque étape du récit jouée débloque des **pages illustrées**. Elles s'assemblent, acte après acte, en un vrai roman graphique, rangé dans le carnet, que l'on feuillette comme on veut : dans l'ordre, au hasard, ou pour revoir une scène.
+
+### Les principes
+
+1. **Une page par moment du récit.** Elle reprend un tableau, une séquence ou une planche de gros plans déjà produits (`references/actes-I-II/`), avec une légende de narration courte. Les citations du *Discours* restent en italique et entre guillemets, à vérifier dans l'édition Belin, distinctes du texte écrit pour le jeu.
+2. **Le roman est celui de votre partie.** Les choix changent les pages : payer, dénoncer ou questionner au tribut donne trois pages de fin d'acte différentes (`fin_acte1_paye`, `fin_acte1_denonce`, `fin_acte1_refus`). Un témoin écouté ou non, une alouette libérée ou non : la page existe ou reste blanche.
+3. **Les pages manquantes se voient.** Une page non débloquée apparaît en esquisse grise, avec un titre et un indice (« La loterie · acte II »). Le joueur sait ce qui reste à vivre, sans que rien ne soit imposé.
+4. **Les pages facultatives récompensent la promenade.** Les huit témoins de la fête, les feuillets (vignettes F1 à F8), les services rendus, les vues découvertes donnent des **pages hors-texte**, rangées en fin de chapitre.
+5. **Feuilleter librement.** Double page sur iPad en paysage, page simple en portrait ; on tourne d'un geste, comme les planches de transition existantes. Un sommaire par acte et par chapitre ; un marque-page reprend la lecture où on l'a laissée. La lecture ne fait pas avancer le temps du jeu.
+6. **Pour la classe.** Le roman se lit hors de la partie (bouton « Le roman » sur l'écran-titre, pour les pages déjà débloquées). Une page peut s'afficher sans légende, pour l'exercice des légendes à écrire par les élèves (fiche du projet : le récit en images) ; les douze images `recit_01` à `recit_12` en donnent la version courte.
+
+### Les pages des actes I et II, déjà illustrées
+
+| Chapitre | Pages (fichiers de `references/actes-I-II/`) | Débloquées par |
+|---|---|---|
+| Prologue | `seq_ouverture_1` à `seq_ouverture_6` | Nouvelle partie |
+| I-3 La prise de poste | `gros_manche`, `gros_doublure`, `tableau_anselme_sac` | Recevoir le sac |
+| I-2 et I-5 Maëlle | `tableau_maelle_etal`, `gros_page_farine`, `lieu_boulangerie_fermee` | La pesée ; F2 |
+| I-4 Le tribut | `percepteur_hierarchie`, `tableau_tribut`, `gros_balance`, puis selon le choix `gros_bourse`, `tableau_denonce` ou `gros_plume_nom` ; `tableau_regard_garde` | Le tribut |
+| I-6 La chapelle | `tableau_caisses`, `gros_dalle`, `tableau_poterne` ou `tableau_prise` (si l'on est vue) | F3 |
+| I-7 Garin | `tableau_joute_garin`, `gros_paume`, `tableau_sac_pose`, `tableau_pierre` | La pierre |
+| I-8 et fin d'acte | `tableau_retour`, puis `fin_acte1_paye`, `fin_acte1_denonce` ou `fin_acte1_refus` | Fin de l'acte I |
+| II-1 Le soir | `seq_soir_1`, `seq_soir_2`, `tableau_anselme_soir` | Début de l'acte II |
+| II-2 La loterie | `tableau_loterie`, `gros_billet_dechire`, `tableau_masque` (si masque) , `gros_pieces` | Maëlle quitte la loterie |
+| II-3 La farce | `tableau_farce`, `tableau_farce_garin`, `tableau_branle` (si l'on danse), `tableau_femme_masquee`, `gros_billet_mahaut` | Garin aux tréteaux |
+| II-4 Le grand toast | `tableau_toast`, `tableau_grand_toast`, `tableau_garde_detourne` | La traversée |
+| II-5 Cent feuilles | `tableau_presse_arrivee`, `gros_composteur`, `gros_barre_garin`, `gros_balles_maelle`, `tableau_tirage`, `gros_besicles` | L'impression |
+| II-6 Minuit et l'aube | `tableau_litiere_1`, `tableau_litiere_2`, `tableau_debout` (si l'on reste debout), `gros_colle`, `tableau_jeanne_lit`, `tableau_bastien_lit`, `tableau_mains_fieres`, `tableau_aube_place`, `fin_acte2` | L'affiche |
+| Hors-texte | `temoin_*` (8), `vignette_F1` à `vignette_F8`, `vignette_billet`, `gros_cage_ouverte`, `tableau_bertin`, `tableau_ysabeau_seuil`, `tableau_frere_file`, `gros_page_quai`, `gros_page_caisse`, `gros_page_treteaux` | Témoignages, feuillets, rencontres facultatives |
+
+Soit **environ 75 pages** pour les deux premiers actes, sans aucune illustration supplémentaire à commander.
+
+### La technique
+
+- Pages converties en WebP de 1600 px de large (environ 200 Ko chacune, 15 Mo pour les deux actes), chargées à l'ouverture du roman seulement, jamais pendant la marche.
+- Registre des pages dans `jeu/roman.js` : identifiant, chapitre, fichier, légende, condition de déblocage (lue dans le registre des quêtes et dans `S.flags`), page de remplacement selon les choix.
+- Pages débloquées et marque-page dans la sauvegarde ; migration des anciennes parties d'après leurs étapes et leurs drapeaux déjà joués.
+
+## 8. Le plan de travail
+
+1. **Le registre des quêtes** (`jeu/quetes.js`) et **le roman graphique** (`jeu/roman.js`), qui lit ce registre : données des actes, chapitres et étapes ; étape suivie ; état sauvegardé (migration des anciennes sauvegardes depuis `S.stage`). Suivi, flèche et carte lisent ce registre. *Sans changer le jeu : on rebranche l’aide sur le registre.*
 2. **Agrandir la ville praticable** à toute l’enceinte : palais (dehors), chapitre, tanneurs, nord, portes ; grille de marche et tissu urbain étendus, construits par quartiers autour d’Aliénor pour rester légers.
 3. **Déplacer les scènes de l’acte I dans la ville** : estrade et file du tribut sur la place de l’atlas, Garin et le colosse, poterne et cour des gardes, chapelle. L’ancienne place resserrée ne sert plus qu’aux intérieurs (atelier).
 4. **Les événements de la ville** : cloche et file du tribut, arrivage du quai, poterne fermée le soir.
