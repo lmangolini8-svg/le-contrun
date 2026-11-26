@@ -53,7 +53,8 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".webp": "image/
     await p.evaluate(([a, b]) => { const v = Ville.VILLE, A = Atlas.versScene(a[0], a[1]), Bp = Atlas.versScene(b[0], b[1]);
       player.position.set(A.x + v.x, player.position.y, A.z + v.z); player.rotation.y = Math.atan2(Bp.x - A.x, Bp.z - A.z); if (typeof snapCam === "function") snapCam(); }, [pts[k], pts[k + 1]]);
     await p.waitForTimeout(3000); await p.screenshot({ path: `${OUT}/trajet_${i}.png` });
-    if (process.env.DBG) console.log(i, await p.evaluate(() => JSON.stringify({ P: player.position.toArray().map(x => +x.toFixed(2)), vis: player.visible, cam: camera.position.toArray().map(x => +x.toFixed(2)), v: freeView().map(x => +x.toFixed(2)), mode })));
+    console.log("trajet", i, await p.evaluate(() => { renderer.info.autoReset = true; renderFrame(); const r = renderer.info.render;
+      return JSON.stringify({ triangles: r.triangles, appels: r.calls, meshy: Ville.tissuMeshy ? Ville.tissuMeshy() : null, memoire_Mo: performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1e6) : null, textures: renderer.info.memory.textures, geometries: renderer.info.memory.geometries }); }));
   }
   console.log("erreurs", JSON.stringify(errs.slice(0, 5))); await b.close();
 })();

@@ -332,7 +332,8 @@ function batirVille() {
       if (s.surface === "roof" || s.surface === "church") {
         const h = s.surface === "church" ? 11 : 5.2 + (k % 3) * 0.9, top = haut + h, span = Math.min(w, d);
         const p = PORTES[s.id];
-        const fichier = VILLE_MESHY && p && FACADES_ATLAS[s.id];
+        // en attendant leurs propres façades, les boutiques du récit empruntent une maison Meshy (version légère)
+        const fichier = VILLE_MESHY && p && (FACADES_ATLAS[s.id] || (s.surface === "roof" ? ["maison1_loin", "maison2_loin", "maison_pierre_loin"][k % 3] : null));
         const repli = fichier ? new Builder() : null;
         const facade = repli ? repli.put.bind(repli) : put;
         facade(G.box, s.surface === "church" ? ST2 : COULEURS[k % COULEURS.length], m.x, (bas + top) / 2, m.z, w, top - bas, d);
@@ -449,35 +450,77 @@ function maisonTissu(h) {
   B.pop();
   return haut;
 }
-const MESHY_TISSU = ["maison1_loin", "maison2_loin", "maison_pierre_loin"];
+/* ================= Les maisons Meshy du tissu, dessinées en série =================
+   Chaque modèle Meshy est envoyé à la carte graphique une seule fois, pour toutes ses copies (InstancedMesh),
+   en trois niveaux : le modèle complet de près, sa version légère à distance moyenne, la maison dessinée au loin.
+   La maison dessinée d'une maison remplacée s'efface dans le shader (texture de visibilité, une case par maison). */
+const MESHY_TISSU = [{ id: "maison1", pans: true }, { id: "maison2", pans: true }, { id: "maison_pierre", pans: false }];
+const PRES_LOD = 30, MOYEN_LOD = 90; // mètres
+const meshyTissu = { modeles: [], vis: null, pret: false };
 function batirTissu() {
-  dio(0, () => { for (const h of TISSU) h.haut = maisonTissu(h); });
-  // Les seuils des lieux de l'atlas : une marche de pierre devant chaque porte.
+  // la maison dessinée : un seul maillage, chaque sommet sait à quelle maison il appartient
+  const debut = [];
+  dio(0, () => { for (const h of TISSU) { debut.push(B.p.length / 3); h.haut = maisonTissu(h); } debut.push(B.p.length / 3); });
+  const dessin = scene.children[scene.children.length - 1];
   for (const id in PORTES) { const p = PORTES[id], q = VS(p.dehors.X, p.dehors.Y); put(G.box, ST2, q.x - p.nx * 0.6, q.y + 0.06, q.z - p.ny * 0.6, p.nx ? 0.7 : 1.6, 0.16, p.nx ? 1.6 : 0.7); }
-  // Quelques façades Meshy, de près seulement, le long des chemins : une maison sur cinq.
-  if (!VILLE_MESHY) return;
-  let n = 0;
-  for (const h of TISSU) {
-    if (!h.rue || hasard(h.k, 5) > 0.2 || n >= 28) continue; n++;
-    const fichier = MESHY_TISSU[n % MESHY_TISSU.length], cle = "ville/" + fichier, c = VS(h.C[0], h.C[1]), rueY = VS(h.F[0], h.F[1]).y;
-    if (!_glbCache[cle]) _glbCache[cle] = gltfLoader().then(L => new Promise((ok, ko) => L.load("modeles/" + cle + ".glb", g => ok(decorMaterials(g.scene)), undefined, ko)));
-    _glbCache[cle].then(modele => {
-      const copie = modele.clone(); copie.rotation.y = Math.atan2(-h.n[0], -h.n[1]) + Math.PI;
-      const vol = new THREE.Box3().setFromObject(copie), tl = vol.getSize(new THREE.Vector3()), axe = vol.getCenter(new THREE.Vector3());
-      if (!(tl.x > 0 && tl.y > 0)) return;
-      const g = new THREE.Group(), cos = Math.abs(Math.cos(copie.rotation.y)), sx = (h.w * cos + h.d * (1 - cos)) / tl.x, sz = (h.d * cos + h.w * (1 - cos)) / tl.z;
-      g.scale.set(sx, (h.haut - rueY + h.d * 0.42) / tl.y, sz);
-      g.position.set(c.x - axe.x * sx, rueY - 0.3 - vol.min.y * g.scale.y, c.z - axe.z * sz);
-      g.add(copie); g.name = fichier + " (tissu)"; g.userData.tissu = c;
-      MAISONS_PROCHES.push(g); scene.add(g);
-    }).catch(e => console.warn("Maison Meshy indisponible : " + fichier, e));
-  }
+  const gl = renderer.getContext();
+  if (!VILLE_MESHY || !dessin || !dessin.geometry || gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) < 1) return;
+  const N = TISSU.length, hid = new Float32Array(dessin.geometry.attributes.position.count);
+  for (let i = 0; i < N; i++) hid.fill(i, debut[i], debut[i + 1]);
+  dessin.geometry.setAttribute("hid", new THREE.BufferAttribute(hid, 1));
+  const vis = new THREE.DataTexture(new Uint8Array(N * 4).fill(255), N, 1, THREE.RGBAFormat); vis.needsUpdate = true;
+  const mat = dessin.material.clone(), base = dessin.material.onBeforeCompile;
+  mat.onBeforeCompile = sh => { base.call(mat, sh); sh.uniforms.visTissu = { value: vis };
+    sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nattribute float hid; uniform sampler2D visTissu;")
+      .replace("#include <begin_vertex>", "#include <begin_vertex>\nif (texture2D(visTissu, vec2((hid + 0.5) / " + N.toFixed(1) + ", 0.5)).r < 0.5) transformed = vec3(0.0, -9999.0, 0.0);"); };
+  mat.customProgramCacheKey = () => "sarlande-tissu-" + N;
+  dessin.material = mat; meshyTissu.vis = vis;
+  // chaque maison reçoit un modèle : pierre pour les maisons de pierre, colombages sinon
+  const charge = f => { const cle = "ville/" + f; if (!_glbCache[cle]) _glbCache[cle] = gltfLoader().then(L => new Promise((ok, ko) => L.load("modeles/" + cle + ".glb", g => ok(decorMaterials(g.scene)), undefined, ko))); return _glbCache[cle]; };
+  const parModele = MESHY_TISSU.map(() => []);
+  TISSU.forEach((h, i) => { const pierre = hasard(h.k * 97 + 1, h.C[0] + h.C[1]) < 0.3; const m = pierre ? 2 : (i % 2); parModele[m].push(i); });
+  MESHY_TISSU.forEach((M, m) => Promise.all([charge(M.id), charge(M.id + "_loin")]).then(([pres, loin]) => {
+    const niveaux = [pres, loin].map((racine, niv) => {
+      let mesh = null; racine.updateMatrixWorld(true); racine.traverse(o => { if (o.isMesh && !mesh) mesh = o; });
+      const im = new THREE.InstancedMesh(mesh.geometry, mesh.material, parModele[m].length);
+      im.count = 0; im.castShadow = niv === 0; im.receiveShadow = true; // au-delà de 30 m, l'ombre ne se voit plus im.frustumCulled = false; im.name = M.id + " (tissu, en série)";
+      scene.add(im); return { im, monde: mesh.matrixWorld.clone(), boite: new THREE.Box3().setFromObject(racine) };
+    });
+    const t = new THREE.Matrix4(), r = new THREE.Matrix4(), sc = new THREE.Matrix4();
+    const places = parModele[m].map(i => {
+      const h = TISSU[i], c = VS(h.C[0], h.C[1]), rueY = VS(h.F[0], h.F[1]).y, ang = Math.atan2(-h.n[0], -h.n[1]);
+      // la façade du modèle regarde vers +z : on l'oriente vers la rue et on l'ajuste à la parcelle
+      return niveaux.map(nv => { const b = nv.boite, tl = b.getSize(new THREE.Vector3()), ce = b.getCenter(new THREE.Vector3());
+        t.makeTranslation(-ce.x, -b.min.y, -ce.z);
+        sc.makeScale(h.w / tl.x, (h.haut - rueY + h.d * 0.42) / tl.y, h.d / tl.z);
+        r.makeRotationY(ang);
+        const M4 = new THREE.Matrix4().makeTranslation(c.x, rueY - 0.25, c.z).multiply(r).multiply(sc).multiply(t).multiply(nv.monde);
+        return M4; });
+    });
+    meshyTissu.modeles.push({ niveaux, maisons: parModele[m], places });
+    majTissu(true);
+  }).catch(e => console.warn("Maison Meshy indisponible : " + M.id, e)));
 }
-// Les maisons Meshy ne s'affichent qu'à moins de 60 m d'Aliénor ; au-delà, la maison dessinée suffit.
-const MAISONS_PROCHES = [];
-const _alive = typeof alive === "function" ? alive : null;
-setInterval(() => { if (!enVille()) { for (const g of MAISONS_PROCHES) g.visible = false; return; } const P = player.position;
-  for (const g of MAISONS_PROCHES) { const c = g.userData.tissu; g.visible = Math.hypot(c.x - P.x, c.z - P.z) < 60; } }, 500);
+let dernierTissu = 0;
+function majTissu(force) {
+  const now = performance.now(); if (!force && now - dernierTissu < 250) return; dernierTissu = now;
+  const vis = meshyTissu.vis; if (!vis) return;
+  const P = player.position, dans = enVille(), d = vis.image.data;
+  for (const mo of meshyTissu.modeles) {
+    let n0 = 0, n1 = 0;
+    mo.maisons.forEach((i, k) => {
+      const h = TISSU[i], c = VS(h.C[0], h.C[1], 0), dist = dans ? Math.hypot(c.x - P.x, c.z - P.z) : Infinity;
+      const niveau = dist < PRES_LOD ? 0 : dist < MOYEN_LOD ? 1 : 2;
+      if (niveau === 0) mo.niveaux[0].im.setMatrixAt(n0++, mo.places[k][0]);
+      else if (niveau === 1) mo.niveaux[1].im.setMatrixAt(n1++, mo.places[k][1]);
+      d[i * 4] = niveau === 2 ? 255 : 0;
+    });
+    mo.niveaux[0].im.count = n0; mo.niveaux[1].im.count = n1;
+    mo.niveaux[0].im.instanceMatrix.needsUpdate = true; mo.niveaux[1].im.instanceMatrix.needsUpdate = true;
+  }
+  vis.needsUpdate = true;
+}
+setInterval(() => majTissu(false), 250);
 
 /* ================= Raccords ================= */
 const dehors = id => {
@@ -583,7 +626,7 @@ startPlay = function (newGame) {
 };
 
 console.info("Ville à l’échelle : grille prête en", Math.round(performance.now() - T0), "ms");
-window.Ville = { TISSU: () => TISSU.length, VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
+window.Ville = { TISSU: () => TISSU.length, tissuMeshy: () => meshyTissu.modeles.map(m => [m.niveaux[0].im.count, m.niveaux[1].im.count]), VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
 // start() ramène sur la place toute position hors de la carte : on rend à la ville la sienne.
 if (S.started && Array.isArray(S.pos) && Number.isFinite(S.pos[0]) && Number.isFinite(S.pos[1]) && S.pos[0] > 2500) {
   batirVille();

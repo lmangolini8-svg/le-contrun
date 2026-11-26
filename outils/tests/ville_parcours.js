@@ -59,9 +59,10 @@ let errs = [];
   }
 
   // Marche au clavier : on avance, les pieds restent au sol.
+  // Durées longues : sous rendu logiciel (SwiftShader), la ville pleine tourne à 3 images/s et le pas est plafonné par image.
   const avant = await p.evaluate(() => ({ x: player.position.x, z: player.position.z }));
-  await p.keyboard.down("ArrowUp"); await p.waitForTimeout(1500); await p.keyboard.up("ArrowUp");
-  await p.keyboard.down("ArrowLeft"); await p.waitForTimeout(1500); await p.keyboard.up("ArrowLeft");
+  await p.keyboard.down("ArrowUp"); await p.waitForTimeout(3000); await p.keyboard.up("ArrowUp");
+  await p.keyboard.down("ArrowLeft"); await p.waitForTimeout(3000); await p.keyboard.up("ArrowLeft");
   const apres = await p.evaluate(() => ({ x: player.position.x, z: player.position.z, y: player.position.y, sol: Ville.solScene(player.position.x, player.position.z) }));
   ok(Math.hypot(apres.x - avant.x, apres.z - avant.z) > 1, `marche au clavier (${Math.hypot(apres.x - avant.x, apres.z - avant.z).toFixed(1)} m)`);
   ok(Math.abs(apres.y - apres.sol) < 0.05, `pieds au sol (y ${apres.y.toFixed(2)}, sol ${apres.sol.toFixed(2)})`);
