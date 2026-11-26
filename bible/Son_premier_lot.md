@@ -16,8 +16,9 @@ Tonalité et tempo sont des estimations automatiques. Le tempo est peu fiable su
 | `mus-titre` | Titre, planches, soir au clos | Pavane, luth et flûte à bec, mélancolique, ré mineur | 1:19 | Garder pour les planches. À l'album, interlude possible entre 2 et 3. Au soir du clos, à remplacer plus tard par une variante du thème d'Aliénor. |
 | `mus-jour` | Place, acte I | Luth, viole, flûte, tambour léger, ré dorien | 2:00 | Matière de *Sous la halle* (3). À remplacer à terme par la phrase de Sarlande. |
 | `mus-cour` | Cour des gardes | Bourdon de viole, luth épars, tambour comme un cœur | 1:27 | Garder comme musique d'infiltration. Pas sur l'album. |
-| `mus-branle` (gaillarde) | Fête, avec la ronde | Luth et cistre, flûte et vièle, cornemuse au refrain | 1:28 | Retenue par Lucas. Cœur de *Les lanternes de l'Un* (6). |
-| `mus-ronde` | Fête, avec la gaillarde | Flûtes, cromornes, vielle à roue, tambourin | 1:28 | Retenue par Lucas. Second temps de (6). |
+| `mus-branle` (gaillarde) | Fête, première des trois danses | Luth et cistre, flûte et vièle, cornemuse au refrain | 1:28 | Retenue par Lucas. Cœur de *Les lanternes de l'Un* (6). |
+| `mus-ronde` | Fête, deuxième des trois danses | Flûtes, cromornes, vielle à roue, tambourin | 1:28 | Retenue par Lucas. Second temps de (6). |
+| `mus-tourdion` | Fête, troisième des trois danses (ajoutée le 25 novembre) | Chalemies, bombarde, saqueboute, cornemuse, tambour : la bande de plein air | 1:28 | Retenue par Lucas. Troisième temps de (6). |
 | `mus-farce` | Tréteaux | Cromornes, tambourin, burlesque | 1:00 | Garder en jeu. Hors album, ou bref passage dans (6). |
 | `mus-fanfare` | Grand toast | Saqueboutes, trompettes, timbales | 0:37 | À reprendre avec l'appel du tribut : la fête doit en garder une partie « séduisante ». |
 | `mus-litiere` | Passage de la litière | Tambours lents, bourdon de saqueboute | 0:59 | Garder la scène. Matière de *Quand l'appel reste sans réponse* (12). |
@@ -121,3 +122,32 @@ Les dix WAV de la branche des planches (`codex/planches-vie-2026-11-25`) sont le
 ElevenLabs ne livre que du MP3 à 192 kbit/s. Il n'existe donc pas de master WAV.
 
 Le compte Starter autorise l'usage commercial. Le premier lot a coûté environ 8 700 crédits ; il en restait 15 000 environ ce mois-ci.
+
+## 8. La cathédrale (26 novembre)
+
+**Les cloches sonnent déjà en jeu.** On les entend de toute la ville, plus claires près de la cathédrale (nord-est de la place) et étouffées au clos. Elles suivent le calendrier du monde (`tempsMonde()`).
+
+| Moment | Ce qui sonne |
+|---|---|
+| Matin | L'angélus : trois fois trois coups de bourdon, puis une petite volée. Le dimanche et les jours de fête, la grande volée remplace la petite. |
+| Midi | Le carillon (22 s), puis la grande volée des six cloches pendant 42 s, sous laquelle le bourdon frappe douze coups. La musique s'efface le temps de la sonnerie. Deux carillons et deux volées alternent d'un jour à l'autre. |
+| Soir | L'angélus et la petite volée. |
+| Entre deux | L'horloge frappe l'heure, parfois précédée du quart. |
+| Récit | Minuit au bourdon pendant la fête. Le glas est prêt (`sonnerie("glas")`). |
+
+Chaque sonnerie de plage ne sonne qu'une fois par jour, même après un rechargement (`S.cloches`). Quand le son est coupé, la sonnerie s'affiche en sous-titre.
+
+**La nef et le quartier ne sont pas encore praticables.** Leur son est prêt et branché sur les zones `nef`, `parvis` et `cloitre` : il jouera dès qu'elles existeront.
+
+- **Dans la nef** : pendant un office (dimanche et fêtes, matin et soir), le plain-chant et le motet à quatre voix alternent ; hors office, l'orgue, avec de longs silences. Les cloches y arrivent étouffées par les murs.
+- **Dans le quartier** : le parvis et le cloître alternent.
+- **Ambiances** : la nef, le parvis, le cloître.
+- **Bruitages** : la porte de la cathédrale, le bénitier, le cierge, la clochette de l'élévation, l'encensoir, l'envol des pigeons, six pas sur les dalles de la nef.
+
+**À écouter de près** : le plain-chant et le motet sont chantés dans un latin généré, sans texte réel.
+
+**Vérifié** : `node outils/tests/son_cloches.js`. Au passage du matin à l'après-midi, midi sonne en entier (carillon, grande volée, douze coups de bourdon), une seule fois, même après un rechargement. Le parcours `son_parcours.js` relève aussi l'angélus du matin au réveil (grande volée de la Saint-Michel), l'angélus du soir au clos et celui du lendemain.
+
+## 9. La fête en trois danses
+
+Gaillarde (`mus-branle`), ronde (`mus-ronde`) et tourdion (`mus-tourdion`) s'enchaînent en fondu pendant toute la fête, puis reprennent. Si la danse suivante n'a pas fini de charger, la danse en cours rejoue une fois plutôt que de laisser un silence. Vérifié : `node outils/tests/son_fete.js`.

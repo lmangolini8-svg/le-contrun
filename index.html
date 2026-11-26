@@ -3829,10 +3829,10 @@ INTER.push({p:()=>MAHAUT.position,r:2.6,label:"S’approcher de la femme masqué
    Musiques, ambiances et bruitages générés avec ElevenLabs. Les musiques et les ambiances ne sont décodées
    qu’au moment où on les entend, puis libérées, pour ménager la mémoire de l’iPad. */
 const Snd={ctx:null,buf:{},loading:{},last:{},amb:{},mus:[],musKey:"",want:"",lastPh:0,alt:{},laughT:9,clinkT:4,owlT:16,bellT:40,gcT:0,stepI:0};
-const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4","volets","puits","cruche","balance","frapper","lettre"];
+const SFX_FILES=["page","feuillet","pieces","pierre","presse","colle","type","cloche","rires","applaudissements","acclamation","trinquer","halte","porte","chouette","murmure","sac","plume","bois","pas-0","pas-1","pas-2","pas-3","pas-4","pas-5","armure-0","armure-1","armure-2","armure-3","armure-4","volets","puits","cruche","balance","frapper","lettre","cloche-bourdon","cloche-quarts","clochette","porte-cathedrale","cierge","benitier","encensoir","pigeons","pas-nef-0","pas-nef-1","pas-nef-2","pas-nef-3","pas-nef-4","pas-nef-5"];
 /* gap : silence entre deux passages du morceau (négatif : fondu enchaîné, pour la musique jouée sur la place) */
-const MUSIC={volets:{gap:25,vol:.75},tribut:{gap:6,vol:.6},lendemain:{gap:20,vol:.75},mahaut:{gap:30,vol:.7},titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8,monde:true,files:["mus-branle","mus-ronde"]} /* la fête : gaillarde et ronde en alternance */,farce:{gap:-3,vol:.8,monde:true},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85,monde:true},litiere:{gap:-4,vol:.8}};
-const AMBS=["clos","maison","fournil","marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
+const MUSIC={volets:{gap:25,vol:.75},tribut:{gap:6,vol:.6},lendemain:{gap:20,vol:.75},mahaut:{gap:30,vol:.7},nefOffice:{gap:20,vol:.8,monde:true,files:["mus-nef-plain-chant","mus-nef-polyphonie"]},nef:{gap:45,vol:.6,monde:true,files:["mus-nef-orgue"]},parvis:{gap:15,vol:.55,files:["mus-parvis-jour","mus-parvis-cloitre"]},titre:{gap:5,vol:.85},jour:{gap:8,vol:.5},cour:{gap:3,vol:.62},branle:{gap:-4,vol:.8,monde:true,files:["mus-branle","mus-ronde","mus-tourdion"]} /* la fête : gaillarde et ronde en alternance */,farce:{gap:-3,vol:.8,monde:true},nuit:{gap:6,vol:.62},aube:{gap:6,vol:.7},fanfare:{gap:-3,vol:.85,monde:true},litiere:{gap:-4,vol:.8}};
+const AMBS=["nef","parvis","cloitre","clos","maison","fournil","marche","fontaine","quai","cour","chapelle","atelier","fete","nuit","aube","ruelle","feu","vent","pluie"];
 
 function sndLoad(name){ const c=Snd.ctx; if(!c) return null; Snd.last[name]=c.currentTime; if(Snd.buf[name]) return Snd.buf[name]; if(Snd.loading[name]) return null;
   Snd.loading[name]=true;
@@ -3851,6 +3851,7 @@ function initAudio(){ if(Snd.ctx) return; const AC=window.AudioContext||window.w
   /* la foule aussi */
   Snd.clp=c.createBiquadFilter(); Snd.clp.type="lowpass"; Snd.clp.frequency.value=16000; Snd.crowd=c.createGain(); Snd.crowd.connect(Snd.clp); Snd.clp.connect(Snd.bus);
   Snd.abus=c.createGain(); Snd.abus.connect(Snd.gAmb);
+  Snd.clp2=c.createBiquadFilter(); Snd.clp2.type="lowpass"; Snd.clp2.frequency.value=16000; Snd.cbus=c.createGain(); Snd.cbus.connect(Snd.clp2); Snd.clp2.connect(Snd.bus);
   for(const n of SFX_FILES) sndLoad(n); }
 
 /* ---------- bruitages ---------- */
@@ -3862,7 +3863,7 @@ function playSfx(name,vol,panV,rate,dest,delay){ const c=Snd.ctx; if(!c||c.state
 const vary2=(a,b)=>a+Math.random()*(b-a);
 function stepSound(x,z,vol,metal){ const d=Math.hypot(x-player.position.x,z-player.position.z), g=vol/(1+d*d/30); if(g<0.01) return;
   Snd.stepI=(Snd.stepI+1+((Math.random()*3)|0))%(metal?5:6);
-  playSfx((metal?"armure-":"pas-")+Snd.stepI,g,pan(x),vary2(0.93,1.07)); }
+  playSfx((metal?"armure-":(zoneOf()==="nef"?"pas-nef-":"pas-"))+Snd.stepI,g,pan(x),vary2(0.93,1.07)); }
 function sfx(k){ const c=Snd.ctx; if(!c||c.state!=="running") return;
   if(k==="page") playSfx("page",0.75,0,vary2(0.95,1.05));
   else if(k==="feuillet") playSfx("feuillet",0.9);
@@ -3888,14 +3889,20 @@ function sfx(k){ const c=Snd.ctx; if(!c||c.state!=="running") return;
   else if(k==="balance") playSfx("balance",0.85);
   else if(k==="frapper") playSfx("frapper",0.9);
   else if(k==="lettre") playSfx("lettre",0.7,0,1,Snd.gMus,0.9); /* trois notes du violon de Mahaut, sans la nommer */
-  else if(k==="minuit"){ for(let i=0;i<12;i++) playSfx("cloche",0.75,0,1,Snd.bus,0.4+i*1.8); signal("Minuit sonne au clocher."); } }
+  else if(k==="minuit"){ for(let i=0;i<12;i++) playSfx("cloche-bourdon",0.8,0,1,Snd.cbus,0.4+i*3.2); signal("Minuit sonne à la cathédrale."); }
+  else if(["clochette","porte-cathedrale","cierge","benitier","encensoir","pigeons"].includes(k)) playSfx(k,0.85,0,vary2(0.97,1.03)); }
 /* Équivalent visuel d’un signal sonore indispensable, quand les effets sont coupés ou très bas. */
 function signal(t){ const v=sndVol(); if(S.mute||v.general<0.1||v.effets<0.15) try{ say(t,3); }catch(e){} }
 
 /* ---------- la musique : un morceau par moment du récit ---------- */
 const recit=()=>(S.vie&&S.vie.recit)||{};
 const auClos=()=>zoneOf()==="clos";
+/* Temps du monde : jour, plage (0 matin, 1 après-midi, 2 soir), dimanche, fête. */
+function tempsMonde(){ try{ const C=Calendrier, t=S.vie.t, j=C.jourDuT(t); return {j,plage:C.plageDuT(t),dim:C.jourSemaine(j)===0,fete:C.fetesDuJour(j).length>0}; }catch(e){ return {j:0,plage:night?2:0,dim:false,fete:false}; } }
+/* Un office est chanté le dimanche et les jours de fête, le matin et à vêpres. */
+function office(){ const w=tempsMonde(); return (w.dim||w.fete)&&w.plage!==1; }
 function musicNow(){ if(mode==="plate"||mode==="turn"||mode==="title") return "titre";
+  { const z=zoneOf(); if(z==="nef") return office()?"nefOffice":"nef"; if(z==="parvis"||z==="cloitre") return "parvis"; }
   if(auClos()){ const e=recit().etape; return e==="lendemain"?"lendemain":(e==="nuit"?"":(e==="soir"?"titre":"volets")); }
   if(S.act===2){ if(mode==="cine2") return "litiere"; if(mode==="farce") return "farce"; if(T2.on) return "fanfare"; const s=S.stage;
     if(s>=15) return "aube"; if(s===14||s===10) return "nuit";
@@ -3931,18 +3938,22 @@ function ambSet(name,level,panV){ const c=Snd.ctx, now=c.currentTime; let L=Snd.
   if(L.src&&L.zero&&now-L.zero>12){ try{ L.src.stop(); }catch(e){} L.src.disconnect(); L.src=null; } }
 function ambient(dt){ const c=Snd.ctx, now=c.currentTime, P=player.position, inGame=mode!=="title", fete2=S.act===2&&night&&!!fete;
   const opening=sceneRun&&sceneRun.name==="matin";
-  Snd.mbus.gain.setTargetAtTime(opening?(sceneRun.t<5?.25:.5):(mode==="dialog"||mode==="sequence"?.55:1)*(Snd.musKey==="cour"?0.75+0.5*seen:1),now,.32);
+  Snd.mbus.gain.setTargetAtTime((Snd.duckUntil&&now<Snd.duckUntil?0.35:1)*(opening?(sceneRun.t<5?.25:.5):(mode==="dialog"||mode==="sequence"?.55:1)*(Snd.musKey==="cour"?0.75+0.5*seen:1)),now,.32);
   const mf=muffleHz(); Snd.mlp.frequency.setTargetAtTime(mf,now,0.3); Snd.clp.frequency.setTargetAtTime(Math.min(16000,mf*1.6),now,0.3);
   Snd.abus.gain.setTargetAtTime(mode==="plate"||mode==="turn"?0.35:(mode==="dialog"?0.8:1),now,0.5);
   const cl=v=>Math.max(0,Math.min(1,v)), dAt=(x,z)=>Math.hypot(P.x-x,P.z-z);
   const cour=cl((P.x-22)/4), chap=cl(1-dAt(52.7,-2)/9), act2Day=S.act===2&&!night;
   const lv={};
   if(!inGame){ lv.vent=0.35; lv.fontaine=0.3; lv.nuit=0.25; }
+  else if(zoneOf()==="nef"){ lv.nef=0.9; }
+  else if(zoneOf()==="parvis"){ lv.parvis=0.85; lv.vent=0.1; }
+  else if(zoneOf()==="cloitre"){ lv.cloitre=0.85; }
   else if(auClos()){ /* le clos des murailles : la maison, la cour, le jardin et le puits */
     const lx=P.x-O.clos[0], lz=P.z-O.clos[1], dedans=Math.abs(lx)<4.1&&Math.abs(lz)<3.1, e=recit().etape, soir=e==="soir"||e==="nuit";
-    const porte=cl(1-Math.hypot(lx-4,lz-0.6)/5);
+    const porte=cl(1-Math.hypot(lx+4,lz-0.6)/5), rue=cl((-lx-25)/30), atelier=cl(1-Math.hypot(lx+142.5,lz)/16);
     lv.maison=dedans?0.85:0.35*porte; lv.vent=0.08+(dedans?0:0.1)+0.3*weather;
-    if(soir){ lv.nuit=dedans?0.22:0.6; } else { lv.clos=dedans?0.22+0.25*porte+(recit().volets?0.15:0):0.85; }
+    if(soir){ lv.nuit=dedans?0.22:0.6; } else { lv.clos=(dedans?0.22+0.25*porte+(recit().volets?0.15:0):0.85)*(1-rue); lv.ruelle=0.5*rue; lv.marche=0.3*cl((-lx-90)/50); }
+    lv.atelier=0.7*atelier;
   }
   else {
     lv.vent=0.12+0.35*weather+(night?0.08:0)+cour*0.08;
@@ -3967,12 +3978,37 @@ function ambient(dt){ const c=Snd.ctx, now=c.currentTime, P=player.position, inG
     if(Snd.laughT<=0){ Snd.laughT=(near?6:11)+Math.random()*(near?5:12); playSfx("rires",(near?0.7:0.4)*Math.max(0.25,1-feteDist()/30),vary2(-0.6,0.6),vary2(0.9,1.1),Snd.crowd); }
     if(Snd.clinkT<=0){ Snd.clinkT=4+Math.random()*6; const g=fete.crowd[(Math.random()*fete.crowd.length)|0], d=Math.hypot(g.position.x-P.x,g.position.z-P.z); if(d<16) playSfx("trinquer",0.45*(1-d/16),pan(g.position.x),vary2(0.9,1.12)); } }
   if(night&&inGame&&(feteDist()>16||S.stage===14||mode==="cine2")){ Snd.owlT-=dt; if(Snd.owlT<=0){ Snd.owlT=18+Math.random()*20; playSfx("chouette",0.35,vary2(-0.7,0.7),vary2(0.96,1.04)); } }
-  if(!night&&!dawn&&inGame&&S.act!==2&&mode==="play"){ Snd.bellT-=dt; if(Snd.bellT<=0){ Snd.bellT=80+Math.random()*60; playSfx("cloche",0.22,-0.5,1.25); } }
   /* mémoire : on libère ce qu’on n’entend plus */
   Snd.gcT-=dt; if(Snd.gcT<=0){ Snd.gcT=5; for(const n in Snd.buf){ if(!(n.startsWith("mus-")||n.startsWith("amb-"))) continue; const k=n.slice(4);
     if(n.startsWith("mus-")&&Snd.mus.some(m=>m.name===n)) continue; if(n.startsWith("amb-")&&Snd.amb[k]&&Snd.amb[k].src) continue;
     if(now-(Snd.last[n]||0)>40) delete Snd.buf[n]; } } }
-function soundTick(dt){ if(!Snd.ctx||Snd.ctx.state!=="running") return; ambient(dt); musTick();
+/* ---------- les cloches de la cathédrale ----------
+   Le matin et le soir, l’angélus : trois fois trois coups de bourdon, puis une petite volée.
+   À midi, le carillon puis la grande volée des six cloches, sous laquelle le bourdon frappe douze coups.
+   Le dimanche et les jours de fête, la grande volée sonne aussi le matin. Entre deux, l’horloge frappe les heures. */
+const CATH={x:58,z:-40};
+function clocheEcoute(){ if(zoneOf()==="nef") return {g:0.55,f:900}; if(auClos()) return {g:0.5,f:1800};
+  const d=Math.hypot(player.position.x-CATH.x,player.position.z-CATH.z); return {g:Math.max(0.4,Math.min(1,1.15-d/120)),f:2200+13800*Math.max(0,Math.min(1,1-d/110))}; }
+function bell(name,vol,delay,o){ o=o||{}; const c=Snd.ctx; if(!c) return; const b=sndLoad(name), tries=o.tries||0;
+  if(!b){ if(tries<40) setTimeout(()=>bell(name,vol,Math.max(0,delay-0.25),Object.assign({},o,{tries:tries+1})),250); return; }
+  const at=c.currentTime+0.02+delay, s=c.createBufferSource(), g=c.createGain(); s.buffer=b; s.loop=!!o.dur; s.connect(g); g.connect(Snd.cbus);
+  if(o.fadeIn){ g.gain.setValueAtTime(0.0001,at); g.gain.linearRampToValueAtTime(vol,at+o.fadeIn); } else g.gain.setValueAtTime(vol,at);
+  if(o.dur){ g.gain.setValueAtTime(vol,at+o.dur); g.gain.linearRampToValueAtTime(0.0001,at+o.dur+(o.fadeOut||6)); s.start(at,Math.random()*b.duration*0.5); s.stop(at+o.dur+(o.fadeOut||6)+0.1); } else s.start(at);
+  s.onended=()=>{ s.disconnect(); g.disconnect(); }; (Snd.cloches=Snd.cloches||[]).push(name); }
+function coups(n,t0,ecart){ for(let i=0;i<n;i++) bell("cloche-bourdon",0.85,t0+i*(ecart||3.2)); }
+function angelus(t0){ for(let k=0;k<3;k++) coups(3,t0+k*12,3.2); }
+function sonnerie(quoi){ const w=tempsMonde(), v=w.j%2?"2":"1";
+  if(quoi==="matin"){ angelus(0.5); if(w.dim||w.fete) bell("midi-volee-"+v,0.8,36,{dur:30,fadeIn:4,fadeOut:10}); else bell("volee-petite",0.7,36,{dur:18,fadeIn:3,fadeOut:8}); signal("L’angélus du matin sonne à la cathédrale."); }
+  else if(quoi==="midi"){ bell("midi-carillon-"+v,0.85,0.5); bell("midi-volee-"+v,0.9,17,{dur:42,fadeIn:5,fadeOut:12}); coups(12,22,3.2); Snd.duckUntil=Snd.ctx.currentTime+75; signal("Midi sonne à la cathédrale : le carillon, puis toutes les cloches."); }
+  else if(quoi==="soir"){ angelus(0.5); bell("volee-petite",0.7,36,{dur:22,fadeIn:3,fadeOut:10}); signal("L’angélus du soir sonne à la cathédrale."); }
+  else if(quoi==="heure"){ const n=w.plage===0?7+((Math.random()*5)|0):(w.plage===1?1+((Math.random()*5)|0):6+((Math.random()*4)|0)); if(Math.random()<0.6) bell("cloche-quarts",0.6,0); coups(n,Math.random()<0.6?5:0.2,3.2); }
+  else if(quoi==="glas"){ bell("glas",0.85,0); signal("Le glas sonne à la cathédrale."); } }
+function clochesTick(dt){ const ec=clocheEcoute(), now=Snd.ctx.currentTime; Snd.cbus.gain.setTargetAtTime(ec.g,now,0.5); Snd.clp2.frequency.setTargetAtTime(ec.f,now,0.5);
+  if(mode==="title"||!S.vie) return; const w=tempsMonde(), key=w.j+":"+w.plage;
+  if(Snd.clocheCle===undefined){ Snd.clocheCle=key; Snd.heureT=60+Math.random()*90; if(w.plage===0&&recit().etape==="reveil"&&!(S.cloches||{})[key]){ (S.cloches=S.cloches||{})[key]=1; sonnerie("matin"); } return; }
+  if(key!==Snd.clocheCle){ Snd.clocheCle=key; Snd.heureT=120+Math.random()*90; if(!(S.cloches||{})[key]){ (S.cloches=S.cloches||{})[key]=1; for(const k in S.cloches) if(+k.split(":")[0]<w.j-1) delete S.cloches[k]; sonnerie(["matin","midi","soir"][w.plage]); } return; }
+  if(mode==="play"||mode==="dialog"){ Snd.heureT-=dt; if(Snd.heureT<=0){ Snd.heureT=150+Math.random()*120; sonnerie("heure"); } } }
+function soundTick(dt){ if(!Snd.ctx||Snd.ctx.state!=="running") return; ambient(dt); musTick(); clochesTick(dt);
   const U=player.userData, k=Math.floor(U.ph/Math.PI); if(k!==Snd.lastPh){ Snd.lastPh=k; if(U.amp>0.35) stepSound(player.position.x,player.position.z,0.55); }
   for(const o of guards){ if(!o.g.visible) continue; const u=o.g.userData, kk=Math.floor(u.ph/Math.PI); if(kk!==u.lastStep){ u.lastStep=kk; if(u.amp>0.35) stepSound(o.g.position.x,o.g.position.z,0.5,true); } } }
 

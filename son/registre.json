@@ -40,6 +40,16 @@
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
  },
  {
+  "id": "amb-cloitre",
+  "fichier": "son/amb-cloitre.mp3",
+  "categorie": "ambiance",
+  "duree_s": 25.1,
+  "usage": "Cloître (lieu à venir)",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Quiet cathedral cloister garden, a small stone fountain trickling, birds singing in a garden, slow footsteps under stone arcades, a breeze in the leaves, peaceful, no music, no voices"
+ },
+ {
   "id": "amb-clos",
   "fichier": "son/amb-clos.mp3",
   "categorie": "ambiance",
@@ -120,6 +130,16 @@
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
  },
  {
+  "id": "amb-nef",
+  "fichier": "son/amb-nef.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Intérieur de la cathédrale (lieu à venir)",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Inside a vast Gothic cathedral nave, huge reverberant silence, distant slow footsteps on stone, a faint whispered prayer, candles crackling, a chair creaking far away, a heavy door echoing in the distance, no music, no singing"
+ },
+ {
   "id": "amb-nuit",
   "fichier": "son/amb-nuit.mp3",
   "categorie": "ambiance",
@@ -128,6 +148,16 @@
   "boucle": true,
   "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "amb-parvis",
+  "fichier": "son/amb-parvis.mp3",
+  "categorie": "ambiance",
+  "duree_s": 30.0,
+  "usage": "Parvis de la cathédrale (lieu à venir)",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Busy stone square in front of a cathedral in an old town, pigeons cooing and fluttering, murmuring people, sellers of candles and rosaries calling softly, footsteps echoing against the great facade, a beggar's tin cup, no music"
  },
  {
   "id": "amb-pluie",
@@ -240,6 +270,16 @@
   "prompt": "Weighing on an old brass balance scale: small brass weights set one by one into the pan with metallic clinks, the pans swinging and settling with a light rattle of chains"
  },
  {
+  "id": "benitier",
+  "fichier": "son/benitier.mp3",
+  "categorie": "effet",
+  "duree_s": 1.5,
+  "usage": "Bénitier, en entrant (sfx(\"benitier\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Fingers dipped into a stone holy water stoup, small splash of water, quiet, inside a large reverberant church"
+ },
+ {
   "id": "bois",
   "fichier": "son/bois.mp3",
   "categorie": "effet",
@@ -260,6 +300,16 @@
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
  },
  {
+  "id": "cierge",
+  "fichier": "son/cierge.mp3",
+  "categorie": "effet",
+  "duree_s": 3.0,
+  "usage": "Allumer un cierge (sfx(\"cierge\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Lighting a wax candle from another candle in a church, small soft flare of the wick, a coin dropped into a wooden offering box, gentle echo of a large stone space"
+ },
+ {
   "id": "cloche",
   "fichier": "son/cloche.mp3",
   "categorie": "effet",
@@ -268,6 +318,36 @@
   "boucle": false,
   "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "cloche-bourdon",
+  "fichier": "son/cloche-bourdon.mp3",
+  "categorie": "cloche",
+  "duree_s": 8.0,
+  "usage": "Heures, angélus (3 × 3 coups), douze coups de midi, minuit",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "One single strike of a huge cathedral bourdon bell in a stone tower, very deep and warm fundamental tone with rich harmonics, struck by a hammer, long natural ringing decay over the town, outdoor, no other sounds"
+ },
+ {
+  "id": "cloche-quarts",
+  "fichier": "son/cloche-quarts.mp3",
+  "categorie": "cloche",
+  "duree_s": 5.0,
+  "usage": "Le quart, avant certaines heures",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Cathedral clock chiming the quarter hour on two bronze bells, a clear high note then a lower note, ding-dong, ringing across rooftops, outdoor"
+ },
+ {
+  "id": "clochette",
+  "fichier": "son/clochette.mp3",
+  "categorie": "effet",
+  "duree_s": 3.0,
+  "usage": "Élévation pendant l'office (sfx(\"clochette\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A small brass altar bell rung three times inside a vast stone cathedral, bright tinkling with a long echo"
  },
  {
   "id": "colle",
@@ -290,6 +370,16 @@
   "prompt": "Water poured from a wooden bucket into an earthenware jug, rising pitch as it fills, close"
  },
  {
+  "id": "encensoir",
+  "fichier": "son/encensoir.mp3",
+  "categorie": "effet",
+  "duree_s": 5.0,
+  "usage": "Procession (sfx(\"encensoir\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A brass censer swinging on its chains during a church procession, rhythmic metallic chain clinks, inside a vast stone cathedral"
+ },
+ {
   "id": "feuillet",
   "fichier": "son/feuillet.mp3",
   "categorie": "effet",
@@ -310,6 +400,16 @@
   "prompt": "Three firm knocks with knuckles on a thick old wooden house door, heard from inside"
  },
  {
+  "id": "glas",
+  "fichier": "son/glas.mp3",
+  "categorie": "cloche",
+  "duree_s": 20.0,
+  "usage": "Réservé aux heures sombres du récit (sonnerie(\"glas\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A single cathedral bell tolling slowly for a funeral, one deep stroke every four seconds, solemn, long decays, outdoor over a silent town"
+ },
+ {
   "id": "halte",
   "fichier": "son/halte.mp3",
   "categorie": "effet",
@@ -328,6 +428,46 @@
   "boucle": false,
   "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "Extrait de mus-mahaut"
+ },
+ {
+  "id": "midi-carillon-1",
+  "fichier": "son/midi-carillon-1.mp3",
+  "categorie": "cloche",
+  "duree_s": 22.0,
+  "usage": "Midi, les jours pairs : le carillon ouvre la sonnerie",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A cathedral carillon of bronze bells playing a slow, luminous and joyful hymn-like melody at noon, each note ringing and overlapping into rich harmonies, heard across an old town square in bright daylight, majestic and beautiful"
+ },
+ {
+  "id": "midi-carillon-2",
+  "fichier": "son/midi-carillon-2.mp3",
+  "categorie": "cloche",
+  "duree_s": 22.0,
+  "usage": "Midi, les jours impairs (seconde prise du même prompt)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Même prompt que midi-carillon-1"
+ },
+ {
+  "id": "midi-volee-1",
+  "fichier": "son/midi-volee-1.mp3",
+  "categorie": "cloche",
+  "duree_s": 30.0,
+  "usage": "Grande volée de midi (jours pairs) ; dimanche et fêtes au matin",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Grand full peal of six great cathedral bells swinging together at noon, deep bourdon underneath and brighter bells above, overlapping in a rich, harmonious, jubilant wash of bronze sound, echoing over the whole town, majestic and beautiful, outdoor, no voices"
+ },
+ {
+  "id": "midi-volee-2",
+  "fichier": "son/midi-volee-2.mp3",
+  "categorie": "cloche",
+  "duree_s": 30.0,
+  "usage": "Grande volée de midi (jours impairs) ; dimanche et fêtes au matin",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Même prompt que midi-volee-1"
  },
  {
   "id": "murmure",
@@ -354,7 +494,7 @@
   "fichier": "son/mus-branle.mp3",
   "categorie": "musique du monde",
   "duree_s": 88.3,
-  "usage": "Acte II, la fête (gaillarde), en alternance avec la ronde, filtrée par la distance",
+  "usage": "Acte II, la fête : gaillarde, puis ronde, puis tourdion, en boucle ; filtrée par la distance",
   "boucle": true,
   "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "16th century French gaillarde and branle de Bourgogne for a night festival, early music consort: Renaissance lute and cittern strumming rhythmic chords, soprano recorder and fiddle (vielle) playing the melody in unison, bagpipe joining for the chorus, tabor pipe, tambourine and bells on the dancers. Spirited, bouncy triple meter, joyful folk dance energy, historically informed performance, real acoustic period instruments, intimate live outdoor recording with a crowd faintly audible, instrumental only, no vocals, no modern instruments, no synths"
@@ -430,6 +570,36 @@
   "prompt": "Solo Renaissance violin played close with a restrained, intimate bow, a simple and memorable melancholic melody in A minor at a slow 60 BPM, supported by a very discreet lute playing sparse chords. It begins with the first three notes alone and a long pause, then states the full melody, develops it tenderly with a little more bow, and ends with the melody returning softly and fading on a held note. Historically informed early music, warm small room acoustic, no percussion, no other instruments, no vocals."
  },
  {
+  "id": "mus-nef-orgue",
+  "fichier": "son/mus-nef-orgue.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 74.6,
+  "usage": "Nef, hors office, avec de longs silences (lieu à venir)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Solo Renaissance positive organ with soft flute pipes playing a slow contemplative prelude in the style of a 16th century French organ tablature, gentle counterpoint over a held pedal note, quiet and meditative, in a vast stone cathedral with long reverb, ending on a sustained chord. No other instruments, no vocals."
+ },
+ {
+  "id": "mus-nef-plain-chant",
+  "fichier": "son/mus-nef-plain-chant.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 83.7,
+  "usage": "Nef, office du dimanche et des fêtes (lieu à venir)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Gregorian plainchant sung in Latin by a small schola of men's voices in unison, free unmeasured rhythm, calm and devotional, in a vast stone cathedral with a very long natural reverb. A single cantor intones, the choir answers, the melody rises gently and settles to a quiet final note. A cappella, no instruments."
+ },
+ {
+  "id": "mus-nef-polyphonie",
+  "fichier": "son/mus-nef-polyphonie.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 89.5,
+  "usage": "Nef, office, en alternance avec le plain-chant (lieu à venir)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Renaissance a cappella motet for four voices sung in Latin in the style of Josquin des Prez, soprano, alto, tenor and bass weaving imitative polyphony, luminous and serene, slow tempo, in a large cathedral with long reverb, building to a full radiant chord and ending softly. No instruments."
+ },
+ {
   "id": "mus-nuit",
   "fichier": "son/mus-nuit.mp3",
   "categorie": "musique de récit",
@@ -440,11 +610,31 @@
   "prompt": "Instrumental night music, solo Renaissance lute arpeggios with a slow bowed viola da gamba line, intimate, quiet determination, secret work by candlelight, slow tempo, A minor, steady throughout, no vocals"
  },
  {
+  "id": "mus-parvis-cloitre",
+  "fichier": "son/mus-parvis-cloitre.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 77.3,
+  "usage": "Quartier de la cathédrale et cloître, en alternance avec le parvis (lieu à venir)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental contemplative Renaissance music for a cathedral cloister and its quiet quarter in the late afternoon: a consort of viols playing slow sustained counterpoint with a tenor recorder melody, gentle and luminous, slow tempo in D dorian, steady throughout, historically informed early music, warm acoustic, no percussion, no vocals."
+ },
+ {
+  "id": "mus-parvis-jour",
+  "fichier": "son/mus-parvis-jour.mp3",
+  "categorie": "musique de récit",
+  "duree_s": 88.7,
+  "usage": "Quartier de la cathédrale, de jour (lieu à venir)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Instrumental Renaissance consort for the busy square in front of a cathedral: lute and soprano recorder sharing a bright modal melody, viola da gamba bass, light tambourine, warm and lively but dignified, moderate tempo in G mixolydian, steady mood throughout so it can loop, historically informed early music, acoustic, no vocals."
+ },
+ {
   "id": "mus-ronde",
   "fichier": "son/mus-ronde.mp3",
   "categorie": "musique du monde",
   "duree_s": 88.1,
-  "usage": "Acte II, la fête (ronde), en alternance avec la gaillarde",
+  "usage": "Acte II, la fête : deuxième des trois danses",
   "boucle": true,
   "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "Renaissance dance music in the style of Tielman Susato's Danserye (1551), La Mourisque and the Ronde, played by an early music street band at a town festival: recorders and crumhorns in the melody, rauschpfeife and shawm, dulcian bass, hurdy-gurdy, frame drum, tambourine and clapping hands. Lively 4/4 round dance, catchy repeated tune, celebratory and a little drunken, historically informed performance, real acoustic period instruments, warm outdoor live recording, instrumental only, no vocals, no modern instruments, no synths"
@@ -458,6 +648,16 @@
   "boucle": false,
   "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "Instrumental 16th century French Renaissance pavane, solo lute with a soft alto recorder, melancholic and intimate, slow tempo, D minor, recorded acoustically in a small stone room, gentle, no percussion, no vocals"
+ },
+ {
+  "id": "mus-tourdion",
+  "fichier": "son/mus-tourdion.mp3",
+  "categorie": "musique du monde",
+  "duree_s": 88.4,
+  "usage": "Acte II, la fête : troisième des trois danses",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_music_v2_5, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Authentic French Renaissance dance music in the style of Pierre Attaingnant's tourdion and branles (1530), played by a loud outdoor alta capella band of an early music ensemble: shawms and bombarde carrying the melody, sackbut, bagpipe (cornemuse) drone, tabor drum and tambourine driving a strong dance beat. Festive town square at night, people dancing in a circle. Bright, joyful, fast triple-meter dance, historically informed performance, real acoustic instruments, live recording feel, instrumental only, no vocals, no modern instruments, no synths, no orchestra strings"
  },
  {
   "id": "mus-tribut",
@@ -550,6 +750,66 @@
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
  },
  {
+  "id": "pas-nef-0",
+  "fichier": "son/pas-nef-0.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
+  "id": "pas-nef-1",
+  "fichier": "son/pas-nef-1.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
+  "id": "pas-nef-2",
+  "fichier": "son/pas-nef-2.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
+  "id": "pas-nef-3",
+  "fichier": "son/pas-nef-3.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
+  "id": "pas-nef-4",
+  "fichier": "son/pas-nef-4.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
+  "id": "pas-nef-5",
+  "fichier": "son/pas-nef-5.mp3",
+  "categorie": "effet",
+  "duree_s": 0.6,
+  "usage": "Pas dans la nef (découpés dans une prise de huit pas)",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "Footsteps of one person walking slowly on stone slabs inside a vast cathedral, leather shoes, about eight distinct evenly spaced steps with long echoes, no other sounds"
+ },
+ {
   "id": "pieces",
   "fichier": "son/pieces.mp3",
   "categorie": "effet",
@@ -570,6 +830,16 @@
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
  },
  {
+  "id": "pigeons",
+  "fichier": "son/pigeons.mp3",
+  "categorie": "effet",
+  "duree_s": 3.0,
+  "usage": "Envol sur le parvis (sfx(\"pigeons\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A flock of pigeons suddenly taking off from a stone square, loud wing flapping, then fading up into the sky"
+ },
+ {
   "id": "plume",
   "fichier": "son/plume.mp3",
   "categorie": "effet",
@@ -588,6 +858,16 @@
   "boucle": false,
   "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "porte-cathedrale",
+  "fichier": "son/porte-cathedrale.mp3",
+  "categorie": "effet",
+  "duree_s": 4.0,
+  "usage": "Entrer dans la cathédrale (sfx(\"porte-cathedrale\"))",
+  "boucle": false,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A massive oak cathedral door with iron studs pushed open, deep groan of hinges, then it thuds shut with an enormous echo inside the stone nave"
  },
  {
   "id": "presse",
@@ -648,6 +928,16 @@
   "boucle": false,
   "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
   "prompt": "voir l'historique du dépôt (refonte du son, 25 novembre 2026)"
+ },
+ {
+  "id": "volee-petite",
+  "fichier": "son/volee-petite.mp3",
+  "categorie": "cloche",
+  "duree_s": 25.1,
+  "usage": "Après l'angélus du matin (jours ordinaires) et du soir",
+  "boucle": true,
+  "source": "ElevenLabs, eleven_text_to_sound_v3, projet « Sarlande - son », compte Starter (usage commercial autorisé)",
+  "prompt": "A gentle peal of three small church bells swinging in a tower in the evening, light and tender, irregular overlapping rhythm, distant over rooftops, outdoor, no voices"
  },
  {
   "id": "volets",
