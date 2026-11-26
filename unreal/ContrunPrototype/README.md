@@ -38,3 +38,22 @@ Pour vérifier seulement la conversion des modèles, du relief et du son, utilis
 4. Mesurer les images par seconde dans la rue et dans l’atelier sur le `.exe`, par exemple avec le widget Performances de la Xbox Game Bar (**Win + G**). Si 30 images par seconde ne tiennent pas, refaire le même trajet à 1280 × 800 avec `-ResX=1280 -ResY=800 -WINDOWED` et relever le résultat.
 
 La version Windows et la fluidité restent à vérifier sur le Zenbook.
+
+## Ajouter Sarlande à un projet Unreal 5.8 existant
+
+Sur Windows, enregistrer et fermer le projet de destination, puis ouvrir un nouveau PowerShell. Le dépôt complet peut être conservé dans `SourcesGitHub` à la racine du projet. Indiquer le fichier `.uproject` à l’importateur.
+
+```powershell
+$projet = 'C:\chemin\vers\le_contr_un\le_contr_un.uproject'
+$sources = Join-Path (Split-Path -Parent $projet) 'SourcesGitHub'
+git clone --depth 1 --single-branch --branch codex/transfert-unreal https://github.com/lmangolini8-svg/le-contrun.git $sources
+if ($LASTEXITCODE -ne 0) { throw 'Le telechargement du depot a echoue.' }
+$transfert = Join-Path $sources 'unreal\ContrunPrototype\Tools\Transfer-ToProject.ps1'
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File $transfert -ProjectFile $projet
+```
+
+Le script utilise les mêmes outils Windows que la compilation. Il cherche UE 5.8 à l’emplacement habituel, puis dans les installations du lanceur Epic. Pour une autre installation, passer `-EngineRoot`. Utiliser `-BlenderExe` si Blender se trouve ailleurs.
+
+Il produit la carte et ses ressources dans le projet Unreal du dépôt, puis compile un plugin Win64 qui contient le code jouable. Il ajoute `Content/Sarlande` et `Plugins/ContrunPrototype` au projet de destination. Il active le plugin dans le fichier `.uproject` et conserve une copie de l’original dans `*.avant-sarlande-*.bak`. La carte utilise son propre mode de jeu. Ensuite, rouvrir le projet de destination, ouvrir **Contenu → Sarlande → Cartes → ClosImprimerie** et cliquer sur **Jouer**.
+
+`SourcesGitHub` contient aussi le jeu web, les références et les ressources originales. Le prototype natif couvre le trajet du clos à l’imprimerie, le dialogue et le retour dans la rue. Le transfert et le chargement du plugin restent à vérifier avec UE 5.8 sous Windows.

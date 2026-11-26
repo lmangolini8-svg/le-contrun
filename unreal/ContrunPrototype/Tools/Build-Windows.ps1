@@ -4,7 +4,8 @@ param(
     [string]$BlenderExe = 'blender',
     [string]$FfmpegExe = 'ffmpeg',
     [string]$OutputDir,
-    [switch]$PrepareOnly
+    [switch]$PrepareOnly,
+    [switch]$GenerateOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -40,10 +41,12 @@ if (-not $PrepareOnly) {
     $EngineRoot = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($EngineRoot)
     $build = Join-Path $EngineRoot 'Engine/Build/BatchFiles/Build.bat'
     $editor = Join-Path $EngineRoot 'Engine/Binaries/Win64/UnrealEditor-Cmd.exe'
-    $uat = Join-Path $EngineRoot 'Engine/Build/BatchFiles/RunUAT.bat'
     Require-File $build
     Require-File $editor
-    Require-File $uat
+    if (-not $GenerateOnly) {
+        $uat = Join-Path $EngineRoot 'Engine/Build/BatchFiles/RunUAT.bat'
+        Require-File $uat
+    }
     Require-File $builder
 }
 
@@ -59,7 +62,12 @@ $receipt = Join-Path $projectDir 'Generated/prototype.ready'
 if (Test-Path -LiteralPath $receipt) { Remove-Item -LiteralPath $receipt -Force }
 Invoke-Checked $editor @($project, "-ExecutePythonScript=$builder", '-Unattended', '-NoSplash', '-NoP4')
 Require-File $receipt
-Require-File (Join-Path $projectDir 'Content/Sarlande/Cartes/ClosImprimerie.umap')
+$mapFile = Join-Path $projectDir 'Content/Sarlande/Cartes/ClosImprimerie.umap'
+Require-File $mapFile
+if ($GenerateOnly) {
+    Write-Host "Carte Unreal generee : $mapFile"
+    return
+}
 
 if (-not $OutputDir) { $OutputDir = Join-Path $projectDir 'Build/Windows' }
 $OutputDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputDir)
