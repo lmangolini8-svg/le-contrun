@@ -63,6 +63,15 @@ const AnimationAlienor = (() => {
     const accessoires = new Map();
     let rig = null;
     let expression = "";
+    let sourireDirige = false;
+    if (actif && u.smile) {
+      const sourireOriginal = u.smile;
+      // Les scènes dirigées animent ce signal en même temps que la pose.
+      u.smile = on => {
+        sourireOriginal(on);
+        sourireDirige = on;
+      };
+    }
 
     joueur.getWorldQuaternion(inverseJoueur).invert();
     const poseInitiale = Object.fromEntries(articulations.map(([name, source]) => {
@@ -132,6 +141,7 @@ const AnimationAlienor = (() => {
     }
 
     function image(dt, { mode, heure, tenue, masque, sac, encre, derriereMur }) {
+      if (mode !== "sequence") sourireDirige = false;
       if (!rig) return;
       const visible = mode !== "title" && mode !== "plate";
       model.visible = visible;
@@ -150,8 +160,9 @@ const AnimationAlienor = (() => {
       }
       for (let i = 0; i < COTES.length; i++) pied(rig.jambes[i], i);
       rig.indigo.value = tenue === "indigo" ? 1 : 0;
+      const expressionActive = mode === "dialog" ? expression : sourireDirige ? "Sourire" : "";
       for (const [name, index] of rig.expressions) {
-        const cible = mode === "dialog" && expression === name ? 1 : 0;
+        const cible = expressionActive === name ? 1 : 0;
         rig.skin.morphTargetInfluences[index] = THREE.MathUtils.damp(
           rig.skin.morphTargetInfluences[index], cible, 10, dt);
       }

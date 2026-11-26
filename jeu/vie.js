@@ -247,6 +247,7 @@ function carnetVie() {
   const rencontres = M.observations(v).reverse().map(e =>
     `<li><b>${esc(e.nom)} · ${esc(M.LIEUX[e.lieu]?.nom || e.lieu)}</b><br>${esc(C.lisible(e.t).date)} · ${esc(C.lisible(e.t).plage)}<br>${esc(e.texte)}</li>`);
   const rdv = M.rendezVous(v);
+  const rectification = M.rectificationEnCours(v);
   const carte = ["I", "II", "III", "IV", "V"][Math.min(5, S.act || 1) - 1];
   return `<div class="feuil vie-carnet"><span class="kick">Ma carte · acte ${carte}</span><img class="carte-acte" src="img/carnet/carnet_${carte}.webp" alt="Carte du carnet pour l’acte ${carte} : les lieux et les chemins repérés par Aliénor."></div>
   <div class="feuil vie-carnet"><span class="kick">Almanach et journal</span>
@@ -256,6 +257,7 @@ function carnetVie() {
   ${suj.length ? `<p class="small">Sujets abordés, à relire avant d’y revenir :</p><ul>${suj.join("")}</ul>` : ""}
   ${rencontres.length ? `<h3>Journal des rencontres</h3><ul>${rencontres.join("")}</ul>` : ""}
   ${rdv ? `<p><b>Rendez-vous</b> · ${esc(M.HABITANTS[rdv.a].nom)} · ${esc(M.LIEUX[rdv.lieu].nom)} · ${esc(C.lisible(rdv.t).date)}, ${esc(C.lisible(rdv.t).plage)}</p>` : ""}
+  ${rectification ? "<p><b>Parole donnée à Maëlle.</b> Dans la ville, retrouver quelqu’un qui a assisté à la pesée et lui expliquer le poids de la farine.</p>" : ""}
   ${adr.length ? `<p class="small">Adresses et horaires découverts :</p><ul>${adr.join("")}</ul>` : ""}
   ${ens.length ? `<p class="small">Enseignes repérées :</p><ul>${ens.join("")}</ul>` : ""}
   <p class="small">Épreuves de l’atelier :</p><ul>${ex.join("")}</ul>
@@ -263,7 +265,7 @@ function carnetVie() {
 }
 
 /* ================= Petites aides ================= */
-function cloche(n) { signal("La cloche de la place sonne " + n + " coups."); const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
+function cloche(n) { signal("La cloche de la place sonne " + n + " coups.", "cloche"); const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
 function apres(t) { save(); refreshHud(); return t; }
 const PL = () => C.PLAGES[M.plage(V())];
 function choix(opts) { return { choices: opts.filter(Boolean) }; }

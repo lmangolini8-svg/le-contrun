@@ -4,7 +4,7 @@
    jours de marché, jour du tribut, écarts motivés). Quand la plage change, ils rejoignent leur nouveau
    lieu à pied, par les rues ; sur place, ils vont et viennent entre deux ou trois points de leur poste.
    Des passants traversent la ville entre les portes, la fontaine, les halles et le quai ; ils sont moins
-   nombreux le soir. On peut saluer chacun : ils rapportent ce qui se dit dans leur quartier.
+   nombreux le soir. Les habitants nommés répondent selon ce qu’ils savent eux-mêmes.
    Chargé après jeu/ville.js. */
 "use strict";
 (function () {
@@ -50,6 +50,8 @@ const MOTS = {
   percepteur: { _: "Le percepteur vous regarde sans vous voir. « Circulez. »" }
 };
 const QUARTIER_DE_SECTEUR = { 5: "imprimerie", 6: "place", 7: "place", 8: "clos", 9: "quai" };
+const tributOuvert = () => S.act === 1 && S.stage === 1 && !V().recit.tribut;
+const posteTribut = m => m.hab === "percepteur" && tributOuvert() ? W.tribunalAtlas?.() : null;
 
 /* ================= Marcheurs ================= */
 const marcheurs = [];
@@ -64,7 +66,7 @@ function creerMarcheur(o) {
   marcheurs.push(m); return m;
 }
 function suivant(m) {
-  if (m.hab) { const P = POSTES[m.lieu]; if (!P) return; const [X, Y] = P[Math.floor(Math.random() * P.length)]; m.attente = 6 + Math.random() * 14; return allerA(m, X, Y); }
+  if (m.hab) { const P = POSTES[m.lieu]; if (!P || posteTribut(m)) return; const [X, Y] = P[Math.floor(Math.random() * P.length)]; m.attente = 6 + Math.random() * 14; return allerA(m, X, Y); }
   const B = BUTS[Math.floor(Math.random() * BUTS.length)]; m.attente = 2 + Math.random() * 6; allerA(m, B[0], B[1]);
 }
 let BUTS = [];
@@ -84,13 +86,26 @@ function preparer() {
 /* Qui est là : l'agenda pour les habitants, la plage pour le nombre de passants. */
 function recenser(depart) {
   const v = V(), plage = M.plage(v), nuit = S.act === 2 || plage === 2;
+  const rangs = new Map();
   for (const m of marcheurs) {
     if (m.passant) { const vis = m.rang < (nuit ? 5 : plage === 1 ? 12 : 16); if (vis && !m.g.visible && !m.pts) suivant(m); m.g.visible = vis; continue; }
-    const lieu = M.lieuDe(v, m.hab), P = POSTES[lieu], avant = m.g.visible;
+    const lieu = M.lieuDe(v, m.hab), poste = posteTribut(m), P = POSTES[lieu], avant = m.g.visible;
     m.lieu = lieu;
+    if (poste) {
+      poser(m, poste.X, poste.Y); m.g.visible = true;
+      m.but = null; m.pts = null;
+      continue;
+    }
     if (!P) { m.g.visible = false; m.pts = null; continue; }
-    if (!avant || depart) { const d = W.accroche(...P[0]); if (d) poser(m, d[0], d[1]); m.g.visible = !!d; m.attente = 3 + Math.random() * 6; m.pts = null; }
-    else allerA(m, ...P[0]); // la plage a changé : il rejoint son nouveau lieu à pied
+    const rang = rangs.get(lieu) || 0;
+    rangs.set(lieu, rang + 1);
+    const [X, Y] = P[rang % P.length], x = X + 2.5 * Math.floor(rang / P.length);
+    if (!avant || depart) {
+      const d = W.accroche(x, Y);
+      if (d) poser(m, d[0], d[1]);
+      m.g.visible = !!d; m.attente = 3 + Math.random() * 6; m.pts = null;
+    }
+    else allerA(m, x, Y); // la plage a changé : il rejoint son nouveau lieu à pied
   }
 }
 function pas(m, dt) {
@@ -113,7 +128,7 @@ function pas(m, dt) {
 function vivre(dt) {
   if (!W.enVille()) return;
   if (!pret) { preparer(); recenser(true); }
-  const t = V().t, k = S.act + ":" + t;
+  const k = S.act + ":" + V().t + ":" + tributOuvert();
   if (k !== tVu) { const depart = tVu === null; tVu = k; recenser(depart); }
   const m = file.shift();
   if (m && m.but) { const pts = W.chemin({ X: m.X, Y: m.Y }, m.but); m.but = null; if (pts && pts.length > 1) { m.pts = pts; m.k = 1; } }
@@ -131,9 +146,23 @@ function rumeur(q) {
 }
 function saluer(m) {
   const v = V(); M.saluer(v, m.hab);
-  const mots = MOTS[m.hab] || {}, q = (M.LIEUX[m.lieu] || {}).q, r = q && rumeur(q), L = [[m.nom, mots[m.lieu] || mots._ || "« Bonjour. »"]];
-  if (r && m.hab !== "percepteur") L.push([m.nom, "« On dit dans le quartier : " + r.charAt(0).toLowerCase() + r.slice(1).replace(/\.$/, "") + ". »"]);
+  const mots = MOTS[m.hab] || {}, L = [[m.nom, mots[m.lieu] || mots._ || "« Bonjour. »"]];
   v.croises = v.croises || {}; v.croises[m.hab] = { lieu: m.lieu, t: v.t }; // le carnet sait où on l'a vu
+  const opts = [], fait = m.hab === "percepteur" ? null : M.prochaineNouvelle(v, m.hab);
+  if (fait) opts.push(["Demander des nouvelles", () => {
+    const n = M.entendreNouvelle(v, m.hab, fait, m.lieu);
+    if (!n) return nextLine();
+    save();
+    talk([[m.nom, `« ${n.vu ? "Voilà ce dont je peux témoigner." : "Voilà ce qu’on m’a raconté."} ${n.texte} »`]], Vie.apres);
+  }]);
+  if (M.peutRectifierMiche(v, m.hab)) opts.push(["Tenir parole : expliquer le poids de la farine", () => {
+    if (!M.rectifierMiche(v, m.hab, m.lieu)) return nextLine();
+    save();
+    talk([[AL, "« Tu as vu le poids qui manquait. Maëlle m’a expliqué que la farine était déjà pesée au palais, sur leur balance. C’est de là que vient la différence. »"],
+      [m.nom, m.hab === "perrine" ? "« Alors je lui dois de l’écouter. Je retournerai au fournil. »"
+        : "« Je n’avais vu que la miche sur le plateau. Maintenant je sais ce que tu m’as appris. »"]], Vie.apres);
+  }]);
+  if (opts.length) L.push({ choices: opts.concat([["Prendre congé", nextLine]]) });
   talk(L, Vie.apres);
 }
 function parlerPassant(m) {

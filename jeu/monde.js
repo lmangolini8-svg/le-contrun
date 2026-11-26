@@ -239,6 +239,20 @@
     return true;
   }
   const sait = (vie, hab, fait) => (vie.sait[hab] || {})[fait] || null;
+  function prochaineNouvelle(vie, hab) {
+    const nouvelles = Object.entries(vie.sait[hab] || {})
+      .filter(([fait, recit]) => FAITS[fait]?.circule && FAITS[fait].v[recit.v]
+        && recit.v > (sait(vie, "alienor", fait)?.v || 0));
+    nouvelles.sort((a, b) => b[1].t - a[1].t || b[1].v - a[1].v);
+    return nouvelles[0]?.[0] || null;
+  }
+  function entendreNouvelle(vie, hab, fait, lieu) {
+    const recit = sait(vie, hab, fait), texte = FAITS[fait]?.v[recit?.v];
+    if (!HABITANTS[hab] || !FAITS[fait]?.circule || !texte || !savoir(vie, "alienor", fait, recit.v, hab, false)) return null;
+    observer(vie, `ouie:${hab}:${fait}:${recit.v}`, hab, lieu,
+      (recit.vu ? "Témoignage direct rapporté à Aliénor. " : "Rumeur rapportée à Aliénor. ") + texte);
+    return { texte, vu: recit.vu };
+  }
   function lien(vie, de, a) { const k = de + ">" + a; return vie.rel[k] || (vie.rel[k] = { aff: 0, conf: 0 }); }
   function lier(vie, de, a, aff, conf) { const l = lien(vie, de, a); l.aff = clamp(l.aff + (aff || 0), -5, 5); l.conf = clamp(l.conf + (conf || 0), -5, 5); return l; }
   function reputer(vie, q, d) { vie.reputation[q] = clamp((vie.reputation[q] || 0) + d, -5, 5); }
@@ -334,6 +348,21 @@
     lier(vie, hab, "alienor", 1, 1);
     observer(vie, e.id + ":tenu", hab, lieu, "Aliénor a tenu son rendez-vous.");
     return e;
+  }
+  function rectificationEnCours(vie) {
+    return vie.engagements.find(e => e.id === "rectifier:place" && e.etat === "prevu" && e.t >= vie.t) || null;
+  }
+  function peutRectifierMiche(vie, hab) {
+    return !!rectificationEnCours(vie) && !!HABITANTS[hab] && hab !== "maelle" && hab !== "percepteur"
+      && !!sait(vie, hab, "pesee_publique")?.vu && sait(vie, "alienor", "miche_legere")?.v >= 2;
+  }
+  function rectifierMiche(vie, hab, lieu) {
+    if (!peutRectifierMiche(vie, hab) || !tenir(vie, "rectifier:place")) return false;
+    savoir(vie, hab, "miche_legere", 2, "alienor", false);
+    lier(vie, "maelle", "alienor", 0, 1);
+    if (hab === "perrine") delete vie.fournisseurs.perrine;
+    observer(vie, "rectifier:place", hab, lieu, "Aliénor a transmis à un témoin l’explication de Maëlle : le poids manquait déjà à la livraison du palais.");
+    return true;
   }
 
   /* ================= Le lendemain : un motif compréhensible pour aborder Aliénor ================= */
@@ -474,8 +503,9 @@
     VERSION, LIEUX, QUARTIERS, HABITANTS, ARTICLES, BOUTIQUES, TRAVAUX, EXAMENS, FAITS, SUJETS,
     creer, migrer, applique, appliquer, noter, observer, observations, jour, plage, estJourTribut, lieuDe, motifEcart, ecarter, presents,
     avancer, avancerJusqua, effort, depenser, pause, manger, conviction, dormir,
-    savoir, sait, lien, lier, reputer, versionDansQuartier, transmettre,
+    savoir, sait, prochaineNouvelle, entendreNouvelle, lien, lier, reputer, versionDansQuartier, transmettre,
     engager, tenir, annuler, resoudrePlage, visiteEnCours, recevoir, reporter, rendezVous, honorerRendezVous, motifLendemain, prevoirLendemain,
+    rectificationEnCours, peutRectifierMiche, rectifierMiche,
     peserMiche, parler, saluer, ouvert, horaires, acheter, devis, accepter, livrer, passerExamen, almanach, hache
   };
 });

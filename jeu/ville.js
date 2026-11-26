@@ -1,7 +1,7 @@
 /* Sarlande à l'échelle de l'atlas : le trajet du clos à l'imprimerie, aux halles et au quai, à pied, sur le relief réel.
 
    Une zone marchable de plus, construite à côté des scènes existantes : la place des actes I et II garde
-   pour l'instant son décor resserré. Le terrain, les bâtiments et les rues viennent de jeu/atlas.js et
+   son décor resserré pour certaines cinématiques et pour la fête. Le relief et les rues viennent de jeu/atlas.js et
    passent tous par Atlas.versScene ; la zone est seulement décalée de VILLE.x sur l'axe est, loin de la carte.
 
    Raccords : depuis le seuil de la maison, trajet à pied dans l’atlas ; retour au même seuil.
@@ -74,6 +74,20 @@ for (const s of SITES) if (OUVERT.has(s.surface)) { const b = rect(s); cellules(
   for (let it = 0; it < 240; it++) for (let k = 0; k < L.length; k++) { const i = L[k]; haut[i] = (haut[i - 1] + haut[i + 1] + haut[i - GW] + haut[i + GW]) / 4; } }
 const MARGE = 0.45; // le rayon d'Aliénor : les murs se tiennent à distance
 for (const s of SITES) if (BATI.has(s.surface) && s.id !== "pont") { const b = rect(s); cellules(b.x0 - MARGE, b.x1 + MARGE, b.y0 - MARGE, b.y1 + MARGE, i => { grille[i] = MUR; }); }
+// Les caisses offrent un couvert pendant la fouille. La rue au sud garde assez de largeur.
+const COUVERTS_COUR = [
+  { X: 425, Y: 429, w: 2.2, d: 2.2, h: 1.9 },
+  { X: 438, Y: 427, w: 2.4, d: 1.9, h: 1.9 },
+  { X: 449, Y: 430, w: 2.1, d: 1.7, h: 1.8 },
+  { X: 459, Y: 426, w: 2, d: 1.6, h: 2.0 }
+];
+const PILIERS_POTERNE = [432.4, 439.7].map(Y => ({ X: 402, Y, w: 1.15, d: 0.95, h: 4.2 }));
+function empriseObstacle({ X, Y, w, d }, marge = 0) {
+  return [X - w / 2 - marge, X + w / 2 + marge, Y - d / 2 - marge, Y + d / 2 + marge];
+}
+for (const o of [...COUVERTS_COUR, ...PILIERS_POTERNE]) {
+  cellules(...empriseObstacle(o, MARGE), i => { grille[i] = MUR; });
+}
 
 /* Sol de marche, interpolé entre les centres des cellules. Hors de l'emprise : le relief de l'atlas. */
 function sol(X, Y) {
@@ -190,6 +204,40 @@ paves.onBeforeCompile = sh => {
   `);
 };
 let bati = false;
+let afficheAtlas = null;
+const gardesAtlas = [];
+function batirPatrouilles() {
+  const trajets = [
+    [[421, 418], [430, 424], [423, 430], [419, 426]],
+    [[443, 418], [453, 422], [448, 426], [441, 423]],
+    [[462, 419], [462, 424], [461, 431], [456, 430]]
+  ];
+  for (const tracé of trajets) {
+    const parcours = [];
+    for (let k = 0; k < tracé.length; k++) {
+      const [ax, ay] = tracé[k], [bx, by] = tracé[(k + 1) % tracé.length];
+      const points = chemin({ X: ax, Y: ay }, { X: bx, Y: by });
+      if (!points) break;
+      for (const [x, y] of points.slice(0, -1)) {
+        const pos = VS(x, y);
+        parcours.push([pos.x, pos.z]);
+      }
+    }
+    if (parcours.length < 2) continue;
+    const o = guard(parcours, 1.9, { atlas: true });
+    o.g.visible = false;
+    o.cone.visible = false;
+    gardesAtlas.push(o);
+  }
+}
+function poserObstacle(o, couleur) {
+  const { X, Y, w, d, h } = o;
+  const m = VS(X, Y);
+  put(G.box, couleur, m.x, m.y + h / 2 - 0.1, m.z, w, h + 0.2, d);
+  const [X0, X1, Y0, Y1] = empriseObstacle(o);
+  const a = VS(X0, Y0), b = VS(X1, Y1);
+  solid(a.x, b.x, a.z, b.z);
+}
 
 function remplacerFacade(fichier, support, centre, largeur, hauteur, profondeur, angle) {
   const cle = "ville/" + fichier;
@@ -197,7 +245,7 @@ function remplacerFacade(fichier, support, centre, largeur, hauteur, profondeur,
     _glbCache[cle] = gltfLoader().then(loader => new Promise((ok, ko) =>
       loader.load("modeles/" + cle + ".glb", gltf => ok(decorMaterials(gltf.scene)), undefined, ko)));
   }
-  _glbCache[cle].then(modele => {
+  return _glbCache[cle].then(modele => {
     const copie = modele.clone();
     copie.rotation.y = angle;
     const volume = new THREE.Box3().setFromObject(copie);
@@ -210,6 +258,7 @@ function remplacerFacade(fichier, support, centre, largeur, hauteur, profondeur,
     groupe.add(copie);
     scene.add(groupe);
     support.visible = false;
+    return groupe;
   }).catch(e => console.warn("Façade atlas indisponible : " + fichier, e));
 }
 
@@ -296,11 +345,27 @@ function batirVille() {
         const bassin = repli ? repli.put.bind(repli) : put;
         bassin(G.c16, ST, m.x, m.y + 0.45, m.z, Math.min(w, d) * 0.9, 0.9, Math.min(w, d) * 0.9);
         bassin(G.c16, 0x6f8fa6, m.x, m.y + 0.86, m.z, Math.min(w, d) * 0.75, 0.05, Math.min(w, d) * 0.75);
-        if (s.id === "fontaine") bassin(G.c8, ST2, m.x, m.y + 1.6, m.z, 0.3, 2.2, 0.3);
+        if (s.id === "fontaine") {
+          bassin(G.c8, ST2, m.x, m.y + 1.6, m.z, 0.3, 2.2, 0.3);
+          afficheAtlas = new THREE.Mesh(G.box, LM(0xfff6dc));
+          afficheAtlas.name = "Affiche de l’aube";
+          afficheAtlas.scale.set(0.52, 0.46, 0.025);
+          afficheAtlas.rotation.y = Math.PI / 2;
+          afficheAtlas.position.set(m.x + w * 0.45 + 0.02, m.y + 0.67, m.z);
+          afficheAtlas.visible = false;
+          scene.add(afficheAtlas);
+        }
         if (repli) {
           const support = repli.mesh(cityPaint);
           scene.add(support);
-          remplacerFacade("fontaine", support, m, w, 4.65, d, 0);
+          remplacerFacade("fontaine", support, m, w, 4.65, d, 0).then(groupe => {
+            if (!groupe) return;
+            groupe.updateMatrixWorld(true);
+            const { y, z } = afficheAtlas.position;
+            const rayon = new THREE.Raycaster(new THREE.Vector3(m.x + w, y, z), new THREE.Vector3(-1, 0, 0), 0, w);
+            const face = rayon.intersectObject(groupe, true)[0];
+            if (face) afficheAtlas.position.x = face.point.x + 0.025;
+          });
         }
       } else if (s.id === "lavoir") {
         put(G.box, ST, m.x, m.y + 0.3, m.z, w, 0.6, d); put(G.box, 0x6f8fa6, m.x, m.y + 0.55, m.z, w - 0.6, 0.05, d - 0.6);
@@ -313,10 +378,19 @@ function batirVille() {
         put(G.c16, WOOD, m.x - 1.4, m.y + 1.8, m.z, 3.4, 0.6, 3.4, 0, 0, Math.PI / 2); solid(m.x - 0.4, m.x + 0.4, m.z - 0.4, m.z + 0.4);
       } else if (s.id === "estrade") {
         put(G.box, WOOD, m.x, m.y + 0.5, m.z, w, 1, d);
+        const face = VS(s.centre.X, b.y1 + 0.8);
+        put(G.box, WOOD, face.x, face.y + 0.19, face.z, 3.2, 0.38, 1.25);
+        const devant = VS(s.centre.X, b.y1 + 1.7);
+        put(G.box, WOOD, devant.x, devant.y + 0.10, devant.z, 3.2, 0.20, 1.25);
       }
     }
+    for (const o of COUVERTS_COUR) poserObstacle(o, WOOD);
+    for (const o of PILIERS_POTERNE) poserObstacle(o, ST2);
+    const poterne = A.SITES.poterne.centre, seuil = VS(poterne.X, poterne.Y);
+    put(G.box, ST, seuil.x, seuil.y + 4.0, seuil.z, 1.25, 0.8, 8.35);
   });
   flushWin();
+  batirPatrouilles();
 }
 
 /* ================= Raccords ================= */
@@ -327,6 +401,46 @@ const dehors = id => {
 const seuilMaison = () => Vie.CL(-5.5, 0.6);
 const seuilAtelier = () => ({ x: -18.5, z: 9.6 });
 const inscrireAtelier = () => { Vie.V().seuilAtelier = "presse"; };
+
+function pointRelie(X, Y) {
+  if (estRelie(X, Y)) return { X, Y };
+  const i = accroche(X, Y);
+  const [x, y] = i < 0 ? [X, Y] : centre(i);
+  return { X: x, Y: y };
+}
+const pointMonde = ({ X, Y }) => VS(X, Y);
+const tribunalAtlas = () => pointRelie(A.SITES.estrade.centre.X, 395.5);
+const poterneAtlas = () => pointRelie(398, A.SITES.poterne.centre.Y);
+const feuilletCour = () => pointMonde(pointRelie(449, 414.8));
+const feuilletQuai = () => pointMonde(pointRelie(349, 469));
+const seuilFete = () => pointMonde(pointRelie(346, 429));
+const seuilAffiche = () => pointMonde(pointRelie(A.SITES.fontaine.centre.X + 4.25, A.SITES.fontaine.centre.Y));
+const stageI = n => enVille() && S.act === 1 && S.stage === n;
+const courActive = () => stageI(3);
+const collerAffiche = () => S.act === 2 && S.stage === 15;
+const retourAtelier = () => !enVille() && !Vie.enClos() && Vie.V().seuilAtelier === "presse" && (S.act === 1 || collerAffiche());
+function postureAtlas(hab, repli) {
+  const p = window.Habitants?.present(hab);
+  return p ? VS(p.X, p.Y) : repli();
+}
+// Les dialogues, choix, feuillets et conséquences restent ceux de la campagne.
+function interactionRecit(label) {
+  const it = INTER.find(it => it.label === label);
+  return it && it.act();
+}
+function lireFeuilletAtlas(id) {
+  const p = id === "F4" ? sheet4.position : sheet5.position;
+  const it = INTER.find(it => it.label === "Ramasser le feuillet" && it.p() === p);
+  return it && it.act();
+}
+function feteDisponible() {
+  const etape = Vie.V().recit.etape;
+  return enVille() && S.act === 1 && (etape === "soir" || (etape === "ville" && S.stage >= 6));
+}
+function lancerFete() {
+  talk([["", "Les lanternes sont allumées près de la fontaine. Les gens se rassemblent pour la fête annuelle."],
+    { choices: [["Rejoindre la fête de l’Un", () => { inscrireAtelier(); startAct2(); }], ["Attendre encore", nextLine]] }], Vie.apres);
+}
 
 function passerDansVille(id) {
   mode = "turn"; refreshHud(); sfx("porte");
@@ -355,10 +469,20 @@ INTER.push(
       player.position.y = 0;
       Vie.versClos(Vie.V().recit.etape, seuilMaison(), save);
     } },
-  { p: () => dehors("presse"), r: 2.2, get label() { return Vie.V().recit.etape === "soir" ? "Rejoindre la fête" : "Entrer à l’atelier"; }, can: () => enVille(), act: entrerAtelier },
-  { p: seuilAtelier, r: 1.5, label: "Sortir vers les Drapiers", can: () => !enVille() && !Vie.enClos() && S.act === 1 && Vie.V().seuilAtelier === "presse", act() { passerDansVille("presse"); } },
+  { p: () => dehors("presse"), r: 2.2, label: "Entrer à l’atelier", can: () => enVille() && !stageI(5) && Vie.V().recit.etape !== "soir", act: entrerAtelier },
+  { p: seuilAtelier, r: 1.5, label: "Sortir vers les Drapiers", can: retourAtelier, act() { passerDansVille("presse"); } },
+  { p: () => pointMonde(tribunalAtlas()), r: 3.4, label: "Parler au percepteur", can: () => stageI(1), act() { interactionRecit("Parler au percepteur"); } },
+  { p: () => dehors("chap"), r: 2.6, label: "Fouiller la chapelle", can: courActive, act() { interactionRecit("Fouiller la chapelle"); } },
+  { p: () => pointMonde(poterneAtlas()), r: 2.1, label: "Parler à Bastien à la poterne", can: () => courActive() && !bstate().b3 && !bstate().refus, act() { bastienPoterne(false); } },
+  { p: () => postureAtlas("garin", () => VS(345, 420)), r: 2.4, label: "Parler à Garin", can: () => stageI(4), act() { interactionRecit("Parler à Garin"); } },
+  { p: () => postureAtlas("anselme", () => dehors("presse")), r: 2.6, label: "Raconter à Anselme ce qui s’est passé", can: () => stageI(5), act() { interactionRecit("Parler à Anselme"); } },
+  { p: feuilletQuai, r: 2.4, label: "Ramasser le feuillet du quai", can: () => enVille() && S.act === 1 && !S.f.includes("F4"), act() { lireFeuilletAtlas("F4"); } },
+  { p: feuilletCour, r: 2.0, label: "Ramasser le feuillet sous l’arcade", can: () => enVille() && S.act === 1 && S.stage >= 3 && !S.f.includes("F5"), act() { lireFeuilletAtlas("F5"); } },
+  { p: seuilFete, r: 2.5, label: "Rejoindre la fête de l’Un", can: feteDisponible, act: lancerFete },
+  { p: seuilAffiche, r: 2.0, label: "Coller l’affiche", can: () => enVille() && collerAffiche(), act() { interactionRecit("Coller l’affiche"); } },
   ...Object.entries(ENSEIGNES).filter(([id]) => PORTES[id]).map(([id, nom]) => ({ p: () => dehors(id), r: 1.8, label: ENSEIGNE_LAB[id], can: () => enVille(), act() { Vie.vitrine(nom); } })),
-  { p: () => dehors("maelle"), r: 1.8, label: "Le fournil de Maëlle", can: () => enVille(), act() {
+  { p: () => dehors("maelle"), r: 2.1, get label() { return stageI(2) ? "Parler à Maëlle" : "Le fournil de Maëlle"; }, can: () => enVille(), act() {
+      if (stageI(2)) return interactionRecit("Parler à Maëlle");
       if (Vie.rencontreDisponible?.("maelle", "fournil")) return Vie.rencontre("maelle", "fournil");
       if (Vie.maelle) return Vie.maelle(!Vie.V().recit.tribut);
       talk([["", "Le fournil de Maëlle, entre l’imprimerie et la fontaine. L’odeur du pain chaud déborde sur la rue."]], Vie.apres);
@@ -373,34 +497,83 @@ INTER.push(
 
 /* Le sol suit le relief ; la caméra suit Aliénor en hauteur. */
 const _charTick = charTick;
-charTick = function (dt) { if (enVille()) player.position.y = solV(player.position.x, player.position.z); _charTick(dt); };
+charTick = function (dt) {
+  if (enVille()) player.position.y = solV(player.position.x, player.position.z);
+  if (afficheAtlas) afficheAtlas.visible = S.act === 2 && S.stage >= 16;
+  for (const o of gardesAtlas) {
+    o.g.visible = courActive();
+    if (o.g.visible) o.g.position.y = solV(o.g.position.x, o.g.position.z);
+  }
+  _charTick(dt);
+};
 const _freeView = freeView;
 freeView = function () { const v = _freeView(); if (enVille()) { v[1] += player.position.y; v[4] += player.position.y; } return v; };
 const _zoneOf = zoneOf; zoneOf = function () { return enVille() ? "ville" : _zoneOf(); };
 const _targetNow = targetNow, _targetName = targetName, _objText = objText;
-const versAtelier = () => ["reveil", "soir"].includes(Vie.V().recit.etape);
+const versAtelier = () => Vie.V().recit.etape === "reveil";
+function objectifVille() {
+  if (collerAffiche()) return [seuilAffiche(), "la fontaine"];
+  if (feteDisponible()) return [seuilFete(), "la fête près de la fontaine"];
+  if (versAtelier()) return [dehors("presse"), "l’atelier"];
+  if (stageI(1)) return [pointMonde(tribunalAtlas()), "le percepteur"];
+  if (stageI(2)) return [dehors("maelle"), "le fournil de Maëlle"];
+  if (stageI(3)) return [dehors("chap"), "la chapelle des gardes"];
+  if (stageI(4)) return [postureAtlas("garin", () => VS(345, 420)), "Garin"];
+  if (stageI(5)) return [postureAtlas("anselme", () => dehors("presse")), "maître Anselme"];
+  return [dehors("maison"), "votre maison"];
+}
+const sortirAtelier = () => retourAtelier() && (S.stage === 1 || collerAffiche()) &&
+  Math.hypot(player.position.x + 19, player.position.z - 7) < 7;
 targetNow = function () {
-  if (enVille()) return dehors(versAtelier() ? "presse" : "maison");
-  if (Vie.enClos() && versAtelier()) return seuilMaison();
+  if (enVille()) return objectifVille()[0];
+  if (sortirAtelier()) return seuilAtelier();
+  if (Vie.enClos() && (versAtelier() || Vie.V().recit.etape === "soir")) return seuilMaison();
   return _targetNow();
 };
 targetName = function () {
-  if (enVille()) return versAtelier() ? "l’atelier" : "votre maison";
-  if (Vie.enClos() && versAtelier()) return "la sortie du clos";
+  if (enVille()) return objectifVille()[1];
+  if (sortirAtelier()) return "la sortie vers les Drapiers";
+  if (Vie.enClos() && (versAtelier() || Vie.V().recit.etape === "soir")) return "la sortie du clos";
   return _targetName();
 };
 objText = function () {
+  if (collerAffiche() && sortirAtelier()) return "Sortez dans les Drapiers et rejoignez la fontaine pour coller la première affiche.";
+  if (sortirAtelier()) return "Sortez vers les Drapiers et portez le sac du tribut à l’estrade, au nord de la place.";
   if (!enVille()) return _objText();
-  return versAtelier() ? "Du clos à l’imprimerie, à pied : la rue des Drapiers monte vers l’ouest. La place et ses halles sont au centre, le quai en contrebas, au sud." : "Sarlande à pied. La maison est au clos, à l’est, au-dessus de la rivière.";
+  if (collerAffiche() || (S.act === 2 && S.stage >= 16)) return _objText();
+  if (feteDisponible()) return "Rejoignez la fête de l’Un près de la fontaine, quand vous le souhaitez.";
+  if (versAtelier()) return "Rejoignez l’imprimerie par la rue des Drapiers, à l’ouest.";
+  if (stageI(1)) return "Portez le sac du tribut au percepteur, devant l’estrade au nord de la place.";
+  if (stageI(2)) return "Après le tribut, retrouvez Maëlle devant son fournil, au nord des halles.";
+  if (stageI(3)) return "Depuis la poterne, avancez entre les caisses en restant hors du rouge et fouillez la chapelle.";
+  if (stageI(4) || stageI(5)) return _objText();
+  return "Sarlande à pied. La maison est au clos, à l’est, au-dessus de la rivière.";
 };
+
+function reprendreRecitVille() {
+  if (S.lecture && lirePassage(S.lecture.id, S.lecture.n, S.lecture.choix)) return;
+  const remise = ({ 0: "F1", 2: "F2", 3: "F3" })[S.stage];
+  if (remise && S.f.includes(remise)) return lirePassage(remise, 1);
+  if (S.act !== 1) return;
+  if (S.stage === 6 && S.bilanActe1) return showEnd();
+  if (S.renvoiCour === "bastien") return bastienPoterne(true);
+  if (S.renvoiCour === true) return reconduirePoterne();
+  if (S.stage === 1) return suiteTribut();
+  if (S.stage === 4 && S.pierreEnAttente === true) return startCine();
+  reprendreJoute();
+}
 const _startPlay = startPlay;
 startPlay = function (newGame) {
-  if (!newGame && enVille()) { closePanel(); S.started = true; save(); fpsT = 0; fpsN = 0; batirVille(); setScene(true); setCones(true); return enterPlay(); }
+  if (!newGame && enVille()) {
+    closePanel(); S.started = true; save(); fpsT = 0; fpsN = 0;
+    batirVille(); setScene(true); setCones(true); enterPlay();
+    return reprendreRecitVille();
+  }
   return _startPlay(newGame);
 };
 
 console.info("Ville à l’échelle : grille prête en", Math.round(performance.now() - T0), "ms");
-window.Ville = { VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
+window.Ville = { VILLE, enVille, tribunalAtlas, sortiePoterne: () => pointMonde(poterneAtlas()), praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
 // start() ramène sur la place toute position hors de la carte : on rend à la ville la sienne.
 if (S.started && Array.isArray(S.pos) && Number.isFinite(S.pos[0]) && Number.isFinite(S.pos[1]) && S.pos[0] > 2500) {
   batirVille();

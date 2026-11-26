@@ -1,6 +1,6 @@
 /* Le son du premier parcours dans Chromium : à chaque étape de la première journée, relève la musique
    et les ambiances qui jouent réellement, puis vérifie les seuils, la reprise après interruption et
-   la tenue du jeu quand un fichier manque (amb-fournil est volontairement refusé).
+   la tenue du jeu quand des fichiers manquent (amb-fournil et la cloche sont refusés).
    Les fichiers du dépôt sont servis par Playwright lui-même, sans serveur.
    Usage : node outils/tests/son_parcours.js [dossier_captures] [A|B] */
 const { chromium } = require("playwright");
@@ -17,6 +17,7 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".webp": "image/
   await ctx.route("http://sarlande.test/**", r => {
     const f = path.join(RACINE, decodeURIComponent(new URL(r.request().url()).pathname));
     if (f.endsWith("amb-fournil.mp3")) { retraitsFournil++; return r.fulfill({ status: 404, body: "" }); }
+    if (path.basename(f) === "cloche.mp3") return r.fulfill({ status: 404, body: "" });
     if (!f.startsWith(RACINE) || !fs.existsSync(f)) return r.fulfill({ status: 404, body: "" });
     r.fulfill({ status: 200, path: f, contentType: TYPES[path.extname(f)] || "application/octet-stream" });
   });
@@ -72,8 +73,27 @@ const TYPES = { ".html": "text/html", ".js": "text/javascript", ".webp": "image/
   await ouvrirTitre("new");
   await p.click('[data-a="new"]');
   await page(); await finir(); await etat("réveil"); await son("réveil, dans la maison");
+  const reglagesSon = p.locator("#snd");
+  await reglagesSon.click();
+  assert.equal(await reglagesSon.getAttribute("aria-expanded"), "true");
+  await reglagesSon.click();
+  assert.equal(await reglagesSon.getAttribute("aria-expanded"), "false");
   const voletsDebut = await p.evaluate(() => Snd.mus.find(m => m.name === "mus-volets" && !m.dead)?.at);
   assert.ok(Number.isFinite(voletsDebut), "Le thème du réveil joue");
+  assert.deepEqual(await p.evaluate(() => {
+    const pos = camPos.clone(), cible = camLook.clone();
+    const {x,z} = player.position;
+    camPos.set(x, 5, z); camLook.set(x, 1, z - 5);
+    const versNord = pan(x + 5, z);
+    camLook.set(x, 1, z + 5);
+    const versSud = pan(x + 5, z);
+    camPos.copy(pos); camLook.copy(cible);
+    return [versNord, versSud];
+  }), [0.5, -0.5], "Le son se déplace de droite à gauche quand la caméra fait demi-tour");
+  assert.deepEqual(await p.evaluate(() => {
+    sfx("minuit");
+    return [Snd.ctx.state, !!Snd.buf.cloche, document.getElementById("say").textContent];
+  }), ["running", false, "Minuit sonne au clocher."], "La cloche manquante est signalée à l’écran");
   await agir("Les volets"); await p.waitForTimeout(500);
   await p.evaluate(() => { const q = O.clos; player.position.set(q[0] - 11, 0, q[1] - 3.6); }); await son("réveil, dans la cour du clos, près du puits");
   for (let i = 0; i < 6; i++) { await p.evaluate(i => { const q = O.clos; player.position.set(q[0] + (i % 2 ? -3.5 : -4.8), 0, q[1] + 0.6); }, i); await p.waitForTimeout(700); }
