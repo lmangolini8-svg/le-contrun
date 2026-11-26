@@ -12,7 +12,8 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
   function fail(message) {
     throw new Error(message + ' · ' + JSON.stringify({
       tribute, stage: S.stage, mode, position: player.position.toArray(),
-      action: current?.label, dialogue: dlg.textContent.slice(0, 180)
+      action: current?.label, dialogue: dlg.textContent.slice(0, 180),
+      seen, daze, toast: {on: T2.on, big: T2.big, elapsed: T2.t}
     }));
   }
 
@@ -76,27 +77,27 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
 
   const arrows = [[1,0,'ArrowRight'], [-1,0,'ArrowLeft'], [0,1,'ArrowDown'], [0,-1,'ArrowUp']];
   let gestures = 0;
-  async function move(key, frames) {
+  async function move(key, frames, keepWalking) {
     if (joystick) {
       const [dx,dz] = arrows.find(dir => dir[2] === key);
       const x = Math.floor(innerWidth*.28), y = Math.floor(innerHeight*.5);
       if (document.elementFromPoint(x,y) !== canvas) fail('Le point de départ du joystick est couvert');
       await window.testJoystick({x,y,dx:48*dx,dy:48*dz});
       if (!joy.on || Math.abs(joy.x-dx) > .01 || Math.abs(joy.y-dz) > .01) fail('Glissement non reconnu');
-    } else window.dispatchEvent(new KeyboardEvent('keydown', {key}));
-    for (let i = 0; i < frames && mode === 'play'; i++) tick();
+    } else document.body.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles: true}));
+    for (let i = 0; i < frames && mode === 'play' && keepWalking(); i++) tick();
     if (joystick) {
       await window.testJoystick(null);
       gestures++;
       if (joy.on) fail('Joystick actif après le lever du doigt');
-    } else window.dispatchEvent(new KeyboardEvent('keyup', {key}));
+    } else document.body.dispatchEvent(new KeyboardEvent('keyup', {key, bubbles: true}));
   }
 
   // Recherche en largeur sur une grille dont le pas correspond à deux images de marche.
   // Dans la cour, on évite les cônes visibles et on recalcule le trajet pendant la patrouille.
   function pathTo(tx, tz, radius, inCourt) {
     const {x: ox, z: oz} = player.position;
-    const stride = 4.7 * dt * 2;
+    const stride = 2.45 * dt * 2;
     function exposed(x, z) {
       if (!inCourt || Math.hypot(x-ox, z-oz) >= 7) return false;
       return guards.some(({g}) => {
@@ -130,12 +131,16 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     return null;
   }
 
-  async function walk(tx, tz, radius, label, untilStage) {
+  const bigToast = () => T2.on && T2.big;
+
+  async function walk(tx, tz, radius, label, {untilStage, duringToast = false} = {}) {
     const p = player.position;
+    const keepWalking = () => !duringToast || bigToast();
     for (let attempt = 0; attempt < 700; attempt++) {
-      if (untilStage && S.stage === untilStage) return;
+      if (S.stage === untilStage || !keepWalking()) return;
       advance();
       tick();
+      if (!keepWalking()) return;
       if (mode !== 'play') continue;
       if (Math.hypot(p.x-tx,p.z-tz) < radius) {
         if (!label || current?.label === label) return;
@@ -154,8 +159,8 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
         const key = directions[i];
         const start = i++;
         while (i < directions.length && directions[i] === key) i++;
-        await move(key, 2*(i-start));
-        if (mode !== 'play') break;
+        await move(key, 2*(i-start), keepWalking);
+        if (mode !== 'play' || !keepWalking()) break;
       }
       if (mode === 'play' && label && current !== RAISE && current?.label !== label && Math.hypot(p.x-tx,p.z-tz) < radius) {
         radius -= .15;
@@ -271,15 +276,17 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
     if (tribute === 'denonce') replies.unshift('C’était moi');
     await person('Garin','garin',replies);
     expectStage(13);
-    await walk(0,7.3,1);
-    // Si la fête la ramène au quai, Aliénor rejoint à nouveau la fontaine avec ses compagnons.
-    for (let n = 0; n < 1200 && !(T2.on && T2.big); n++) {
-      advance();
-      if (Math.hypot(player.position.x,player.position.z-3) >= 5.8) await walk(0,7.3,1);
-      tick();
+    for (let crossing = 0; crossing < 5 && S.stage === 13; crossing++) {
+      await walk(0,7.3,1);
+      // Si la fête la ramène au quai, regagner la fontaine et attendre le toast suivant.
+      for (let n = 0; n < 1200 && !bigToast(); n++) {
+        advance();
+        if (Math.hypot(player.position.x,player.position.z-3) >= 5.8) await walk(0,7.3,1);
+        tick();
+      }
+      if (!bigToast() || !S.maelleSuit || !S.allies.garin) fail('Escorte absente au grand toast');
+      await walk(ATELIER.x,ATELIER.z,3,undefined,{untilStage:14,duringToast:true});
     }
-    if (!T2.big || !S.maelleSuit || !S.allies.garin) fail('Escorte absente au grand toast');
-    await walk(ATELIER.x,ATELIER.z,3,undefined,14);
     expectStage(14);
     const press = ['Tirer la barre','Tirer la barre','Tirer la barre'];
     const litter = tribute === 'paye' ? 'S’incliner' : 'Rester debout';

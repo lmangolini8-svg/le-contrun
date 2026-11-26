@@ -56,6 +56,77 @@ test("pesée en privé : confidence et bon de farine le lendemain", () => {
   assert.equal(vie.recit.lendemain, "bon_de_farine");
 });
 
+test("les témoins et le carnet distinguent la pesée publique de la confidence", () => {
+  const publique = M.creer(), privee = M.creer();
+  assert.equal(M.peserMiche(publique, "public"), true);
+  assert.equal(M.peserMiche(privee, "prive"), true);
+  const temoin = M.sait(publique, "ysabeau", "pesee_publique");
+  assert.equal(temoin.vu, true);
+  assert.equal(M.sait(privee, "ysabeau", "pesee_publique"), null);
+  assert.equal(M.versionDansQuartier(privee, "confidence_maelle", "place"), 0);
+  assert.match(M.observations(publique)[0].texte, /Devant les clients/);
+  assert.match(M.observations(privee)[0].texte, /À l’écart/);
+  const reprise = recharge(privee);
+  assert.equal(M.peserMiche(reprise, "public"), false);
+  assert.deepEqual(M.observations(reprise), M.observations(privee));
+});
+
+test("un habitant ne rapporte que les nouvelles qu’il connaît publiquement", () => {
+  const vie = M.creer();
+  assert.equal(M.versionDansQuartier(vie, "lettre_miche", "place"), 1);
+  assert.equal(M.prochaineNouvelle(vie, "ysabeau"), null, "Ysabeau ne connaît pas chaque rumeur de la place");
+  assert.equal(M.entendreNouvelle(vie, "ysabeau", "lettre_miche", "place"), null);
+  assert.equal(M.prochaineNouvelle(vie, "perrine"), "lettre_miche");
+  assert.equal(M.entendreNouvelle(vie, "perrine", "lettre_miche", "place").vu, false);
+  assert.equal(M.sait(vie, "alienor", "lettre_miche").src, "perrine");
+  assert.match(M.observations(vie).at(-1).texte, /Rumeur rapportée/);
+  assert.equal(M.entendreNouvelle(recharge(vie), "perrine", "lettre_miche", "place"), null);
+  M.savoir(vie, "maelle", "confidence_maelle", 1, "vu", true);
+  assert.equal(M.prochaineNouvelle(vie, "maelle"), null, "une confidence ne sort pas en saluant");
+});
+
+test("la rectification promise à Maëlle se fait auprès d’un témoin et se sauvegarde", () => {
+  const vie = M.creer();
+  M.peserMiche(vie, "public");
+  coucher(vie);
+  M.engager(vie, { id: "rectifier:place", de: "alienor", a: "maelle", quoi: "rectifier", t: vie.t + 3 });
+  assert.equal(M.peutRectifierMiche(vie, "perrine"), false, "Aliénor ne connaît pas encore l’explication");
+  M.savoir(vie, "alienor", "miche_legere", 2, "maelle", false);
+  assert.equal(M.rectifierMiche(vie, "anselme", "imprimerie"), false, "Anselme n’a pas assisté à la pesée");
+  assert.equal(vie.fournisseurs.perrine, "drapiers");
+  const confiance = M.lien(vie, "maelle", "alienor").conf;
+  const r = recharge(vie);
+  assert.equal(M.rectifierMiche(r, "perrine", M.lieuDe(r, "perrine")), true);
+  assert.equal(M.rectificationEnCours(r), null);
+  assert.equal(r.fournisseurs.perrine, undefined, "Perrine revient au fournil");
+  assert.equal(M.sait(r, "perrine", "miche_legere").src, "alienor");
+  assert.equal(M.sait(r, "perrine", "miche_legere").vu, false);
+  assert.ok(M.lien(r, "maelle", "alienor").conf > confiance);
+  const reprise = recharge(r);
+  assert.equal(M.rectifierMiche(reprise, "ysabeau", "fournil"), false);
+  assert.deepEqual(M.observations(reprise), M.observations(r));
+});
+
+test("un rendez-vous reporté peut être tenu uniquement à son heure et au bon lieu", () => {
+  const vie = M.creer();
+  M.peserMiche(vie, "prive");
+  coucher(vie);
+  const visite = M.visiteEnCours(vie);
+  const rdv = M.reporter(vie, visite.id);
+  assert.equal(M.honorerRendezVous(vie, rdv.a, rdv.lieu), null);
+  M.avancer(vie);
+  const manque = recharge(vie);
+  const tenue = recharge(vie);
+  assert.equal(M.honorerRendezVous(tenue, "maelle", "clos"), null);
+  assert.equal(M.honorerRendezVous(tenue, rdv.a, rdv.lieu).etat, "tenu");
+  assert.equal(M.honorerRendezVous(recharge(tenue), rdv.a, rdv.lieu), null);
+  M.avancer(manque);
+  assert.equal(manque.engagements.find(e => e.id === rdv.id).etat, "manque");
+  assert.match(M.observations(manque).at(-1).texte, /manqué/);
+  assert.match(M.observations(tenue).at(-1).texte, /tenu/);
+  assert.ok(M.lien(tenue, "maelle", "alienor").conf > M.lien(manque, "maelle", "alienor").conf);
+});
+
 test("rechargements : achat, livraison, saut de plage et visite manquée ne se rejouent pas", () => {
   let vie = M.creer();
   const avant = vie.bourse;

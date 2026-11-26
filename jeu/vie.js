@@ -136,6 +136,7 @@ function majClos() {
   clos.lettre.visible = r.lettre === "glissee";
   const a = r.volets ? 1.45 : 0; clos.voletG.rotation.y = a; clos.voletD.rotation.y = -a;
   clos.feu.visible = r.etape === "soir" || r.etape === "nuit";
+  afficherAmenagement();
 }
 
 PLATES.clos = { n: "XV", dest: "Le clos des murailles", dio: "clos", cam: at("clos", [-14, 5, 16]), look: at("clos", [6, 1.4, -8]),
@@ -161,13 +162,13 @@ setScene = function (force, over) {
   if (key !== cleVie) { force = true; cleVie = key; }
   if (key === "apresmidi") {
     _setScene(force, "day");
-    sun.color.set(0xffc98a); hemi.color.set(0xc8bcd6); hemi.groundColor.set(0x86789a); scene.fog.color.set(0xdcc8b0); renderer.setClearColor(0xdcc8b0, 1); postMat.uniforms.uNight.value = 0.08;
+    setSky("apresmidi");
     if (V().recit.nuit) for (const p of file) p.visible = false;
     return;
   }
   if (key === "soir") {
     _setScene(force, "dawn");
-    sun.color.set(0xffb27a); hemi.color.set(0x9c98c4); hemi.groundColor.set(0x4e4470); scene.fog.color.set(0xb7a3a6); renderer.setClearColor(0xb7a3a6, 1); postMat.uniforms.uNight.value = 0.45;
+    setSky("soir");
   } else _setScene(force, over);
   if (V().recit.nuit) for (const p of file) p.visible = false;
 };
@@ -179,7 +180,12 @@ objText = function () {
     if (r.etape === "reveil") return r.lettre === "glissee" ? "Une lettre a été glissée sous la porte. La journée commence quand vous voulez : maître Anselme vous attend à l’atelier." : "La journée commence quand vous voulez. Le chemin de l’atelier part du bas du clos.";
     if (r.etape === "soir") return r.repas ? "La fête de l’Un commence sur la place. Le chemin part du bas du clos." : "Le soir tombe sur le clos. Un repas, un peu de repos, puis la fête sur la place.";
     if (r.etape === "nuit") return "Il est temps de dormir. Le lit est au fond de la pièce.";
-    if (r.etape === "lendemain") return M.visiteEnCours(V()) ? "On frappe à la porte." : "Le lendemain. La suite, l’hiver et l’acte III, est en cours d’écriture.";
+    if (r.etape === "lendemain") {
+      if (M.visiteEnCours(V()) || r.entretien?.lieu === "clos") return "On frappe à la porte.";
+      const rdv = M.rendezVous(V());
+      if (rdv) return "Rendez-vous avec " + M.HABITANTS[rdv.a].nom + " " + M.LIEUX[rdv.lieu].nom + " · " + C.lisible(rdv.t).plage + ".";
+      return "Le lendemain. Vous pouvez retourner au jardin ou à la ville.";
+    }
   }
   if (S.act === 1 && S.stage === 1) return "La cloche a sonné. Portez le sac du tribut au percepteur, au nord de la place : la file avance jusqu’au soir. Le tableau des commandes est à l’atelier.";
   return _objText();
@@ -214,6 +220,8 @@ style.textContent = `.vie-alm{display:block;margin-top:5px;font:italic 14px/1.2 
 .compo.envers{transform:scaleX(-1)}
 .vitrine{list-style:none;margin:8px 0;padding:0;columns:2;column-gap:24px}.vitrine li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dotted #b9a77f;padding:3px 0;break-inside:avoid}.vitrine span{color:var(--sienne);white-space:nowrap}
 .carte-acte{width:100%;border:1px solid #b9a77f;margin:6px 0}
+.grille-clos button[aria-disabled="true"]{color:var(--muted);background:repeating-linear-gradient(135deg,transparent 0 4px,#87684924 4px 8px)}
+.grille-clos button[data-apercu]{outline:2px solid var(--sienne);outline-offset:-3px}
 .vie-carnet ul{margin:4px 0 8px 18px;padding:0}.vie-carnet li{margin:2px 0}`;
 document.head.appendChild(style);
 
@@ -224,10 +232,10 @@ showCarnet = function () {
   const rows = box.querySelectorAll(".row"), last = rows[rows.length - 1];
   const html = carnetVie(); if (last) last.insertAdjacentHTML("beforebegin", html); else box.insertAdjacentHTML("beforeend", html);
 };
-const INV = { lettre: "la lettre sans signature", miche: "une miche", viande: "un morceau de viande", gibier: "un lièvre", legumes: "une botte de légumes", eau: "une cruche d’eau", bon_de_farine: "le bon de farine du fournil", quignon: "un quignon d’hier", robe_ocre: "la robe ocre", robe_indigo: "la robe indigo", mot_maelle: "un mot de Maëlle", mot_ysabeau: "un mot d’Ysabeau" };
+const INV = { bois_clos: "bois de récupération", compost: "compost", graine_chou: "graine de chou", graine_sauge: "graine de sauge", sauge_recoltee: "sauge récoltée",  lettre: "la lettre sans signature", miche: "une miche", viande: "un morceau de viande", gibier: "un lièvre", legumes: "une botte de légumes", eau: "une cruche d’eau", bon_de_farine: "le bon de farine du fournil", quignon: "un quignon d’hier", robe_ocre: "la robe ocre", robe_indigo: "la robe indigo", mot_maelle: "un mot de Maëlle", mot_ysabeau: "un mot d’Ysabeau" };
 function carnetVie() {
   const v = V(), a = M.almanach(v), b = v.barres;
-  const inv = Object.keys(v.inventaire).map(k => INV[k] + (v.inventaire[k] > 1 ? ` (${v.inventaire[k]})` : ""));
+  const inv = Object.keys(v.inventaire).map(k => (INV[k] || M.ARTICLES[k]?.nom || k) + (v.inventaire[k] > 1 ? ` (${v.inventaire[k]})` : ""));
   const suj = Object.keys(v.sujets).map(k => {
     const s = M.SUJETS[k], f = s.fait && M.sait(v, "alienor", s.fait);
     return `<li><b>${esc(M.HABITANTS[s.hab].nom)} · ${esc(s.titre)}</b>${f ? ` : ${esc(M.FAITS[s.fait].v[f.v])}` : ""}${v.sujets[k].insiste ? " <i>Vous avez insisté.</i>" : ""}</li>`;
@@ -236,6 +244,10 @@ function carnetVie() {
   const ex = Object.keys(M.EXAMENS).map(k => `<li>${esc(M.EXAMENS[k].nom)} : ${v.examens[k] === "reussi" ? "réussie" : v.examens[k] === "echoue" ? "à reprendre" : "pas encore tentée"}</li>`);
   const ev = v.evenements.slice(-6).reverse().map(e => `<li>${esc(C.lisible(e.t).plage)}, ${esc(C.lisible(e.t).date)} : ${esc(e.texte)}</li>`);
   const ens = Object.keys(v.enseignes || {}).map(k => `<li>${esc(k)} : ${esc(v.enseignes[k])}</li>`);
+  const rencontres = M.observations(v).reverse().map(e =>
+    `<li><b>${esc(e.nom)} · ${esc(M.LIEUX[e.lieu]?.nom || e.lieu)}</b><br>${esc(C.lisible(e.t).date)} · ${esc(C.lisible(e.t).plage)}<br>${esc(e.texte)}</li>`);
+  const rdv = M.rendezVous(v);
+  const rectification = M.rectificationEnCours(v);
   const carte = ["I", "II", "III", "IV", "V"][Math.min(5, S.act || 1) - 1];
   return `<div class="feuil vie-carnet"><span class="kick">Ma carte · acte ${carte}</span><img class="carte-acte" src="img/carnet/carnet_${carte}.webp" alt="Carte du carnet pour l’acte ${carte} : les lieux et les chemins repérés par Aliénor."></div>
   <div class="feuil vie-carnet"><span class="kick">Almanach et journal</span>
@@ -243,6 +255,9 @@ function carnetVie() {
   <p><b>Bourse :</b> ${v.bourse} sous. <b>Sur soi et chez soi :</b> ${inv.length ? esc(inv.join(", ")) : "rien"}.${v.tenue ? ` Tenue du jour : la robe ${esc(v.tenue)}.` : ""}</p>
   <p><b>Repos</b> ${Math.round(b.repos)}, <b>Satiété</b> ${Math.round(b.satiete)}, <b>Endurance</b> ${Math.round(b.endurance)}, <b>Convictions</b> ${Math.round(b.convictions)}. ${esc(v.conviction)}</p>
   ${suj.length ? `<p class="small">Sujets abordés, à relire avant d’y revenir :</p><ul>${suj.join("")}</ul>` : ""}
+  ${rencontres.length ? `<h3>Journal des rencontres</h3><ul>${rencontres.join("")}</ul>` : ""}
+  ${rdv ? `<p><b>Rendez-vous</b> · ${esc(M.HABITANTS[rdv.a].nom)} · ${esc(M.LIEUX[rdv.lieu].nom)} · ${esc(C.lisible(rdv.t).date)}, ${esc(C.lisible(rdv.t).plage)}</p>` : ""}
+  ${rectification ? "<p><b>Parole donnée à Maëlle.</b> Dans la ville, retrouver quelqu’un qui a assisté à la pesée et lui expliquer le poids de la farine.</p>" : ""}
   ${adr.length ? `<p class="small">Adresses et horaires découverts :</p><ul>${adr.join("")}</ul>` : ""}
   ${ens.length ? `<p class="small">Enseignes repérées :</p><ul>${ens.join("")}</ul>` : ""}
   <p class="small">Épreuves de l’atelier :</p><ul>${ex.join("")}</ul>
@@ -250,7 +265,7 @@ function carnetVie() {
 }
 
 /* ================= Petites aides ================= */
-function cloche(n) { signal("La cloche de la place sonne " + n + " coups."); const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
+function cloche(n) { signal("La cloche de la place sonne " + n + " coups.", "cloche"); const c = Snd.ctx; if (!c || c.state !== "running") return; for (let i = 0; i < n; i++) playSfx("cloche", 0.7, 0, 1, Snd.bus, i * 1.6); }
 function apres(t) { save(); refreshHud(); return t; }
 const PL = () => C.PLAGES[M.plage(V())];
 function choix(opts) { return { choices: opts.filter(Boolean) }; }
@@ -287,14 +302,23 @@ INTER.push(
       const r = V().recit; r.volets = !r.volets; majClos(); sfx("volets");
       say(r.volets ? (M.plage(V()) === 2 ? "Le soir rougit la muraille." : "Le clos s’éveille : un seau au puits, une porte, la poterne qu’on déverrouille.") : "La pièce retombe dans la pénombre."); apres(); } },
   { p: () => CL(0.8, 1.0), r: 1.4, label: "Les provisions", can: () => enClos() && V().recit.etape !== "soir", act() { provisions(); } },
-  { p: () => CL(2.6, 1.9), r: 1.6, label: "Préparer un repas", can: () => enClos() && V().recit.etape === "soir", act() { repas(); } },
+  { p: () => CL(2.6, 1.9), r: 1.6, label: "Préparer un repas", can: () => enClos() && ["soir", "lendemain"].includes(V().recit.etape), act() { repas(); } },
   { p: () => CL(3.3, -0.6), r: 1.5, label: "Le miroir", can: () => enClos(), act() { miroir(); } },
   { p: () => CL(-2.9, -0.7), r: 1.5, label: "Le lit", can: () => enClos() && (V().recit.etape === "nuit" || (V().recit.etape === "soir" && !V().recit.sieste)), act() { lit(); } },
-  { p: () => CL(3.2, 6), r: 1.8, label: "Le jardin", can: () => enClos(), act() { jardin(); } },
+  { p: () => CL(3.2, 6), r: 1.8, label: "Le jardin", can: () => enClos(), act() { amenager("jardin"); } },
+  { p: () => CL(1.2, -1.9), r: 1.5, label: "Aménager et fabriquer", can: () => enClos(), act() { amenager("maison"); } },
   { p: () => CL(-11, -3.6), r: 1.8, label: "Le puits des voisins", can: () => enClos(), act() { puits(); } },
   { p: () => CL(-17, 7.2), r: 1.6, label: "Frapper chez Ysabeau", can: () => enClos(), act() { chezYsabeau(); } },
   ...ENSEIGNES.map(e => ({ p: () => CL(e.x, e.z + (e.z < -10 ? 2.2 : 1.4)), r: 1.8, label: e.lab, can: () => enClos(), act() { vitrine(e.b); } })),
-  { p: () => CL(-3.25, 0.6), r: 1.3, label: "Ouvrir la porte", can: () => enClos() && V().recit.etape === "lendemain" && !!M.visiteEnCours(V()), act() { visite(); } },
+  { p: () => CL(-3.25, 0.6), r: 1.3, label: "Ouvrir la porte", can: () => enClos() && V().recit.etape === "lendemain"
+    && (!!M.visiteEnCours(V()) || V().recit.entretien?.lieu === "clos"), act() { visite(); } },
+  { p: () => CL(-1.65, -0.2), r: 1.2, label: "Laisser passer le temps", can: () => enClos() && V().recit.etape === "lendemain" && M.plage(V()) < 2, act() {
+    const v = V(), plage = C.lisible(v.t + 1).plage;
+    talk([["", "Le ciel change au-dessus du clos. Attendre jusqu’à la prochaine plage ?"], choix([
+      ["Attendre · " + plage, () => { M.avancer(v, 1); setScene(true); majClos(); apres(); talk([["", "La lumière change sous les volets."]], apres); }],
+      ["Continuer sa journée", rien]
+    ])]);
+  } },
   { p: () => CL(-142.5, 0), r: 2.4, get label() { const e = V().recit.etape; return e === "soir" ? "Rejoindre la fête" : e === "lendemain" ? "Vers la place" : "Entrer à l’atelier"; }, can: closPeutSortir, act() { sortir(); } },
   { p: () => CL(-62, -3.6), r: 2.2, label: "La poterne des gardes", can: () => enClos(), act() { talk([["", "La poterne de la cour des gardes. Le matin, quelqu’un la laisse ouverte, on ne sait pas qui."]]); } },
   { p: () => CL(-84, -3.4), r: 2.2, label: "La Caisse des métiers", can: () => enClos(), act() { talk([["", "La Caisse des métiers : un comptoir, un registre, des devis épinglés. On y épargne, on y demande une avance sur un devis."], ["", "« Fermé le jour du tribut. »"]]); } }
@@ -340,16 +364,193 @@ function puits() {
   const qui = M.presents(v, "maison_ysabeau").length ? "Chez Ysabeau, une fenêtre s’ouvre, puis se referme." : "Personne au puits : le clos est parti porter son sac.";
   talk([["", "La corde grince, le seau remonte. Vous remplissez la cruche."], ["", qui]], apres);
 }
-function jardin() {
-  const v = V(), j = M.jour(v);
-  if (v.inventaire.eau && !M.applique(v, "arrosage:" + j)) return talk([["", "Les choux ont soif. Vous les arrosez avec la moitié de la cruche."], choix([["Arroser", () => { M.appliquer(v, "arrosage:" + j); v.competences.culture += 0.5; talk([["", "La terre fonce. Dans une semaine, il y aura de quoi faire une soupe."]], apres); }], ["Garder l’eau", rien]])]);
-  talk([["", "Le jardin d’Aliénor : choux, poireaux, un pied de sauge. Il faudrait de l’eau, et du temps."]], apres);
+const GRILLES_CLOS = {
+  maison: { nom: "Maison", largeur: 5, hauteur: 3, x: -1.5, z: -1.65 },
+  jardin: { nom: "Jardin", largeur: 5, hauteur: 3, x: 1, z: 12.7 }
+};
+const OBJETS_CLOS = {
+  tabouret: { nom: "Tabouret", zone: "maison", bois: 2 },
+  banc: { nom: "Banc", zone: "maison", bois: 4 },
+  bac: { nom: "Bac", zone: "jardin", bois: 2 }
+};
+const SEMIS_CLOS = {
+  chou: { nom: "Chou", jours: 1, produit: "legumes" },
+  sauge: { nom: "Sauge", jours: 2, produit: "sauge_recoltee" }
+};
+let choixClos = null;
+const decorClos = new Map();
+function amenagement() {
+  return V().amenagement || (V().amenagement = {
+    objets: [{ type: "tabouret", case: 4 }, { type: "bac", case: 6 }],
+    reserve: [], collecte: null
+  });
 }
+function positionCase(zone, index) {
+  const g = GRILLES_CLOS[zone];
+  return CL(g.x + index % g.largeur, g.z + Math.floor(index / g.largeur));
+}
+function caseDisponible(zone, index) {
+  const p = positionCase(zone, index);
+  // Garder une traversée libre devant la porte, le miroir et les meubles du fond.
+  if (zone === "maison" && index >= 2 * GRILLES_CLOS.maison.largeur) return false;
+  return !blocked(p.x, p.z) && Math.hypot(player.position.x-p.x, player.position.z-p.z) >= .88;
+}
+function pret(culture) {
+  if (!culture || culture.eauJour === null) return false;
+  const j = M.jour(V());
+  return j >= culture.plante + Math.max(1, SEMIS_CLOS[culture.type].jours - Number(culture.compost)) && j > culture.eauJour;
+}
+function afficherAmenagement() {
+  const state = amenagement();
+  state.objets.forEach((objet, id) => {
+    const type = OBJETS_CLOS[objet.type], p = positionCase(type.zone, objet.case);
+    let rendu = decorClos.get(id);
+    if (!rendu || rendu.type !== objet.type) {
+      if (rendu) { rendu.g.removeFromParent(); rendu.b.on = false; }
+      const g = new THREE.Group();
+      const mesh = (geo, c, x, y, z, sx, sy, sz) => {
+        const m = new THREE.Mesh(geo, LM(c));
+        m.position.set(x,y,z); m.scale.set(sx,sy,sz); m.castShadow=true; g.add(m); return m;
+      };
+      const taille = objet.type === "banc" ? .72 : .46;
+      if (objet.type === "bac") {
+        mesh(G.box, WOOD, 0,.15,0,.70,.3,.70);
+        mesh(G.box, 0x604631, 0,.305,0,.61,.025,.61);
+      } else {
+        mesh(G.box, WOOD, 0,.47,0,taille,.10,.42);
+        for (const x of [-taille*.38,taille*.38])
+          for (const z of [-.15,.15]) mesh(G.box, SEPIA,x,.21,z,.065,.42,.065);
+      }
+      const plante = mesh(G.s, FORET,0,.4,0,.22,.18,.22);
+      scene.add(g);
+      rendu = { g, plante, type: objet.type, b: solid(0,0,0,0) };
+      decorClos.set(id, rendu);
+    }
+    rendu.g.position.set(p.x,0,p.z);
+    Object.assign(rendu.b, { x0:p.x-.34, x1:p.x+.34, z0:p.z-.34, z1:p.z+.34, on:true, low:true });
+    rendu.plante.visible=!!objet.culture;
+    rendu.plante.scale.setScalar(pret(objet.culture) ? .34 : .17);
+  });
+  for (const [id, rendu] of decorClos) {
+    if (id < state.objets.length) continue;
+    rendu.g.removeFromParent();
+    rendu.b.on=false;
+    decorClos.delete(id);
+  }
+}
+function amenager(zone, message = "") {
+  const grid = GRILLES_CLOS[zone], state = amenagement(), inv = V().inventaire, j = M.jour(V());
+  const selection = choixClos?.zone === zone ? choixClos : null;
+  const enfant = selection && state.objets.find(o => OBJETS_CLOS[o.type].zone === zone && o.case === selection.case);
+  const type = enfant?.type || selection?.type;
+  const cellules = Array.from({length:grid.largeur*grid.hauteur}, (_, i) => {
+    const objet = state.objets.find(o => OBJETS_CLOS[o.type].zone === zone && o.case === i);
+    const libre = !objet && caseDisponible(zone, i), apercu = selection?.cible === i && libre && !!type;
+    const nom = objet ? objet.culture ? SEMIS_CLOS[objet.culture.type].nom + (pret(objet.culture) ? " mûr" : "") : OBJETS_CLOS[objet.type].nom
+      : apercu ? OBJETS_CLOS[type].nom + " (aperçu)" : libre ? "Libre" : "Passage";
+    return `<button data-v="clos-case" data-zone="${zone}" data-i="${i}" aria-label="Case ${i+1}, ${nom}" aria-pressed="${selection?.case === i || apercu}"${apercu ? " data-apercu" : ""}${!libre && !objet ? ' aria-disabled="true"' : ""}>${nom}</button>`;
+  }).join("");
+  const button = (action,label) => `<button class="sec" data-v="clos-action" data-zone="${zone}" data-k="${action}">${label}</button>`;
+  const outils = zone === "maison" ? [
+    state.collecte !== j && button("bois","Récupérer 4 morceaux de bois"),
+    ...Object.entries(OBJETS_CLOS).map(([k,v])=>button(k,`Fabriquer · ${v.nom} (${v.bois} bois)`)),
+    button("compost","Préparer du compost (1 botte de légumes)")
+  ] : [
+    !enfant?.culture && button("chou","Semer du chou"),
+    !enfant?.culture && button("sauge","Semer de la sauge"),
+    enfant?.culture && button("eau","Arroser"),
+    enfant?.culture && button("fertiliser","Ajouter du compost"),
+    pret(enfant?.culture) && button("recolter","Récolter"),
+    button("graines","Acheter des graines (2 sous)")
+  ];
+  const reserve = [...new Set(state.reserve)].filter(k=>OBJETS_CLOS[k].zone===zone)
+    .map(k=>button("placer-"+k,`Placer · ${OBJETS_CLOS[k].nom} (${state.reserve.filter(t=>t===k).length})`));
+  mode="panel"; refreshHud();
+  const commande = selection ? `<div class="row">${selection.cible != null
+    ? `<button class="pri" data-v="clos-confirmer" data-zone="${zone}">Confirmer le placement</button>` : ""}${button("annuler","Annuler la sélection")}</div>` : "";
+  panel(`<h2>${grid.nom}</h2><p class="small">Sélectionne un objet, puis une case libre pour prévisualiser le placement. Chaque objet occupe une case.</p>
+    <div class="grille-clos" style="--colonnes:${grid.largeur}">${cellules}</div>
+    ${commande}
+    <p class="small" role="status">${esc(message)}</p>
+    <p class="small">Bois ${inv.bois_clos||0} · Eau ${inv.eau||0} · Compost ${inv.compost||0} · Graines ${inv.graine_chou||0} chou / ${inv.graine_sauge||0} sauge</p>
+    <div class="row">${[...reserve,...outils].filter(Boolean).join("")}</div>
+    <div class="row"><button class="pri" data-v="clos-retour">Retour au jeu</button></div>`);
+}
+ACTIONS["clos-retour"] = () => { choixClos=null; closePanel(); enterPlay(); };
+ACTIONS["clos-case"] = b => {
+  const zone=b.dataset.zone, index=Number(b.dataset.i), state=amenagement(), g=GRILLES_CLOS[zone];
+  if (!g || !Number.isInteger(index) || index<0 || index>=g.largeur*g.hauteur) return;
+  const objet=state.objets.find(o=>OBJETS_CLOS[o.type].zone===zone&&o.case===index);
+  if (objet) { choixClos={zone,case:index}; return amenager(zone,"Objet sélectionné."); }
+  if (choixClos?.zone!==zone) return;
+  if (!caseDisponible(zone,index)) return amenager(zone,"Cette case est réservée à la circulation.");
+  choixClos.cible=index;
+  return amenager(zone,"Vérifie l’emplacement puis confirme, ou choisis une autre case.");
+};
+ACTIONS["clos-confirmer"] = b => {
+  const zone=b.dataset.zone, index=choixClos?.cible, state=amenagement();
+  if (choixClos?.zone!==zone || !Number.isInteger(index)) return;
+  if (state.objets.some(o=>OBJETS_CLOS[o.type].zone===zone&&o.case===index) || !caseDisponible(zone,index))
+    return amenager(zone,"Cette case ne peut plus accueillir cet objet.");
+  if (choixClos.type) {
+    const i=state.reserve.indexOf(choixClos.type);
+    if (i<0) return;
+    state.objets.push({type:state.reserve[i],case:index});
+    state.reserve.splice(i,1);
+  } else {
+    const source=state.objets.find(o=>OBJETS_CLOS[o.type].zone===zone&&o.case===choixClos.case);
+    if (!source) return;
+    source.case=index;
+  }
+  choixClos=null; afficherAmenagement(); save(); amenager(zone,"Objet placé.");
+};
+ACTIONS["clos-action"] = b => {
+  const zone=b.dataset.zone, action=b.dataset.k, state=amenagement(), v=V(), inv=v.inventaire, j=M.jour(v);
+  const bac=choixClos?.zone==="jardin"&&state.objets.find(o=>o.type==="bac"&&o.case===choixClos.case);
+  const culture=bac?.culture, recette=OBJETS_CLOS[action];
+  const refuser=msg=>amenager(zone,msg);
+  const ajouter=(k,n=1)=>{ inv[k]=(inv[k]||0)+n; if(!inv[k])delete inv[k]; };
+  let message;
+  if(action==="annuler"){choixClos=null;return amenager(zone,"Le placement est inchangé.");}
+  if(action==="bois"&&zone==="maison"&&state.collecte!==j){state.collecte=j; ajouter("bois_clos",4);message="Bois récupéré.";}
+  else if(recette&&zone==="maison"){
+    if((inv.bois_clos||0)<recette.bois)return refuser("Il manque du bois.");
+    ajouter("bois_clos",-recette.bois);state.reserve.push(action);message=recette.nom+" fabriqué.";
+  } else if(action.startsWith("placer-")&&state.reserve.includes(action.slice(7))&&OBJETS_CLOS[action.slice(7)].zone===zone){
+    choixClos={zone,type:action.slice(7)};return amenager(zone,"Choisis une case libre.");
+  } else if(action==="compost"&&zone==="maison"){
+    if(!inv.legumes)return refuser("Il faut une botte de légumes.");
+    ajouter("legumes",-1);ajouter("compost");message="Compost préparé.";
+  } else if(action==="graines"&&zone==="jardin"){
+    if(v.bourse<2)return refuser("Il faut deux sous.");
+    v.bourse-=2; ajouter("graine_chou");ajouter("graine_sauge");message="Une graine de chaque variété.";
+  } else if(SEMIS_CLOS[action]&&zone==="jardin"){
+    if(!bac||culture)return refuser("Sélectionne un bac vide.");
+    if(!inv["graine_"+action])return refuser("Il manque une graine.");
+    ajouter("graine_"+action,-1);bac.culture={type:action,plante:j,eauJour:null,compost:false};message="Semis effectué.";
+  } else if(action==="eau"&&culture){
+    if(culture.eauJour!==null)return refuser("Ce semis a déjà été arrosé.");
+    if(!inv.eau)return refuser("Remplis la cruche au puits.");
+    ajouter("eau",-1);culture.eauJour=j;message="Semis arrosé.";
+  } else if(action==="fertiliser"&&culture){
+    if(!inv.compost||culture.compost)return refuser("Il faut du compost et un semis à fertiliser.");
+    ajouter("compost",-1);culture.compost=true;message="Compost ajouté.";
+  } else if(action==="recolter"&&pret(culture)){
+    ajouter(SEMIS_CLOS[culture.type].produit,2);
+    ajouter("graine_"+culture.type);
+    delete bac.culture;v.competences.culture+=.5;message="Récolte rangée dans l’inventaire.";
+  } else return;
+  afficherAmenagement();save();amenager(zone,message);
+};
 function chezYsabeau() {
   const v = V(), ici = M.lieuDe(v, "ysabeau") === "maison_ysabeau";
+  if (rencontreDisponible("ysabeau", "maison_ysabeau")) return rencontre("ysabeau", "maison_ysabeau");
   sfx("frapper"); if (ici) setTimeout(() => sfx("porte"), 1200);
   if (!ici) return talk([["", "Vous frappez. Personne. " + (M.estJourTribut(M.jour(v)) ? "Ysabeau est déjà partie pour la place, avec son sac." : "Ysabeau est au marché à cette heure-ci.")],
-    choix([["Glisser un mot sous sa porte", () => { M.engager(v, { id: "mot:ysabeau:" + M.jour(v), de: "alienor", a: "ysabeau", quoi: "mot", t: v.t, etat: "tenu" }); M.lier(v, "ysabeau", "alienor", 0.5, 0); talk([["", "Trois lignes à la craie sur un bout d’épreuve : « Passée vous voir. Aliénor. »"]], apres); }], ["Repasser plus tard", rien]])]);
+    choix([!M.applique(v, "mot:ysabeau:" + M.jour(v)) && ["Glisser un mot sous sa porte", () => {
+      M.appliquer(v, "mot:ysabeau:" + M.jour(v), () => { M.lier(v, "ysabeau", "alienor", 0.5, 0); M.observer(v, "mot:ysabeau:" + M.jour(v), "ysabeau", "maison_ysabeau", "Aliénor a laissé un mot sous la porte."); });
+      save(); talk([["", "Trois lignes à la craie sur un bout d’épreuve : « Passée vous voir. Aliénor. »"]], apres);
+    }], ["Repasser plus tard", rien]])]);
   talk([[YS, "« Entre, ma fille, il fait froid sur le seuil. »"], [YS, vary("ys-clos", ["« Tu as mangé ? Non. Évidemment. »", "« Ta mère avait la même façon de frapper. Trois coups, et elle entrait sans attendre. »"])]], apres);
 }
 
@@ -373,22 +574,27 @@ ACTIONS.essayer = b => { essai = b.dataset.r; miroir(); };
 ACTIONS["choisir-robe"] = () => { const v = V(); v.tenue = essai; closePanel(); mode = "play"; say(`La robe ${essai}. Aliénor lisse le tissu et attache son tablier par-dessus.`); apres(); };
 ACTIONS.fermer = () => { closePanel(); mode = "play"; apres(); };
 
-function sortir() {
+function sortir(avantAtelier) {
   const r = V().recit;
   if (r.etape === "reveil") {
     const reste = [];
     if (r.lettre === "glissee") reste.push("la lettre est encore sur le seuil");
     if (!V().tenue) reste.push("vous n’avez pas choisi de robe");
-    return talk([["", reste.length ? "Avant d’entrer : " + reste.join(", ") + "." : "La porte de l’atelier. On entend déjà la presse."], choix([["Entrer à l’atelier", partirAtelier], ["Pas encore", rien]])]);
+    return talk([["", reste.length ? "Avant d’entrer : " + reste.join(", ") + "." : "La porte de l’atelier. On entend déjà la presse."], choix([["Entrer à l’atelier", () => partirAtelier(avantAtelier)], ["Pas encore", rien]])]);
   }
   if (r.etape === "soir") return talk([["", "Des rires montent de la place. La Fête de l’Un commence."], choix([["Aller à la fête (acte II)", () => { r.etape = "fete"; save(); startAct2(); }], ["Rester encore un peu", rien]])]);
   if (r.etape === "lendemain") return talk([["", "Le lendemain de la fête, la ville se lève tard. La suite du récit, l’hiver et l’acte III, est en cours d’écriture."], ["", "Votre journée est enregistrée : vous la retrouverez telle quelle."]], apres);
 }
-function partirAtelier() {
-  fermerDlg(); const v = V(); if (!v.tenue) v.tenue = "ocre";
-  v.recit.etape = "ville"; zoneShown.place = 1; save();
+function partirAtelier(avantAtelier) {
+  fermerDlg(); const v = V();
   mode = "turn"; refreshHud(); sfx("porte");
-  wash(() => { player.position.set(-19, 0, 7); setScene(true); firstExchange = false; player.rotation.y = -Math.PI / 2; startMovie("matin", enterPlay); });
+  wash(() => {
+    if (!v.tenue) v.tenue = "ocre";
+    v.recit.etape = "ville"; zoneShown.place = 1;
+    player.position.set(-19, 0, 7); player.rotation.y = -Math.PI / 2;
+    if (avantAtelier) avantAtelier();
+    save(); setScene(true); firstExchange = false; startMovie("matin", enterPlay);
+  });
 }
 
 /* ================= Prise de poste, cloche et tableau des commandes ================= */
@@ -404,9 +610,11 @@ setStage = function (n) {
   if (n === 2 && S.act === 1) {
     r.tribut = true;
     if (S.flags.tribut === "paye") M.appliquer(v, "tribut:mesure", () => { v.bourse = Math.max(0, v.bourse - 5); M.noter(v, "Le tribut : 5 sous de votre poche pour la mesure qui manquait."); });
-    if (S.flags.tribut === "denonce") M.savoir(v, "garin", "garin_denonce", 1, "percepteur", true);
-    M.conviction(v, S.flags.tribut === "refus" ? 6 : S.flags.tribut === "denonce" ? -8 : -2,
-      { refus: "Elle a posé la question tout haut. Son nom est écrit en grand.", denonce: "Elle a payé avec le nom d’un autre. La phrase du percepteur ne la quitte pas.", paye: "Elle a payé, comme tout le monde. Elle se demande ce que veut dire « comme tout le monde »." }[S.flags.tribut]);
+    M.appliquer(v, "tribut:consequences", () => {
+      if (S.flags.tribut === "denonce") M.savoir(v, "garin", "garin_denonce", 1, "percepteur", false);
+      M.conviction(v, S.flags.tribut === "refus" ? 6 : S.flags.tribut === "denonce" ? -8 : -2,
+        { refus: "Elle a posé la question tout haut. Son nom est écrit en grand.", denonce: "Elle a payé avec le nom d’un autre. La phrase du percepteur ne la quitte pas.", paye: "Elle a payé, comme tout le monde. Elle se demande ce que veut dire « comme tout le monde »." }[S.flags.tribut]);
+    });
   }
   return _setStage(n);
 };
@@ -461,35 +669,61 @@ ACTIONS.rep = b => { const i = +b.dataset.i, e = EPREUVE[i]; if (+b.dataset.k ==
 
 /* ================= Courses, pesée de la miche et sujets ================= */
 const inter = lab => INTER.find(x => x.label === lab);
+const ysI = inter("Parler à Ysabeau"), _ys = ysI.act;
+ysI.act = function () {
+  const v = V(), temoin = M.sait(v, "ysabeau", "pesee_publique");
+  if (S.act === 1 && temoin && M.observer(v, "pesee:ysabeau", "ysabeau", "place", temoin.vu
+    ? "Ysabeau dit avoir vu la miche posée sur la balance."
+    : "Ysabeau a entendu parler de la pesée publique.")) {
+    save();
+    return talk([[YS, temoin.vu ? "« J’ai vu la miche sur la balance. Il manquait du poids, oui. J’irai quand même chercher mon pain chez Maëlle. »"
+      : "« On m’a raconté pour la miche. Mais raconter une pesée, ce n’est pas avoir vu la balance. »"]], () => _ys.call(this));
+  }
+  return _ys.call(this);
+};
 const maelleI = inter("Parler à Maëlle"), _maelle = maelleI.act;
 maelleI.act = function () { if (S.act === 1 && S.stage < 2) return fournil(true); return _maelle.call(this); };
 INTER.push({ p: () => ({ x: N.maelle.position.x - 1.6, z: N.maelle.position.z - 0.2 }), r: 1.5, label: "Le fournil", can: () => S.act === 1 && S.stage >= 2, act() { fournil(false); } });
 function fournil(avantTribut) {
-  const v = V(), r = v.recit, j = M.jour(v);
+  if (rencontreDisponible("maelle", "fournil")) return rencontre("maelle", "fournil");
+  const v = V(), r = v.recit;
   M.saluer(v, "maelle");
   const ouvre = M.ouvert(v, "fournil");
-  const lignes = [[MA, !ouvre ? "« Le four est froid à cette heure. Reviens demain matin. »" : avantTribut ? "« Une miche ? Un sou. Ce matin j’en garde peu : le reste part au palais avec la farine. »" : vary("ma-four", ["« Il m’en reste trois. Après le tribut, on dirait que la ville a moins faim. »", "« Un sou la miche. Le même sou qu’hier, pour moins de pain. »"])]];
+  const conf = M.lien(v, "maelle", "alienor").conf;
+  const accueil = !ouvre ? "« Le four est froid à cette heure. Reviens demain matin. »"
+    : conf < 0 ? "« Une miche, un sou. Si tu as autre chose à me dire, attends qu’on soit seules. »"
+    : conf > 0 ? "« Bonjour, Aliénor. J’ai gardé du pain pour les gens du quartier. »"
+    : avantTribut ? "« Une miche ? Un sou. Ce matin j’en garde peu : le reste part au palais avec la farine. »"
+    : vary("ma-four", ["« Il m’en reste trois. Après le tribut, on dirait que la ville a moins faim. »", "« Un sou la miche. Le même sou qu’hier, pour moins de pain. »"]);
   const opts = [];
-  if (ouvre) opts.push(["Acheter une miche (1 sou)", () => { const a = M.acheter(v, "fournil", "miche"); sfx("coins"); talk([["", a.ok ? "Maëlle enveloppe la miche dans un linge." : a.raison]], () => fournil(avantTribut)); }]);
+  if (ouvre) opts.push(["Acheter une miche (1 sou)", () => { const a = M.acheter(v, "fournil", "miche"); if (a.ok) sfx("coins"); save(); talk([["", a.ok ? "Maëlle enveloppe la miche dans un linge." : a.raison]], () => fournil(avantTribut)); }]);
   const lettreLue = r.lettre !== "glissee";
-  if (lettreLue && !r.pesee && avantTribut && ouvre) opts.push(["Demander qu’on pèse la miche, devant les clientes", peseePublique]);
-  if (lettreLue && !r.pesee && avantTribut) opts.push(["Attendre d’être seule avec elle pour parler de la miche", () => { r.peseeAttente = true; talk([["", "Trop de monde autour de l’étal. Après le tribut, la place se videra."]], apres); }]);
-  if (lettreLue && !r.pesee && !avantTribut) opts.push(["Lui parler du poids de la miche, entre vous", peseePrivee]);
-  if (!avantTribut) {
+  const clients = temoinsFournil(v);
+  if (lettreLue && !r.pesee && avantTribut && ouvre && clients.length) {
+    opts.push(["Demander qu’on pèse la miche, devant les clientes", peseePublique]);
+    opts.push(["Attendre d’être seule avec elle pour parler de la miche", () => { r.peseeAttente = true; save(); talk([["", "Trop de monde autour de l’étal. Après le tribut, la place se videra."]], apres); }]);
+  }
+  if (lettreLue && !r.pesee && ouvre && (!avantTribut || !clients.length)) opts.push(["Lui parler du poids de la miche, entre vous", peseePrivee]);
+  if (!avantTribut && ouvre) {
     const pere = v.sujets["maelle:pere"];
     opts.push([pere ? "Revenir sur le four de son père (insister)" : "Lui demander des nouvelles de son père", () => sujetPere(!!pere)]);
     if (v.sujets["maelle:miche"] && v.inventaire.bon_de_farine) opts.push(["Lui montrer la copie du bon de farine", sujetBon]);
   }
   opts.push(["Rien pour l’instant", rien]);
-  talk(lignes.concat([choix(opts)]), apres);
+  talk([[MA, accueil], choix(opts)], apres);
 }
+const temoinsFournil = v => M.presents(v, "fournil").concat(M.presents(v, "place"))
+  .filter(h => !["maelle", "percepteur"].includes(h));
 function peseePublique() {
-  const v = V(); M.peserMiche(v, "public"); M.parler(v, "maelle:miche"); sfx("balance");
+  const v = V(), clients = temoinsFournil(v);
+  if (!M.peserMiche(v, "public")) return;
+  M.parler(v, "maelle:miche"); save(); sfx("balance");
   talk([[AL, "« Maëlle, tu veux bien peser cette miche ? Là, devant nous. »"], ["", "Maëlle hésite, puis pose la miche sur sa balance. Les clientes se penchent. Il manque un bon quart de livre."],
-    ["Perrine", "« Un quart ! Et on paie le plein. »"], [MA, "« Tu crois que je vole ? Devant tout le monde ? »"], ["", "Maëlle range la miche sans un mot de plus. Perrine s’éloigne vers la rue des Drapiers."]], apres);
+    [clients.includes("perrine") ? "Perrine" : M.HABITANTS[clients[0]]?.nom || "Une cliente", "« Un quart ! Et on paie le plein. »"], [MA, "« Tu crois que je vole ? Devant tout le monde ? »"], ["", "Maëlle range la miche sans un mot de plus."]], apres);
 }
 function peseePrivee() {
-  const v = V(); M.peserMiche(v, "prive"); M.parler(v, "maelle:miche");
+  const v = V(); if (!M.peserMiche(v, "prive")) return;
+  M.parler(v, "maelle:miche"); save();
   talk([[AL, "« Ce matin, on m’a écrit de faire peser ta miche. Je ne l’ai pas fait. Je préfère te le demander. »"], [MA, "« Elle est légère. Je sais. »"],
     [MA, "« La farine me vient du palais. Ils la pèsent sur leur balance avant de me la livrer. Leur boisseau est court. Je paie le plein, je reçois le court, et la miche porte la différence. »"],
     [AL, "« Et si on le disait ? »"], [MA, "« On dirait que c’est moi qui triche. Tu sais comment on regarde une boulangère dont la miche est légère. »"]], apres);
@@ -501,7 +735,12 @@ function sujetPere(deja) {
 }
 function sujetBon() {
   const v = V(), res = M.parler(v, "maelle:miche");
-  if (res === "suite") { M.savoir(v, "alienor", "miche_legere", 2, "bon", true); M.lier(v, "maelle", "alienor", 1, 1);
+  if (res === "suite") {
+    M.appliquer(v, "preuve:bon_de_farine:maelle", () => {
+      M.savoir(v, "alienor", "miche_legere", 2, "bon", true); M.lier(v, "maelle", "alienor", 1, 1);
+      M.observer(v, "preuve:bon_de_farine", "maelle", "fournil", "Maëlle a reconnu sur le bon l’écart entre les quantités payées et livrées.");
+    });
+    save();
     return talk([[MA, "« C’est mon bon ? Tu l’as corrigé ? »"], [AL, "« Douze payés, onze et demi reçus. Ce n’est pas ta balance qui ment. C’est la leur. »"], [MA, "« Alors il y a deux balances dans cette ville. Une pour ce qu’on doit, une pour ce qu’on reçoit. »"]], apres); }
   return talk([[MA, "« Tu me l’as déjà montré. Je sais lire les chiffres, au moins. »"]], apres);
 }
@@ -541,6 +780,48 @@ function halle(h) {
   talk([[M.HABITANTS[B.hab].nom, vary("halle-" + h.b, ["« Pour vous ce sera ? »", "« Le tribut ou pas, il faut bien manger. »"])],
     choix([[`Acheter ${A.nom} (${A.prix} sou${A.prix > 1 ? "s" : ""})`, () => { const r = M.acheter(v, h.b, art); if (r.ok) sfx("coins"); talk([["", r.ok ? "C’est dans votre panier." : r.raison]], apres); }], ["Rien, merci", rien]])], apres);
 }
+function halles() {
+  const opts = HALLES.map(h => [h.lab, () => halle(h)]);
+  talk([["", "Les marchands des halles ont laissé leurs ardoises devant les étals."], choix(opts.concat([["Repartir", rien]]))], apres);
+}
+
+/* Les choix de la fête nourrissent le même journal que les rencontres du jour. */
+const _reponseGarin = reponseGarin;
+reponseGarin = function (aveu) {
+  const v = V();
+  M.appliquer(v, "fete:aveu-garin", () => {
+    M.observer(v, "fete:aveu-garin", "garin", "place", aveu
+      ? "Aliénor a dit à Garin qu’elle avait donné son nom au percepteur. Il a reconnu qu’elle osait lui en parler en face."
+      : "Garin a demandé à Aliénor si elle avait donné son nom. Elle l’a nié.");
+    if (aveu) M.lier(v, "garin", "alienor", 0, 1);
+  });
+  return _reponseGarin(aveu);
+};
+const _maelleFete = A2.maelle;
+A2.maelle = function () {
+  const v = V(), pesee = v.recit.pesee;
+  if (S.stage !== 11 || !pesee) return _maelleFete.call(this);
+  const publique = pesee === "public";
+  if (!M.observer(v, "fete:maelle", "maelle", "place", publique
+    ? "À la fête, Maëlle a demandé qu’Aliénor laisse l’affaire de la miche loin de la foule."
+    : "À la fête, Maëlle a remercié Aliénor d’avoir abordé l’affaire de la miche à l’écart.")) return _maelleFete.call(this);
+  save();
+  return talk([[MA, publique ? "« Ici aussi, il y a du monde. Pour la miche, on parlera à l’écart, si tu veux bien. »"
+    : "« Merci de m’avoir parlé à part, ce matin. Au milieu de tout ce bruit, je me rappelle qu’au moins une personne a écouté. »"]],
+    () => _maelleFete.call(this));
+};
+const _choixBastien = choixBastien;
+choixBastien = function (etape, options) {
+  const faits = {
+    b4: ["Aliénor a dansé avec le jeune garde pendant la fête.", "Aliénor a refusé la danse pour continuer son travail.", "Aliénor lui a dit qu’elle ne dansait pas avec la garde."],
+    b6: ["Le jeune garde a confié qu’il avait appris à lire sur les édits.", "Aliénor a remercié le jeune garde. Il lui a dit de se méfier au lendemain de la fête.", "Le jeune garde a laissé l’affiche en place.", "Le jeune garde lisait toujours l’affiche quand Aliénor est repartie."]
+  }[etape];
+  if (!faits) return _choixBastien(etape, options);
+  return _choixBastien(etape, options.map(([libelle, action], i) => [libelle, () => {
+    M.observer(V(), "fete:" + etape, "bastien", "place", faits[i], bstate().nom ? "Bastien" : "Le jeune garde");
+    action();
+  }]));
+};
 
 /* Au tribut : le rappel des deux balances, pour qui a vu peser la miche. */
 const perI = inter("Parler au percepteur"), _per = perI.act;
@@ -568,10 +849,23 @@ function rentrerSoir() {
 const _startAct2 = startAct2;
 startAct2 = function () { fermerDlg(); const v = V(); M.avancerJusqua(v, C.tDe(M.jour(v), 2)); v.recit.etape = "fete"; save(); return _startAct2(); };
 function repas() {
-  const v = V(), dispo = ["miche", "viande", "gibier", "legumes"].filter(k => v.inventaire[k]);
-  if (v.recit.repas) return talk([["", "Le repas est fini. Le feu baisse."]]);
-  if (!dispo.length) return talk([["", "Rien à cuire. Un fond de soupe aux oignons, et de l’eau du puits."], choix([["Se contenter de la soupe", () => { v.recit.repas = true; v.barres.satiete = Math.min(100, v.barres.satiete + 10); talk([["", "Ce n’est pas grand-chose. C’est chaud."]], apres); }], ["Plus tard", rien]])]);
-  talk([["", "Sur la table : " + dispo.map(k => M.ARTICLES[k].nom).join(", ") + "."], choix([["Tout préparer", () => { const g = M.manger(v, dispo); v.recit.repas = true; talk([["", g >= 40 ? "Un vrai repas, au coin du feu. Aliénor mange lentement, pour une fois." : "Un repas simple, au coin du feu."]], apres); }], ["Garder pour demain", rien]])]);
+  const v = V(), dispo = ["miche", "viande", "gibier", "legumes", "sauge_recoltee"].filter(k => v.inventaire[k]);
+  const cle = "repas:clos:" + M.jour(v);
+  if (M.applique(v, cle) || (v.recit.repas && v.recit.etape === "soir")) return talk([["", "Le repas est fini. Le feu baisse."]]);
+  const manger = () => {
+    let texte = "Ce n’est pas grand-chose. C’est chaud.";
+    M.appliquer(v, cle, () => {
+      if (v.recit.etape === "soir") v.recit.repas = true;
+      if (!dispo.length) v.barres.satiete = Math.min(100, v.barres.satiete + 10);
+      else {
+        const gain = M.manger(v, dispo);
+        texte = gain >= 40 ? "Un vrai repas, au coin du feu. Aliénor mange lentement, pour une fois." : "Un repas simple, au coin du feu.";
+      }
+    });
+    save(); talk([["", texte]], apres);
+  };
+  const menu = dispo.length ? "Sur la table : " + dispo.map(k => M.ARTICLES[k].nom).join(", ") + "." : "Rien à cuire. Un fond de soupe aux oignons, et de l’eau du puits.";
+  talk([["", menu], choix([[dispo.length ? "Tout préparer" : "Se contenter de la soupe", manger], ["Plus tard", rien]])]);
 }
 function lit() {
   const v = V(), r = v.recit;
@@ -597,13 +891,39 @@ ACTIONS["rentrer-nuit"] = () => { closePanel(); versClos("nuit", CL(2.8, 0.6), (
 
 /* ================= Le lendemain : la visite ================= */
 function visite() {
-  const v = V(), vi = M.visiteEnCours(v); if (!vi) return;
+  const v = V();
+  if (v.recit.entretien?.lieu === "clos") return recevoir(v.recit.entretien, true);
+  const vi = M.visiteEnCours(v); if (!vi) return;
   sfx("frapper"); setTimeout(() => sfx("porte"), 900);
   const qui = M.HABITANTS[vi.hab].nom;
-  talk([["", `Sur le seuil : ${qui}.`], choix([["Ouvrir et la faire entrer", () => recevoir(vi)], ["Lui demander de repasser cet après-midi", () => { M.reporter(v, vi.id); talk([[qui === "Maëlle" ? MA : YS, "« Cet après-midi, alors. Au fournil. Tu as promis. »"]], apres); }], ["Ne pas répondre", () => { M.avancer(v, 1); talk([["", "Les pas s’éloignent. Plus tard, vous trouvez un mot glissé sous la porte."]], () => { setScene(true); apres(); }); }]])]);
+  talk([["", `Sur le seuil : ${qui}.`], choix([
+    ["Ouvrir et la faire entrer", () => recevoir(vi)],
+    ["Prendre rendez-vous pour cet après-midi", () => {
+      const e = M.reporter(v, vi.id);
+      if (!e) return;
+      save();
+      const lieu = e.lieu === "maison_ysabeau" ? "chez moi" : "au fournil";
+      talk([[qui, `« Cet après-midi, alors. Retrouve-moi ${lieu}. Tu as promis. »`]], apres);
+    }],
+    ["Ne pas répondre", () => { M.avancer(v, 1); setScene(true); save(); talk([["", "Les pas s’éloignent. Plus tard, vous trouvez un mot glissé sous la porte."]], apres); }]
+  ])]);
 }
-function recevoir(vi) {
-  const v = V(); M.recevoir(v, vi.id);
+function rencontreDisponible(hab, lieu) {
+  const v = V(), e = M.rendezVous(v, hab, lieu);
+  if (v.recit.entretien?.hab === hab && v.recit.entretien.lieu === lieu) return true;
+  return !!e && e.t === v.t && M.lieuDe(v, hab) === lieu;
+}
+function rencontre(hab, lieu) {
+  const v = V(), entretien = v.recit.entretien;
+  if (entretien?.hab === hab && entretien.lieu === lieu) return recevoir(entretien, true);
+  const e = M.honorerRendezVous(v, hab, lieu);
+  if (e) recevoir({ hab, motif: e.motif, id: e.id, lieu }, true);
+}
+function recevoir(vi, rendezVous = false) {
+  const v = V();
+  if (!rendezVous && !M.recevoir(v, vi.id)) return;
+  v.recit.entretien = { hab: vi.hab, motif: vi.motif, id: vi.id, lieu: vi.lieu || "clos" };
+  save();
   const L = {
     reproche: [[MA, "« Hier, devant tout le fournil, tu as fait peser ma miche. Perrine n’achète plus chez moi. Elle va chez le boulanger des Drapiers. »"],
       [MA, "« Tu veux savoir pourquoi elle est légère ? La farine me vient du palais, pesée sur leur balance. Leur boisseau est court. »"],
@@ -620,8 +940,25 @@ function recevoir(vi) {
         ["Lire sans parler de la vôtre", () => { M.conviction(v, -1, "Elle a gardé la lettre pour elle. Maëlle ne lui a rien demandé de plus."); talk([[MA, "« Demandez-leur la leur… Comme si on pouvait. »"]], fin); }]])],
     conseil: [[YS, "« On dit que des lettres courent sous les portes. Ne t’en mêle pas, ma fille. »"], [YS, "« Ta mère aussi recevait des lettres. »"]]
   }[vi.motif];
-  talk(L, fin);
+  const motif = {
+    reproche: "Maëlle a expliqué pourquoi la pesée lui a fait perdre une cliente.",
+    bon_de_farine: "Maëlle a apporté le bon de livraison de farine.",
+    lire: "Maëlle a demandé à Aliénor de lui lire sa lettre.",
+    conseil: "Ysabeau s’est souvenue des lettres que recevait la mère d’Aliénor."
+  }[vi.motif];
+  function conclure() {
+    if (motif) M.observer(v, vi.id, vi.hab, vi.lieu || "clos", motif);
+    delete v.recit.entretien;
+  }
+  for (const ligne of L || []) if (ligne.choices) {
+    ligne.choices = ligne.choices.map(([texte, choisir]) => [texte, () => {
+      M.appliquer(v, vi.id + ":choix", () => { conclure(); choisir(); });
+      save();
+    }]);
+  }
+  talk(L || [], fin);
   function fin() {
+    conclure();
     const nouvelles = [];
     if (M.motifEcart(v, "ysabeau")) nouvelles.push("En passant, Ysabeau dit qu’elle va acheter son pain chez Maëlle, ce matin, « pour qu’on la voie le faire ».");
     if (M.motifEcart(v, "garin")) nouvelles.push("On raconte au puits que Garin a été convoqué au palais pour la double mesure. La tannerie est fermée.");
@@ -633,7 +970,7 @@ function recevoir(vi) {
 /* Reprise au milieu d'une journée au clos : le décor est rebâti avant de rendre la main. */
 // start() ramène sur la place toute position hors des limites de la carte : on rend au clos la sienne.
 // Ce dont la ville à l’échelle (jeu/ville.js) a besoin pour se raccorder au clos et à l’atelier.
-window.Vie = { V, CL, enClos, sortir, versClos, vitrine, batirClos, majClos, apres };
+window.Vie = { V, CL, enClos, sortir, versClos, vitrine, batirClos, majClos, apres, maelle: fournil, halles, rencontreDisponible, rencontre };
 if (S.started && S.pos && S.pos[1] > 1300) { player.position.set(S.pos[0], 0, S.pos[1]); batirClos(); }
 refreshHud();
 })();

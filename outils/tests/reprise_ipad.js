@@ -150,6 +150,7 @@ async function traverserClos(page) {
 
 async function testOpening(browser) {
   await withSession(browser, null, {width: 1080, height: 810}, async (page,context,reopenTab) => {
+    await page.getByRole('button', {name: 'Réglages', exact: true}).tap();
     await page.getByRole('button', {name: /Affichage allégé/}).tap();
     await page.getByRole('button', {name: 'Entrer dans la ville'}).tap();
     await traverserClos(page);
@@ -190,17 +191,15 @@ async function testGate(browser) {
       const actual = await page.evaluate(() => [player.position.x, player.position.z]);
       assert.deepEqual(actual, pos, 'La poterne ouverte doit accepter la position sauvegardée');
       assert.match(await page.locator('#obj').textContent(), /fouillez la chapelle/i);
-      const textures = await page.evaluate(() => [rt.texture.uuid, rt.depthTexture.uuid, sun.shadow.map.uuid]);
       await page.setViewportSize({width: 1080, height: 810});
-      await page.waitForFunction(() => !portrait && rt.width === canvas.width && rt.height === canvas.height && rt.depthTexture.image.width === rt.width);
+      await page.waitForFunction(() => !portrait && Math.abs(camera.aspect-1080/810) < 0.01);
       const rotated = await page.evaluate(() => ({
-        textures: [rt.texture.uuid, rt.depthTexture.uuid, sun.shadow.map.uuid],
-        depthWidth: rt.depthTexture.image.width, depthHeight: rt.depthTexture.image.height,
-        width: rt.width, height: rt.height
+        dessin: renderer.getDrawingBufferSize(new THREE.Vector2()).toArray(),
+        canevas: [canvas.width, canvas.height],
+        position: [player.position.x, player.position.z]
       }));
-      assert.deepEqual(rotated.textures, textures, 'La rotation doit réutiliser les textures');
-      assert.equal(rotated.depthWidth, rotated.width);
-      assert.equal(rotated.depthHeight, rotated.height);
+      assert.deepEqual(rotated.dessin, rotated.canevas);
+      assert.deepEqual(rotated.position, pos, 'La rotation conserve la position à la poterne');
 
       await page.locator('#carnetBtn').tap();
       const citation = page.locator('#ov').getByRole('button', {name: /Page de citation/});
