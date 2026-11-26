@@ -483,7 +483,8 @@ function batirTissu() {
     const niveaux = [pres, loin].map((racine, niv) => {
       let mesh = null; racine.updateMatrixWorld(true); racine.traverse(o => { if (o.isMesh && !mesh) mesh = o; });
       const im = new THREE.InstancedMesh(mesh.geometry, mesh.material, parModele[m].length);
-      im.count = 0; im.castShadow = niv === 0; im.receiveShadow = true; // au-delà de 30 m, l'ombre ne se voit plus im.frustumCulled = false; im.name = M.id + " (tissu, en série)";
+      im.count = 0; im.castShadow = niv === 0; im.receiveShadow = true; // au-delà de 30 m, l'ombre ne se voit plus
+      im.frustumCulled = false; im.name = M.id + " (tissu, en série)"; // les copies sont loin de l'origine du modèle
       scene.add(im); return { im, monde: mesh.matrixWorld.clone(), boite: new THREE.Box3().setFromObject(racine) };
     });
     const t = new THREE.Matrix4(), r = new THREE.Matrix4(), sc = new THREE.Matrix4();
