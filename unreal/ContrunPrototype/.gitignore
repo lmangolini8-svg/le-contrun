@@ -1,0 +1,10 @@
+/Binaries/
+/Build/
+/Content/Sarlande/
+/DerivedDataCache/
+/Generated/
+/Intermediate/
+/Saved/
+/.vs/
+/*.sln
+__pycache__/
