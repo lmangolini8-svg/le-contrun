@@ -83,20 +83,20 @@ async function playStory({tribute, joystick = false, resumeDawn = false, interru
       if (document.elementFromPoint(x,y) !== canvas) fail('Le point de départ du joystick est couvert');
       await window.testJoystick({x,y,dx:48*dx,dy:48*dz});
       if (!joy.on || Math.abs(joy.x-dx) > .01 || Math.abs(joy.y-dz) > .01) fail('Glissement non reconnu');
-    } else window.dispatchEvent(new KeyboardEvent('keydown', {key}));
+    } else document.body.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles: true}));
     for (let i = 0; i < frames && mode === 'play'; i++) tick();
     if (joystick) {
       await window.testJoystick(null);
       gestures++;
       if (joy.on) fail('Joystick actif après le lever du doigt');
-    } else window.dispatchEvent(new KeyboardEvent('keyup', {key}));
+    } else document.body.dispatchEvent(new KeyboardEvent('keyup', {key, bubbles: true}));
   }
 
   // Recherche en largeur sur une grille dont le pas correspond à deux images de marche.
   // Dans la cour, on évite les cônes visibles et on recalcule le trajet pendant la patrouille.
   function pathTo(tx, tz, radius, inCourt) {
     const {x: ox, z: oz} = player.position;
-    const stride = 4.7 * dt * 2;
+    const stride = 2.45 * dt * 2;
     function exposed(x, z) {
       if (!inCourt || Math.hypot(x-ox, z-oz) >= 7) return false;
       return guards.some(({g}) => {

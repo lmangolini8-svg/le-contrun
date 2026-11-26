@@ -62,7 +62,8 @@
     viande: { nom: "un morceau de viande", prix: 3, satiete: 45, feu: true },
     gibier: { nom: "un lièvre", prix: 4, satiete: 50, feu: true },
     legumes: { nom: "une botte de légumes", prix: 1, satiete: 15 },
-    eau: { nom: "une cruche d’eau", prix: 0, satiete: 0 }
+    eau: { nom: "une cruche d’eau", prix: 0, satiete: 0 },
+    sauge_recoltee: { nom: "de la sauge du jardin", satiete: 5 }
   };
   const BOUTIQUES = {
     fournil: { nom: "Le fournil de Maëlle", hab: "maelle", lieu: "fournil", jours: [1, 2, 3, 4, 5, 6], plages: [0, 1], articles: ["miche"] },
@@ -141,6 +142,14 @@
   function applique(vie, id) { return Object.prototype.hasOwnProperty.call(vie.journal, id); }
   function appliquer(vie, id, fn) { if (applique(vie, id)) return false; vie.journal[id] = vie.t; if (fn) fn(); return true; }
   function noter(vie, texte) { vie.evenements.push({ t: vie.t, texte }); if (vie.evenements.length > 80) vie.evenements.shift(); }
+  const observations = vie => (vie.rencontres || []).slice();
+  function observer(vie, id, hab, lieu, texte, nom) {
+    return appliquer(vie, "rencontre:" + id, () => {
+      const journal = vie.rencontres || (vie.rencontres = []);
+      journal.push({ t: vie.t, hab, lieu, nom: nom || HABITANTS[hab]?.nom || hab, texte });
+      if (journal.length > 80) journal.shift();
+    });
+  }
 
   /* ================= Temps ================= */
   const jour = vie => Cal.jourDuT(vie.t), plage = vie => Cal.plageDuT(vie.t);
@@ -290,7 +299,9 @@
           e.etat = "manque";
           const autre = e.de === "alienor" ? e.a : e.de;
           if (HABITANTS[autre]) lier(vie, autre, "alienor", -1, -1);
-          noter(vie, `Un rendez-vous manqué avec ${HABITANTS[autre] ? HABITANTS[autre].nom : autre}.`);
+          const texte = `Un rendez-vous manqué avec ${HABITANTS[autre] ? HABITANTS[autre].nom : autre}.`;
+          noter(vie, texte);
+          if (e.quoi === "rendre_visite") observer(vie, e.id + ":manque", autre, e.lieu, texte);
         }
       }
       for (const v of vie.visites) if (v.t === t && v.etat === "attend") {
@@ -309,7 +320,20 @@
   function reporter(vie, id) {
     const v = vie.visites.find(x => x.id === id); if (!v || v.etat !== "attend") return null;
     v.etat = "reportee";
-    return engager(vie, { id: "rdv:" + v.id, de: "alienor", a: v.hab, quoi: "rendre_visite", t: vie.t + 1, lieu: lieuDe(vie, v.hab, vie.t + 1), motif: v.motif });
+    const e = engager(vie, { id: "rdv:" + v.id, de: "alienor", a: v.hab, quoi: "rendre_visite", t: vie.t + 1, lieu: lieuDe(vie, v.hab, vie.t + 1), motif: v.motif });
+    if (e) observer(vie, e.id + ":prevu", e.a, "clos", `Rendez-vous promis ${LIEUX[e.lieu].nom} pour ${Cal.lisible(e.t).plage.toLowerCase()}.`);
+    return e;
+  }
+  function rendezVous(vie, hab, lieu) {
+    return vie.engagements.find(e => e.quoi === "rendre_visite" && e.etat === "prevu"
+      && e.t >= vie.t && (!hab || e.a === hab) && (!lieu || e.lieu === lieu)) || null;
+  }
+  function honorerRendezVous(vie, hab, lieu) {
+    const e = rendezVous(vie, hab, lieu);
+    if (!e || e.t !== vie.t || lieuDe(vie, hab) !== lieu || !tenir(vie, e.id)) return null;
+    lier(vie, hab, "alienor", 1, 1);
+    observer(vie, e.id + ":tenu", hab, lieu, "Aliénor a tenu son rendez-vous.");
+    return e;
   }
 
   /* ================= Le lendemain : un motif compréhensible pour aborder Aliénor ================= */
@@ -345,11 +369,13 @@
       reputer(vie, "place", 1);
       vie.fournisseurs.perrine = "drapiers";
       conviction(vie, 4, "Elle a dit tout haut ce que la balance montrait. Elle ne sait pas encore ce que cela a coûté à Maëlle.");
+      observer(vie, "pesee:miche", "maelle", "fournil", "Devant les clients, la balance a montré qu’il manquait un quart de livre. Maëlle s’est sentie mise en cause.");
     } else {
       savoir(vie, "alienor", "miche_legere", 2, "maelle", false);
       savoir(vie, "maelle", "confidence_maelle", 1, "vu", true);
       lier(vie, "maelle", "alienor", 1, 2);
       conviction(vie, 2, "Elle a choisi d’écouter Maëlle avant de parler. La mesure du palais ne quitte plus ses pensées.");
+      observer(vie, "pesee:miche", "maelle", "fournil", "À l’écart, Maëlle a expliqué que la farine arrivait déjà pesée à la balance du palais.");
     }
     return true;
   }
@@ -446,10 +472,10 @@
 
   return {
     VERSION, LIEUX, QUARTIERS, HABITANTS, ARTICLES, BOUTIQUES, TRAVAUX, EXAMENS, FAITS, SUJETS,
-    creer, migrer, applique, appliquer, noter, jour, plage, estJourTribut, lieuDe, motifEcart, ecarter, presents,
+    creer, migrer, applique, appliquer, noter, observer, observations, jour, plage, estJourTribut, lieuDe, motifEcart, ecarter, presents,
     avancer, avancerJusqua, effort, depenser, pause, manger, conviction, dormir,
     savoir, sait, lien, lier, reputer, versionDansQuartier, transmettre,
-    engager, tenir, annuler, resoudrePlage, visiteEnCours, recevoir, reporter, motifLendemain, prevoirLendemain,
+    engager, tenir, annuler, resoudrePlage, visiteEnCours, recevoir, reporter, rendezVous, honorerRendezVous, motifLendemain, prevoirLendemain,
     peserMiche, parler, saluer, ouvert, horaires, acheter, devis, accepter, livrer, passerExamen, almanach, hache
   };
 });

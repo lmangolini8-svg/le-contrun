@@ -123,6 +123,24 @@ let errs = [];
   await attendre(() => (mode === "sequence" || mode === "play") && !Ville.enVille(), 40000);
   ok(await p.evaluate(() => player.position.y === 0 && player.position.x < 100), "entrée à l’atelier, sur la place des actes I et II");
 
+  // Une reprise dans l’atelier conserve sa porte, puis une reprise extérieure conserve le seuil de l’atlas.
+  ok(await p.evaluate(() => Vie.V().seuilAtelier === "presse"), "seuil d’atelier mémorisé");
+  await p.reload();
+  await p.locator('[data-a="resume"]').click();
+  await attendre(() => mode === "play");
+  await agir("Sortir vers les Drapiers");
+  await attendre(() => mode === "play" && Ville.enVille());
+  const auSeuil = () => {
+    const { X, Y } = Ville.dehorsAtlas("presse");
+    const q = Ville.versScene(X, Y);
+    return player.position.distanceTo(q) < 0.025;
+  };
+  ok(await p.evaluate(auSeuil), "sortie à la même porte de l’imprimerie");
+  await p.reload();
+  await p.locator('[data-a="resume"]').click();
+  await attendre(() => mode === "play" && Ville.enVille());
+  ok(await p.evaluate(auSeuil), "reprise au seuil de l’imprimerie");
+
   ok(!errs.length, "aucune erreur dans la page" + (errs.length ? " : " + errs.join(" | ") : ""));
   await b.close();
 })().catch(e => { console.error(e.message); if (errs.length) console.error("erreurs de la page :", errs.join(" | ")); process.exit(1); });

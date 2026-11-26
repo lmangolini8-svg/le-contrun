@@ -4,8 +4,8 @@
    pour l'instant son décor resserré. Le terrain, les bâtiments et les rues viennent de jeu/atlas.js et
    passent tous par Atlas.versScene ; la zone est seulement décalée de VILLE.x sur l'axe est, loin de la carte.
 
-   Raccords : au bas du clos, « Traverser la ville à pied » ; à la porte de la maison d'Aliénor, retour
-   au clos ; à la porte de l'imprimerie, l'atelier (même suite que l'ancienne rue du clos).
+   Raccords : depuis le seuil de la maison, trajet à pied dans l’atlas ; retour au même seuil.
+   L’imprimerie accueille les scènes d’atelier existantes et permet de ressortir du côté des Drapiers.
    Chargé après jeu/vie.js, dont il reprend quelques fonctions par window.Vie. */
 "use strict";
 (function () {
@@ -165,24 +165,96 @@ const PORTES = {};
 for (const s of SITES) if (s.surface === "roof" || s.surface === "church") { const p = porte(s); if (p) PORTES[s.id] = p; }
 
 /* ================= Construction, à la première visite ================= */
+const paves = new THREE.MeshLambertMaterial({ vertexColors: true });
+paves.onBeforeCompile = sh => {
+  sh.vertexShader = sh.vertexShader.replace("#include <common>", `#include <common>
+    attribute float pave;
+    varying vec2 vSolAtlas;
+    varying float vPave;
+  `).replace("#include <begin_vertex>", `#include <begin_vertex>
+    vSolAtlas = position.xz;
+    vPave = pave;
+  `);
+  sh.fragmentShader = sh.fragmentShader.replace("#include <common>", `#include <common>
+    varying vec2 vSolAtlas;
+    varying float vPave;
+  `).replace("#include <color_fragment>", `#include <color_fragment>
+    vec2 joints = vSolAtlas / vec2(0.48, 0.29);
+    joints.x += 0.5 * mod(floor(joints.y), 2.0);
+    vec2 ip = floor(joints), fp = fract(joints);
+    vec2 bords = min(fp, 1.0 - fp);
+    float ombre = 1.0 - smoothstep(0.028, 0.105, min(bords.x, bords.y));
+    float nuance = fract(sin(dot(ip, vec2(41.73, 93.67))) * 2763.39);
+    float route = mix(1.0, (0.88 + 0.2 * nuance) * (1.0 - 0.27 * ombre), smoothstep(0.55, 0.94, vPave));
+    diffuseColor.rgb *= route;
+  `);
+};
 let bati = false;
-function batirVille() {
-  if (bati) return; bati = true;
-  // le relief, maille de 1 m, teinté par matière : pavés des rues, limon du quai, jardins du clos
-  const nx = X1 - X0 + 1, ny = Y1 - Y0 + 1, pos = new Float32Array(nx * ny * 3), col = new Float32Array(nx * ny * 3), idx = [];
-  const c = new THREE.Color(), TEINTES = { 5: 0x8f9466, 6: 0x939766, 7: 0x8a8f66, 8: 0x7f8c5c, 9: 0x857866, 15: 0x5f7a86 };
+
+function remplacerFacade(fichier, support, centre, largeur, hauteur, profondeur, angle) {
+  const cle = "ville/" + fichier;
+  if (!_glbCache[cle]) {
+    _glbCache[cle] = gltfLoader().then(loader => new Promise((ok, ko) =>
+      loader.load("modeles/" + cle + ".glb", gltf => ok(decorMaterials(gltf.scene)), undefined, ko)));
+  }
+  _glbCache[cle].then(modele => {
+    const copie = modele.clone();
+    copie.rotation.y = angle;
+    const volume = new THREE.Box3().setFromObject(copie);
+    const taille = volume.getSize(new THREE.Vector3());
+    if (taille.x <= 0 || taille.y <= 0 || taille.z <= 0) return;
+    const axe = volume.getCenter(new THREE.Vector3()), groupe = new THREE.Group();
+    groupe.scale.set(largeur / taille.x, hauteur / taille.y, profondeur / taille.z);
+    groupe.position.set(centre.x - axe.x * groupe.scale.x, centre.y - volume.min.y * groupe.scale.y, centre.z - axe.z * groupe.scale.z);
+    groupe.name = fichier + " (atlas)";
+    groupe.add(copie);
+    scene.add(groupe);
+    support.visible = false;
+  }).catch(e => console.warn("Façade atlas indisponible : " + fichier, e));
+}
+
+const TEINTES = { 5: 0x8f9466, 6: 0x939766, 7: 0x8a8f66, 8: 0x7f8c5c, 9: 0x857866, 15: 0x5f7a86 };
+const FACADES_ATLAS = { presse: "imprimerie", maelle: "maison_pierre", tail: "maison1", coif: "maison2", fard: "maison_pierre" };
+function construireRelief(x0, y0, x1, y1) {
+  const nx = x1 - x0 + 1, ny = y1 - y0 + 1;
+  const pos = new Float32Array(nx * ny * 3), col = new Float32Array(nx * ny * 3), norm = new Float32Array(nx * ny * 3);
+  const pave = new Float32Array(nx * ny), idx = [];
+  const c = new THREE.Color(), normal = new THREE.Vector3();
   for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
-    const X = X0 + i, Y = Y0 + j, s = VS(X, Y, sol(X, Y)), k = j * nx + i, q = A.secteur(X, Y), g = grille[cel(X, Y)];
+    const X = x0 + i, Y = y0 + j, s = VS(X, Y, sol(X, Y)), k = j * nx + i, q = A.secteur(X, Y), g = grille[cel(X, Y)];
     pos.set([s.x, s.y, s.z], k * 3);
-    c.set(g === RUE ? (q && q.n === 9 ? 0x8a7a64 : 0xa89878) : (TEINTES[q && q.n] || 0x7f8c5c)); // pavés et limon ; herbe et terre battue
+    normal.set(sol(X - 0.5, Y) - sol(X + 0.5, Y), 1, sol(X, Y - 0.5) - sol(X, Y + 0.5)).normalize();
+    normal.toArray(norm, k * 3);
+    c.set(g === RUE ? (q && q.n === 9 ? 0x8a7a64 : 0xa89878) : (TEINTES[q && q.n] || 0x7f8c5c));
+    pave[k] = g === RUE && q?.n !== 9 ? 1 : 0;
     const v = 0.94 + 0.06 * Math.sin(X * 12.9898 + Y * 78.233);
     col.set([c.r * v, c.g * v, c.b * v], k * 3);
     if (i < nx - 1 && j < ny - 1) idx.push(k, k + nx, k + 1, k + 1, k + nx, k + nx + 1);
   }
   const geo = new THREE.BufferGeometry();
-  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3)); geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  geo.setIndex(idx); geo.computeVertexNormals();
-  const relief = new THREE.Mesh(geo, VC); relief.receiveShadow = true; relief.name = "Sarlande à l’échelle : relief"; scene.add(relief);
+  geo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
+  geo.setAttribute("pave", new THREE.BufferAttribute(pave, 1));
+  geo.setIndex(idx);
+  geo.computeVertexNormals();
+  const relief = new THREE.Mesh(geo, paves);
+  relief.receiveShadow = true;
+  return relief;
+}
+
+function batirVille() {
+  if (bati) return;
+  bati = true;
+  // Lots visibles indépendamment, sans dessiner toute la bande de 440 m à chaque image.
+  const terrain = new THREE.Group();
+  terrain.name = "Sarlande à l’échelle : relief";
+  const tailleLot = 48;
+  for (let Y = Y0; Y < Y1; Y += tailleLot) {
+    for (let X = X0; X < X1; X += tailleLot) {
+      terrain.add(construireRelief(X, Y, Math.min(X1, X + tailleLot), Math.min(Y1, Y + tailleLot)));
+    }
+  }
+  scene.add(terrain);
   // la rivière, au pied du quai
   const eau = new THREE.Mesh(new THREE.PlaneGeometry(X1 - X0, 40), LM(0x7f9fb0)); eau.rotation.x = -Math.PI / 2;
   const e0 = VS((X0 + X1) / 2, 490, 2.9); eau.position.set(e0.x, e0.y, e0.z); scene.add(eau);
@@ -195,11 +267,21 @@ function batirVille() {
       const k = Math.abs(Math.round(b.x0 * 7 + b.y0 * 13));
       if (s.surface === "roof" || s.surface === "church") {
         const h = s.surface === "church" ? 11 : 5.2 + (k % 3) * 0.9, top = haut + h, span = Math.min(w, d);
-        put(G.box, s.surface === "church" ? ST2 : COULEURS[k % COULEURS.length], m.x, (bas + top) / 2, m.z, w, top - bas, d);
-        put(G.prism, s.surface === "church" ? SLATE : [TILE, SLATE, LAUZE][k % 3], m.x, top, m.z, w + 0.8, span * 0.5, d + 0.8, w > d ? Math.PI / 2 : 0);
-        put(G.box, SEPIA, m.x, haut + 2.9, m.z, w + 0.06, 0.12, d + 0.06); // colombage
-        solid(m.x - w / 2, m.x + w / 2, m.z - d / 2, m.z + d / 2).low = false;
         const p = PORTES[s.id];
+        const fichier = VILLE_MESHY && p && FACADES_ATLAS[s.id];
+        const repli = fichier ? new Builder() : null;
+        const facade = repli ? repli.put.bind(repli) : put;
+        facade(G.box, s.surface === "church" ? ST2 : COULEURS[k % COULEURS.length], m.x, (bas + top) / 2, m.z, w, top - bas, d);
+        facade(G.prism, s.surface === "church" ? SLATE : [TILE, SLATE, LAUZE][k % 3], m.x, top, m.z, w + 0.8, span * 0.5, d + 0.8, w > d ? Math.PI / 2 : 0);
+        facade(G.box, SEPIA, m.x, haut + 2.9, m.z, w + 0.06, 0.12, d + 0.06);
+        solid(m.x - w / 2, m.x + w / 2, m.z - d / 2, m.z + d / 2).low = false;
+        if (repli) {
+          const support = repli.mesh(cityPaint);
+          scene.add(support);
+          const seuil = VS(p.dehors.X, p.dehors.Y).y;
+          if (seuil > bas) put(G.box, ST, m.x, (bas + seuil) / 2, m.z, w, seuil - bas, d);
+          remplacerFacade(fichier, support, { x: m.x, y: seuil - 0.01, z: m.z }, w, h + 2.8, d, Math.atan2(p.nx, p.ny));
+        }
         if (p) {
           const q = VS(p.X, p.Y), ry = p.nx ? Math.PI / 2 : 0, y0 = VS(p.dehors.X, p.dehors.Y).y;
           put(G.box, 0x3a2c22, q.x + p.nx * 0.06, y0 + 1.1, q.z + p.ny * 0.06, 1.3, 2.2, 0.12, ry);
@@ -210,8 +292,16 @@ function batirVille() {
         for (let X = b.x0 + 0.5; X <= b.x1; X += 4.5) for (const Y of [b.y0 + 0.5, b.y1 - 0.5]) { const p = VS(X, Y); put(G.box, WOOD, p.x, p.y + 2.3, p.z, 0.35, 4.6, 0.35); }
         put(G.prism, TILE, m.x, m.y + 4.6, m.z, w + 1.5, 3.4, d + 1.5, Math.PI / 2);
       } else if (s.id === "fontaine" || s.id.startsWith("puits")) {
-        put(G.c16, ST, m.x, m.y + 0.45, m.z, Math.min(w, d) * 0.9, 0.9, Math.min(w, d) * 0.9); put(G.c16, 0x6f8fa6, m.x, m.y + 0.86, m.z, Math.min(w, d) * 0.75, 0.05, Math.min(w, d) * 0.75);
-        if (s.id === "fontaine") put(G.c8, ST2, m.x, m.y + 1.6, m.z, 0.3, 2.2, 0.3);
+        const repli = s.id === "fontaine" && VILLE_MESHY ? new Builder() : null;
+        const bassin = repli ? repli.put.bind(repli) : put;
+        bassin(G.c16, ST, m.x, m.y + 0.45, m.z, Math.min(w, d) * 0.9, 0.9, Math.min(w, d) * 0.9);
+        bassin(G.c16, 0x6f8fa6, m.x, m.y + 0.86, m.z, Math.min(w, d) * 0.75, 0.05, Math.min(w, d) * 0.75);
+        if (s.id === "fontaine") bassin(G.c8, ST2, m.x, m.y + 1.6, m.z, 0.3, 2.2, 0.3);
+        if (repli) {
+          const support = repli.mesh(cityPaint);
+          scene.add(support);
+          remplacerFacade("fontaine", support, m, w, 4.65, d, 0);
+        }
       } else if (s.id === "lavoir") {
         put(G.box, ST, m.x, m.y + 0.3, m.z, w, 0.6, d); put(G.box, 0x6f8fa6, m.x, m.y + 0.55, m.z, w - 0.6, 0.05, d - 0.6);
         put(G.prism, TILE, m.x, m.y + 2.6, m.z, w + 1, 1.4, d + 1, Math.PI / 2);
@@ -230,26 +320,54 @@ function batirVille() {
 }
 
 /* ================= Raccords ================= */
-const dehors = id => { const p = PORTES[id], q = VS(p.dehors.X, p.dehors.Y); return { x: q.x, z: q.z }; };
-function entrerVille() {
+const dehors = id => {
+  const { X, Y } = PORTES[id].dehors;
+  return VS(X, Y);
+};
+const seuilMaison = () => Vie.CL(-5.5, 0.6);
+const seuilAtelier = () => ({ x: -18.5, z: 9.6 });
+const inscrireAtelier = () => { Vie.V().seuilAtelier = "presse"; };
+
+function passerDansVille(id) {
   mode = "turn"; refreshHud(); sfx("porte");
-  wash(() => { batirVille(); const q = dehors("maison"); player.position.set(q.x, solV(q.x, q.z), q.z); player.rotation.y = -Math.PI / 2; setScene(true); enterPlay(); refreshHud(); save();
-    say("Sarlande à l’échelle de l’atlas : le clos, les Drapiers, l’imprimerie, les halles et le quai.", 4); });
+  wash(() => {
+    batirVille();
+    const q = dehors(id), p = PORTES[id];
+    player.position.set(q.x, q.y, q.z);
+    player.rotation.y = Math.atan2(p.nx, p.ny);
+    setScene(true); enterPlay(); save();
+  });
 }
-function quitterVille(fn) { player.position.y = 0; fn(); }
+function entrerAtelier() {
+  const e = Vie.V().recit.etape;
+  if (e === "reveil" || e === "soir" || e === "lendemain") return Vie.sortir(inscrireAtelier);
+  mode = "turn"; refreshHud(); sfx("porte");
+  wash(() => {
+    player.position.set(-19, 0, 7);
+    player.rotation.y = -Math.PI / 2;
+    inscrireAtelier();
+    setScene(true); enterPlay(); save();
+  });
+}
 INTER.push(
-  { p: () => Vie.CL(-34, 0), r: 2.4, label: "Traverser la ville à pied", can: () => Vie.enClos(), act() { entrerVille(); } },
-  { p: () => dehors("maison"), r: 2, label: "Rentrer au clos", can: () => enVille(), act() { quitterVille(() => Vie.versClos(Vie.V().recit.etape, Vie.CL(-5.4, 0.6))); } },
-  { p: () => dehors("presse"), r: 2.2, get label() { const e = Vie.V().recit.etape; return e === "soir" ? "Rejoindre la fête" : "Entrer à l’atelier"; }, can: () => enVille(), act() {
-      const e = Vie.V().recit.etape;
-      if (e === "reveil" || e === "soir" || e === "lendemain") return Vie.sortir();
-      mode = "turn"; refreshHud(); sfx("porte");
-      wash(() => quitterVille(() => { player.position.set(-19, 0, 7); player.rotation.y = -Math.PI / 2; setScene(true); enterPlay(); refreshHud(); save(); }));
+  { p: seuilMaison, r: 1.7, label: "Traverser la ville à pied", can: () => Vie.enClos(), act() { passerDansVille("maison"); } },
+  { p: () => dehors("maison"), r: 2, label: "Rentrer au clos", can: () => enVille(), act() {
+      player.position.y = 0;
+      Vie.versClos(Vie.V().recit.etape, seuilMaison(), save);
     } },
+  { p: () => dehors("presse"), r: 2.2, get label() { return Vie.V().recit.etape === "soir" ? "Rejoindre la fête" : "Entrer à l’atelier"; }, can: () => enVille(), act: entrerAtelier },
+  { p: seuilAtelier, r: 1.5, label: "Sortir vers les Drapiers", can: () => !enVille() && !Vie.enClos() && S.act === 1 && Vie.V().seuilAtelier === "presse", act() { passerDansVille("presse"); } },
   ...Object.entries(ENSEIGNES).filter(([id]) => PORTES[id]).map(([id, nom]) => ({ p: () => dehors(id), r: 1.8, label: ENSEIGNE_LAB[id], can: () => enVille(), act() { Vie.vitrine(nom); } })),
-  { p: () => dehors("maelle"), r: 1.8, label: "Le fournil de Maëlle", can: () => enVille(), act() { talk([["", "Le fournil de Maëlle, entre l’imprimerie et la fontaine. L’odeur du pain chaud déborde sur la rue."]], Vie.apres); } },
+  { p: () => dehors("maelle"), r: 1.8, label: "Le fournil de Maëlle", can: () => enVille(), act() {
+      if (Vie.rencontreDisponible?.("maelle", "fournil")) return Vie.rencontre("maelle", "fournil");
+      if (Vie.maelle) return Vie.maelle(!Vie.V().recit.tribut);
+      talk([["", "Le fournil de Maëlle, entre l’imprimerie et la fontaine. L’odeur du pain chaud déborde sur la rue."]], Vie.apres);
+    } },
   { p: () => dehors("caisse"), r: 2, label: "La Caisse des métiers", can: () => enVille(), act() { talk([["", "La Caisse des métiers, au nord-est de la place. Un registre, des devis épinglés."]], Vie.apres); } },
-  { p: () => { const q = VS(362, 443); return { x: q.x, z: q.z }; }, r: 2.4, label: "Les halles", can: () => enVille(), act() { talk([["", "Les halles, au sud-est de la fontaine. Les jours de marché, les étals tournants s’y installent : boucher, paniers de Jeanne, banc du chasseur."]], Vie.apres); } },
+  { p: () => { const q = VS(362, 443); return { x: q.x, z: q.z }; }, r: 2.4, label: "Les halles", can: () => enVille(), act() {
+      if (Vie.halles) return Vie.halles();
+      talk([["", "Les halles, au sud-est de la fontaine. Les jours de marché, les étals tournants s’y installent : boucher, paniers de Jeanne, banc du chasseur."]], Vie.apres);
+    } },
   { p: () => { const q = VS(349, 469); return { x: q.x, z: q.z }; }, r: 2.6, label: "Le quai", can: () => enVille(), act() { talk([["", "Le quai, quatre mètres au-dessus du zéro de la ville. La rue courte descend de la place à 11 % ; les charrettes prennent le détour de l’est, 202 m sans dépasser 3 %."]], Vie.apres); } }
 );
 
@@ -261,8 +379,16 @@ freeView = function () { const v = _freeView(); if (enVille()) { v[1] += player.
 const _zoneOf = zoneOf; zoneOf = function () { return enVille() ? "ville" : _zoneOf(); };
 const _targetNow = targetNow, _targetName = targetName, _objText = objText;
 const versAtelier = () => ["reveil", "soir"].includes(Vie.V().recit.etape);
-targetNow = function () { return enVille() ? dehors(versAtelier() ? "presse" : "maison") : _targetNow(); };
-targetName = function () { return enVille() ? (versAtelier() ? "l’atelier" : "votre maison") : _targetName(); };
+targetNow = function () {
+  if (enVille()) return dehors(versAtelier() ? "presse" : "maison");
+  if (Vie.enClos() && versAtelier()) return seuilMaison();
+  return _targetNow();
+};
+targetName = function () {
+  if (enVille()) return versAtelier() ? "l’atelier" : "votre maison";
+  if (Vie.enClos() && versAtelier()) return "la sortie du clos";
+  return _targetName();
+};
 objText = function () {
   if (!enVille()) return _objText();
   return versAtelier() ? "Du clos à l’imprimerie, à pied : la rue des Drapiers monte vers l’ouest. La place et ses halles sont au centre, le quai en contrebas, au sud." : "Sarlande à pied. La maison est au clos, à l’est, au-dessus de la rivière.";
@@ -276,5 +402,13 @@ startPlay = function (newGame) {
 console.info("Ville à l’échelle : grille prête en", Math.round(performance.now() - T0), "ms");
 window.Ville = { VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
 // start() ramène sur la place toute position hors de la carte : on rend à la ville la sienne.
-if (S.started && S.pos && S.pos[0] > 2500 && !blocked(S.pos[0], S.pos[1])) { batirVille(); player.position.set(S.pos[0], solV(S.pos[0], S.pos[1]), S.pos[1]); }
+if (S.started && Array.isArray(S.pos) && Number.isFinite(S.pos[0]) && Number.isFinite(S.pos[1]) && S.pos[0] > 2500) {
+  batirVille();
+  const [x, z] = S.pos;
+  const p = DS(x, z);
+  const i = accroche(p.X, p.Y);
+  const q = estRelie(p.X, p.Y) ? { x, y: solV(x, z), z } :
+    i >= 0 ? VS(...centre(i)) : dehors("maison");
+  player.position.set(q.x, q.y, q.z);
+}
 })();

@@ -1,0 +1,138 @@
+:root {
+  --paper: #e6dfd1;
+  --page: #f5efe2;
+  --ink: #242a29;
+  --indigo: #344652;
+  --sienne: #804e35;
+  --muted: #595a54;
+  --edge: #b2a28a;
+  --ui: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#sceneFade {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: #141b1d;
+}
+
+.cart, .pri, .sec, #ov.full .box, #dlg .ch button {
+  border-radius: 6px;
+}
+
+.cart {
+  border: 1px solid var(--edge);
+  box-shadow: 0 3px 16px #111b1f2b;
+}
+
+.row { gap: 8px; }
+.pri, .sec {
+  font: 600 16px/1.25 var(--ui);
+  min-height: 44px;
+  padding: 10px 16px;
+}
+.pri { background: #263a3f; color: #fff6e7; }
+.sec { border: 1px solid var(--edge); }
+#ov.full { background: #182326b8; }
+#ov.full .box { background: var(--page); }
+#obj, #hint, #carnetBtn, #say, #dlg .who, #dlg .more { font-family: var(--ui); }
+#obj { transform: none; font-size: 15px; line-height: 1.35; }
+#obj b { font: 650 12px/1.3 var(--ui); }
+#carnetBtn { transform: none; font-size: 15px; }
+#carnetBtn svg { width: 22px; height: 22px; }
+#hint { font-size: 13px; line-height: 1.4; color: var(--page); text-shadow: 0 1px 4px #172225, 0 1px 2px #172225; }
+#say { font-size: 15px; border-radius: 4px; padding: 8px 12px; }
+#act {
+  width: 102px;
+  height: auto;
+  min-height: 62px;
+  border-radius: 12px;
+  border-width: 1px;
+  box-shadow: 0 3px 16px #111b1f36;
+  background: #f5efe2eb;
+  font: 650 14px/1.23 var(--ui);
+}
+#dlg {
+  padding: 16px 20px;
+  background: #f5efe2;
+  color: var(--ink);
+  touch-action: pan-y;
+}
+#dlg .who { color: #804e35; font-weight: 700; font-size: 14px; }
+#dlg .txt { font-size: clamp(18px, 2.5vw, 22px); }
+#dlg .more { font-size: 13px; }
+#dlg .ch button { border-color: var(--edge); font: 500 16px/1.4 var(--ui); }
+
+#ov.home {
+  position: fixed;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: clamp(18px, 4vh, 48px);
+  padding: max(24px, env(safe-area-inset-top)) clamp(22px, 6.5vw, 110px) max(28px, 7vh, env(safe-area-inset-bottom));
+  background: linear-gradient(90deg, #111c22eb, #1723298c 38%, transparent 73%),
+              linear-gradient(0deg, #111b21ed, transparent 44%);
+  color: #fff3dd;
+}
+#ov.home .top, #ov.home .bot {
+  position: relative;
+  width: min(470px, 100%);
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  justify-items: start;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+#ov.home .top { gap: 6px; }
+#ov.home .bot { gap: 12px; }
+#ov.home .title-place {
+  font: 650 12px/1.3 var(--ui);
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  color: #eed5a6;
+}
+#ov.home h1 {
+  font: 400 clamp(62px, 10.5vw, 150px)/.86 "IM Fell Double Pica SC", var(--display);
+  white-space: nowrap;
+  margin: 4px 0 6px -.045em;
+  letter-spacing: -.025em;
+  text-shadow: 0 3px 18px #15202386;
+  animation: none;
+}
+#ov.home .sub {
+  font-size: clamp(19px, 3vw, 29px);
+  text-shadow: 0 2px 12px #142023;
+}
+#ov.home .by { font: 500 13px/1.5 var(--ui); color: #e8d7bb; text-shadow: 0 1px 4px #142023; }
+#ov.home .pitch { background: transparent; box-shadow: none; color: #f3eadb; font-size: clamp(16px, 2vw, 20px); text-wrap: pretty; }
+#ov.home .pri { background: #f4deaf; color: #202927; font: 650 16px/1.3 var(--ui); padding: 12px 22px; }
+#ov.home .sec { background: #172329c4; border-color: #f1dcaf6b; color: #fff3dd; font: 550 14px/1.25 var(--ui); }
+#ov.home .row { justify-content: flex-start; }
+#ov.home .bot { animation: none; }
+#ov.home .title-settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid #e9d7b064;
+  background: #172329f5;
+  border-radius: 8px;
+}
+#ov.home .title-settings[hidden] { display: none; }
+#ov.home .modelChoice { display: grid; gap: 3px; font: 500 13px/1.25 var(--ui); }
+#ov.home .modelChoice select { min-height: 42px; border-radius: 4px; }
+
+@media (orientation: portrait) {
+  #ov.home { background: linear-gradient(0deg, #111b21fa, #111b218a 41%, transparent 79%); }
+  #ov.home h1 { font-size: clamp(59px, 15vw, 122px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  #ov.home { gap: 14px; padding-bottom: 18px; }
+  #ov.home h1 { font-size: clamp(50px, 8vw, 90px); }
+  #ov.home .bot { gap: 6px; }
+  #ov.home .title-settings { position: fixed; left: clamp(22px, 6.5vw, 110px); bottom: 18px; width: min(500px, 70vw); }
+}

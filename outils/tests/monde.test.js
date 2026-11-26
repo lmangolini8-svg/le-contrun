@@ -56,6 +56,41 @@ test("pesée en privé : confidence et bon de farine le lendemain", () => {
   assert.equal(vie.recit.lendemain, "bon_de_farine");
 });
 
+test("les témoins et le carnet distinguent la pesée publique de la confidence", () => {
+  const publique = M.creer(), privee = M.creer();
+  assert.equal(M.peserMiche(publique, "public"), true);
+  assert.equal(M.peserMiche(privee, "prive"), true);
+  const temoin = M.sait(publique, "ysabeau", "pesee_publique");
+  assert.equal(temoin.vu, true);
+  assert.equal(M.sait(privee, "ysabeau", "pesee_publique"), null);
+  assert.equal(M.versionDansQuartier(privee, "confidence_maelle", "place"), 0);
+  assert.match(M.observations(publique)[0].texte, /Devant les clients/);
+  assert.match(M.observations(privee)[0].texte, /À l’écart/);
+  const reprise = recharge(privee);
+  assert.equal(M.peserMiche(reprise, "public"), false);
+  assert.deepEqual(M.observations(reprise), M.observations(privee));
+});
+
+test("un rendez-vous reporté peut être tenu uniquement à son heure et au bon lieu", () => {
+  const vie = M.creer();
+  M.peserMiche(vie, "prive");
+  coucher(vie);
+  const visite = M.visiteEnCours(vie);
+  const rdv = M.reporter(vie, visite.id);
+  assert.equal(M.honorerRendezVous(vie, rdv.a, rdv.lieu), null);
+  M.avancer(vie);
+  const manque = recharge(vie);
+  const tenue = recharge(vie);
+  assert.equal(M.honorerRendezVous(tenue, "maelle", "clos"), null);
+  assert.equal(M.honorerRendezVous(tenue, rdv.a, rdv.lieu).etat, "tenu");
+  assert.equal(M.honorerRendezVous(recharge(tenue), rdv.a, rdv.lieu), null);
+  M.avancer(manque);
+  assert.equal(manque.engagements.find(e => e.id === rdv.id).etat, "manque");
+  assert.match(M.observations(manque).at(-1).texte, /manqué/);
+  assert.match(M.observations(tenue).at(-1).texte, /tenu/);
+  assert.ok(M.lien(tenue, "maelle", "alienor").conf > M.lien(manque, "maelle", "alienor").conf);
+});
+
 test("rechargements : achat, livraison, saut de plage et visite manquée ne se rejouent pas", () => {
   let vie = M.creer();
   const avant = vie.bourse;

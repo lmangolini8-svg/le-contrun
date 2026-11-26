@@ -1,0 +1,136 @@
+#carteBtn {
+  position: absolute;
+  top: 20px;
+  right: 116px;
+  min-height: 48px;
+  padding: 6px 12px;
+  border: 1px solid #816e57;
+  border-radius: 4px;
+  font: 700 20px var(--hand);
+}
+#carteBtn[hidden], .carnet-section[hidden] { display: none; }
+@media (max-width: 570px) {
+  #carteBtn { top: 76px; right: 76px; min-height: 44px; padding: 4px 8px; }
+}
+#ov.full .carnet-joueur {
+  box-sizing: border-box;
+  width: min(870px, 100%);
+  max-height: calc(100vh - 40px);
+  max-height: calc(100dvh - 40px);
+  padding: clamp(12px, 3vw, 24px);
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 10px;
+  color: #2c2923;
+  background: #eee5d0;
+  border: 1px solid #9d8d71;
+  border-radius: 8px;
+  box-shadow: 0 12px 42px #28201735;
+}
+.carnet-entete { padding-bottom: 3px; }
+#ov .carnet-entete p { color: #714d37; font-size: 15px; }
+#ov .carnet-entete h2 { font-size: clamp(23px, 4.8vw, 36px); }
+.carnet-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 3px;
+  border-bottom: 1px solid #9c8b71;
+}
+.carnet-tabs button {
+  min-height: 44px;
+  padding: 5px 2px;
+  border-radius: 4px 4px 0 0;
+  color: #423c31;
+  font: 600 clamp(13px, 3.35vw, 18px) var(--display);
+}
+.carnet-tabs button[aria-selected="true"] {
+  color: #fff8e6;
+  background: #425248;
+}
+.carnet-pages {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding: 1px 4px 1px 1px;
+}
+.carnet-section { display: grid; gap: 9px; }
+.carnet-section .feuil { transform: none; }
+.carnet-section h3, .carnet-section h4 { margin: 0; }
+.carnet-section h3 { font-size: 22px; font-weight: 500; }
+.carnet-section h4 { font-size: 19px; font-weight: 600; }
+.carnet-objectif, .carnet-fiche {
+  padding: 10px 12px;
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  background: #f6eedc;
+  border: 1px solid #baac8f;
+  border-radius: 5px;
+}
+.carnet-retour { display: flex; justify-content: flex-end; }
+.carnet-joueur .sec, .carnet-joueur .pri {
+  min-height: 44px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font: 600 17px var(--display);
+}
+.carte-entete, .inventaire-filtre {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.carte-outils, .carte-lieux { display: flex; flex-wrap: wrap; gap: 5px; }
+.carte-outils button, .carte-lieux button, .carnet-grille button, .inventaire-filtre select {
+  min-height: 44px;
+  padding: 4px 9px;
+  color: #292720;
+  background: #f8f0df;
+  border: 1px solid #ad9f82;
+  border-radius: 4px;
+  font: 16px var(--display);
+}
+.carte-lieux button[aria-pressed="true"], .carnet-grille button[aria-pressed="true"], .carte-outils button[aria-pressed="true"] {
+  color: #fff8e6;
+  background: #425248;
+  border-color: #425248;
+}
+.carte-plan {
+  display: block;
+  width: 100%;
+  height: clamp(148px, 35dvh, 320px);
+  background: #33423a;
+  border-radius: 5px;
+  touch-action: none;
+  cursor: grab;
+}
+.carte-plan:active { cursor: grabbing; }
+.carte-plan polyline { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.carte-plan path.carte-eau, .carte-eau polyline { fill: none; stroke: #769c9b; stroke-width: 5; }
+.carte-plan path.carte-voies, .carte-voies polyline { fill: none; stroke: #b5ab8e; stroke-width: 3; }
+.carte-terre { fill: #596452; }
+.carte-bati { fill: #8d7e68; }
+.carte-joueur, .carte-lieu, .carte-but, .carte-repere { vector-effect: non-scaling-stroke; }
+.carte-joueur { fill: #fff7de; stroke: #302719; stroke-width: .7px; }
+.carte-lieu, .carte-repere, .carte-but { r: calc(var(--carte-marqueur, 1) * 1.25px); stroke-width: 1.2px; }
+.carte-lieu { fill: #b2bd9a; stroke: #26342c; cursor: pointer; }
+.carte-but { fill: none; stroke: #ffd779; r: calc(var(--carte-marqueur, 1) * 1.6px); }
+.carte-repere { fill: #a7d9ed; stroke: #26342c; }
+#ov .carte-legende { font-size: 15px; }
+.carnet-grille {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(min(142px, 100%), 1fr));
+}
+.carnet-grille button { display: flex; justify-content: space-between; gap: 5px; text-align: left; }
+.carnet-grille details {
+  background: #f6eedc;
+  border: 1px solid #baac8f;
+  border-radius: 4px;
+}
+.carnet-grille details summary { padding: 10px 8px; min-height: 44px; cursor: pointer; }
+.carnet-grille details[open] p { padding: 0 8px 8px; }
+.carnet-grille details img { display: block; width: 100%; }
+.carnet-nouveau { color: #a74e2a; }
+.carte-suivi { fill: none; stroke: #d5e8bf; stroke-width: 1.2px; stroke-dasharray: 3 2; vector-effect: non-scaling-stroke; r: calc(var(--carte-marqueur, 1) * 1.7px); }
