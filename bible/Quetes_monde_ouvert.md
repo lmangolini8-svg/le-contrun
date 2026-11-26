@@ -76,7 +76,7 @@ Les codes renvoient aux étapes actuelles (`S.stage`). Les lieux sont ceux de l�
 - **Le carnet** : onglet « Récit » (actes, chapitres, étapes faites et ouvertes), onglet « Ville » (services, événements connus, lieux découverts).
 - **Annonce** discrète quand un événement commence à portée : « La cloche du tribut sonne sur la place. »
 
-## 7. Le roman graphique de Sarlande
+## 6. Le roman graphique de Sarlande
 
 Chaque étape du récit jouée débloque des **pages illustrées**. Elles s'assemblent, acte après acte, en un vrai roman graphique, rangé dans le carnet, que l'on feuillette comme on veut : dans l'ordre, au hasard, ou pour revoir une scène.
 
@@ -116,7 +116,7 @@ Soit **environ 75 pages** pour les deux premiers actes, sans aucune illustration
 - Registre des pages dans `jeu/roman.js` : identifiant, chapitre, fichier, légende, condition de déblocage (lue dans le registre des quêtes et dans `S.flags`), page de remplacement selon les choix.
 - Pages débloquées et marque-page dans la sauvegarde ; migration des anciennes parties d'après leurs étapes et leurs drapeaux déjà joués.
 
-## 8. Le plan de travail
+## 7. Le plan de travail
 
 1. **Le registre des quêtes** (`jeu/quetes.js`) et **le roman graphique** (`jeu/roman.js`), qui lit ce registre : données des actes, chapitres et étapes ; étape suivie ; état sauvegardé (migration des anciennes sauvegardes depuis `S.stage`). Suivi, flèche et carte lisent ce registre. *Sans changer le jeu : on rebranche l’aide sur le registre.*
 2. **Agrandir la ville praticable** à toute l’enceinte : palais (dehors), chapitre, tanneurs, nord, portes ; grille de marche et tissu urbain étendus, construits par quartiers autour d’Aliénor pour rester légers.
