@@ -75,6 +75,54 @@ for (const s of SITES) if (OUVERT.has(s.surface)) { const b = rect(s); cellules(
 const MARGE = 0.45; // le rayon d'Aliénor : les murs se tiennent à distance
 for (const s of SITES) if (BATI.has(s.surface) && s.id !== "pont") { const b = rect(s); cellules(b.x0 - MARGE, b.x1 + MARGE, b.y0 - MARGE, b.y1 + MARGE, i => { grille[i] = MUR; }); }
 
+/* ================= Le tissu urbain =================
+   L'atlas ne donne que les lieux du récit. Entre eux, une ville médiévale est faite de maisons mitoyennes
+   qui bordent chaque rue, l'arrière donnant sur des cours. On les aligne ici le long des chemins et des ruelles,
+   dans l'enceinte, sans jamais empiéter sur une rue, un lieu de l'atlas ou ses abords (ses portes restent dégagées). */
+const dansPoly = (X, Y, P) => { let o = false; for (let i = 0, j = P.length - 1; i < P.length; j = i++) { const [xi, yi] = P[i], [xj, yj] = P[j]; if ((yi > Y) !== (yj > Y) && X < (xj - xi) * (Y - yi) / (yj - yi) + xi) o = !o; } return o; };
+const INTRA = new Uint8Array(GW * GH);
+for (let i = 0; i < INTRA.length; i++) { const [X, Y] = centre(i); INTRA[i] = dansPoly(X, Y, A.ENCEINTE) ? 1 : 0; }
+const hasard = (a, b) => { const x = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return x - Math.floor(x); };
+const SANS_MAISON = new Set([3, 11, 12, 13, 14, 15]); // palais et jardins, hors les murs, rivière
+const RIVE = 6.2; // dans le secteur du quai, rien ne se bâtit au ras de l'eau
+const occupe = new Uint8Array(GW * GH);
+for (const s of SITES) { const b = rect(s), m = s.surface === "garden" || s.surface === "yard" || s.surface === "hall" ? 1.2 : 2.2; cellules(b.x0 - m, b.x1 + m, b.y0 - m, b.y1 + m, i => { occupe[i] = 1; }); }
+const TISSU = [];
+{ const RECUL = LARGE + 0.55, MARGE_OBB = MARGE;
+  const obb = (C, t, n, w, d, pad, f) => { const hw = w / 2 + pad, hd = d / 2 + pad, ex = Math.abs(t[0]) * hw + Math.abs(n[0]) * hd, ey = Math.abs(t[1]) * hw + Math.abs(n[1]) * hd;
+    cellules(C[0] - ex, C[0] + ex, C[1] - ey, C[1] + ey, (i, x, y) => { const dx = x - C[0], dy = y - C[1]; if (Math.abs(dx * t[0] + dy * t[1]) <= hw && Math.abs(dx * n[0] + dy * n[1]) <= hd) f(i); }); };
+  const libre = (C, t, n, w, d) => { let ok = true; obb(C, t, n, w, d, 0.2, i => { if (!ok) return; const [X, Y] = centre(i), q = A.secteur(X, Y);
+    if (grille[i] !== 0 || occupe[i] || !INTRA[i] || !q || SANS_MAISON.has(q.n) || (q.n === 9 && A.altitude(X, Y) < RIVE)) ok = false; });
+    if (!ok) return false; for (const [a, b] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { const X = C[0] + t[0] * a * w / 2 + n[0] * b * d / 2, Y = C[1] + t[1] * a * w / 2 + n[1] * b * d / 2; if (cel(X, Y) < 0) return false; } return true; };
+  for (const [v, pts] of RUES.entries()) {
+    // la rue est parcourue d'un bout à l'autre, quelle que soit la densité de ses points
+    const S = [0]; for (let i = 1; i < pts.length; i++) S.push(S[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    const Ltot = S[S.length - 1]; if (Ltot < 6) continue;
+    const au = s => { let i = 1; while (i < pts.length - 1 && S[i] < s) i++; const L = (S[i] - S[i - 1]) || 1, f = Math.max(0, Math.min(1, (s - S[i - 1]) / L));
+      return { P: [pts[i - 1][0] + f * (pts[i][0] - pts[i - 1][0]), pts[i - 1][1] + f * (pts[i][1] - pts[i - 1][1])], i }; };
+    const dir = (a, b) => { const p = au(a).P, q = au(b).P, L = Math.hypot(q[0] - p[0], q[1] - p[1]) || 1; return [(q[0] - p[0]) / L, (q[1] - p[1]) / L]; };
+    const j = v;
+    for (const side of [-1, 1]) {
+      let u = 1.5;
+      while (u < Ltot - 1.5 && TISSU.length < 420) {
+        const k = hasard(v * 31 + side * 7, u), w = Math.min(Ltot - u - 0.5, 5 + 3.5 * k);
+        if (w < 4) break;
+        const m = u + w / 2, t = dir(Math.max(0, m - w / 2), Math.min(Ltot, m + w / 2)), n = [-t[1] * side, t[0] * side], M = au(m).P;
+        const F = [M[0] + n[0] * RECUL, M[1] + n[1] * RECUL];
+        // la maison prend la profondeur que lui laisse l'îlot, entre 5 et 11 m
+        let d = 11 - 3 * hasard(u, v + side), C = null;
+        for (; d >= 5; d -= 1) { const c = [F[0] + n[0] * d / 2, F[1] + n[1] * d / 2]; if (libre(c, t, n, w, d)) { C = c; break; } }
+        if (C) {
+          obb(C, t, n, w, d, 0, i => { occupe[i] = 1; });
+          obb(C, t, n, w, d, MARGE_OBB, i => { if (grille[i] !== RUE) grille[i] = MUR; });
+          TISSU.push({ C, F, t, n, w, d, k, rue: v < NCH });
+          u += w;
+        } else u += 1;
+      }
+    }
+  }
+}
+
 /* Sol de marche, interpolé entre les centres des cellules. Hors de l'emprise : le relief de l'atlas. */
 function sol(X, Y) {
   const c = (X - X0) / R - 0.5, r = (Y - Y0) / R - 0.5;
@@ -97,6 +145,16 @@ blocked = function (x, z) {
   const P = player.position, d = Math.hypot(x - P.x, z - P.z);
   if (d > 0.02 && d < 0.6 && P.x > 2500) { const q = DS(P.x, P.z); if (Math.abs(sol(p.X, p.Y) - sol(q.X, q.Y)) > PAS_MAX * Math.max(d, 0.25)) return true; }
   return false;
+};
+
+// La caméra ne traverse pas les maisons de la ville : la ligne de vue ne doit croiser aucun mur de la grille.
+const _camClear = camClear;
+camClear = function (ax, az, bx, bz) {
+  if (!_camClear(ax, az, bx, bz)) return false;
+  if (ax < 2500 && bx < 2500) return true;
+  const L = Math.hypot(bx - ax, bz - az), n = Math.ceil(L / 0.35);
+  for (let k = 0; k < n; k++) { const p = DS(ax + (bx - ax) * k / n, az + (bz - az) * k / n), i = cel(p.X, p.Y); if (i >= 0 && grille[i] === MUR) return false; }
+  return true;
 };
 
 /* Le réseau relié : ce qu'on atteint à pied depuis la place. Une porte s'ouvre toujours de ce côté. */
@@ -185,7 +243,9 @@ paves.onBeforeCompile = sh => {
     vec2 bords = min(fp, 1.0 - fp);
     float ombre = 1.0 - smoothstep(0.028, 0.105, min(bords.x, bords.y));
     float nuance = fract(sin(dot(ip, vec2(41.73, 93.67))) * 2763.39);
-    float route = mix(1.0, (0.88 + 0.2 * nuance) * (1.0 - 0.27 * ombre), smoothstep(0.55, 0.94, vPave));
+    float grain = fract(sin(dot(floor(vSolAtlas * 3.1), vec2(12.99, 78.23))) * 43758.5);
+    float route = mix(1.0, (0.88 + 0.2 * nuance) * (1.0 - 0.27 * ombre), smoothstep(0.7, 0.94, vPave));
+    route *= mix(1.0, 0.9 + 0.16 * grain, smoothstep(0.3, 0.6, vPave) * (1.0 - smoothstep(0.7, 0.94, vPave)));
     diffuseColor.rgb *= route;
   `);
 };
@@ -213,6 +273,8 @@ function remplacerFacade(fichier, support, centre, largeur, hauteur, profondeur,
   }).catch(e => console.warn("Façade atlas indisponible : " + fichier, e));
 }
 
+const JARDIN = new Uint8Array(GW * GH);
+for (const s of SITES) if (s.surface === "garden") { const b = rect(s); cellules(b.x0, b.x1, b.y0, b.y1, i => { JARDIN[i] = 1; }); }
 const TEINTES = { 5: 0x8f9466, 6: 0x939766, 7: 0x8a8f66, 8: 0x7f8c5c, 9: 0x857866, 15: 0x5f7a86 };
 const FACADES_ATLAS = { presse: "imprimerie", maelle: "maison_pierre", tail: "maison1", coif: "maison2", fard: "maison_pierre" };
 function construireRelief(x0, y0, x1, y1) {
@@ -225,8 +287,10 @@ function construireRelief(x0, y0, x1, y1) {
     pos.set([s.x, s.y, s.z], k * 3);
     normal.set(sol(X - 0.5, Y) - sol(X + 0.5, Y), 1, sol(X, Y - 0.5) - sol(X, Y + 0.5)).normalize();
     normal.toArray(norm, k * 3);
-    c.set(g === RUE ? (q && q.n === 9 ? 0x8a7a64 : 0xa89878) : (TEINTES[q && q.n] || 0x7f8c5c));
-    pave[k] = g === RUE && q?.n !== 9 ? 1 : 0;
+    const ci = cel(X, Y), intra = ci >= 0 && INTRA[ci], jardin = ci >= 0 && JARDIN[ci];
+    c.set(g === RUE ? (q && q.n === 9 ? 0x8a7a64 : 0xa89878) : intra && !jardin ? 0x9b8b70 : (TEINTES[q && q.n] || 0x7f8c5c));
+    if (g === RUE && ci >= 0 && dRue[ci] < 0.45 && cheminDe[ci] >= 0) c.multiplyScalar(0.78); // la rigole, au milieu du chemin
+    pave[k] = g === RUE && q?.n !== 9 ? 1 : intra && !jardin ? 0.62 : 0;
     const v = 0.94 + 0.06 * Math.sin(X * 12.9898 + Y * 78.233);
     col.set([c.r * v, c.g * v, c.b * v], k * 3);
     if (i < nx - 1 && j < ny - 1) idx.push(k, k + nx, k + 1, k + 1, k + nx, k + nx + 1);
@@ -316,8 +380,104 @@ function batirVille() {
       }
     }
   });
+  batirTissu();
   flushWin();
 }
+
+/* Les maisons du tissu : pierre au rez-de-chaussée, étages en colombages ou enduit, encorbellement,
+   toit de tuiles, de lauzes ou d'ardoise, gouttereau ou pignon sur rue. Toutes fusionnées en un seul maillage. */
+const MURS_HAUT = [0xeee2c8, 0xe8d6b0, 0xf0dcc0, 0xe4d2a8, 0xd9c9a6, 0xece4d4];
+const VOLETS = [0x6f8a78, 0x2f6b78, 0xa9583a, 0x4a5578, 0x7a5a3a, 0x9cae8c];
+const AUVENTS = [0xa9583a, 0x2f6b78, 0xd6a94e, 0x6f8a78];
+function maisonTissu(h) {
+  const { C, F, t, n, w, d, k } = h, r = (a) => hasard(k * 97 + a, C[0] + C[1]);
+  const c = VS(C[0], C[1]), f = VS(F[0], F[1]);
+  const coins = [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([a, b2]) => VS(C[0] + t[0] * a * w / 2 + n[0] * b2 * d / 2, C[1] + t[1] * a * w / 2 + n[1] * b2 * d / 2).y);
+  const bas = Math.min(f.y, ...coins) - 0.4, rue = f.y; // la façade se règle sur la rue
+  const ry = Math.atan2(-n[0], -n[1]), z = d / 2; // l'avant local regarde la rue
+  B.push(c.x, c.z, ry);
+  const pierre = r(1) < 0.3, etages = r(2) < 0.35 ? 1 : 2, he = 2.7, rdc = 3.0;
+  const enc = pierre ? 0 : 0.35, haut = rue + rdc + etages * he;
+  const mur = MURS_HAUT[Math.floor(r(3) * MURS_HAUT.length)], volet = VOLETS[Math.floor(r(4) * VOLETS.length)];
+  // rez-de-chaussée de pierre, enfoncé dans la pente
+  if (r(5) < 0.5) { // enduit sur un socle de pierre
+    put(G.box, ST2, 0, (bas + rue + 0.7) / 2, 0, w + 0.06, rue + 0.7 - bas, d + 0.06, 0, 0, 0, 4);
+    put(G.box, MURS_HAUT[Math.floor(r(15) * MURS_HAUT.length)], 0, rue + 0.7 + (rdc - 0.7) / 2, 0, w, rdc - 0.7, d, 0, 0, 0, 7);
+  } else { // pierre de taille, cordon sous l'étage
+    put(G.box, r(16) < 0.5 ? ST : ST2, 0, (bas + rue + rdc) / 2, 0, w, rue + rdc - bas, d, 0, 0, 0, 4);
+    put(G.box, ST2, 0, rue + rdc - 0.08, z + 0.05, w + 0.1, 0.16, 0.14, 0, 0, 0, 4);
+  }
+  // étages : pierre ou pans de bois en encorbellement
+  put(G.box, pierre ? ST : mur, 0, rue + rdc + etages * he / 2, enc / 2, w + (pierre ? 0 : 0.2), etages * he, d + enc, 0, 0, 0, pierre ? 4 : 7);
+  if (!pierre) {
+    const zf = z + enc + 0.02, nb = Math.max(2, Math.round(w / 1.6));
+    for (let e = 0; e <= etages; e++) put(G.box, TB, 0, rue + rdc + e * he, zf, w + 0.25, 0.18, 0.12, 0, 0, 0, 6);
+    for (let i = 0; i <= nb; i++) { const x = -w / 2 + i * w / nb; put(G.box, TB, x, rue + rdc + etages * he / 2, zf, 0.14, etages * he, 0.1, 0, 0, 0, 6); }
+    if (r(6) < 0.6) for (let e = 0; e < etages; e++) for (let i = 0; i < nb; i += 2) { const x = -w / 2 + (i + 0.5) * w / nb, sg = (i / 2 + e) % 2 ? 1 : -1;
+      put(G.box, TB, x, rue + rdc + e * he + he / 2, zf, 0.1, he * 1.05, 0.08, 0, 0, sg * Math.atan2(w / nb, he)); }
+  }
+  // fenêtres et volets
+  const nf = Math.max(1, Math.round(w / 2.6));
+  for (let e = 0; e < etages; e++) for (let i = 0; i < nf; i++) {
+    const x = -w / 2 + (i + 0.5) * w / nf, y = rue + rdc + e * he + 1.35, zf = z + enc + 0.06;
+    put(G.box, WIN, x, y, zf, 0.75, 1.1, 0.05);
+    if (r(10 + i + e) < 0.7) for (const sx of [-1, 1]) put(G.box, volet, x + sx * 0.6, y, zf + 0.02, 0.42, 1.1, 0.05);
+    if (r(20 + i + e) < 0.18) put(G.box, [0xc94a3a, 0xd9b84a, 0x8a6aa0][i % 3], x, y - 0.72, zf + 0.18, 0.85, 0.22, 0.3); // jardinière
+  }
+  // rez-de-chaussée : porte et seuil, parfois une échoppe sous auvent
+  const dx = (r(7) - 0.5) * (w - 2.2);
+  put(G.box, 0x4b3829, dx, rue + 1.05, z + 0.03, 1.05, 2.1, 0.08, 0, 0, 0, 6);
+  put(G.box, ST2, dx, rue + 2.2, z + 0.06, 1.35, 0.22, 0.14, 0, 0, 0, 4);
+  put(G.box, ST2, dx, rue + 0.06, z + 0.35, 1.4, 0.16, 0.6, 0, 0, 0, 4);
+  if (h.rue && r(8) < 0.45 && w > 6) {
+    const sx = dx > 0 ? -w / 4 : w / 4;
+    put(G.box, 0x2a2c33, sx, rue + 1.4, z + 0.03, 2.0, 1.6, 0.06);
+    put(G.box, WOOD, sx, rue + 0.85, z + 0.3, 2.2, 0.1, 0.55, 0, 0, 0, 6);
+    put(G.box, AUVENTS[Math.floor(r(9) * AUVENTS.length)], sx, rue + 2.55, z + 0.55, 2.5, 0.05, 1.1, 0, 0.35, 0);
+  } else put(G.box, WIN, dx > 0 ? -w / 4 : w / 4, rue + 1.5, z + 0.04, 0.7, 0.9, 0.05);
+  // toit
+  const toit = r(11), rf = toit < 0.45 ? TILE : toit < 0.8 ? LAUZE : SLATE;
+  if (w < 6.5 && r(12) < 0.6) { // pignon sur rue
+    const rh = w * 0.75; put(G.prism, rf, 0, haut, enc / 2, w + 0.5, rh, d + enc + 0.6, 0, 0, 0, 5);
+    put(G.prism, pierre ? ST : mur, 0, haut, z + enc + 0.04, w, rh * 0.96, 0.06, 0, 0, 0, pierre ? 4 : 7);
+    put(G.box, WIN, 0, haut + rh * 0.35, z + enc + 0.09, 0.55, 0.65, 0.05);
+  } else { // gouttereau sur rue
+    put(G.prism, rf, 0, haut, enc / 2, d + enc + 0.7, d * 0.42, w + 0.25, Math.PI / 2, 0, 0, 5);
+    if (r(13) < 0.5) { put(G.box, pierre ? ST : mur, 0, haut + 0.55, z - 0.6, 0.9, 1.0, 0.9, 0, 0, 0, 7); put(G.prism, rf, 0, haut + 1.05, z - 0.6, 1.1, 0.5, 1.1, 0, 0, 0, 5); }
+  }
+  put(G.box, 0xa8937c, (r(14) - 0.5) * w * 0.6, haut + d * 0.32, -d * 0.15, 0.6, 1.6, 0.6, 0, 0, 0, 4); // cheminée
+  B.pop();
+  return haut;
+}
+const MESHY_TISSU = ["maison1_loin", "maison2_loin", "maison_pierre_loin"];
+function batirTissu() {
+  dio(0, () => { for (const h of TISSU) h.haut = maisonTissu(h); });
+  // Les seuils des lieux de l'atlas : une marche de pierre devant chaque porte.
+  for (const id in PORTES) { const p = PORTES[id], q = VS(p.dehors.X, p.dehors.Y); put(G.box, ST2, q.x - p.nx * 0.6, q.y + 0.06, q.z - p.ny * 0.6, p.nx ? 0.7 : 1.6, 0.16, p.nx ? 1.6 : 0.7); }
+  // Quelques façades Meshy, de près seulement, le long des chemins : une maison sur cinq.
+  if (!VILLE_MESHY) return;
+  let n = 0;
+  for (const h of TISSU) {
+    if (!h.rue || hasard(h.k, 5) > 0.2 || n >= 28) continue; n++;
+    const fichier = MESHY_TISSU[n % MESHY_TISSU.length], cle = "ville/" + fichier, c = VS(h.C[0], h.C[1]), rueY = VS(h.F[0], h.F[1]).y;
+    if (!_glbCache[cle]) _glbCache[cle] = gltfLoader().then(L => new Promise((ok, ko) => L.load("modeles/" + cle + ".glb", g => ok(decorMaterials(g.scene)), undefined, ko)));
+    _glbCache[cle].then(modele => {
+      const copie = modele.clone(); copie.rotation.y = Math.atan2(-h.n[0], -h.n[1]) + Math.PI;
+      const vol = new THREE.Box3().setFromObject(copie), tl = vol.getSize(new THREE.Vector3()), axe = vol.getCenter(new THREE.Vector3());
+      if (!(tl.x > 0 && tl.y > 0)) return;
+      const g = new THREE.Group(), cos = Math.abs(Math.cos(copie.rotation.y)), sx = (h.w * cos + h.d * (1 - cos)) / tl.x, sz = (h.d * cos + h.w * (1 - cos)) / tl.z;
+      g.scale.set(sx, (h.haut - rueY + h.d * 0.42) / tl.y, sz);
+      g.position.set(c.x - axe.x * sx, rueY - 0.3 - vol.min.y * g.scale.y, c.z - axe.z * sz);
+      g.add(copie); g.name = fichier + " (tissu)"; g.userData.tissu = c;
+      MAISONS_PROCHES.push(g); scene.add(g);
+    }).catch(e => console.warn("Maison Meshy indisponible : " + fichier, e));
+  }
+}
+// Les maisons Meshy ne s'affichent qu'à moins de 60 m d'Aliénor ; au-delà, la maison dessinée suffit.
+const MAISONS_PROCHES = [];
+const _alive = typeof alive === "function" ? alive : null;
+setInterval(() => { if (!enVille()) { for (const g of MAISONS_PROCHES) g.visible = false; return; } const P = player.position;
+  for (const g of MAISONS_PROCHES) { const c = g.userData.tissu; g.visible = Math.hypot(c.x - P.x, c.z - P.z) < 60; } }, 500);
 
 /* ================= Raccords ================= */
 const dehors = id => {
@@ -374,8 +534,31 @@ INTER.push(
 /* Le sol suit le relief ; la caméra suit Aliénor en hauteur. */
 const _charTick = charTick;
 charTick = function (dt) { if (enVille()) player.position.y = solV(player.position.x, player.position.z); _charTick(dt); };
-const _freeView = freeView;
-freeView = function () { const v = _freeView(); if (enVille()) { v[1] += player.position.y; v[4] += player.position.y; } return v; };
+const _freeView = freeView, camVille = { a: null };
+freeView = function () {
+  const v = _freeView(); if (!enVille()) return v;
+  v[1] += player.position.y; v[4] += player.position.y;
+  // Dans les rues étroites, la caméra tourne autour d'Aliénor jusqu'à un angle dégagé, de préférence derrière elle ;
+  // l'angle trouvé est gardé tant qu'il reste libre. En dernier recours, elle se rapproche et s'élève.
+  const P = player.position, dx = v[0] - P.x, dz = v[2] - P.z, lx = v[3] - P.x, lz = v[5] - P.z;
+  const tourne = (a, x, z) => [x * Math.cos(a) + z * Math.sin(a), -x * Math.sin(a) + z * Math.cos(a)];
+  const libre = a => { const [x, z] = tourne(a, dx, dz); return camClear(P.x + x, P.z + z, P.x, P.z); };
+  const derriere = Math.atan2(-Math.sin(player.rotation.y), -Math.cos(player.rotation.y)) - Math.atan2(dx, dz);
+  let a = null;
+  if (camVille.a !== null && libre(camVille.a)) a = camVille.a;
+  else for (const c of [0, derriere, 0.5, -0.5, 1, -1, 1.6, -1.6, 2.2, -2.2, Math.PI]) if (libre(c)) { a = c; break; }
+  camVille.a = a;
+  if (a !== null) {
+    if (a) { const [x, z] = tourne(a, dx, dz), [x2, z2] = tourne(a, lx, lz); v[0] = P.x + x; v[2] = P.z + z; v[3] = P.x + x2; v[5] = P.z + z2; }
+    return v;
+  }
+  let k = 1;
+  while (k > 0.2 && !camClear(P.x + dx * k, P.z + dz * k, P.x, P.z)) k -= 0.1;
+  v[0] = P.x + dx * k; v[2] = P.z + dz * k; v[1] += (1 - k) * 3.2;
+  const f = 0.25 + 0.75 * k;
+  v[3] = P.x + lx * f; v[5] = P.z + lz * f; v[4] = P.y + 1.1 + (v[4] - P.y - 1.1) * f;
+  return v;
+};
 const _zoneOf = zoneOf; zoneOf = function () { return enVille() ? "ville" : _zoneOf(); };
 const _targetNow = targetNow, _targetName = targetName, _objText = objText;
 const versAtelier = () => ["reveil", "soir"].includes(Vie.V().recit.etape);
@@ -400,7 +583,7 @@ startPlay = function (newGame) {
 };
 
 console.info("Ville à l’échelle : grille prête en", Math.round(performance.now() - T0), "ms");
-window.Ville = { VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
+window.Ville = { TISSU: () => TISSU.length, VILLE, enVille, praticable, estRelie, chemin, accroche: (X, Y) => { const i = accroche(X, Y); return i < 0 ? null : centre(i); }, dehorsAtlas: id => PORTES[id] && PORTES[id].dehors, sol, solScene: solV, PAS_MAX, batirVille, PORTES, versScene: VS, depuisScene: DS };
 // start() ramène sur la place toute position hors de la carte : on rend à la ville la sienne.
 if (S.started && Array.isArray(S.pos) && Number.isFinite(S.pos[0]) && Number.isFinite(S.pos[1]) && S.pos[0] > 2500) {
   batirVille();
