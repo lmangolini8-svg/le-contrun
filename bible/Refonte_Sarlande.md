@@ -1,6 +1,7 @@
 # Refonte de Sarlande et de la vie d’Aliénor
 
 Cahier des charges pour Claude · 25 novembre 2026
+La [finition des actes I et II](Finition_Actes_I_II.md) complète ce cahier pour le rendu 3D, l’interface joueur, les dialogues, les relations sociales et la recette de livraison.
 
 ## 1. Direction et décisions de référence
 
