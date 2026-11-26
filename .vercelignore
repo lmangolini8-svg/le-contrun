@@ -1,0 +1,13 @@
+# Mise en ligne du jeu : seuls index.html, jeu/, vendor/, img/, son/, modeles/ et fonts/ sont utiles.
+references/
+bible/
+dossier/
+outils/
+modeles/**/apercus/
+modeles/**/meshy/
+modeles/**/meshy_entrees/
+modeles/test/
+*.md
+*.txt
+*.xlsx
+.github/
