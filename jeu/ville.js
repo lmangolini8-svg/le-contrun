@@ -288,8 +288,9 @@ function construireRelief(x0, y0, x1, y1) {
     normal.set(sol(X - 0.5, Y) - sol(X + 0.5, Y), 1, sol(X, Y - 0.5) - sol(X, Y + 0.5)).normalize();
     normal.toArray(norm, k * 3);
     const ci = cel(X, Y), intra = ci >= 0 && INTRA[ci], jardin = ci >= 0 && JARDIN[ci];
-    c.set(g === RUE ? (q && q.n === 9 ? 0x8a7a64 : 0xa89878) : intra && !jardin ? 0x9b8b70 : (TEINTES[q && q.n] || 0x7f8c5c));
-    if (g === RUE && ci >= 0 && dRue[ci] < 0.45 && cheminDe[ci] >= 0) c.multiplyScalar(0.78); // la rigole, au milieu du chemin
+    c.set(g === RUE ? (q && q.n === 9 ? 0x9a8c74 : 0xc4b89c) : intra && !jardin ? 0x75664f : (TEINTES[q && q.n] || 0x7f8c5c));
+    if (g === RUE && ci >= 0 && dRue[ci] < 0.45 && cheminDe[ci] >= 0) c.multiplyScalar(0.72); // la rigole, au milieu du chemin
+    if (g === RUE && ci >= 0 && dRue[ci] > LARGE - 0.55 && dRue[ci] <= LARGE) c.multiplyScalar(0.8); // la bordure de la rue
     pave[k] = g === RUE && q?.n !== 9 ? 1 : intra && !jardin ? 0.62 : 0;
     const v = 0.94 + 0.06 * Math.sin(X * 12.9898 + Y * 78.233);
     col.set([c.r * v, c.g * v, c.b * v], k * 3);
@@ -607,6 +608,22 @@ freeView = function () {
   v[3] = P.x + lx * f; v[5] = P.z + lz * f; v[4] = P.y + 1.1 + (v[4] - P.y - 1.1) * f;
   return v;
 };
+/* L'aide directionnelle suit les rues : la flèche vise le prochain tournant du chemin à pied, et compte les pas restants. */
+const guide = { cle: "", t: 0, pts: null, reste: 0 };
+function majGuide(t) {
+  const P = player.position, a = DS(P.x, P.z), b = DS(t.x, t.z), cle = Math.round(b.X) + "," + Math.round(b.Y), now = performance.now();
+  if (cle !== guide.cle || now - guide.t > 700) {
+    guide.cle = cle; guide.t = now; guide.pts = chemin(a, b);
+    if (guide.pts) { guide.reste = 0; let p0 = [a.X, a.Y]; for (const q of guide.pts) { guide.reste += Math.hypot(q[0] - p0[0], q[1] - p0[1]); p0 = q; } }
+  }
+}
+window.guideVers = t => {
+  if (!enVille() || !t) return null; majGuide(t); if (!guide.pts) return null;
+  const P = player.position, a = DS(P.x, P.z);
+  for (const q of guide.pts) if (Math.hypot(q[0] - a.X, q[1] - a.Y) > 4) return VS(q[0], q[1]);
+  return null;
+};
+window.guideReste = t => { if (!enVille() || !t) return Math.hypot(t.x - player.position.x, t.z - player.position.z); majGuide(t); return guide.pts ? guide.reste : Math.hypot(t.x - player.position.x, t.z - player.position.z); };
 const _zoneOf = zoneOf; zoneOf = function () { return enVille() ? "ville" : _zoneOf(); };
 const _targetNow = targetNow, _targetName = targetName, _objText = objText;
 const versAtelier = () => ["reveil", "soir"].includes(Vie.V().recit.etape);
