@@ -52,6 +52,11 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
 #arrowLab{position:absolute;left:50%;top:150px;transform:translateX(-50%);font-family:var(--hand);font-weight:700;font-size:19px;color:var(--ink);background:rgba(247,241,227,.86);padding:0 10px;border-radius:12px;white-space:nowrap;pointer-events:none;transition:opacity .3s;opacity:0}
 #daze{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:92px;height:57px;opacity:0;transition:opacity .25s;pointer-events:none}
 #seen{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:84px;height:52px;opacity:0;transition:opacity .25s;pointer-events:none}
+#course{position:absolute;right:24px;bottom:calc(166px + env(safe-area-inset-bottom));min-width:72px;min-height:44px;border:1px solid var(--ink);border-radius:22px;background:var(--page);color:var(--ink);font:inherit}
+#course[aria-pressed="true"]{background:var(--ink);color:var(--page)}
+.grille-clos{display:grid;grid-template-columns:repeat(var(--colonnes),minmax(44px,1fr));gap:4px;margin:10px 0}
+.grille-clos button{min-height:48px;padding:3px;border:1px solid var(--muted);border-radius:4px;background:var(--page);color:var(--ink);font:inherit;font-size:14px;overflow-wrap:anywhere}
+.grille-clos button[aria-pressed="true"]{background:var(--ink);color:var(--page)}
 #joy{position:absolute;width:124px;height:124px;display:none;pointer-events:none}
 #joy svg{position:absolute;inset:0;width:100%;height:100%}
 #joy i{position:absolute;left:38px;top:38px;width:48px;height:48px;border-radius:46% 54% 52% 48%/55% 45% 55% 45%;background:var(--ink);opacity:.82}
@@ -187,6 +192,7 @@ button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
   <svg id="daze" viewBox="0 0 84 52" aria-hidden="true"><path d="M8 20 C8 8 30 6 42 14 C54 6 76 8 76 20 C76 36 62 44 52 38 C48 36 44 32 42 32 C40 32 36 36 32 38 C22 44 8 36 8 20 Z" fill="#f7f1e3" stroke="#221f2b" stroke-width="2.4" stroke-linejoin="round"/><path id="dazeP" d="M14 21 C14 12 28 11 40 17 C36 26 26 33 18 30 C15 28 14 25 14 21 M70 21 C70 12 56 11 44 17 C48 26 58 33 66 30 C69 28 70 25 70 21" fill="none" stroke="#e07f2a" stroke-width="5" stroke-linecap="round" pathLength="100" stroke-dasharray="100" stroke-dashoffset="100"/></svg>
   <div id="say"></div>
   <div id="hint"></div>
+  <button id="course" aria-pressed="false" hidden>Courir</button>
   <div id="joy"><svg viewBox="0 0 124 124"><path d="M62 5 C96 4 120 30 119 62 C118 96 94 120 61 119 C28 118 4 94 5 61 C6 30 30 6 62 5 Z" fill="rgba(247,241,227,.4)" stroke="#221f2b" stroke-width="2.2"/></svg><i></i></div>
   <button id="act"></button>
   <div id="dlg" class="cart"></div>
@@ -422,6 +428,34 @@ function inkMaterials(root){ root.traverse(o=>{ if(!o.isMesh)return; const m=o.m
 function swapForGLB(old,url){ gltfLoader().then(L=>L.load(url,g=>{ const box=new THREE.Box3().setFromObject(old), m=inkMaterials(g.scene); m.name=old.name+" (GLB)"; // Le colosse de test est centré sur sa boîte ; la statue a son origine au pied, sur l’axe du socle.
   if(GLB_TEST!=="colosse") m.position.set(old.position.x,box.min.y,old.position.z); else m.position.set((box.min.x+box.max.x)/2,box.min.y,(box.min.z+box.max.z)/2); scene.add(m); old.visible=false; if(GLB_TEST==="colosse")say("Test GLB : "+old.name+" chargé depuis Blender.",5); },undefined,e=>{ console.error(e); say("Test GLB : échec du chargement.",6); })); }
 
+// Ville modélisée (Meshy, allégée dans Blender) ; ?ville=ancien garde les anciens volumes simples.
+const VILLE_MESHY=new URLSearchParams(location.search).get("ville")==="meshy";
+const _glbCache={}, villeGLB=new THREE.Group(); villeGLB.name="Ville (GLB)";
+// Pose un modèle de modeles/<f>.glb ; le même fichier n'est chargé qu'une fois, puis cloné.
+function poseGLB(f,x,z,ry,k,y){ if(!villeGLB.parent) scene.add(villeGLB);
+  if(!_glbCache[f]) _glbCache[f]=gltfLoader().then(L=>new Promise((ok,ko)=>L.load("modeles/"+f+".glb",g=>ok(inkMaterials(g.scene)),undefined,ko)));
+  _glbCache[f].then(m=>{ const c=m.clone(); c.position.set(x,y||0,z); c.rotation.y=ry||0; if(Array.isArray(k)) c.scale.set(...k); else c.scale.setScalar(k||1); villeGLB.add(c); })
+    .catch(e=>console.error("Modèle introuvable : "+f,e)); }
+// Largeur de façade de chaque modèle préparé (m), pour le caler dans l'emplacement d'une maison.
+const LARGEUR_GLB={"ville/maison1":7.6,"ville/maison2":8.4,"ville/maison_pierre":7.2,"ville/imprimerie":8.4,"ville/maison1_loin":7.6,"ville/maison2_loin":8.4,"ville/maison_pierre_loin":7.2};
+// Château de l'Un : pièces Meshy posées à la place des anciens volumes. [fichier, x, z, échelle, rotation y, étirement x]
+const CHATEAU_PIECES=[
+  ["porte",0,-19.4,1],
+  ["rempart",-19.7,-18.85,1,0,1.09],["rempart",19.7,-18.85,1,0,1.09],
+  ["tour",-31.2,-18.6,0.6],["tour",31.2,-18.6,0.6],
+  ["pavillon",-19,-33,1],["pavillon",19,-33,1],
+  ["tour",-29,-44,0.95],["tour",29,-44,0.95],
+  ["palais",0,-57,1],
+  ["tour",-24,-62,1.05],["tour",24,-62,1.05],
+  ["donjon",0,-76,1],
+];
+function buildChateau(){ const groupe=new THREE.Group(); groupe.name="Château de l’Un (GLB)"; scene.add(groupe);
+  const fichiers=[...new Set(CHATEAU_PIECES.map(p=>p[0]))];
+  gltfLoader().then(L=>Promise.all(fichiers.map(f=>new Promise((ok,ko)=>L.load("modeles/chateau/"+f+".glb",g=>ok([f,inkMaterials(g.scene)]),undefined,ko))))).then(modeles=>{
+    const parNom=Object.fromEntries(modeles);
+    for(const [f,x,z,k,ry,sx] of CHATEAU_PIECES){ const m=parNom[f].clone(); m.position.set(x,0,z); m.rotation.y=ry||0; m.scale.set(k*(sx||1),k,k); groupe.add(m); }
+  }).catch(e=>{ console.error("Château : échec du chargement",e); }); }
+
 /* ================= Constructeur de géométrie fusionnée ================= */
 const G={ box:new THREE.BoxGeometry(1,1,1), c8:new THREE.CylinderGeometry(1,1,1,8), c16:new THREE.CylinderGeometry(1,1,1,18), k16:new THREE.ConeGeometry(1,1,18), k4:new THREE.ConeGeometry(1,1,4), s:new THREE.SphereGeometry(1,14,10), ico:new THREE.IcosahedronGeometry(1,1),
   torso:new THREE.CylinderGeometry(1,0.8,1,12), skirt:new THREE.CylinderGeometry(0.17,0.4,0.98,14), flare:new THREE.CylinderGeometry(0.17,0.26,0.36,12), leg:new THREE.CylinderGeometry(0.078,0.062,0.84,8), arm:new THREE.CylinderGeometry(0.055,0.045,0.56,8), hcyl:new THREE.CylinderGeometry(1,1,1,16,1,false,0,Math.PI) };
@@ -532,7 +566,19 @@ void main(){ vec2 q=vec2(vW.x*0.07-uT*0.10,vW.z*0.42); float n=0.6*noise(q)+0.4*
       "#include <map_fragment>\n diffuseColor.rgb=mix(vec3(.56,.52,.46),diffuseColor.rgb*.70,.34);");
   };
   pav.rotation.x=-Math.PI/2; pav.position.set(0,0,-27.6); pav.receiveShadow=true; scene.add(pav);
-  const grass=new THREE.Mesh(new THREE.PlaneGeometry(900,900),LM(SAUGE)); grass.rotation.x=-Math.PI/2; grass.position.y=-0.06; grass.receiveShadow=true; scene.add(grass);
+  // Herbe peinte : lavis de verts, plages d'ocre sèche et touffes plus sombres, calculés dans le monde.
+  const grassMat=new THREE.MeshToonMaterial({color:0xffffff,gradientMap:GRAD});
+  grassMat.onBeforeCompile=sh=>{
+    sh.vertexShader=sh.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 vGW;").replace("#include <begin_vertex>","#include <begin_vertex>\nvGW=(modelMatrix*vec4(position,1.0)).xyz;");
+    sh.fragmentShader=sh.fragmentShader.replace("#include <common>","#include <common>\nvarying vec3 vGW;\n"+NOISE_GLSL).replace("#include <color_fragment>",`#include <color_fragment>
+      vec2 g=vGW.xz; float n1=noise(g*0.045), n2=noise(g*0.21+7.0), n3=noise(g*1.3+3.0), n4=noise(g*4.1);
+      vec3 c=mix(vec3(0.47,0.56,0.38),vec3(0.36,0.47,0.33),smoothstep(0.3,0.75,n1));
+      c=mix(c,vec3(0.66,0.63,0.42),smoothstep(0.62,0.85,n2)*0.55);
+      c=mix(c,vec3(0.28,0.38,0.27),smoothstep(0.58,0.8,n3)*0.45);
+      c*=0.92+0.16*n4;
+      diffuseColor.rgb*=c;`);
+  };
+  const grass=new THREE.Mesh(new THREE.PlaneGeometry(900,900),VILLE_MESHY?grassMat:LM(SAUGE)); grass.rotation.x=-Math.PI/2; grass.position.y=-0.06; grass.receiveShadow=true; scene.add(grass);
   const river=new THREE.Mesh(new THREE.PlaneGeometry(900,13),riverMat); river.rotation.x=-Math.PI/2; river.position.set(0,-0.03,27); scene.add(river); }
 
 // Décors peints regroupés dans une géométrie commune.
@@ -572,7 +618,8 @@ function paintedShop(x,z,ry,w,d,o) {
   paintedPanel(1,x+Math.cos(ry)*door+Math.sin(ry)*front,1.21,z-Math.sin(ry)*door+Math.cos(ry)*front,1.62,2.42,ry);
 }
 const winLights=[];
-function house(x,z,ry,w,d,o){ o=o||{}; const pl=o.pl||0xe8dcc0, rf=o.rf||TILE, sh=o.sh||0x6f8a78, f=d/2, fz=f+0.5; B.push(x,z,ry);
+function house(x,z,ry,w,d,o){ o=o||{};
+  if(VILLE_MESHY&&o.glb){ poseGLB(o.glb,x,z,ry,w/LARGEUR_GLB[o.glb]); return; } const pl=o.pl||0xe8dcc0, rf=o.rf||TILE, sh=o.sh||0x6f8a78, f=d/2, fz=f+0.5; B.push(x,z,ry);
   paintedShop(x,z,ry,w,d,o);
   function put(geo, color, x, y, z, sx, sy, sz, ry, rx, rz) {
     let paint;
@@ -608,7 +655,11 @@ function house(x,z,ry,w,d,o){ o=o||{}; const pl=o.pl||0xe8dcc0, rf=o.rf||TILE, s
   if(rnd()<0.45){ const ex=(rnd()<0.5?-1:1)*(w/2-0.15); for(let k=0;k<13;k++) put(G.ico,[FORET,0x3f5a44,SAUGE][k%3],ex+(rnd()-0.5)*0.6,0.4+k*0.4+rnd()*0.2,f+0.1+rnd()*0.08,0.24+rnd()*0.14,0.2,0.07); }
   if(rnd()<0.5){ const ly=6.1+T; put(G.box,SEPIA,0,ly+0.5,fz+Tz+0.8,w*0.85,0.015,0.015); for(let k=0;k<4;k++) put(G.box,[BLANC,0xc9d4dc,OCRE,0xd8c7b6][k],-w*0.3+k*w*0.2,ly+0.2,fz+Tz+0.8,0.42,0.55,0.02,0,0,(rnd()-0.5)*0.12); }
   B.pop(); }
-function simpleHouse(x,z,ry,w,d,h,pl,rf){ B.push(x,z,ry); put(G.box,pl,0,h/2,0,w,h,d); put(G.prism,rf,0,h,0,w+0.8,w*0.55,d+0.8); B.pop(); }
+let _fond=0;
+function simpleHouse(x,z,ry,w,d,h,pl,rf){
+  if(VILLE_MESHY&&Math.abs(x)<100&&Math.abs(z)<100){ const f=["ville/maison2_loin","ville/maison1_loin","ville/maison_pierre_loin"][_fond++%3];
+    const vers=Math.round(Math.atan2(-x,-z)/(Math.PI/2))*(Math.PI/2); poseGLB(f,x,z,vers,w/LARGEUR_GLB[f]); return; }
+  B.push(x,z,ry); put(G.box,pl,0,h/2,0,w,h,d); put(G.prism,rf,0,h,0,w+0.8,w*0.55,d+0.8); B.pop(); }
 const trees=[];
 const treeMaterial=new THREE.MeshLambertMaterial({vertexColors:true,side:THREE.DoubleSide});
 function tree(x,z,s){
@@ -659,7 +710,9 @@ function tree(x,z,s){
 }
 function barrel(x,z){ put(G.c16,0x8a6a48,x,0.5,z,0.38,1.0,0.38); put(G.c16,0x4b3829,x,0.25,z,0.4,0.06,0.4); put(G.c16,0x4b3829,x,0.75,z,0.4,0.06,0.4); }
 function crate(x,z,w,h){ put(G.box,0x9a7c55,x,h/2,z,w,h,w); for(const sx of [-1,1]) for(const sz of [-1,1]) put(G.box,0x6e5338,x+sx*(w/2-0.06),h/2,z+sz*(w/2-0.06),0.16,h+0.04,0.16); put(G.box,0x6e5338,x,h+0.02,z,w+0.04,0.06,w+0.04); solid(x-w/2,x+w/2,z-w/2,z+w/2); }
-function stall(x,z,c1,c2){ put(G.box,WOOD,x,0.9,z,3.2,0.12,1.5); for(const [dx,dz] of [[-1.5,-.65],[1.5,-.65],[-1.5,.65],[1.5,.65]]) put(G.box,0x5b4331,x+dx,1.45,z+dz,0.1,2.9,0.1); put(G.box,0x6e5338,x,0.45,z-0.6,3.1,0.9,0.08);
+function stall(x,z,c1,c2){
+  if(VILLE_MESHY){ poseGLB(c1===SIENNE||c1===INDIGO?"ville/etal_rouge":"ville/etal_bleu",x,z,0,0.95); solid(x-1.6,x+1.6,z-0.75,z+0.75); return; }
+  put(G.box,WOOD,x,0.9,z,3.2,0.12,1.5); for(const [dx,dz] of [[-1.5,-.65],[1.5,-.65],[-1.5,.65],[1.5,.65]]) put(G.box,0x5b4331,x+dx,1.45,z+dz,0.1,2.9,0.1); put(G.box,0x6e5338,x,0.45,z-0.6,3.1,0.9,0.08);
   const savedJitter=B.jit; B.jit=0;
   for(let i=0;i<16;i++) {
     const ax=x-1.79+i*.238;
@@ -676,13 +729,13 @@ function stall(x,z,c1,c2){ put(G.box,WOOD,x,0.9,z,3.2,0.12,1.5); for(const [dx,d
   for(let i=0;i<8;i++) put(G.box,i%2?c1:c2,x-1.66+i*0.475,2.95,z,0.475,0.05,2.3,0,0.14,0); solid(x-1.6,x+1.6,z-0.75,z+0.75); }
 
 /* rangées ouest et est */
-house(-27.5,-12.5,Math.PI/2,7.2,8,{pl:0xecd9a6,gable:true,rf:TILE,sh:PETROLE});
-house(-27.5,-4.5,Math.PI/2,8.4,8,{pl:BLANC,rf:LAUZE,sh:SIENNE,aw:SAUGE});
-house(-27.5,4.5,Math.PI/2,8.4,8,{pl:0xeed2b4,gable:true,rf:SLATE,sh:FORET,aw:OCRE,atelier:true});
-house(-27.5,13,Math.PI/2,8,8,{pl:BLANC,rf:TILE,sh:INDIGO});
-house(27.5,-11.2,-Math.PI/2,9.6,8,{pl:BLANC,gable:true,rf:LAUZE,sh:PETROLE});
-house(27.5,5.6,-Math.PI/2,6.4,8,{pl:0xecd9a6,rf:SLATE,sh:SIENNE,aw:BLANC});
-house(27.5,12.6,-Math.PI/2,7.2,8,{pl:0xeed2b4,gable:true,rf:TILE,sh:FORET});
+house(-27.5,-12.5,Math.PI/2,7.2,8,{pl:0xecd9a6,gable:true,rf:TILE,sh:PETROLE,glb:"ville/maison_pierre"});
+house(-27.5,-4.5,Math.PI/2,8.4,8,{pl:BLANC,rf:LAUZE,sh:SIENNE,aw:SAUGE,glb:"ville/maison2"});
+house(-27.5,4.5,Math.PI/2,8.4,8,{pl:0xeed2b4,gable:true,rf:SLATE,sh:FORET,aw:OCRE,atelier:true,glb:"ville/imprimerie"});
+house(-27.5,13,Math.PI/2,8,8,{pl:BLANC,rf:TILE,sh:INDIGO,glb:"ville/maison1"});
+house(27.5,-11.2,-Math.PI/2,9.6,8,{pl:BLANC,gable:true,rf:LAUZE,sh:PETROLE,glb:"ville/maison2"});
+house(27.5,5.6,-Math.PI/2,6.4,8,{pl:0xecd9a6,rf:SLATE,sh:SIENNE,aw:BLANC,glb:"ville/maison1"});
+house(27.5,12.6,-Math.PI/2,7.2,8,{pl:0xeed2b4,gable:true,rf:TILE,sh:FORET,glb:"ville/maison_pierre"});
 B.jit=0.07;
 for(let i=0;i<5;i++){ simpleHouse(-39,-14+i*8,0,7.5,7,7+(i%2)*1.5,[BLANC,0xecd9a6,0xeed2b4][i%3],[TILE,LAUZE,SLATE][i%3]); if(i>2) simpleHouse(63,-14+i*8,0,7.5,7,7+(i%2),[BLANC,0xecd9a6][i%2],[LAUZE,TILE][i%2]); }
 for(let i=0;i<9;i++){ simpleHouse(-44+i*11,39+(i%2)*3,0,8,7,5.5+(i%3),[BLANC,0xecd9a6,0xeed2b4][i%3],[TILE,LAUZE,TILE][i%3]); tree(-49+i*11,35,1+(i%3)*0.15); }
@@ -870,6 +923,9 @@ tree(-13,-15.2,1.1); tree(13,-15.2,1.15); tree(-20.5,-15,0.95); tree(20.5,-15,1.
 
 /* mur du palais, tours, porte */
 const WS=0xe6d7ae;
+// Château modélisé (Meshy, allégé dans Blender) ; ?chateau=ancien garde l'ancien château en volumes simples.
+const CHATEAU_MESHY=new URLSearchParams(location.search).get("chateau")==="meshy";
+if(!CHATEAU_MESHY){
 for(const sx of [-1,1]){ put(G.box,WS,sx*18.5,3,-18,25,6,2); put(G.box,ST2,sx*18.5,5.4,-17,25,0.25,0.3);
   for(let i=0;i<16;i++) put(G.box,WS,sx*(6.6+i*1.56),6.5,-17.25,0.95,1.0,0.5); for(let i=0;i<4;i++){ put(G.box,ST2,sx*(9+i*6),2.2,-16.8,1.0,4.4,0.6); put(G.box,0x2a2c33,sx*(12+i*6),3.6,-16.98,0.16,1.1,0.06); }
   put(G.c16,WS,sx*4.7,5.5,-18,2.3,11,2.3); put(G.c16,ST2,sx*4.7,10.7,-18,2.65,0.7,2.65); for(let i=0;i<10;i++){ const a=i/10*Math.PI*2; put(G.box,WS,sx*4.7+Math.cos(a)*2.45,11.5,-18+Math.sin(a)*2.45,0.75,0.9,0.5,-a+Math.PI/2); }
@@ -877,6 +933,7 @@ for(const sx of [-1,1]){ put(G.box,WS,sx*18.5,3,-18,25,6,2); put(G.box,ST2,sx*18
   put(G.box,0x2a2c33,sx*4.7,6.2,-15.72,0.2,1.3,0.1); put(G.box,0x2a2c33,sx*4.7,2.6,-15.72,0.2,1.3,0.1);
   put(G.box,POURPRE,sx*8.2,3.3,-16.9,1.25,3.8,0.06); put(G.c16,ORANGE,sx*8.2,3.9,-16.84,0.34,0.05,0.34,0,Math.PI/2); }
 put(G.box,WS,0,7.6,-18,5.2,3.6,2); for(let i=0;i<4;i++) put(G.box,WS,-1.95+i*1.3,9.9,-17.25,0.85,1.0,0.5);
+}
 /* le balcon de la fête : c'est de là qu'on jette les pièces et qu'on porte les toasts ; le rideau reste tiré */
 { const keep=_seed;
   put(G.box,ST2,0,7.55,-16.45,4.6,.28,1.3);                                        // dalle en saillie
@@ -887,11 +944,14 @@ put(G.box,WS,0,7.6,-18,5.2,3.6,2); for(let i=0;i<4;i++) put(G.box,WS,-1.95+i*1.3
   put(G.c16,0xe0b450,0,8.0,-15.71,.26,.02,.26,0,Math.PI/2,0,0);
   put(G.box,0x23252c,0,8.55,-16.98,1.5,1.9,.05); put(G.box,0x8a1f1a,0,8.55,-16.95,1.3,1.7,.03); // porte-fenêtre, rideau tiré
   _seed=keep; }
+if(!CHATEAU_MESHY){
 put(G.box,0x23252c,0,2.1,-17.3,4.4,4.2,0.7); put(G.c16,0x23252c,0,4.2,-17.3,2.2,0.7,2.2,0,Math.PI/2);
 for(let i=0;i<8;i++) put(G.box,0x6a5e52,-1.92+i*0.55,3.0,-16.92,0.09,6,0.09); for(let i=0;i<5;i++) put(G.box,0x6a5e52,0,0.7+i*1.1,-16.9,4.3,0.09,0.09);
+}
 solid(-31,31,-19,-16.6);
 /* palais */
 B.jit=0.03;
+if(!CHATEAU_MESHY){
 for(const [x,z,w,h] of [[-19,-33,10,14],[19,-33,10,14]]){ put(G.box,0xe3dcc8,x,h/2,z,w,h,w); for(let r=0;r<3;r++)for(let c=0;c<3;c++) put(G.box,WIN,x-2.8+c*2.8,4+r*3.6,z+w/2+0.02,0.9,1.7,0.06); put(G.k4,SLATE,x,h+3.2,z,w*0.78,6.4,w*0.78,Math.PI/4); }
 /* Le palais de l'Un, d'après la fiche d'identité (bible/Consignes_vues_aeriennes_palais.md, 6.4) :
    un front qui écrase la place, une cour d'honneur et son colosse, deux pavillons, le grand logis au fond,
@@ -958,11 +1018,13 @@ for(const [x,z,w,h] of [[-19,-33,10,14],[19,-33,10,14]]){ put(G.box,0xe3dcc8,x,h
   put(G.c16,ST2,0,.45,-63,1.6,.9,1.6); put(G.c16,0x5e8fa0,0,.92,-63,1.35,.06,1.35);
   put(G.box,WS,0,3.5,-69,72,7,1.6); for(let i=0;i<24;i++) put(G.box,WS,-34.5+i*3,7.5,-69,1.3,1,1.7);
   _seed=keep; }
+} else buildChateau();
 /* cathédrale et flèches dans la brume */
 function spire(x,z,r,h,sh){ put(G.box,0xd8d0c0,x,h/2,z,r*2,h,r*2); put(G.k4,SLATE,x,h+sh/2,z,r*1.25,sh,r*1.25,Math.PI/4); for(const [dx,dz] of [[-1,-1],[1,-1],[-1,1],[1,1]]) put(G.k4,SLATE,x+dx*r*0.95,h+sh*0.14,z+dz*r*0.95,r*0.28,sh*0.3,r*0.28,Math.PI/4); for(let k=0;k<3;k++) put(G.box,0x23252c,x,h*(0.45+k*0.17),z+r+0.03,r*0.5,h*0.09,0.08); }
 // La cathédrale se tient au nord-est, derrière la cour des gardes (fiche d'identité de Sarlande) ;
 // les autres clochers restent loin, pour ne pas se confondre avec les tours du palais.
-put(G.box,0xd8d0c0,58,11,-50,16,22,40); put(G.prism,SLATE,58,22,-50,17,10,41); spire(53,-28,3.2,34,30); spire(63,-28,3.2,30,26); put(G.k4,SLATE,58,39,-54,1.6,22,1.6,Math.PI/4); for(let i=0;i<6;i++){ put(G.box,0xcfc6b4,49.4,8,-34-i*6,1.2,16,1.6); put(G.k4,SLATE,49.4,18.5,-34-i*6,0.9,5,0.9,Math.PI/4); }
+if(VILLE_MESHY) poseGLB("ville/cathedrale",58,-56,0,1);
+else put(G.box,0xd8d0c0,58,11,-50,16,22,40); put(G.prism,SLATE,58,22,-50,17,10,41); spire(53,-28,3.2,34,30); spire(63,-28,3.2,30,26); put(G.k4,SLATE,58,39,-54,1.6,22,1.6,Math.PI/4); for(let i=0;i<6;i++){ put(G.box,0xcfc6b4,49.4,8,-34-i*6,1.2,16,1.6); put(G.k4,SLATE,49.4,18.5,-34-i*6,0.9,5,0.9,Math.PI/4); }
 spire(-70,-62,2.6,30,24); spire(92,-30,2.2,22,20); spire(-88,-70,2.4,26,22); spire(30,-92,3,40,30); spire(-34,-96,2.6,34,26); spire(84,-84,2.4,28,24);
 /* collines */
 for(const [x,z,r,h,c] of [[-150,-240,150,52,0x7f8cba],[80,-270,180,70,0x6f7cae],[250,-200,120,44,0x8794c0],[-260,-170,110,38,0x8794c0],[-90,170,150,34,0x8fa08a],[150,190,170,42,0x7f9480]]) put(G.s,c,x,-6,z,r,h,r);
@@ -1258,6 +1320,8 @@ placeStone(0);
 }
 
 /* fontaine */
+if(VILLE_MESHY){ poseGLB("ville/fontaine",0,3,0,1); circles.push([0,3,2.75]); }
+else {
 put(G.c8,ST,0,0.45,3,2.4,0.9,2.4); put(G.c8,ST2,0,0.92,3,2.55,0.14,2.55); put(G.c8,PETROLE,0,0.86,3,2.1,0.1,2.1); put(G.c8,ST2,0,1.6,3,0.38,2.4,0.38); put(G.c16,ST,0,2.75,3,1.25,0.22,1.25); put(G.c16,PETROLE,0,2.84,3,1.05,0.08,1.05); put(G.c8,ST2,0,3.3,3,0.16,1.0,0.16); put(G.s,ORANGE,0,3.95,3,0.26);
 { const previous=B.jit; B.jit=0;
   for(let i=0;i<24;i++){
@@ -1284,12 +1348,15 @@ circles.push([0,3,2.75]);
   }
   scene.add(relief);
 }
+}
 /* étals et marchandises */
 stall(-11,-4.2,SIENNE,BLANC); stall(10,-6,OCRE,BLANC); stall(13,8.6,PETROLE,BLANC); stall(-9,10,INDIGO,BLANC);
+if(!VILLE_MESHY){
 for(let i=0;i<5;i++) put(G.s,0xc99a5e,8.9+i*0.55,1.08,-6+(i%2)*0.2,0.24,0.14,0.2); put(G.c8,0xb08d5c,11.2,1.12,-5.8,0.3,0.3,0.3);
 for(const [dx,h] of [[-0.9,0.55],[0,0.5],[0.9,0.6]]){ put(G.c8,0x6e5338,13+dx,0.97+h/2,8.6,0.24,h,0.24); put(G.k16,0x6e5338,13+dx,1.0+h+0.1,8.6,0.26,0.22,0.26); put(G.s,dx<0?0xd9b84a:0x8a7458,13+dx,1.12,8.6,0.08); }
 for(let i=0;i<4;i++) put(G.box,[0x8a5a3a,0x9a6a44,0x6e4a30,0xa57850][i],-12.2+i*0.8,1.9,-4.85,0.6,1.3,0.04,0,0,0.05*(i-1.5));
 for(let i=0;i<6;i++) put(G.s,[0xa8545a,0x6f8a78,0xc9a24e][i%3],-10+i*0.4-0.2,1.06,10+(i%2)*0.3-0.1,0.16,0.12,0.16);
+}
 barrel(-21.5,-9); barrel(-20.6,-8.6); barrel(21.6,13.5); crate(21.4,-13.4,1.2,1.1); barrel(-21.6,16.4); crate(18.5,16.2,1.3,1.0);
 circles.push([-21.1,-8.8,0.8],[21.6,13.5,0.5],[-21.6,16.4,0.5]);
 for(let i=0;i<4;i++) put(G.s,0xb9a27c,6.5+i*0.5,0.28,-12.6+(i%2)*0.4,0.36,0.28,0.3);
@@ -1325,16 +1392,25 @@ const EST_H=.52;
 solid(-2.85,1.95,-16.1,-13.75);
 
 /* cour des gardes, arcades, chapelle */
+if(VILLE_MESHY){
+  for(const x of [37.2,47.6])poseGLB("ville/corps_de_garde",x,-14.2,0,1.1);
+} else {
 put(G.box,WS,42.5,2.6,-10.8,23,5.2,1.2); for(let i=0;i<9;i++){ put(G.c8,ST,32.6+i*2.5,1.3,-9.3,0.17,2.6,0.17); put(G.box,ST2,32.6+i*2.5,2.65,-9.3,0.5,0.2,0.5); put(G.box,ST2,32.6+i*2.5,0.1,-9.3,0.5,0.2,0.5); }
-put(G.box,TILE,42.5,3.25,-9.75,23,0.14,1.7,0,0.32,0); solid(31,54,-10.4,-9.0);
+put(G.box,TILE,42.5,3.25,-9.75,23,0.14,1.7,0,0.32,0);
+}
+solid(31,54,-10.4,-9.0);
 put(G.box,WS,42.5,0.75,6.5,23,1.5,0.7); put(G.box,ST2,42.5,1.55,6.5,23.2,0.12,0.9); for(let i=0;i<7;i++) put(G.ico,0x6f8f5a,33+i*3.3+(i%2),1.5+((i*7)%3)*0.2,6.2,0.8,0.5,0.45);
+if(VILLE_MESHY)poseGLB("ville/chapelle",62.5,-2,-Math.PI/2,1.25);
+else {
 put(G.box,WS,54.8,4.5,-2,1.4,9,17.4); put(G.prism,WS,54.8,9,-2,17.4,4.6,1.4,Math.PI/2); put(G.prism,LAUZE,55.2,9.05,-2,17.9,4.9,1.6,Math.PI/2);
 put(G.box,0x3a2a22,54.05,1.4,-2,0.12,2.8,1.9); put(G.prism,0x3a2a22,54.05,2.8,-2,1.9,1.3,0.12,Math.PI/2); put(G.box,ST2,54.0,1.4,-3.15,0.3,2.9,0.3); put(G.box,ST2,54.0,1.4,-0.85,0.3,2.9,0.3);
 put(G.c16,0x4f6a86,54.06,6.6,-2,1.25,0.12,1.25,0,0,Math.PI/2); put(G.c16,ST2,54.08,6.6,-2,1.45,0.08,1.45,0,0,Math.PI/2); put(G.box,ST2,54.0,6.6,-2,0.1,2.5,0.14); put(G.box,ST2,54.0,6.6,-2,0.1,0.14,2.5);
 put(G.box,WS,54.8,14.6,-2,1.0,2.6,2.2); put(G.box,0x23252c,54.6,14.5,-2,1.2,1.5,0.9); put(G.s,ORANGE,54.6,14.5,-2,0.36,0.42,0.36); put(G.box,0x3a2e26,54.8,16.8,-2,0.12,1.5,0.12); put(G.box,0x3a2e26,54.8,17.1,-2,0.12,0.12,0.8);
+}
 solid(53.7,56,-11,7);
 for(const [x,z,w,h] of [[33.6,-4.6,2,1.9],[40,0.6,2.4,2.1],[44.2,-3,2,1.8],[48.2,2.4,2.2,2],[36.2,4,2,1.7],[49.5,-7.6,2,1.9]]) crate(x,z,w,h);
 barrel(41.7,0.9); barrel(46.4,3.2); circles.push([41.7,0.9,0.45],[46.4,3.2,0.45]); put(G.s,0xb9a27c,34.9,0.3,-4.2,0.4,0.3,0.34);
+if(!CHATEAU_MESHY){
 // Porte du palais, bâtie avec les pierres et le bois de la ville (et non plus un tableau plaqué).
 // Au tympan, l'emblème de l'Un : un disque d'or sur trois degrés. Le tirage aléatoire du décor est préservé.
 { const keep=_seed, IRON=0x34343c, OAK=0x6e4a30, GOLD=0xe0b450, z=-16.44;
@@ -1363,9 +1439,13 @@ for(const side of [-1,1]){
   for(const dx of [7.6,17.6,26.4]) paintedPanel(3,side*dx,3.78,-16.48,1.34,3.64,0,[[0,.12],[.5,0],[1,.12],[1,1],[0,1]]);
   for(let i=0;i<3;i++) for(let j=0;j<3;j++) paintedPanel(2,side*19-2.8+i*2.8,4+j*3.6,-27.83,1.32,2.02,0);
 }
+}
+if(!VILLE_MESHY){
 paintedPanel(5,53.8,6.6,-2,2.9,2.9,-Math.PI/2);
 paintedPanel(1,53.78,1.85,-2,2.95,3.70,-Math.PI/2);
-for(const x of [33.7,38.7,43.7,48.7,52.2]) paintedPanel(3,x,3.84,-10.1,1.1,2.0,0);
+}
+if(!VILLE_MESHY) for(const x of [33.7,38.7,43.7,48.7,52.2]) paintedPanel(3,x,3.84,-10.1,1.1,2.0,0);
+if(!CHATEAU_MESHY){
 const espalier=new THREE.MeshLambertMaterial({map:new THREE.TextureLoader().load("img/espalier.webp")});
 const gardenWall=new THREE.InstancedMesh(new THREE.PlaneGeometry(12.48,5.96),espalier,4);
 for(let i=0;i<4;i++){
@@ -1410,6 +1490,7 @@ for(let j=0;j<=16;j++){
 for(const side of [-1,1]){
   put(G.box,ST2,side*2.63,2.20,-16.31,.53,4.40,.55);
   put(G.box,ST,side*2.63,4.39,-16.24,.82,.26,.69);
+}
 }
 finishPanels();
 /* poterne */
@@ -2443,7 +2524,7 @@ function nextLine(){ if(!queue.length){ aliExpression(null); dlg.style.display="
   dlg.innerHTML=portraitForLine(l)+(l[0]?`<div class="who">${esc(l[0])}</div>`:"")+`<p class="txt${l[0]?"":" narr"}">${esc(l[1])}</p><div class="more">Touchez pour continuer</div>`; }
 dlg.addEventListener("click",e=>{ if(waitingChoice){ const b=e.target.closest("[data-c]"); if(!b)return; const c=dlg._choices[+b.dataset.c]; waitingChoice=false; c[1](); return; } nextLine(); });
 
-function refreshHud(){ const playing=mode==="play"; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
+function refreshHud(){ const playing=mode==="play"; $("course").hidden=!playing||!matchMedia("(any-pointer: coarse)").matches; $("cutSkip").hidden=!(mode==="sequence"||mode==="farce"||mode==="cine2"); $("obj").style.display=(mode==="play"||mode==="dialog")?"block":"none"; $("obj").innerHTML=`<b>${actTitle()}</b>${esc(objText())}`;
   $("carnetBtn").setAttribute("aria-label",`Ouvrir le carnet, ${S.f.length} feuillet${S.f.length>1?"s":""} sur ${NF}`);
   $("carnetBtn").style.display=playing?"flex":"none"; $("carnetBtn").innerHTML=`<svg aria-hidden="true" viewBox="0 0 30 26" fill="none" stroke="#221f2b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6 C11 3 6 3 2 4 L2 22 C6 21 11 21 15 24 C19 21 24 21 28 22 L28 4 C24 3 19 3 15 6 Z M15 6 L15 24 M5 9 L11 9.6 M5 13 L11 13.6 M19 9.6 L25 9 M19 13.6 L25 13"/></svg><span>${S.f.length}/${NF}</span>`;
   $("snd").style.top=playing?"82px":"20px"; $("hint").textContent=!playing?"":(S.act===2?act2Hint():zone==="cour"?"Tout près d’un garde, poussez à peine le doigt : il entend courir.":(S.stage<2?"Glissez à gauche pour marcher, à droite pour tourner la caméra":"")); if(!playing){clearControls(); current=null; act.style.display="none"; $("arrow").style.opacity=0; $("arrowLab").style.opacity=0;} }
@@ -2889,7 +2970,14 @@ function startCine(){
 const joy={on:false,id:null,bx:0,by:0,x:0,y:0}; const joyEl=$("joy");
 const joyKnob=joyEl.querySelector("i");
 const cameraDrag={id:null,x:0};
-let cameraYaw=0;
+let cameraYaw=0,running=false;
+const runButton=$("course");
+runButton.addEventListener("click",()=>{
+  if(mode!=="play")return;
+  running=!running;
+  runButton.setAttribute("aria-pressed",running);
+  runButton.textContent=running?"Marcher":"Courir";
+});
 function cameraDragEnd(){
   const id=cameraDrag.id;
   cameraDrag.id=null;
@@ -2923,6 +3011,9 @@ const keys={};
 function clearControls(){
   joyEnd();
   cameraDragEnd();
+  running=false;
+  runButton.setAttribute("aria-pressed",false);
+  runButton.textContent="Courir";
   for(const key of Object.keys(keys)) delete keys[key];
 }
 window.addEventListener("blur",clearControls);
@@ -3149,7 +3240,7 @@ function tick(){ requestAnimationFrame(tick); const elapsed=clock.getDelta(); if
     mz=mz*c-x*s;
   }
   const ml=Math.hypot(mx,mz); let moving=false;
-  if(mode==="play"&&ml>0.12){ const sp=4.7*Math.min(ml,1)*(keys["shift"]?0.55:1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
+  if(mode==="play"&&ml>0.12){ const sp=(running||keys["shift"]?3.65:2.45)*Math.min(ml,1); pSpeed=sp; const vx=mx/ml*sp*dt, vz=mz/ml*sp*dt; const px=player.position.x,pz=player.position.z;
     if(!blocked(px+vx,pz)) player.position.x+=vx; if(!blocked(player.position.x,pz+vz)) player.position.z+=vz;
     let a=Math.atan2(mx,mz), d=a-player.rotation.y; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI; player.rotation.y+=d*Math.min(1,dt*12); moving=true; }
   player.userData.speed=pSpeed; animate(player,moving,dt,aliRate(pSpeed)); updateAlienorModel(dt); for(const k in N) animate(N[k],!!N[k].userData.walking,dt); soundTick(dt); charTick(dt);
