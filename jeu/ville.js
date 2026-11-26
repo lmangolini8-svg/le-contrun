@@ -74,6 +74,8 @@ for (const s of SITES) if (OUVERT.has(s.surface)) { const b = rect(s); cellules(
   for (let it = 0; it < 240; it++) for (let k = 0; k < L.length; k++) { const i = L[k]; haut[i] = (haut[i - 1] + haut[i + 1] + haut[i - GW] + haut[i + GW]) / 4; } }
 const MARGE = 0.45; // le rayon d'Aliénor : les murs se tiennent à distance
 for (const s of SITES) if (BATI.has(s.surface) && s.id !== "pont") { const b = rect(s); cellules(b.x0 - MARGE, b.x1 + MARGE, b.y0 - MARGE, b.y1 + MARGE, i => { grille[i] = MUR; }); }
+// les piliers des halles arrêtent la marche (mêmes positions que leur construction, plus bas)
+for (const s of SITES) if (s.surface === "hall") { const b = rect(s); for (let X = b.x0 + 0.5; X <= b.x1; X += 4.5) for (const Y of [b.y0 + 0.5, b.y1 - 0.5]) cellules(X - 0.2 - MARGE, X + 0.2 + MARGE, Y - 0.2 - MARGE, Y + 0.2 + MARGE, i => { grille[i] = MUR; }); }
 
 /* ================= Le tissu urbain =================
    L'atlas ne donne que les lieux du récit. Entre eux, une ville médiévale est faite de maisons mitoyennes
@@ -143,6 +145,9 @@ blocked = function (x, z) {
   if (x < 2500) return _blocked(x, z);
   const p = DS(x, z); if (!praticable(p.X, p.Y)) return true;
   const P = player.position, d = Math.hypot(x - P.x, z - P.z);
+  // on ne traverse pas les passants ni les habitants : on peut s'en éloigner, pas s'y enfoncer
+  if (d < 0.6) for (const h of HUMANS) { if (h === player || !h.visible || h.position.x < 2500) continue;
+    const a = Math.hypot(x - h.position.x, z - h.position.z); if (a < 0.62 && a < Math.hypot(P.x - h.position.x, P.z - h.position.z)) return true; }
   if (d > 0.02 && d < 0.6 && P.x > 2500) { const q = DS(P.x, P.z); if (Math.abs(sol(p.X, p.Y) - sol(q.X, q.Y)) > PAS_MAX * Math.max(d, 0.25)) return true; }
   return false;
 };

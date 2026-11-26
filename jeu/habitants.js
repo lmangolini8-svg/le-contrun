@@ -64,7 +64,7 @@ function creerMarcheur(o) {
   marcheurs.push(m); return m;
 }
 function suivant(m) {
-  if (m.hab) { const P = POSTES[m.lieu]; if (!P) return; const [X, Y] = P[Math.floor(Math.random() * P.length)]; m.attente = 6 + Math.random() * 14; return allerA(m, X, Y); }
+  if (m.hab) { const P = POSTES[m.lieu]; if (!P) return; const [X, Y] = place(m, P); m.attente = 6 + Math.random() * 14; return allerA(m, X, Y); }
   const B = BUTS[Math.floor(Math.random() * BUTS.length)]; m.attente = 2 + Math.random() * 6; allerA(m, B[0], B[1]);
 }
 let BUTS = [];
@@ -82,6 +82,17 @@ function preparer() {
   }
 }
 /* Qui est là : l'agenda pour les habitants, la plage pour le nombre de passants. */
+// Chacun sa place : autour du point du poste, des places espacées de 1,3 m, sur un sol praticable et libre.
+function place(m, P) {
+  const autres = marcheurs.filter(o => o !== m && o.g.visible).map(o => o.but || (o.pts && o.pts[o.pts.length - 1] ? { X: o.pts[o.pts.length - 1][0], Y: o.pts[o.pts.length - 1][1] } : { X: o.X, Y: o.Y }));
+  const libre = (X, Y) => W.praticable(X, Y) && W.estRelie(X, Y) && autres.every(o => Math.hypot(o.X - X, o.Y - Y) > 1.2);
+  const k0 = marcheurs.indexOf(m);
+  for (let r = 0; r < 4; r++) for (let a = 0; a < 8; a++) {
+    const [X0, Y0] = P[0], ang = (a + k0) * Math.PI / 4, X = X0 + Math.cos(ang) * 1.3 * r, Y = Y0 + Math.sin(ang) * 1.3 * r; // autour du point principal du poste
+    if (libre(X, Y)) return [X, Y];
+  }
+  return P[k0 % P.length];
+}
 function recenser(depart) {
   const v = V(), plage = M.plage(v), nuit = S.act === 2 || plage === 2;
   for (const m of marcheurs) {
@@ -89,8 +100,9 @@ function recenser(depart) {
     const lieu = M.lieuDe(v, m.hab), P = POSTES[lieu], avant = m.g.visible;
     m.lieu = lieu;
     if (!P) { m.g.visible = false; m.pts = null; continue; }
-    if (!avant || depart) { const d = W.accroche(...P[0]); if (d) poser(m, d[0], d[1]); m.g.visible = !!d; m.attente = 3 + Math.random() * 6; m.pts = null; }
-    else allerA(m, ...P[0]); // la plage a changé : il rejoint son nouveau lieu à pied
+    const pl = place(m, P);
+    if (!avant || depart) { const d = W.accroche(...pl); if (d) poser(m, d[0], d[1]); m.g.visible = !!d; m.attente = 3 + Math.random() * 6; m.pts = null; }
+    else allerA(m, ...pl); // la plage a changé : il rejoint son nouveau lieu à pied
   }
 }
 function pas(m, dt) {
@@ -106,9 +118,24 @@ function pas(m, dt) {
     return;
   }
   const [X, Y] = m.pts[m.k], dx = X - m.X, dy = Y - m.Y, d = Math.hypot(dx, dy), s = m.vitesse * dt;
+  // Personne ne traverse personne : devant un passant ou Aliénor, on fait un pas de côté, sinon on attend.
+  const ux = dx / (d || 1), uy = dy / (d || 1), gene = obstacle(m, m.X + ux * 0.7, m.Y + uy * 0.7);
+  if (gene) {
+    m.gene = (m.gene || 0) + dt;
+    for (const c of [1, -1]) { const nx = m.X - uy * c * s, ny = m.Y + ux * c * s; if (W.praticable(nx, ny) && !obstacle(m, nx, ny)) { m.X = nx; m.Y = ny; break; } }
+    if (m.gene > 3) { m.gene = 0; m.attente = 1; m.but = m.pts[m.pts.length - 1] ? { X: m.pts[m.pts.length - 1][0], Y: m.pts[m.pts.length - 1][1] } : null; m.pts = null; if (m.but && !file.includes(m)) file.push(m); }
+    const q0 = W.versScene(m.X, m.Y); m.g.position.set(q0.x, q0.y, q0.z); animate(m.g, false, dt); return;
+  }
+  m.gene = 0;
   if (d <= s) { m.X = X; m.Y = Y; m.k++; } else { m.X += dx / d * s; m.Y += dy / d * s; }
   const q = W.versScene(m.X, m.Y); m.g.position.set(q.x, q.y, q.z);
   faceTo(m.g, q.x + dx, q.z + dy, dt, 8); animate(m.g, true, dt, 8.5 * m.vitesse);
+}
+// Quelqu'un (un autre marcheur visible, ou Aliénor) occupe-t-il ce point, à 0,6 m près ?
+function obstacle(m, X, Y) {
+  const P = W.depuisScene(player.position.x, player.position.z); if (Math.hypot(P.X - X, P.Y - Y) < 0.65) return true;
+  for (const o of marcheurs) if (o !== m && o.g.visible && Math.hypot(o.X - X, o.Y - Y) < 0.6 && Math.hypot(o.X - X, o.Y - Y) < Math.hypot(o.X - m.X, o.Y - m.Y)) return true;
+  return false;
 }
 function vivre(dt) {
   if (!W.enVille()) return;
